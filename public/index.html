@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tolux AI Math Coach</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">π</div>
+      <div><strong>TOLUX</strong><span>AI MATH COACH</span></div>
+    </div>
+    <p class="tagline">Learn it. Understand it. Master it.</p>
+    <nav>
+      <button class="nav active">⌂ Dashboard</button>
+      <button class="nav">▥ My Progress</button>
+      <button class="nav">◷ Practice History</button>
+      <button class="nav">☆ Bookmarks</button>
+      <button class="nav">◎ Study Plan</button>
+    </nav>
+    <div class="promise">
+      <strong>One step at a time.</strong>
+      <span>We teach the method, not just the answer.</span>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <h1>Welcome to Tolux AI Math Coach 👋</h1>
+        <p>Choose your course and how you want to learn today.</p>
+      </div>
+      <div class="status"><span>🔥 5 day streak</span><span>★ 1,250 pts</span></div>
+    </header>
+
+    <section class="panel">
+      <h2>1. Choose your course</h2>
+      <div class="courses">
+        <button class="course selected" data-course="Algebra 1"><b>x²</b><span><strong>Algebra 1</strong><small>Build a strong foundation</small></span></button>
+        <button class="course" data-course="Algebra 2"><b>x²</b><span><strong>Algebra 2</strong><small>Take algebra to the next level</small></span></button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. How can I help you today?</h2>
+      <div class="modes">
+        <button class="mode selected" data-mode="Tutor Mode"><i>🎓</i><strong>Tutor Mode</strong><small>Learn step by step</small></button>
+        <button class="mode" data-mode="Homework Help"><i>📘</i><strong>Homework Help</strong><small>Get help with a problem</small></button>
+        <button class="mode" data-mode="Practice Mode"><i>✏️</i><strong>Practice Mode</strong><small>Practice and master skills</small></button>
+        <button class="mode" data-mode="Test Prep"><i>🎯</i><strong>Test Prep</strong><small>Prepare for tests</small></button>
+        <button class="mode" data-mode="Check My Work"><i>✓</i><strong>Check My Work</strong><small>Find the first mistake</small></button>
+      </div>
+    </section>
+
+    <section class="coach panel">
+      <div class="coach-head">
+        <div class="bot">π</div>
+        <div><h2>Your AI Math Coach</h2><p id="modeLabel">Algebra 1 • Tutor Mode</p></div>
+        <span id="apiStatus" class="badge">Checking AI…</span>
+      </div>
+
+      <div id="chat" class="chat">
+        <div class="message assistant">
+          <strong>Tolux Coach</strong>
+          <p>Hi! Type a math problem or upload a photo. I’ll guide you through it one step at a time.</p>
+        </div>
+      </div>
+
+      <div class="quick">
+        <button data-quick="I'm stuck. Give me the smallest useful hint, not the full solution.">❓ I'm stuck</button>
+        <button data-quick="Explain the current step another way using a different approach.">↻ Explain another way</button>
+        <button data-quick="Give me one similar problem at the same difficulty. Do not solve it yet.">🧩 Similar problem</button>
+      </div>
+
+      <div id="previewWrap" class="preview hidden">
+        <img id="preview" alt="Uploaded problem preview" />
+        <button id="removeImage" title="Remove image">×</button>
+      </div>
+
+      <form id="composer">
+        <textarea id="input" rows="2" placeholder="Type your question or math problem here…"></textarea>
+        <label class="attach" title="Upload a photo">📎
+          <input id="imageInput" type="file" accept="image/*" hidden />
+        </label>
+        <button id="send" type="submit">➤</button>
+      </form>
+      <p class="fine">Prototype: text and photo input. AI runs when an OpenAI API key is configured; otherwise Demo Mode responds locally.</p>
+    </section>
+
+    <section class="bottom-grid">
+      <div class="panel mini"><h3>Continue where you left off</h3><p><b>Solving Linear Equations</b><br>2x + 5 = 15</p><progress value="60" max="100"></progress></div>
+      <div class="panel mini"><h3>Recent activity</h3><p>✓ Solved: 3x − 7 = 14</p><p>✎ Practiced: Systems of Equations</p></div>
+    </section>
+
+    <footer>We don’t just give you the answer. <strong>We teach you how to get there.</strong></footer>
+  </main>
+
+<script src="/app.js"></script>
+</body>
+</html>
