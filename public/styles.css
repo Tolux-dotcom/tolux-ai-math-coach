@@ -16,3 +16,51 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
 .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.mini{margin:0}.mini h3{margin-top:0}.mini progress{width:100%}footer{text-align:center;background:#eaf3ff;border:1px solid #cfe0f4;border-radius:14px;padding:18px;margin-top:18px}
 @media(max-width:950px){body{display:block}.sidebar{position:relative;height:auto}.promise{display:none}.sidebar nav{grid-template-columns:repeat(3,1fr)}main{padding:18px}.modes{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.sidebar{padding:18px}.sidebar nav{display:none}.brand strong{font-size:24px}header{display:block}.status{margin-top:12px}.courses,.bottom-grid{grid-template-columns:1fr}.modes{grid-template-columns:1fr 1fr}.message{max-width:92%}.quick{overflow:auto}.quick button{white-space:nowrap}#composer{grid-template-columns:1fr 42px 44px}}
+
+.graph-panel{
+  margin:16px 20px;
+  padding:16px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 8px 24px rgba(16,33,63,.08);
+}
+
+.graph-panel.hidden{
+  display:none;
+}
+
+.graph-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+  font-size:16px;
+}
+
+#graphEquation{
+  color:var(--muted);
+  font-size:14px;
+}
+
+#graphCanvas{
+  width:100%;
+  height:420px;
+  min-height:320px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff;
+}
+
+@media(max-width:600px){
+  .graph-panel{
+    margin:12px;
+    padding:12px;
+  }
+
+  #graphCanvas{
+    height:340px;
+  }
+}
