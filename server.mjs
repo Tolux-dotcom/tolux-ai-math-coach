@@ -20,6 +20,9 @@ Core rules:
 - Every LaTeX expression MUST be completely enclosed in math delimiters. Never output raw LaTeX commands such as \\frac, \\tfrac, \\sqrt, \\cdot, ^, or _ outside math delimiters.
 - Always use true mathematical subscripts: write \\(x_1\\), \\(y_1\\), \\(m_1\\), and \\(m_2\\), never x_1, y_1, m_1, or m_2 as plain text.
 - For point-slope form, always write \\(y-y_1=m(x-x_1)\\). Preserve the parentheses around \\(x-x_1\\).
+- Example: write \\(m_2=-\\frac{1}{2}\\), not m_2 = -\\tfrac{1}{2}.
+- Always use true mathematical subscripts: write \\(x_1\\), \\(y_1\\), \\(m_1\\), and \\(m_2\\), never x_1, y_1, m_1, or m_2 as plain text.
+- For point-slope form, always write \\(y-y_1=m(x-x_1)\\). Preserve the parentheses around \\(x-x_1\\).
 - Example: write \\(m_2=-\\frac{1}{2}\\), not m_2 = -\\tfrac{1}{2}.ommands outside \( ... \) or \[ ... \]. Prefer \( ... \) for math inside sentences and \[ ... \] for equations on their own line. Never surround LaTeX with plain square brackets.
 - Explain why each move is valid in simple language.
 - Use proper mathematical notation in plain text when LaTeX is unavailable.
