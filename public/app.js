@@ -121,3 +121,49 @@ function clearImage(){
 
 apiStatus.textContent = "Demo / AI Ready";
 apiStatus.className = "badge demo";
+
+let graphBoard = null;
+
+function showTestGraph() {
+  const panel = document.querySelector("#graphPanel");
+  const equation = document.querySelector("#graphEquation");
+
+  if (!panel || typeof JXG === "undefined") return;
+
+  panel.classList.remove("hidden");
+  equation.textContent = "y > -2x + 4";
+
+  if (graphBoard) {
+    JXG.JSXGraph.freeBoard(graphBoard);
+  }
+
+  graphBoard = JXG.JSXGraph.initBoard("graphCanvas", {
+    boundingbox: [-6, 8, 8, -6],
+    axis: true,
+    showCopyright: false,
+    showNavigation: true,
+    pan: { enabled: true },
+    zoom: { enabled: true }
+  });
+
+  const boundary = graphBoard.create(
+    "functiongraph",
+    [function (x) { return -2 * x + 4; }],
+    {
+      dash: 2,
+      strokeWidth: 3,
+      fixed: true
+    }
+  );
+
+  graphBoard.create(
+    "inequality",
+    [boundary],
+    {
+      inverse: true,
+      fillOpacity: 0.18
+    }
+  );
+}
+
+window.showTestGraph = showTestGraph;
