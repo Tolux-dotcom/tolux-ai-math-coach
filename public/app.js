@@ -27,15 +27,7 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
 
 function refreshLabel(){ modeLabel.textContent = `${course} • ${mode}`; }
 function normalizeMathText(text) {
-  return text
-    .replace(
-      /\[\s*([^\]\n]*(?:\\[a-zA-Z]+|[_^])[^\]\n]*)\s*\]/g,
-      "\\[$1\\]"
-    )
-    .replace(
-      /\(\s*([^()\n]*(?:\\[a-zA-Z]+|[a-zA-Z]_[a-zA-Z0-9{}]+)[^()\n]*)\s*\)/g,
-      "\\($1\\)"
-    );
+  return text;
 }
 
 
