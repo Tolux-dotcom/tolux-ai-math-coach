@@ -167,3 +167,4 @@ function showTestGraph() {
 }
 
 window.showTestGraph = showTestGraph;
+showTestGraph();
