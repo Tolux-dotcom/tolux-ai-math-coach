@@ -119,7 +119,7 @@ const server = http.createServer(async (req, res) => {
       ];
 
       const response = await openai.responses.create({
-        model: "gpt-5-mini",
+        model: "gpt-5-mini-2025-08-07",
         instructions: MASTER_INSTRUCTIONS,
         input
       });
