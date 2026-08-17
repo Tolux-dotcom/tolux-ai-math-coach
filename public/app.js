@@ -138,7 +138,8 @@ function showTestGraph() {
   }
 
   graphBoard = JXG.JSXGraph.initBoard("graphCanvas", {
-    boundingbox: [-6, 8, 8, -6],
+    boundingbox: [-5, 7, 7, -5],
+    keepAspectRatio: true,
     axis: true,
     showCopyright: false,
     showNavigation: true,
