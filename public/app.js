@@ -34,6 +34,9 @@ function addMessage(role, text, error=false){
   el.innerHTML = `<strong>${who}</strong><p></p>`;
   el.querySelector("p").textContent = text;
   chat.appendChild(el);
+  if (role === "assistant" && window.MathJax?.typesetPromise) {
+  window.MathJax.typesetPromise([el]).catch(console.error);
+}
   chat.scrollTop = chat.scrollHeight;
   if(!error) history.push({role, text});
 }
