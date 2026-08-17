@@ -26,13 +26,20 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
 }));
 
 function refreshLabel(){ modeLabel.textContent = `${course} • ${mode}`; }
+function normalizeMathText(text) {
+  return text.replace(
+    /\[\s*([^\]\n]*(?:\\[a-zA-Z]+|[\^_])[^\]\n]*)\s*\]/g,
+    "\\[$1\\]"
+  );
+}
+
 
 function addMessage(role, text, error=false){
   const el = document.createElement("div");
   el.className = `message ${role}${error ? " error" : ""}`;
   const who = role === "assistant" ? "Tolux Coach" : "You";
   el.innerHTML = `<strong>${who}</strong><p></p>`;
-  el.querySelector("p").textContent = text;
+  el.querySelector("p").textContent = normalizeMathText(text);
   chat.appendChild(el);
   if (window.MathJax?.typesetPromise) {
   window.MathJax.typesetPromise([el]).catch(console.error);
