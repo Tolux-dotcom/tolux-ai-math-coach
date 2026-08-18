@@ -62,6 +62,16 @@ function demoReply(text){
 async function askCoach(text){
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
   input.value = "";
+  const inequalityMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2x\s*\+\s*4/i);
+
+if (inequalityMatch) {
+  let op = inequalityMatch[1];
+
+  if (op === "≤") op = "<=";
+  if (op === "≥") op = ">=";
+
+  showTestGraph(op);
+}
   const payload = { message:text, course, mode, imageDataUrl, history: history.slice(0,-1) };
   const priorImage = imageDataUrl;
   clearImage();
