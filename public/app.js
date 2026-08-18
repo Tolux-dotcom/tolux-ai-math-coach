@@ -179,6 +179,5 @@ function showTestGraph(operator = ">") {
 
 window.showTestGraph = showTestGraph;
 
-// Temporary test:
-showTestGraph("<=");
+
 
