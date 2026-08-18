@@ -181,4 +181,4 @@ window.showTestGraph = showTestGraph;
 
 // Temporary test:
 showTestGraph("<=");
-showTestGraph();
+
