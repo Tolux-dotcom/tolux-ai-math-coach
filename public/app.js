@@ -130,7 +130,7 @@ const r = await fetch("/api/coach", {method:"POST", headers:{"Content-Type":"app
     thinking.remove();
     apiStatus.textContent = "Demo Mode";
     apiStatus.className = "badge demo";
-    addMessage("assistant", demoReply(text));
+    addMessage("assistant", "IMAGE/API ERROR: " + (e?.message || String(e)), true);
   }
 }
 
