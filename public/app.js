@@ -124,14 +124,20 @@ apiStatus.className = "badge demo";
 
 let graphBoard = null;
 
-function showTestGraph() {
+function showTestGraph(operator = ">") {
   const panel = document.querySelector("#graphPanel");
   const equation = document.querySelector("#graphEquation");
 
   if (!panel || typeof JXG === "undefined") return;
 
   panel.classList.remove("hidden");
-  equation.textContent = "y > -2x + 4";
+
+  const symbol =
+    operator === ">=" ? "≥" :
+    operator === "<=" ? "≤" :
+    operator;
+
+  equation.textContent = `y ${symbol} -2x + 4`;
 
   if (graphBoard) {
     JXG.JSXGraph.freeBoard(graphBoard);
@@ -147,25 +153,32 @@ function showTestGraph() {
     zoom: { enabled: true }
   });
 
+  const strict = operator === ">" || operator === "<";
+
   const boundary = graphBoard.create(
     "functiongraph",
     [function (x) { return -2 * x + 4; }],
     {
-      dash: 2,
+      dash: strict ? 2 : 0,
       strokeWidth: 3,
       fixed: true
     }
   );
 
+  const shadeAbove = operator === ">" || operator === ">=";
+
   graphBoard.create(
     "inequality",
     [boundary],
     {
-      inverse: true,
+      inverse: shadeAbove,
       fillOpacity: 0.18
     }
   );
 }
 
 window.showTestGraph = showTestGraph;
+
+// Temporary test:
+showTestGraph("<=");
 showTestGraph();
