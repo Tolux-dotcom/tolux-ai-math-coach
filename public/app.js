@@ -111,8 +111,11 @@ setTimeout(() => {
   chat.appendChild(thinking); chat.scrollTop=chat.scrollHeight;
 
   try{
-    const r = await fetch("/api/coach",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+   const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 15000);
+const r = await fetch("/api/coach", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload), signal:controller.signal});
     const data = await r.json();
+    clearTimeout(timeout);
     thinking.remove();
     if(r.ok && data.reply){
       apiStatus.textContent = "AI Live";
