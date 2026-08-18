@@ -60,6 +60,21 @@ function demoReply(text){
 }
 
 async function askCoach(text){
+  async function askCoach(text){
+
+  // Clear previous graph
+  const graphPanel = document.querySelector("#graphPanel");
+
+  if (graphBoard) {
+    JXG.JSXGraph.freeBoard(graphBoard);
+    graphBoard = null;
+  }
+
+  if (graphPanel) {
+    graphPanel.classList.add("hidden");
+  }
+
+  addMessage("user", text || ...);
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
   input.value = "";
   const graphMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2\s*\*?\s*x\s*\+\s*4/i);
