@@ -50,7 +50,7 @@ async function readJson(req) {
     let body = "";
     req.on("data", chunk => {
       body += chunk;
-      if (body.length > 12_000_000) {
+      if (body.length > 20_000_000) {
         reject(new Error("Request too large"));
         req.destroy();
       }
