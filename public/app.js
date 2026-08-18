@@ -59,7 +59,7 @@ function demoReply(text){
   return `Demo Mode is active. I can already demonstrate simple linear-equation tutoring. For full ${course} tutoring, connect the OpenAI API key as described in the README.\n\nYour selected mode is ${mode}.`;
 }
 
-async function askCoach(text){
+
   async function askCoach(text){
 
   // Clear previous graph
