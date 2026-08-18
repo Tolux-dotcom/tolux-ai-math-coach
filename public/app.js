@@ -146,13 +146,32 @@ document.querySelector("#imageInput").addEventListener("change", e=>{
   const file=e.target.files?.[0];
   if(!file) return;
   if(file.size > 6_000_000){ alert("Please use an image under 6 MB for this prototype."); return; }
-  const reader=new FileReader();
-  reader.onload=()=>{
-    imageDataUrl=reader.result;
-    preview.src=imageDataUrl;
+  const reader = new FileReader();
+
+reader.onload = () => {
+  const img = new Image();
+
+  img.onload = () => {
+    const maxWidth = 1400;
+    const scale = Math.min(1, maxWidth / img.width);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.width * scale);
+    canvas.height = Math.round(img.height * scale);
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    imageDataUrl = canvas.toDataURL("image/jpeg", 0.78);
+
+    preview.src = imageDataUrl;
     previewWrap.classList.remove("hidden");
   };
-  reader.readAsDataURL(file);
+
+  img.src = reader.result;
+};
+
+reader.readAsDataURL(file);
 });
 document.querySelector("#removeImage").addEventListener("click", clearImage);
 function clearImage(){
