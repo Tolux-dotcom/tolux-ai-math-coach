@@ -62,6 +62,18 @@ function demoReply(text){
 async function askCoach(text){
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
   input.value = "";
+  const graphMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2\s*\*?\s*x\s*\+\s*4/i);
+
+if (graphMatch) {
+  let graphOperator = graphMatch[1];
+
+  if (graphOperator === "≤") graphOperator = "<=";
+  if (graphOperator === "≥") graphOperator = ">=";
+
+  setTimeout(() => {
+    showTestGraph(graphOperator);
+  }, 300);
+}
   const inequalityMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2x\s*\+\s*4/i);
 
 if (inequalityMatch) {
@@ -70,7 +82,9 @@ if (inequalityMatch) {
   if (op === "≤") op = "<=";
   if (op === "≥") op = ">=";
 
+ setTimeout(() => {
   showTestGraph(op);
+}, 500);
 }
   const payload = { message:text, course, mode, imageDataUrl, history: history.slice(0,-1) };
   const priorImage = imageDataUrl;
