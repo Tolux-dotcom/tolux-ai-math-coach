@@ -112,7 +112,7 @@ setTimeout(() => {
 
   try{
    const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 15000);
+const timeout = setTimeout(() => controller.abort(), 60000);
 const r = await fetch("/api/coach", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload), signal:controller.signal});
     const data = await r.json();
     clearTimeout(timeout);
