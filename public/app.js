@@ -82,9 +82,10 @@ if (inequalityMatch) {
   if (op === "≤") op = "<=";
   if (op === "≥") op = ">=";
 
- setTimeout(() => {
+setTimeout(() => {
+  console.log("GRAPH TEST:", op);
   showTestGraph(op);
-}, 500);
+}, 1500);
 }
   const payload = { message:text, course, mode, imageDataUrl, history: history.slice(0,-1) };
   const priorImage = imageDataUrl;
