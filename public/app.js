@@ -74,7 +74,7 @@ async function askCoach(text){
     graphPanel.classList.add("hidden");
   }
 
-  addMessage("user", text || ...);
+  
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
   input.value = "";
   const graphMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2\s*\*?\s*x\s*\+\s*4/i);
