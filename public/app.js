@@ -317,7 +317,7 @@ function showQuadraticGraph(a, b, c) {
       vertexX + xSpan,
       -ySpan
     ],
-    keepAspectRatio: true,
+    keepAspectRatio: false,
     axis: true,
     showCopyright: false,
     showNavigation: true,
