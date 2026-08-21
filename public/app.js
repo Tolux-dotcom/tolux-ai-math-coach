@@ -91,15 +91,19 @@ if (wantsQuadraticGraph) {
     .map(item => item.text)
     .reverse();
 
-  const quadraticSource = previousUserMessages.find(msg =>
+  const quadraticSource =
+  (/x\s*(\^2|²)/i.test(text) ? text : null) ||
+  previousUserMessages.find(msg =>
     /x\s*(\^2|²)/i.test(msg)
   );
 
   if (quadraticSource) {
     const clean = quadraticSource
-      .replace(/\s+/g, "")
-      .replace(/²/g, "^2")
-      .replace(/\*/g, "");
+  .replace(/\s+/g, "")
+  .replace(/²/g, "^2")
+  .replace(/\*/g, "")
+  .replace(/^(graph|plot|sketch)(thequadratic|quadratic|function|equation)?/i, "")
+  .replace(/^y=/i, "");
 
     const match = clean.match(
       /^([+-]?\d*\.?\d*)x\^2([+-]\d*\.?\d*)x([+-]\d*\.?\d+)$/
