@@ -26,8 +26,13 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
 }));
 
 function refreshLabel(){ modeLabel.textContent = `${course} • ${mode}`; }
-function normalizeMathText(text) {
-  return text;
+function normalizeMathText(text){
+  if (!text) return "";
+
+  return text.replace(
+    /(^|\n)\s*\[\s*([^\]\n]+)\s*\]\s*(?=\n|$)/g,
+    (match, start, equation) => `${start}\\[${equation.trim()}\\]`
+  );
 }
 
 
