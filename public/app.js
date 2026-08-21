@@ -82,6 +82,46 @@ function demoReply(text){
   
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
   input.value = "";
+    const wantsQuadraticGraph = /\b(graph|plot|sketch)\b/i.test(text);
+
+if (wantsQuadraticGraph) {
+  const previousUserMessages = history
+    .slice(0, -1)
+    .filter(item => item.role === "user")
+    .map(item => item.text)
+    .reverse();
+
+  const quadraticSource = previousUserMessages.find(msg =>
+    /x\s*(\^2|²)/i.test(msg)
+  );
+
+  if (quadraticSource) {
+    const clean = quadraticSource
+      .replace(/\s+/g, "")
+      .replace(/²/g, "^2")
+      .replace(/\*/g, "");
+
+    const match = clean.match(
+      /^([+-]?\d*\.?\d*)x\^2([+-]\d*\.?\d*)x([+-]\d*\.?\d+)$/
+    );
+
+    if (match) {
+      const toNumber = value => {
+        if (value === "" || value === "+") return 1;
+        if (value === "-") return -1;
+        return Number(value);
+      };
+
+      const a = toNumber(match[1]);
+      const b = toNumber(match[2]);
+      const c = Number(match[3]);
+
+      setTimeout(() => {
+        showQuadraticGraph(a, b, c);
+      }, 300);
+    }
+  }
+}
   const graphMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2\s*\*?\s*x\s*\+\s*4/i);
 
 if (graphMatch) {
@@ -243,8 +283,83 @@ function showTestGraph(operator = ">") {
     }
   );
 }
+function showQuadraticGraph(a, b, c) {
+  const panel = document.querySelector("#graphPanel");
+  const equation = document.querySelector("#graphEquation");
+
+  if (!panel || typeof JXG === "undefined") return;
+
+  panel.classList.remove("hidden");
+
+  const signB = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+  const signC = c >= 0 ? `+ ${c}` : `- ${Math.abs(c)}`;
+  equation.textContent = `y = ${a}x² ${signB}x ${signC}`;
+
+  if (graphBoard) {
+    JXG.JSXGraph.freeBoard(graphBoard);
+    graphBoard = null;
+  }
+
+  const vertexX = -b / (2 * a);
+  const vertexY = a * vertexX * vertexX + b * vertexX + c;
+
+  const xSpan = 6;
+  const ySpan = Math.max(6, Math.abs(vertexY) + 4);
+
+  graphBoard = JXG.JSXGraph.initBoard("graphCanvas", {
+    boundingbox: [
+      vertexX - xSpan,
+      ySpan,
+      vertexX + xSpan,
+      -ySpan
+    ],
+    keepAspectRatio: true,
+    axis: true,
+    showCopyright: false,
+    showNavigation: true,
+    pan: { enabled: true },
+    zoom: { enabled: true }
+  });
+
+  graphBoard.create(
+    "functiongraph",
+    [
+      function (x) {
+        return a * x * x + b * x + c;
+      }
+    ],
+    {
+      strokeWidth: 3,
+      fixed: true
+    }
+  );
+
+  graphBoard.create(
+    "point",
+    [vertexX, vertexY],
+    {
+      name: "Vertex",
+      size: 4,
+      fixed: true
+    }
+  );
+
+  graphBoard.create(
+    "line",
+    [
+      [vertexX, -ySpan],
+      [vertexX, ySpan]
+    ],
+    {
+      dash: 2,
+      straightFirst: false,
+      straightLast: false,
+      fixed: true
+    }
+  );
+}
 
 window.showTestGraph = showTestGraph;
-
+window.showQuadraticGraph = showQuadraticGraph;
 
 
