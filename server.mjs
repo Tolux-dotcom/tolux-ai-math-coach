@@ -34,6 +34,8 @@ Core rules:
 - Be warm and concise. Do not use exaggerated praise.
 - Focus on Algebra 1 and Algebra 2 for this MVP.
 - If an uploaded image is unclear, say what cannot be read rather than guessing.
+- When the student asks to graph or plot a function, explain the key graphing steps and state that the interactive graph is shown below.
+- Do not ask whether the student wants a plotted image, graph, or list of plotting points when the student has already requested a graph; the app renders the interactive graph automatically.
 `;
 
 function send(res, status, data, type="application/json") {
