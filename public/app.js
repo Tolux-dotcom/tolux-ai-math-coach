@@ -86,10 +86,11 @@ async function askCoach(text){
 
   
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
-  if (text) {
+ if (text) {
   updateDashboardActivity(text);
+  saveDashboardActivity(text);
 }
-  input.value = "";
+ input.value = "";
     const wantsQuadraticGraph = /\b(graph|plot|sketch)\b/i.test(text);
 
 if (wantsQuadraticGraph) {
@@ -417,4 +418,17 @@ function updateDashboardActivity(problemText) {
   }
 }
 
+// Save and restore the latest dashboard activity
+function saveDashboardActivity(problemText) {
+  localStorage.setItem("toluxLastProblem", problemText);
+}
 
+function restoreDashboardActivity() {
+  const savedProblem = localStorage.getItem("toluxLastProblem");
+
+  if (savedProblem) {
+    updateDashboardActivity(savedProblem);
+  }
+}
+
+restoreDashboardActivity();
