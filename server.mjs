@@ -102,9 +102,17 @@ if (req.method === "POST" && req.url === "/api/stripe-webhook") {
     }
 
     const signature = req.headers["stripe-signature"];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-    if (!signature || !webhookSecret) {
+   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const cancellationWebhookSecret =
+  process.env.STRIPE_CANCELLATION_WEBHOOK_SECRET;
+const paymentFailedWebhookSecret =
+  process.env.STRIPE_PAYMENT_FAILED_WEBHOOK_SECRET;
+  if (
+  !signature ||
+  (!webhookSecret &&
+    !cancellationWebhookSecret &&
+    !paymentFailedWebhookSecret)
+) {
       return send(res, 400, { error: "Webhook configuration is missing." });
     }
 
@@ -116,12 +124,33 @@ if (req.method === "POST" && req.url === "/api/stripe-webhook") {
 
     const rawBody = Buffer.concat(chunks);
 
-    const event = stripe.webhooks.constructEvent(
+    let event;
+
+try {
+  event = stripe.webhooks.constructEvent(
+    rawBody,
+    signature,
+    webhookSecret
+  );
+} catch (primaryError) {
+  try {
+    if (!cancellationWebhookSecret) throw primaryError;
+
+    event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
-      webhookSecret
+      cancellationWebhookSecret
     );
+  } catch (cancellationError) {
+    if (!paymentFailedWebhookSecret) throw cancellationError;
 
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      signature,
+      paymentFailedWebhookSecret
+    );
+  }
+}
     if (event.type === "checkout.session.completed") {
   const session = event.data.object;
 
