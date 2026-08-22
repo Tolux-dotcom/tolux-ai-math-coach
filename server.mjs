@@ -111,7 +111,7 @@ const server = http.createServer(async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: "https://mathcoach.tolux.org/?payment=success",
+      success_url: "https://mathcoach.tolux.org/?payment=success&session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "https://mathcoach.tolux.org/?payment=cancelled"
     });
 
