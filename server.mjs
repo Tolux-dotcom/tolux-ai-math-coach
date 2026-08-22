@@ -68,7 +68,8 @@ async function readJson(req) {
 }
 
 function serveStatic(req, res) {
-  let rel = req.url === "/" ? "/index.html" : req.url.split("?")[0];
+  let rel = req.url.split("?")[0];
+if (rel === "/") rel = "/index.html";
   rel = rel.replace(/\.\./g, "");
   const filePath = path.join(publicDir, rel);
   if (!filePath.startsWith(publicDir) || !fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
