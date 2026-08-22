@@ -126,30 +126,32 @@ if (wantsQuadraticGraph) {
     }
   }
 }
-  const graphMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2\s*\*?\s*x\s*\+\s*4/i);
+const linearGraphMatch = text.match(
+  /y\s*(<=|>=|<|>|=|≤|≥)\s*([+-]?\d*\.?\d*)\s*\*?\s*x\s*([+-]\s*\d*\.?\d+)?/i
+);
 
-if (graphMatch) {
-  let graphOperator = graphMatch[1];
-
-  if (graphOperator === "≤") graphOperator = "<=";
-  if (graphOperator === "≥") graphOperator = ">=";
-
-  setTimeout(() => {
-    showTestGraph(graphOperator);
-  }, 300);
-}
-  const inequalityMatch = text.match(/y\s*(<=|>=|<|>|≤|≥)\s*-?2x\s*\+\s*4/i);
-
-if (inequalityMatch) {
-  let op = inequalityMatch[1];
+if (linearGraphMatch) {
+  let op = linearGraphMatch[1];
+  let slopeText = linearGraphMatch[2];
+  let interceptText = linearGraphMatch[3] || "+0";
 
   if (op === "≤") op = "<=";
   if (op === "≥") op = ">=";
 
-setTimeout(() => {
-  console.log("GRAPH TEST:", op);
-  showTestGraph(op);
-}, 1500);
+  let m;
+  if (slopeText === "" || slopeText === "+") {
+    m = 1;
+  } else if (slopeText === "-") {
+    m = -1;
+  } else {
+    m = Number(slopeText);
+  }
+
+  const b = Number(interceptText.replace(/\s+/g, ""));
+
+  setTimeout(() => {
+    showTestGraph(m, b, op);
+  }, 300);
 }
   const payload = { message:text, course, mode, imageDataUrl, history: history.slice(0,-1) };
   const priorImage = imageDataUrl;
@@ -235,7 +237,7 @@ apiStatus.className = "badge demo";
 
 let graphBoard = null;
 
-function showTestGraph(operator = ">") {
+function showTestGraph(m = -2, b = 4, operator = ">") {
   const panel = document.querySelector("#graphPanel");
   const equation = document.querySelector("#graphEquation");
 
@@ -248,7 +250,8 @@ function showTestGraph(operator = ">") {
     operator === "<=" ? "≤" :
     operator;
 
-  equation.textContent = `y ${symbol} -2x + 4`;
+  const sign = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+equation.textContent = `y ${symbol} ${m}x ${sign}`;
 
   if (graphBoard) {
     JXG.JSXGraph.freeBoard(graphBoard);
@@ -268,7 +271,7 @@ function showTestGraph(operator = ">") {
 
   const boundary = graphBoard.create(
     "functiongraph",
-    [function (x) { return -2 * x + 4; }],
+    [function (x) { return m * x + b; }],
     {
       dash: strict ? 2 : 0,
       strokeWidth: 3,
