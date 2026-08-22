@@ -65,10 +65,15 @@ function demoReply(text){
 }
 
 
-  async function askCoach(text){
+async function askCoach(text){
+
+  // Show only the current question and answer
+  chat.innerHTML = "";
 
   // Clear previous graph
   const graphPanel = document.querySelector("#graphPanel");
+
+ 
 
   if (graphBoard) {
     JXG.JSXGraph.freeBoard(graphBoard);
