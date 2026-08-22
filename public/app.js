@@ -13,7 +13,50 @@ const preview = document.querySelector("#preview");
 const studyPlanBtn = document.querySelector("#studyPlanBtn");
 const studentPlanBtn = document.querySelector("#studentPlanBtn");
 const familyPlanBtn = document.querySelector("#familyPlanBtn");
+async function handlePaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const payment = params.get("payment");
 
+  if (payment === "cancelled") {
+    alert("Payment was cancelled. You have not been charged.");
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
+
+  if (payment !== "success") return;
+
+  const sessionId = params.get("session_id");
+
+  if (!sessionId) {
+    alert("We could not verify this payment because the checkout session is missing.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `/api/verify-session?session_id=${encodeURIComponent(sessionId)}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.verified) {
+      throw new Error("Payment could not be verified.");
+    }
+
+    alert("Payment confirmed! Your Tolux AI Math Coach subscription is active.");
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+  } catch (error) {
+    console.error(error);
+    alert("We could not verify your payment. Please contact Tolux support.");
+  }
+}
+
+handlePaymentReturn();
 async function startCheckout(priceId) {
   try {
     const response = await fetch("/api/create-checkout-session", {
