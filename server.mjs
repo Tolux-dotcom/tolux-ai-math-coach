@@ -3,12 +3,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import OpenAI from "openai";
-
+import Stripe from "stripe";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.join(__dirname, "public");
 const port = process.env.PORT || 3000;
-
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY)
+  : null;
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
@@ -93,6 +95,32 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
+  if (req.method === "POST" && req.url === "/api/create-checkout-session") {
+  try {
+    if (!stripe) {
+      return send(res, 503, { error: "Stripe is not configured." });
+    }
+
+    const { priceId } = await readJson(req);
+
+    if (!priceId) {
+      return send(res, 400, { error: "Missing priceId." });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: "https://mathcoach.tolux.org/?payment=success",
+      cancel_url: "https://mathcoach.tolux.org/?payment=cancelled"
+    });
+
+    return send(res, 200, { url: session.url });
+  } catch (err) {
+    console.error(err);
+    return send(res, 500, { error: err?.message || "Unable to start checkout." });
+  }
+}
+  
   if (req.method === "POST" && req.url === "/api/coach") {
     try {
       if (!process.env.OPENAI_API_KEY) {
