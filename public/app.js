@@ -105,9 +105,10 @@ if (wantsQuadraticGraph) {
   .replace(/^(graph|plot|sketch)(thequadratic|quadratic|function|equation)?/i, "")
   .replace(/^y=/i, "");
 
-    const match = clean.match(
-      /^([+-]?\d*\.?\d*)x\^2([+-]\d*\.?\d*)x([+-]\d*\.?\d+)$/
-    );
+   const match = clean.match(
+  /^([+-]?\d*\.?\d*)x\^2(?:([+-]\d*\.?\d*)x)?([+-]\d*\.?\d*)?$/
+);
+     
 
     if (match) {
       const toNumber = value => {
@@ -117,8 +118,8 @@ if (wantsQuadraticGraph) {
       };
 
       const a = toNumber(match[1]);
-      const b = toNumber(match[2]);
-      const c = Number(match[3]);
+     const b = match[2] ? toNumber(match[2]) : 0;
+     const c = match[3] ? Number(match[3]) : 0;
 
       setTimeout(() => {
         showQuadraticGraph(a, b, c);
@@ -130,7 +131,7 @@ const linearGraphMatch = text.match(
   /y\s*(<=|>=|<|>|=|≤|≥)\s*([+-]?\d*\.?\d*)\s*\*?\s*x\s*([+-]\s*\d*\.?\d+)?/i
 );
 
-if (linearGraphMatch) {
+if (linearGraphMatch && !/x\s*(\^2|²)/i.test(text)) {
   let op = linearGraphMatch[1];
   let slopeText = linearGraphMatch[2];
   let interceptText = linearGraphMatch[3] || "+0";
