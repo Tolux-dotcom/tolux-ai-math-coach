@@ -11,6 +11,37 @@ const apiStatus = document.querySelector("#apiStatus");
 const previewWrap = document.querySelector("#previewWrap");
 const preview = document.querySelector("#preview");
 const studyPlanBtn = document.querySelector("#studyPlanBtn");
+const studentPlanBtn = document.querySelector("#studentPlanBtn");
+const familyPlanBtn = document.querySelector("#familyPlanBtn");
+
+async function startCheckout(priceId) {
+  try {
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ priceId })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to start checkout.");
+    }
+
+    window.location.href = data.url;
+  } catch (error) {
+    alert(error.message);
+  }
+}
+studentPlanBtn?.addEventListener("click", () => {
+  startCheckout("price_1U77lHD8ypsLz5AZLBovXXr9");
+});
+familyPlanBtn?.addEventListener("click", () => {
+  startCheckout("price_1U77pKD8ypsLz5AZFOcofGB7");
+});
+
 studyPlanBtn?.addEventListener("click", () => {
   const studyPlanSection = document.querySelector("#studyPlanSection");
 
