@@ -12,8 +12,35 @@ const previewWrap = document.querySelector("#previewWrap");
 const preview = document.querySelector("#preview");
 const studyPlanBtn = document.querySelector("#studyPlanBtn");
 studyPlanBtn?.addEventListener("click", () => {
-  input.value = "Create a personalized study plan for me based on my current course and learning needs.";
-  input.focus();
+  const studyPlanSection = document.querySelector("#studyPlanSection");
+
+  if (studyPlanSection) {
+    studyPlanSection.style.display = "block";
+    studyPlanSection.scrollIntoView({ behavior: "smooth" });
+  }
+});
+const generateStudyPlanBtn = document.querySelector("#generateStudyPlanBtn");
+
+generateStudyPlanBtn?.addEventListener("click", async () => {
+  const topics = document.querySelector("#studyTopics")?.value.trim();
+  const hours = document.querySelector("#studyHours")?.value;
+  const testDate = document.querySelector("#studyTestDate")?.value;
+  const goal = document.querySelector("#studyGoal")?.value.trim();
+
+  if (!topics || !hours || !goal) {
+    alert("Please enter your topics, study hours, and goal.");
+    return;
+  }
+
+  const studyPrompt = `Create a personalized ${course} study plan for me.
+Topics I need help with: ${topics}.
+I can study ${hours} hours per week.
+Upcoming test date: ${testDate || "No test date provided"}.
+My goal: ${goal}.
+Give me a clear weekly study schedule with topics, practice activities, and progress checkpoints.`;
+
+  document.querySelector("#studyPlanSection").style.display = "none";
+  await askCoach(studyPrompt);
 });
 document.querySelectorAll(".course").forEach(btn => btn.addEventListener("click", () => {
   document.querySelectorAll(".course").forEach(x=>x.classList.remove("selected"));
