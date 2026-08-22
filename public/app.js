@@ -86,6 +86,9 @@ async function askCoach(text){
 
   
   addMessage("user", text || (imageDataUrl ? "[Uploaded a math problem image]" : ""));
+  if (text) {
+  updateDashboardActivity(text);
+}
   input.value = "";
     const wantsQuadraticGraph = /\b(graph|plot|sketch)\b/i.test(text);
 
@@ -392,5 +395,26 @@ document.querySelectorAll("[data-math]").forEach((button) => {
     input.setSelectionRange(newPosition, newPosition);
   });
 });
+// Update Continue Where You Left Off and Recent Activity
+
+function updateDashboardActivity(problemText) {
+  const continueTopic = document.querySelector("#continueTopic");
+  const continueProgress = document.querySelector("#continueProgress");
+  const recentActivity = document.querySelector("#recentActivity");
+
+  if (continueTopic) {
+    continueTopic.innerHTML =
+      `<b>Current problem</b><br>${problemText}`;
+  }
+
+  if (continueProgress) {
+    continueProgress.value = 50;
+  }
+
+  if (recentActivity) {
+    recentActivity.textContent =
+      `Latest: ${problemText}`;
+  }
+}
 
 
