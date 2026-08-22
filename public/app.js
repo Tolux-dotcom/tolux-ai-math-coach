@@ -36,10 +36,10 @@ async function startCheckout(priceId) {
   }
 }
 studentPlanBtn?.addEventListener("click", () => {
-  startCheckout("price_1U77lHD8ypsLz5AZLBovXXr9");
+  startCheckout("price_1U7IAuDF1jioApSQbIgJxCnl");
 });
 familyPlanBtn?.addEventListener("click", () => {
-  startCheckout("price_1U77pKD8ypsLz5AZFOcofGB7");
+  startCheckout("price_1U7IAuDF1jioApSQbhKRA280");
 });
 
 studyPlanBtn?.addEventListener("click", () => {
