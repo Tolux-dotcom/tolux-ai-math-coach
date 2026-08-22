@@ -95,7 +95,50 @@ const server = http.createServer(async (req, res) => {
     });
     return res.end();
   }
+if (req.method === "POST" && req.url === "/api/stripe-webhook") {
+  try {
+    if (!stripe) {
+      return send(res, 503, { error: "Stripe is not configured." });
+    }
 
+    const signature = req.headers["stripe-signature"];
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!signature || !webhookSecret) {
+      return send(res, 400, { error: "Webhook configuration is missing." });
+    }
+
+    const chunks = [];
+
+    for await (const chunk of req) {
+      chunks.push(chunk);
+    }
+
+    const rawBody = Buffer.concat(chunks);
+
+    const event = stripe.webhooks.constructEvent(
+      rawBody,
+      signature,
+      webhookSecret
+    );
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      console.log(
+        "Stripe checkout completed:",
+        session.id,
+        session.customer,
+        session.subscription
+      );
+    }
+
+    return send(res, 200, { received: true });
+  } catch (err) {
+    console.error("Stripe webhook error:", err.message);
+    return send(res, 400, { error: "Webhook verification failed." });
+  }
+}
   if (req.method === "POST" && req.url === "/api/create-checkout-session") {
   try {
     if (!stripe) {
