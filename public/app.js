@@ -16,7 +16,7 @@ const familyPlanBtn = document.querySelector("#familyPlanBtn");
 
 async function startCheckout(priceId) {
   try {
-    const response = await fetch("/api/checkout", {
+    const response = await fetch("/api/create-checkout-session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
