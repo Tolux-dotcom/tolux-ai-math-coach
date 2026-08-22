@@ -370,4 +370,22 @@ function showQuadraticGraph(a, b, c) {
 window.showTestGraph = showTestGraph;
 window.showQuadraticGraph = showQuadraticGraph;
 
+// Math keyboard buttons
+document.querySelectorAll("[data-math]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const value = button.dataset.math;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    input.value =
+      input.value.substring(0, start) +
+      value +
+      input.value.substring(end);
+
+    const newPosition = start + value.length;
+    input.focus();
+    input.setSelectionRange(newPosition, newPosition);
+  });
+});
+
 
