@@ -10,7 +10,11 @@ const modeLabel = document.querySelector("#modeLabel");
 const apiStatus = document.querySelector("#apiStatus");
 const previewWrap = document.querySelector("#previewWrap");
 const preview = document.querySelector("#preview");
-
+const studyPlanBtn = document.querySelector("#studyPlanBtn");
+studyPlanBtn?.addEventListener("click", () => {
+  input.value = "Create a personalized study plan for me based on my current course and learning needs.";
+  input.focus();
+});
 document.querySelectorAll(".course").forEach(btn => btn.addEventListener("click", () => {
   document.querySelectorAll(".course").forEach(x=>x.classList.remove("selected"));
   btn.classList.add("selected");
