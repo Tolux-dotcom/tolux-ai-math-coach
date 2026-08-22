@@ -123,15 +123,36 @@ if (req.method === "POST" && req.url === "/api/stripe-webhook") {
     );
 
     if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
+  const session = event.data.object;
 
-      console.log(
-        "Stripe checkout completed:",
-        session.id,
-        session.customer,
-        session.subscription
-      );
-    }
+  console.log(
+    "Stripe checkout completed:",
+    session.id,
+    session.customer,
+    session.subscription
+  );
+}
+
+if (event.type === "customer.subscription.deleted") {
+  const subscription = event.data.object;
+
+  console.log(
+    "Stripe subscription cancelled:",
+    subscription.id,
+    subscription.customer
+  );
+}
+
+if (event.type === "invoice.payment_failed") {
+  const invoice = event.data.object;
+
+  console.log(
+    "Stripe payment failed:",
+    invoice.id,
+    invoice.customer,
+    invoice.subscription
+  );
+}
 
     return send(res, 200, { received: true });
   } catch (err) {
