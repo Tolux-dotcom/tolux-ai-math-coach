@@ -121,7 +121,38 @@ const server = http.createServer(async (req, res) => {
     return send(res, 500, { error: err?.message || "Unable to start checkout." });
   }
 }
-  
+  if (req.method === "GET" && req.url.startsWith("/api/verify-session")) {
+  try {
+    if (!stripe) {
+      return send(res, 500, { error: "Stripe is not configured." });
+    }
+
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const sessionId = url.searchParams.get("session_id");
+
+    if (!sessionId) {
+      return send(res, 400, { error: "Missing session_id." });
+    }
+
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    const paid =
+      session.status === "complete" &&
+      session.payment_status === "paid";
+
+    return send(res, 200, {
+      verified: paid,
+      paymentStatus: session.payment_status,
+      customerEmail: session.customer_details?.email || null,
+      subscriptionId: session.subscription || null
+    });
+  } catch (err) {
+    console.error(err);
+    return send(res, 500, {
+      error: "Unable to verify checkout session."
+    });
+  }
+}
   if (req.method === "POST" && req.url === "/api/coach") {
     try {
       if (!process.env.OPENAI_API_KEY) {
