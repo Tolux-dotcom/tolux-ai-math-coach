@@ -13,6 +13,7 @@ const preview = document.querySelector("#preview");
 const studyPlanBtn = document.querySelector("#studyPlanBtn");
 const dashboardBtn = document.querySelector("#dashboardBtn");
 const progressBtn = document.querySelector("#progressBtn");
+const historyBtn = document.querySelector("#historyBtn");
 const studentPlanBtn = document.querySelector("#studentPlanBtn");
 const familyPlanBtn = document.querySelector("#familyPlanBtn");
 async function handlePaymentReturn() {
@@ -548,5 +549,12 @@ progressBtn?.addEventListener("click", () => {
   document.querySelector("#continueTopic")?.scrollIntoView({
     behavior: "smooth",
     block: "center"
+  });
+});
+
+historyBtn?.addEventListener("click", () => {
+  document.querySelector("#chat")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
   });
 });
