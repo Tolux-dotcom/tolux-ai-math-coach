@@ -11,6 +11,7 @@ const apiStatus = document.querySelector("#apiStatus");
 const previewWrap = document.querySelector("#previewWrap");
 const preview = document.querySelector("#preview");
 const studyPlanBtn = document.querySelector("#studyPlanBtn");
+const dashboardBtn = document.querySelector("#dashboardBtn");
 const studentPlanBtn = document.querySelector("#studentPlanBtn");
 const familyPlanBtn = document.querySelector("#familyPlanBtn");
 async function handlePaymentReturn() {
@@ -537,3 +538,7 @@ function restoreDashboardActivity() {
 }
 
 restoreDashboardActivity();
+
+dashboardBtn?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
