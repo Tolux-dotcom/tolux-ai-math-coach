@@ -14,6 +14,7 @@ const studyPlanBtn = document.querySelector("#studyPlanBtn");
 const dashboardBtn = document.querySelector("#dashboardBtn");
 const progressBtn = document.querySelector("#progressBtn");
 const historyBtn = document.querySelector("#historyBtn");
+const bookmarksBtn = document.querySelector("#bookmarksBtn");
 const studentPlanBtn = document.querySelector("#studentPlanBtn");
 const familyPlanBtn = document.querySelector("#familyPlanBtn");
 async function handlePaymentReturn() {
@@ -557,4 +558,8 @@ historyBtn?.addEventListener("click", () => {
     behavior: "smooth",
     block: "start"
   });
+});
+
+bookmarksBtn?.addEventListener("click", () => {
+  alert("Bookmarks is ready. We will add saved problems here.");
 });
