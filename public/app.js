@@ -3,7 +3,7 @@ let course = "Algebra 1";
 let mode = "Tutor Mode";
 let imageDataUrl = null;
 const history = [];
-
+const bookmarks = JSON.parse(localStorage.getItem("toluxBookmarks") || "[]");
 const chat = document.querySelector("#chat");
 const input = document.querySelector("#input");
 const modeLabel = document.querySelector("#modeLabel");
@@ -561,5 +561,19 @@ historyBtn?.addEventListener("click", () => {
 });
 
 bookmarksBtn?.addEventListener("click", () => {
-  alert("Bookmarks is ready. We will add saved problems here.");
+  const currentProblem = localStorage.getItem("toluxLastProblem");
+
+  if (currentProblem && !bookmarks.includes(currentProblem)) {
+    bookmarks.push(currentProblem);
+    localStorage.setItem("toluxBookmarks", JSON.stringify(bookmarks));
+    alert("Problem saved to Bookmarks.");
+    return;
+  }
+
+  if (bookmarks.length === 0) {
+    alert("You have no saved bookmarks yet.");
+    return;
+  }
+
+  alert("Saved Bookmarks:\n\n" + bookmarks.join("\n\n"));
 });
