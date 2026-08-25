@@ -3,6 +3,96 @@
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const authEmail = document.querySelector("#authEmail");
+const authPassword = document.querySelector("#authPassword");
+const signUpBtn = document.querySelector("#signUpBtn");
+const signInBtn = document.querySelector("#signInBtn");
+const signOutBtn = document.querySelector("#signOutBtn");
+const authMessage = document.querySelector("#authMessage");
+const authLoggedOut = document.querySelector("#authLoggedOut");
+const authLoggedIn = document.querySelector("#authLoggedIn");
+const signedInEmail = document.querySelector("#signedInEmail");
+
+signUpBtn.addEventListener("click", async () => {
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+
+  if (!email || !password) {
+    authMessage.textContent = "Please enter your email and password.";
+    return;
+  }
+
+  authMessage.textContent = "Creating account...";
+
+  const { error } = await supabaseClient.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    authMessage.textContent = error.message;
+    return;
+  }
+
+  authMessage.textContent = "Account created. Please check your email to confirm your account.";
+});
+signInBtn.addEventListener("click", async () => {
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
+
+  if (!email || !password) {
+    authMessage.textContent = "Please enter your email and password.";
+    return;
+  }
+
+  authMessage.textContent = "Signing in...";
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    authMessage.textContent = error.message;
+    return;
+  }
+
+  authMessage.textContent = "";
+  authLoggedOut.style.display = "none";
+  authLoggedIn.style.display = "block";
+  signedInEmail.textContent = data.user.email;
+});
+signOutBtn.addEventListener("click", async () => {
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    authMessage.textContent = error.message;
+    return;
+  }
+
+  authLoggedIn.style.display = "none";
+  authLoggedOut.style.display = "block";
+  signedInEmail.textContent = "";
+  authEmail.value = "";
+  authPassword.value = "";
+  authMessage.textContent = "You have been signed out.";
+});
+async function refreshAuthUI() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if (session?.user) {
+    authLoggedOut.style.display = "none";
+    authLoggedIn.style.display = "block";
+    signedInEmail.textContent = session.user.email;
+    authMessage.textContent = "";
+  } else {
+    authLoggedIn.style.display = "none";
+    authLoggedOut.style.display = "block";
+    signedInEmail.textContent = "";
+  }
+}
+
+refreshAuthUI();
 let course = "Algebra 1";
 let mode = "Tutor Mode";
 let imageDataUrl = null;
