@@ -395,7 +395,14 @@ const r = await fetch("/api/coach", {method:"POST", headers:{
       apiStatus.textContent = "AI Live";
       apiStatus.className = "badge live";
       addMessage("assistant", data.reply);
-    }else{
+    } else if (data.limitReached) {
+  apiStatus.textContent = "Free Limit Reached";
+  apiStatus.className = "badge";
+  addMessage(
+    "assistant",
+    data.error || "You've used your 10 free questions. Please upgrade to continue with Tolux AI Math Coach."
+  );
+} else {
       apiStatus.textContent = "Demo Mode";
       apiStatus.className = "badge demo";
       addMessage("assistant", priorImage ? "I can preview your image, but image analysis requires the API key. " + demoReply(text) : demoReply(text));
