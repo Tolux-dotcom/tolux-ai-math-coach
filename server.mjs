@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import OpenAI from "openai";
 import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.join(__dirname, "public");
@@ -11,6 +12,20 @@ const port = process.env.PORT || 3000;
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
+
+const supabaseAdmin =
+  process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY
+    ? createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_SECRET_KEY,
+        {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false
+          }
+        }
+      )
+    : null;
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
