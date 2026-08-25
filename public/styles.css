@@ -103,7 +103,7 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
 .video-grid iframe {
   width: 100%;
   aspect-ratio: 9 / 16;
-  max-height: 560px;
+  max-height: 480px;
   border: 0;
   border-radius: 14px;
   background: #000;
