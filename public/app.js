@@ -1,4 +1,8 @@
 
+
+const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 let course = "Algebra 1";
 let mode = "Tutor Mode";
 let imageDataUrl = null;
@@ -281,9 +285,19 @@ if (linearGraphMatch && !/x\s*(\^2|²)/i.test(text)) {
   chat.appendChild(thinking); chat.scrollTop=chat.scrollHeight;
 
   try{
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+if (!session) {
+  thinking.remove();
+  addMessage("assistant", "Please sign in to use Tolux AI Math Coach.");
+  return;
+}
    const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 60000);
-const r = await fetch("/api/coach", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload), signal:controller.signal});
+const r = await fetch("/api/coach", {method:"POST", headers:{
+  "Content-Type":"application/json",
+  "Authorization": `Bearer ${session.access_token}`
+}, body:JSON.stringify(payload), signal:controller.signal});
     const data = await r.json();
     clearTimeout(timeout);
     thinking.remove();
