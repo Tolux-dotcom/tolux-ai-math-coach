@@ -294,7 +294,25 @@ async function askCoach(text){
   saveDashboardActivity(text);
 }
  input.value = "";
-    const wantsQuadraticGraph = /\b(graph|plot|sketch)\b/i.test(text);
+  const normalizedGraphText = text
+  .replace(/³/g, "^3")
+  .replace(/⁴/g, "^4")
+  .replace(/⁵/g, "^5")
+  .replace(/⁶/g, "^6")
+  .replace(/⁷/g, "^7")
+  .replace(/⁸/g, "^8")
+  .replace(/⁹/g, "^9");
+
+const wantsHigherPolynomialGraph =
+  /\b(graph|plot|sketch)\b/i.test(normalizedGraphText) &&
+  /x\s*\^\s*(?:[3-9]|\d{2,})/i.test(normalizedGraphText);
+
+if (wantsHigherPolynomialGraph) {
+  setTimeout(() => {
+    showPolynomialGraph(normalizedGraphText);
+  }, 300);
+} 
+  const wantsQuadraticGraph = /\b(graph|plot|sketch)\b/i.test(text);
 
 if (wantsQuadraticGraph) {
   const previousUserMessages = history
@@ -343,7 +361,10 @@ const linearGraphMatch = text.match(
   /y\s*(<=|>=|<|>|=|≤|≥)\s*([+-]?\d*\.?\d*)\s*\*?\s*x\s*([+-]\s*\d*\.?\d+)?/i
 );
 
-if (linearGraphMatch && !/x\s*(\^2|²)/i.test(text)) {
+if (
+  linearGraphMatch &&
+  !/x\s*(?:\^|\*\*)\s*\d+/i.test(normalizedGraphText)
+) {
   let op = linearGraphMatch[1];
   let slopeText = linearGraphMatch[2];
   let interceptText = linearGraphMatch[3] || "+0";
@@ -606,10 +627,111 @@ function showQuadraticGraph(a, b, c) {
     }
   );
 }
+function showPolynomialGraph(expression) {
+    const panel = document.querySelector("#graphPanel");
+    const equation = document.querySelector("#graphEquation");
 
+    if (!panel || typeof JXG === "undefined") return;
+
+    panel.classList.remove("hidden");
+
+    let clean = expression
+        .toLowerCase()
+        .replace(/²/g, "^2")
+        .replace(/³/g, "^3")
+        .replace(/⁴/g, "^4")
+        .replace(/⁵/g, "^5")
+        .replace(/⁶/g, "^6")
+        .replace(/\s+/g, "")
+        .replace(/^(graph|plot|sketch)/, "");
+
+    if (clean.includes("=")) {
+        clean = clean.split("=").pop();
+    }
+
+    clean = clean.replace(/\*/g, "");
+
+    const coefficients = {};
+
+    const terms = clean
+        .replace(/-/g, "+-")
+        .split("+")
+        .filter(Boolean);
+
+    for (const term of terms) {
+        if (term.includes("x")) {
+            const match = term.match(/^([+-]?(?:\d*\.?\d*))x(?:\^(\d+))?$/);
+
+            if (!match) continue;
+
+            let coefficient;
+
+            if (
+                match[1] === "" ||
+                match[1] === "+"
+            ) {
+                coefficient = 1;
+            } else if (match[1] === "-") {
+                coefficient = -1;
+            } else {
+                coefficient = Number(match[1]);
+            }
+
+            const power = match[2] ? Number(match[2]) : 1;
+
+            coefficients[power] =
+                (coefficients[power] || 0) + coefficient;
+        } else {
+            const constant = Number(term);
+
+            if (!Number.isNaN(constant)) {
+                coefficients[0] =
+                    (coefficients[0] || 0) + constant;
+            }
+        }
+    }
+
+    function polynomial(x) {
+        let y = 0;
+
+        for (const power in coefficients) {
+            y += coefficients[power] * Math.pow(x, Number(power));
+        }
+
+        return y;
+    }
+
+    if (graphBoard) {
+        JXG.JSXGraph.freeBoard(graphBoard);
+        graphBoard = null;
+    }
+
+    graphBoard = JXG.JSXGraph.initBoard("graphCanvas", {
+        boundingbox: [-6, 12, 6, -12],
+        axis: true,
+        keepAspectRatio: false,
+        showCopyright: false,
+        showNavigation: true,
+        pan: { enabled: true },
+        zoom: { enabled: true }
+    });
+
+    graphBoard.create(
+        "functiongraph",
+        [polynomial],
+        {
+            strokeWidth: 3,
+            fixed: true
+        }
+    );
+
+    if (equation) {
+        equation.textContent = "y = " + clean;
+    }
+}
 window.showTestGraph = showTestGraph;
 window.showQuadraticGraph = showQuadraticGraph;
-
+window.showPolynomialGraph = showPolynomialGraph;
 // Math keyboard buttons
 document.querySelectorAll("[data-math]").forEach((button) => {
   button.addEventListener("click", () => {
