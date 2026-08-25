@@ -95,6 +95,8 @@ async function incrementStudentUsage(userId, currentCount) {
 
   return data;
 }
+
+const FREE_QUESTION_LIMIT = 10;
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
@@ -339,6 +341,29 @@ if (event.type === "invoice.payment_failed") {
       }
 
       const { message, mode="Tutor Mode", course="Algebra 1", imageDataUrl=null, history=[] } = await readJson(req);
+      
+      const user = await getAuthenticatedUser(req);
+
+if (!user) {
+  return send(res, 401, {
+    error: "Please sign in to use Tolux AI Math Coach."
+  });
+}
+
+const usage = await getStudentUsage(user.id);
+
+if (!usage) {
+  return send(res, 500, {
+    error: "Unable to verify your question usage right now."
+  });
+}
+
+if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
+  return send(res, 403, {
+    error: `You’ve completed your ${FREE_QUESTION_LIMIT} free coaching questions. Upgrade to continue learning with Tolux AI Math Coach.`,
+    limitReached: true
+  });
+}
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
       const prior = Array.isArray(history) ? history.slice(-8).map(m => ({
@@ -371,6 +396,10 @@ if (event.type === "invoice.payment_failed") {
         input
       });
 
+      
+      if (!usage.is_subscriber) {
+  await incrementStudentUsage(user.id, usage.questions_used);
+}
       send(res, 200, { reply: response.output_text || "I could not generate a response." });
     } catch (err) {
       console.error(err);
