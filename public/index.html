@@ -38,7 +38,24 @@
       </div>
       <div class="status"><span>🔥 5 day streak</span><span>★ 1,250 pts</span></div>
     </header>
+<section class="panel" id="authPanel">
+  <h2>Student Sign In</h2>
 
+  <div id="authLoggedOut">
+    <input id="authEmail" type="email" placeholder="Email address" />
+    <input id="authPassword" type="password" placeholder="Password" />
+
+    <button id="signUpBtn" type="button">Create Account</button>
+    <button id="signInBtn" type="button">Sign In</button>
+
+    <p id="authMessage"></p>
+  </div>
+
+  <div id="authLoggedIn" style="display:none;">
+    <p>Signed in as <strong id="signedInEmail"></strong></p>
+    <button id="signOutBtn" type="button">Sign Out</button>
+  </div>
+</section>
     <section class="panel">
       <h2>1. Choose your course</h2>
       <div class="courses">
