@@ -26,6 +26,22 @@ const supabaseAdmin =
         }
       )
     : null;
+async function getAuthenticatedUser(req) {
+  if (!supabaseAdmin) return null;
+
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : null;
+
+  if (!token) return null;
+
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+
+  if (error || !data?.user) return null;
+
+  return data.user;
+}
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
