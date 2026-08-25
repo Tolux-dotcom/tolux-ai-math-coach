@@ -402,6 +402,17 @@ const r = await fetch("/api/coach", {method:"POST", headers:{
     "assistant",
     data.error || "You've used your 10 free questions. Please upgrade to continue with Tolux AI Math Coach."
   );
+      const upgradeBtn = document.createElement("button");
+upgradeBtn.type = "button";
+upgradeBtn.textContent = "Upgrade Now";
+upgradeBtn.className = "upgrade-btn";
+
+upgradeBtn.addEventListener("click", () => {
+  studentPlanBtn?.click();
+});
+
+chat.appendChild(upgradeBtn);
+chat.scrollTop = chat.scrollHeight;
 } else {
       apiStatus.textContent = "Demo Mode";
       apiStatus.className = "badge demo";
