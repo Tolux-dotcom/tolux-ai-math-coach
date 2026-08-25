@@ -75,6 +75,26 @@ async function getStudentUsage(userId) {
 
   return created;
 }
+
+async function incrementStudentUsage(userId, currentCount) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const newCount = (currentCount || 0) + 1;
+
+  const { data, error } = await supabaseAdmin
+    .from("student_usage")
+    .update({ questions_used: newCount })
+    .eq("user_id", userId)
+    .select("user_id, questions_used, is_subscriber")
+    .single();
+
+  if (error) {
+    console.error("Failed to update student usage:", error);
+    return null;
+  }
+
+  return data;
+}
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
