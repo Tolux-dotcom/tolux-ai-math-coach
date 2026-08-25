@@ -42,6 +42,39 @@ async function getAuthenticatedUser(req) {
 
   return data.user;
 }
+async function getStudentUsage(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("student_usage")
+    .select("user_id, questions_used, is_subscriber")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Failed to read student usage:", error);
+    return null;
+  }
+
+  if (data) return data;
+
+  const { data: created, error: createError } = await supabaseAdmin
+    .from("student_usage")
+    .insert({
+      user_id: userId,
+      questions_used: 0,
+      is_subscriber: false
+    })
+    .select("user_id, questions_used, is_subscriber")
+    .single();
+
+  if (createError) {
+    console.error("Failed to create student usage:", createError);
+    return null;
+  }
+
+  return created;
+}
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
