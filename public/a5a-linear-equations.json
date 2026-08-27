@@ -1,0 +1,562 @@
+{
+  "module_id": "alg1-a5a-linear-equations",
+  "version": "1.0.0-pilot",
+  "course": "Algebra 1",
+  "teks": [
+    "A.5A"
+  ],
+  "title": "Solving Linear Equations in One Variable",
+  "student_objective": "I can solve one-variable linear equations, justify each step, and determine whether a solution is reasonable.",
+  "teacher_objective": "Diagnose equation-solving misconceptions at the first incorrect step and route students to targeted remediation.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": true,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_flow": [
+    {
+      "step": 1,
+      "type": "prerequisite_diagnostic",
+      "label": "Quick readiness check"
+    },
+    {
+      "step": 2,
+      "type": "concept",
+      "label": "Equality and inverse operations"
+    },
+    {
+      "step": 3,
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "step": 4,
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "step": 5,
+      "type": "independent_practice",
+      "label": "Your turn"
+    },
+    {
+      "step": 6,
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "step": 7,
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "id": "A5A-C01",
+      "title": "Keep the equation balanced",
+      "content": "An equation is a balance. Whatever operation you perform on one side must also be performed on the other side."
+    },
+    {
+      "id": "A5A-C02",
+      "title": "Use inverse operations",
+      "content": "Undo addition with subtraction, multiplication with division, and simplify both sides before isolating the variable."
+    },
+    {
+      "id": "A5A-C03",
+      "title": "Distribute to every term",
+      "content": "For a(b + c), multiply a by both b and c. Example: 3(x + 2) = 3x + 6."
+    },
+    {
+      "id": "A5A-C04",
+      "title": "Recognize special cases",
+      "content": "A true statement such as 6 = 6 means infinitely many solutions. A false statement such as 8 = -2 means no solution."
+    }
+  ],
+  "items": [
+    {
+      "id": "A5A-D01",
+      "type": "diagnostic",
+      "difficulty": "Foundational",
+      "prompt": "Simplify 3(x + 4).",
+      "answer_key": "3x + 12",
+      "diagnostic_tag": "distribution",
+      "tutor_behavior": "If incorrect, show area/distribution model before proceeding.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-D02",
+      "type": "diagnostic",
+      "difficulty": "Foundational",
+      "prompt": "Simplify 5x + 2x - 3.",
+      "answer_key": "7x - 3",
+      "diagnostic_tag": "combine_like_terms",
+      "tutor_behavior": "If incorrect, remediate like terms.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-L01",
+      "type": "worked_example",
+      "difficulty": "Foundational",
+      "prompt": "Solve 3x + 5 = 20.",
+      "answer_key": "x = 5",
+      "diagnostic_tag": "inverse_operations",
+      "tutor_behavior": "Explain subtract 5 from both sides, then divide both sides by 3; verify.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-L02",
+      "type": "worked_example",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 4(2x - 3) = 20.",
+      "answer_key": "x = 4",
+      "diagnostic_tag": "distribution",
+      "tutor_behavior": "Model distribution, combine, isolate x, verify.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-L03",
+      "type": "worked_example",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 5x + 7 = 2x + 25.",
+      "answer_key": "x = 6",
+      "diagnostic_tag": "variables_both_sides",
+      "tutor_behavior": "Ask which variable term to move first and why.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-G01",
+      "type": "guided_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 2(x + 4) = 18. What should you do first?",
+      "answer_key": "x = 5",
+      "diagnostic_tag": "distribution_or_division",
+      "tutor_behavior": "Accept either valid efficient path; ask student for first step before revealing solution.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-G02",
+      "type": "guided_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 7x - 5 = 3x + 19.",
+      "answer_key": "x = 6",
+      "diagnostic_tag": "variables_both_sides",
+      "tutor_behavior": "Prompt: get variable terms on one side; then constants.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-G03",
+      "type": "guided_practice",
+      "difficulty": "Challenging",
+      "prompt": "Solve 3(x + 2) = 3x + 6.",
+      "answer_key": "Infinitely many solutions",
+      "diagnostic_tag": "special_case_identity",
+      "tutor_behavior": "Ask student what happens after distribution and what 6=6 means.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P01",
+      "type": "independent_practice",
+      "difficulty": "Foundational",
+      "prompt": "Solve 6x - 8 = 22.",
+      "answer_key": "x = 5",
+      "diagnostic_tag": "inverse_operations",
+      "tutor_behavior": "No hint initially; score first attempt.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P02",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 5(x - 2) = 3x + 10.",
+      "answer_key": "x = 10",
+      "diagnostic_tag": "distribution_variables_both_sides",
+      "tutor_behavior": "Tag first incorrect step.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P03",
+      "type": "independent_practice",
+      "difficulty": "Challenging",
+      "prompt": "Solve 4(2x + 1) - 3 = 5x + 10.",
+      "answer_key": "x = 3",
+      "diagnostic_tag": "multi_step",
+      "tutor_behavior": "Require step-by-step work or explanation.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P04",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "A gym charges a $25 signup fee plus $15 per month. Your total is $100. How many months?",
+      "answer_key": "5 months",
+      "diagnostic_tag": "application_modeling",
+      "tutor_behavior": "Require equation 25 + 15m = 100 before solving.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-M01",
+      "type": "mastery_check",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 3(x - 4) + 8 = 2x + 5.",
+      "answer_key": "x = 9",
+      "diagnostic_tag": "mixed_multi_step",
+      "tutor_behavior": "Mastery item; no scaffold unless student requests help.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-M02",
+      "type": "mastery_check",
+      "difficulty": "Challenging",
+      "prompt": "Solve 2(3x + 5) = 6x + 10.",
+      "answer_key": "Infinitely many solutions",
+      "diagnostic_tag": "special_case_identity",
+      "tutor_behavior": "Must classify solution set correctly.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-M03",
+      "type": "mastery_check",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 7 - 2(x + 1) = 3x - 5.",
+      "answer_key": "x = 2",
+      "diagnostic_tag": "sign_distribution",
+      "tutor_behavior": "Watch for distributing -2 incorrectly.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P05",
+      "type": "independent_practice",
+      "difficulty": "Foundational",
+      "prompt": "Solve x/4 + 6 = 9.",
+      "answer_key": "x = 12",
+      "diagnostic_tag": "fraction_coefficient",
+      "tutor_behavior": "Check inverse operations and fraction fluency.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P06",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 9 - 3x = 24.",
+      "answer_key": "x = -5",
+      "diagnostic_tag": "signed_numbers",
+      "tutor_behavior": "Watch subtraction/sign handling.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P07",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 6x + 4 = 2(2x + 10).",
+      "answer_key": "x = 8",
+      "diagnostic_tag": "distribution_variables_both_sides",
+      "tutor_behavior": "Require distribution before collecting terms.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P08",
+      "type": "independent_practice",
+      "difficulty": "Challenging",
+      "prompt": "Solve (x - 3)/2 + (x + 1)/4 = 5.",
+      "answer_key": "x = 25/3",
+      "diagnostic_tag": "fraction_equation",
+      "tutor_behavior": "Encourage clearing denominators or an equivalent valid method; verify by substitution.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P09",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 4(x + 2) - 2x = 18.",
+      "answer_key": "x = 5",
+      "diagnostic_tag": "distribution_combine_terms",
+      "tutor_behavior": "Tag incomplete distribution or unlike-term errors.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P10",
+      "type": "independent_practice",
+      "difficulty": "Challenging",
+      "prompt": "Solve 5(2x - 1) - 3(x + 4) = 4x + 7.",
+      "answer_key": "x = 8",
+      "diagnostic_tag": "multi_step",
+      "tutor_behavior": "Require organized simplification on each side.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P11",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 3x + 8 = 3x - 2.",
+      "answer_key": "No solution",
+      "diagnostic_tag": "special_case_contradiction",
+      "tutor_behavior": "Student must explain why 8 = -2 is impossible.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-P12",
+      "type": "independent_practice",
+      "difficulty": "Grade-level",
+      "prompt": "A phone plan costs $35 plus $8 per GB. A bill is $83. How many GB were used?",
+      "answer_key": "6 GB",
+      "diagnostic_tag": "application_modeling",
+      "tutor_behavior": "Require variable definition and equation 35 + 8g = 83.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-M04",
+      "type": "mastery_check",
+      "difficulty": "Grade-level",
+      "prompt": "Solve 2(4x - 3) + 5 = 5x + 14.",
+      "answer_key": "x = 5",
+      "diagnostic_tag": "mixed_multi_step",
+      "tutor_behavior": "No scaffold on first attempt.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-M05",
+      "type": "mastery_check",
+      "difficulty": "Challenging",
+      "prompt": "Solve (3x + 2)/5 = (x - 2)/2.",
+      "answer_key": "x = -14",
+      "diagnostic_tag": "fraction_equation",
+      "tutor_behavior": "Diagnose cross-multiplication errors.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-R01",
+      "type": "remediation",
+      "difficulty": "Foundational",
+      "prompt": "A student writes 3(x + 2) = 3x + 2. What is the first error?",
+      "answer_key": "The 3 must multiply both x and 2; correct result is 3x + 6.",
+      "diagnostic_tag": "incomplete_distribution",
+      "tutor_behavior": "Show distributive-property visual and one near-transfer item.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    },
+    {
+      "id": "A5A-R02",
+      "type": "remediation",
+      "difficulty": "Foundational",
+      "prompt": "A student changes 5x + 7 = 2x + 25 to 3x + 7 = 25. Explain the step.",
+      "answer_key": "Subtract 2x from both sides.",
+      "diagnostic_tag": "balance_model",
+      "tutor_behavior": "Reinforce equal operations on both sides.",
+      "process_teks_tags": [
+        "A.1B",
+        "A.1D",
+        "A.1G"
+      ]
+    }
+  ],
+  "misconception_routes": {
+    "distribution": {
+      "error_code": "DIST-01",
+      "route": "distribution-foundations",
+      "teacher_signal": "Prerequisite gap: distributive property"
+    },
+    "incomplete_distribution": {
+      "error_code": "DIST-01",
+      "route": "distribution-foundations",
+      "teacher_signal": "Prerequisite gap: distributive property"
+    },
+    "combine_like_terms": {
+      "error_code": "POLY-01",
+      "route": "like-terms-foundations",
+      "teacher_signal": "Prerequisite gap: combining like terms"
+    },
+    "signed_numbers": {
+      "error_code": "SIGN-01",
+      "route": "signed-number-review",
+      "teacher_signal": "Procedural sign error"
+    },
+    "balance_model": {
+      "error_code": "EQ-01",
+      "route": "equation-balance",
+      "teacher_signal": "Conceptual equality gap"
+    },
+    "variables_both_sides": {
+      "error_code": "EQ-02",
+      "route": "variables-both-sides",
+      "teacher_signal": "Equation structure gap"
+    },
+    "special_case_identity": {
+      "error_code": "EQ-03",
+      "route": "special-cases",
+      "teacher_signal": "Special-case classification gap"
+    },
+    "special_case_contradiction": {
+      "error_code": "EQ-03",
+      "route": "special-cases",
+      "teacher_signal": "Special-case classification gap"
+    },
+    "fraction_equation": {
+      "error_code": "EQ-04",
+      "route": "fraction-equations",
+      "teacher_signal": "Fraction/equation fluency gap"
+    },
+    "application_modeling": {
+      "error_code": "MODEL-01",
+      "route": "equation-modeling",
+      "teacher_signal": "Application/modeling gap"
+    }
+  },
+  "teacher_reporting": {
+    "mastery_labels": [
+      "Mastered",
+      "Developing",
+      "Intervention Needed"
+    ],
+    "capture": [
+      "first_attempt_correct",
+      "attempt_count",
+      "hint_count",
+      "first_error_tag",
+      "remediation_assigned",
+      "remediation_completed",
+      "mastery_score",
+      "time_on_skill_seconds"
+    ]
+  },
+  "ui_contract": {
+    "tutor_mode": {
+      "entry": "Algebra 1 > Tutor Mode > Linear Equations",
+      "primary_cta": "Start Lesson",
+      "show_progress_bar": true,
+      "actions": [
+        "I'm Stuck",
+        "Explain Another Way",
+        "Similar Problem"
+      ],
+      "action_behavior": {
+        "I'm Stuck": "Give one scaffolded hint based on the current diagnostic tag; do not reveal the full solution immediately.",
+        "Explain Another Way": "Use an alternate representation or method appropriate to the current item.",
+        "Similar Problem": "Generate or select a near-transfer problem from the same TEKS and difficulty."
+      }
+    },
+    "practice_mode": {
+      "entry": "Algebra 1 > Practice Mode > Linear Equations",
+      "options": {
+        "difficulty": [
+          "Foundational",
+          "Grade-level",
+          "Challenging",
+          "Mixed"
+        ],
+        "question_count": [
+          5,
+          10,
+          20
+        ]
+      },
+      "score_first_attempt": true,
+      "show_solution_after_attempt": true,
+      "mastery_update_after_session": true
+    }
+  }
+}
