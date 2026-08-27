@@ -317,6 +317,7 @@ document.querySelectorAll(".course").forEach(btn => btn.addEventListener("click"
   btn.classList.add("selected");
   course = btn.dataset.course;
   refreshLabel();
+  refreshA5ALessonPanel();
 }));
 
 document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", () => {
@@ -324,7 +325,22 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
   btn.classList.add("selected");
   mode = btn.dataset.mode;
   refreshLabel();
-}));
+  refreshA5ALessonPanel();
+  }));
+  function refreshA5ALessonPanel() {
+  const panel = document.querySelector("#a5aLessonPanel");
+  if (!panel) return;
+
+  const shouldShow =
+    course === "Algebra 1" &&
+    mode === "Tutor Mode" &&
+    a5aModule;
+
+  panel.style.display = shouldShow ? "block" : "none";
+}
+
+refreshA5ALessonPanel();
+
 
 function refreshLabel(){ modeLabel.textContent = `${course} • ${mode}`; }
 function normalizeMathText(text){
