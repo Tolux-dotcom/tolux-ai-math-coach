@@ -3,6 +3,22 @@
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+// Tolux Algebra 1 A.5A curriculum module
+let a5aModule = null;
+
+async function loadA5AModule() {
+  try {
+    const response = await fetch("/a5a-linear-equations.json");
+    if (!response.ok) throw new Error(`A5A module load failed: ${response.status}`);
+    a5aModule = await response.json();
+    console.log("Tolux A.5A curriculum loaded:", a5aModule.title);
+  } catch (error) {
+    console.error("Unable to load Tolux A.5A curriculum:", error);
+  }
+}
+
+loadA5AModule();
 const authEmail = document.querySelector("#authEmail");
 const authPassword = document.querySelector("#authPassword");
 const signUpBtn = document.querySelector("#signUpBtn");
