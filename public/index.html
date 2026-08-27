@@ -58,7 +58,27 @@
 
   <p id="authMessage"></p>
 </div>
+<div id="resetPasswordPanel" style="display:none;">
+  <h3>Create a new password</h3>
 
+  <input
+    id="newPassword"
+    type="password"
+    placeholder="New password"
+  />
+
+  <input
+    id="confirmNewPassword"
+    type="password"
+    placeholder="Confirm new password"
+  />
+
+  <button id="updatePasswordBtn" type="button">
+    Update password
+  </button>
+
+  <p id="resetPasswordMessage"></p>
+</div>
   <div id="authLoggedIn" style="display:none;">
     <p>Signed in as <strong id="signedInEmail"></strong></p>
     <button id="signOutBtn" type="button">Sign Out</button>
