@@ -41,15 +41,23 @@
 <section class="panel" id="authPanel">
   <h2>Student Sign In</h2>
 
-  <div id="authLoggedOut">
-    <input id="authEmail" type="email" placeholder="Email address" />
-    <input id="authPassword" type="password" placeholder="Password" />
+ <div id="authLoggedOut">
+  <input id="authEmail" type="email" placeholder="Email address" />
+  <input id="authPassword" type="password" placeholder="Password" />
 
-    <button id="signUpBtn" type="button">Create Account</button>
-    <button id="signInBtn" type="button">Sign In</button>
+  <button id="signInBtn" type="button">Sign In</button>
 
-    <p id="authMessage"></p>
-  </div>
+  <button id="forgotPasswordBtn" type="button">
+    Forgot password?
+  </button>
+
+  <p>
+    New to Tolux?
+    <button id="signUpBtn" type="button">Create account</button>
+  </p>
+
+  <p id="authMessage"></p>
+</div>
 
   <div id="authLoggedIn" style="display:none;">
     <p>Signed in as <strong id="signedInEmail"></strong></p>
