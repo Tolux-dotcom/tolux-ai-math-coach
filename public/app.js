@@ -478,11 +478,17 @@ if (
   chat.appendChild(thinking); chat.scrollTop=chat.scrollHeight;
 
   try{
-    const { data: { session } } = await supabaseClient.auth.getSession();
+   let { data: { session } } = await supabaseClient.auth.getSession();
+
+if (!session) {
+  const { data: refreshData } = await supabaseClient.auth.refreshSession();
+  session = refreshData?.session || null;
+}
 
 if (!session) {
   thinking.remove();
-  addMessage("assistant", "Please sign in to use Tolux AI Math Coach.");
+  await refreshAuthUI();
+  addMessage("assistant", "Your session has expired. Please sign in again to continue.");
   return;
 }
    const controller = new AbortController();
