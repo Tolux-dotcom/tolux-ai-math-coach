@@ -7,6 +7,12 @@ const authEmail = document.querySelector("#authEmail");
 const authPassword = document.querySelector("#authPassword");
 const signUpBtn = document.querySelector("#signUpBtn");
 const signInBtn = document.querySelector("#signInBtn");
+const forgotPasswordBtn = document.querySelector("#forgotPasswordBtn");
+const resetPasswordPanel = document.querySelector("#resetPasswordPanel");
+const newPassword = document.querySelector("#newPassword");
+const confirmNewPassword = document.querySelector("#confirmNewPassword");
+const updatePasswordBtn = document.querySelector("#updatePasswordBtn");
+const resetPasswordMessage = document.querySelector("#resetPasswordMessage");
 const signOutBtn = document.querySelector("#signOutBtn");
 const authMessage = document.querySelector("#authMessage");
 const authLoggedOut = document.querySelector("#authLoggedOut");
@@ -62,6 +68,69 @@ signInBtn.addEventListener("click", async () => {
   authLoggedIn.style.display = "block";
   signedInEmail.textContent = data.user.email;
 });
+forgotPasswordBtn.addEventListener("click", async () => {
+  const email = authEmail.value.trim();
+
+  if (!email) {
+    authMessage.textContent = "Please enter your email address first.";
+    return;
+  }
+
+  authMessage.textContent = "Sending password reset email...";
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://mathcoach.tolux.org"
+  });
+
+  if (error) {
+    authMessage.textContent = error.message;
+    return;
+  }
+
+  authMessage.textContent =
+    "If an account exists for this email, password reset instructions have been sent.";
+});
+updatePasswordBtn.addEventListener("click", async () => {
+  const password = newPassword.value;
+  const confirmPassword = confirmNewPassword.value;
+
+  if (!password || !confirmPassword) {
+    resetPasswordMessage.textContent = "Please enter and confirm your new password.";
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    resetPasswordMessage.textContent = "Passwords do not match.";
+    return;
+  }
+
+  if (password.length < 8) {
+    resetPasswordMessage.textContent = "Password must be at least 8 characters.";
+    return;
+  }
+
+  resetPasswordMessage.textContent = "Updating password...";
+
+  const { error } = await supabaseClient.auth.updateUser({
+    password: password
+  });
+
+  if (error) {
+    resetPasswordMessage.textContent = error.message;
+    return;
+  }
+
+  resetPasswordMessage.textContent = "Password updated successfully.";
+  await supabaseClient.auth.signOut();
+  newPassword.value = "";
+  confirmNewPassword.value = "";
+
+  setTimeout(() => {
+    resetPasswordPanel.style.display = "none";
+    authLoggedOut.style.display = "block";
+    authMessage.textContent = "Password updated. You can now sign in.";
+  }, 1500);
+});
 signOutBtn.addEventListener("click", async () => {
   const { error } = await supabaseClient.auth.signOut();
 
@@ -77,7 +146,20 @@ signOutBtn.addEventListener("click", async () => {
   authPassword.value = "";
   authMessage.textContent = "You have been signed out.";
 });
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === "PASSWORD_RECOVERY") {
+    authLoggedOut.style.display = "none";
+    authLoggedIn.style.display = "none";
+    resetPasswordPanel.style.display = "block";
+    resetPasswordMessage.textContent =
+      "Enter and confirm your new password.";
+  }
+});
 async function refreshAuthUI() {
+  if (resetPasswordPanel.style.display === "block") {
+  return;
+}
   const { data: { session } } = await supabaseClient.auth.getSession();
 
   if (session?.user) {
