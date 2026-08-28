@@ -1,37 +1,173 @@
+import {
+  answersEquivalent,
+  buildRecheckItems,
+  calculateMastery,
+  escapeHtml,
+  explanationSatisfies,
+  selectStageItems,
+  validateLessonModule
+} from "./lesson-core.mjs";
+
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-let lessonModule = null;
-let lessonItems = [];
-let currentItemIndex = 0;
-let hintLevel = 0;
-let activeSimilarItem = null;
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const LESSON_MODULE_PATHS = Object.freeze({
+  "alg1-a5a-linear-equations": "/a5a-linear-equations.json"
+});
+
+const supabaseClient = window.supabase?.createClient
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+  : null;
+
 const lessonTitle = document.querySelector("#lessonTitle");
 const lessonTeks = document.querySelector("#lessonTeks");
 const lessonStage = document.querySelector("#lessonStage");
 const lessonContent = document.querySelector("#lessonContent");
+const lessonAnswerArea = document.querySelector("#lessonAnswerArea");
 const lessonAnswer = document.querySelector("#lessonAnswer");
 const submitLessonAnswer = document.querySelector("#submitLessonAnswer");
 const lessonFeedback = document.querySelector("#lessonFeedback");
 const nextLessonStep = document.querySelector("#nextLessonStep");
+const lessonHelp = document.querySelector("#lessonHelp");
 const lessonStuckBtn = document.querySelector("#lessonStuckBtn");
 const lessonExplainBtn = document.querySelector("#lessonExplainBtn");
 const lessonSimilarBtn = document.querySelector("#lessonSimilarBtn");
 const lessonProgressBar = document.querySelector("#lessonProgressBar");
+const lessonPath = document.querySelector("#lessonPath");
+const lessonGoal = document.querySelector("#lessonGoal");
+
+let lessonModule = null;
+let stageIndex = 0;
+let currentStageType = null;
+let stageItems = [];
+let currentItemIndex = 0;
+let workedExampleIndex = 0;
+let hintLevel = 0;
+let activeSimilarItem = null;
+let masteryResults = [];
+let masterySummary = null;
+let missedMasteryItems = [];
+let recheckItems = [];
+let recheckResults = [];
+let recheckUsageKeys = new Map();
+let lessonLocked = false;
+let isSubscriber = false;
+
 const countedLessonInteractions = new Set();
+const itemRecords = new Map();
+const lessonStartedAt = Date.now();
+
+function getItemRecord(item) {
+  if (!itemRecords.has(item.id)) {
+    itemRecords.set(item.id, {
+      item_id: item.id,
+      attempt_count: 0,
+      first_attempt_correct: null,
+      hint_count: 0,
+      first_error_tag: null
+    });
+  }
+
+  return itemRecords.get(item.id);
+}
+
+function recordAttempt(item, correct) {
+  const record = getItemRecord(item);
+  record.attempt_count += 1;
+
+  if (record.first_attempt_correct === null) {
+    record.first_attempt_correct = correct;
+  }
+
+  if (!correct && !record.first_error_tag) {
+    record.first_error_tag = item.diagnostic_tag || "unknown";
+  }
+}
+
+function currentFlowStage() {
+  return lessonModule?.lesson_flow?.[stageIndex] || null;
+}
+
+function findStageIndex(type) {
+  return lessonModule.lesson_flow.findIndex(stage => stage.type === type);
+}
+
+function updateLessonPath() {
+  if (!lessonPath || !lessonModule) return;
+
+  lessonPath.innerHTML = lessonModule.lesson_flow
+    .map((stage, index) => {
+      const state = index < stageIndex
+        ? "complete"
+        : index === stageIndex
+          ? "current"
+          : "upcoming";
+      const current = index === stageIndex ? ' aria-current="step"' : "";
+
+      return `
+        <li class="lesson-path-${state}"${current}>
+          <span>${index < stageIndex ? "✓" : stage.step}</span>
+          ${escapeHtml(stage.label)}
+        </li>
+      `;
+    })
+    .join("");
+}
+
+function updateProgress() {
+  if (!lessonModule) return;
+
+  const stageCount = lessonModule.lesson_flow.length;
+  let withinStage = 0;
+
+  if (stageItems.length > 0) {
+    withinStage = currentItemIndex / stageItems.length;
+  } else if (currentStageType === "worked_examples") {
+    const worked = lessonModule.items.filter(item => item.type === "worked_example");
+    withinStage = worked.length ? workedExampleIndex / worked.length : 0;
+  }
+
+  const percent = Math.max(
+    2,
+    Math.min(100, Math.round(((stageIndex + withinStage) / stageCount) * 100))
+  );
+
+  lessonProgressBar.style.width = `${percent}%`;
+  lessonProgressBar.setAttribute("aria-valuenow", String(percent));
+  updateLessonPath();
+}
+
+function showInterface({ answer = false, help = false, next = false } = {}) {
+  lessonAnswerArea.style.display = answer ? "block" : "none";
+  lessonHelp.style.display = help ? "flex" : "none";
+  nextLessonStep.style.display = next ? "inline-block" : "none";
+}
+
+function setFeedback(html = "") {
+  lessonFeedback.innerHTML = html;
+}
+
+function showFatalLessonError(message) {
+  lessonStage.textContent = "Lesson unavailable";
+  lessonContent.innerHTML = `
+    <div class="lesson-state lesson-state-error">
+      <h2>We could not open this lesson</h2>
+      <p>${escapeHtml(message)}</p>
+      <a class="lesson-link-button" href="/">Return to Dashboard</a>
+    </div>
+  `;
+  showInterface();
+}
 
 async function getLessonSession() {
+  if (!supabaseClient) return null;
+
   let {
     data: { session }
   } = await supabaseClient.auth.getSession();
 
   if (!session) {
-    const { data: refreshData } =
-      await supabaseClient.auth.refreshSession();
-
+    const { data: refreshData } = await supabaseClient.auth.refreshSession();
     session = refreshData?.session || null;
   }
 
@@ -39,36 +175,29 @@ async function getLessonSession() {
 }
 
 function showLessonUpgrade(message) {
-  lessonFeedback.innerHTML = `
-    <strong>Upgrade to continue</strong>
-    <p>${message}</p>
-  `;
-
-  const upgradeBtn = document.createElement("button");
-  upgradeBtn.type = "button";
-  upgradeBtn.textContent = "Go to Dashboard to Upgrade";
-  upgradeBtn.className = "upgrade-btn";
-
-  upgradeBtn.addEventListener("click", () => {
-    window.location.href = "/";
-  });
-
-  lessonFeedback.appendChild(upgradeBtn);
+  lessonLocked = true;
+  setFeedback(`
+    <div class="lesson-state lesson-state-warning">
+      <strong>Upgrade to continue</strong>
+      <p>${escapeHtml(message)}</p>
+      <a class="lesson-link-button" href="/#pricingSection">View Tolux Plans</a>
+    </div>
+  `);
 
   lessonAnswer.disabled = true;
   submitLessonAnswer.disabled = true;
   lessonStuckBtn.disabled = true;
   lessonExplainBtn.disabled = true;
   lessonSimilarBtn.disabled = true;
+  nextLessonStep.style.display = "none";
 }
 
-async function ensureLessonAccess(item) {
-  if (!item) return false;
+async function ensureLessonAccess(item, interactionKey = item?.id) {
+  if (!item || lessonLocked) return false;
 
-  const interactionKey = item.id || item.prompt;
+  const key = interactionKey || item.id || item.prompt;
 
-  // Do not charge twice for the same problem.
-  if (countedLessonInteractions.has(interactionKey)) {
+  if (countedLessonInteractions.has(key)) {
     return true;
   }
 
@@ -76,876 +205,939 @@ async function ensureLessonAccess(item) {
     const session = await getLessonSession();
 
     if (!session) {
-      lessonFeedback.innerHTML = `
-        <strong>Sign in required</strong>
-        <p>Please sign in to continue your Tolux lesson.</p>
-      `;
+      setFeedback(`
+        <div class="lesson-state lesson-state-warning">
+          <strong>Sign in required</strong>
+          <p>Please return to the dashboard and sign in before checking this answer.</p>
+          <a class="lesson-link-button" href="/">Go to Sign In</a>
+        </div>
+      `);
       return false;
     }
 
     const response = await fetch("/api/lesson-usage", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${session.access_token}`
+        Authorization: `Bearer ${session.access_token}`
       }
     });
-
     const data = await response.json();
 
     if (response.ok && data.allowed) {
-      countedLessonInteractions.add(interactionKey);
+      countedLessonInteractions.add(key);
+      isSubscriber = Boolean(data.isSubscriber);
       return true;
     }
 
     if (data.limitReached) {
       showLessonUpgrade(
-        data.error ||
-        "You've completed your 10 free learning interactions."
+        data.error || "You've completed your 10 free learning interactions."
       );
       return false;
     }
 
-    lessonFeedback.innerHTML = `
-      <strong>Unable to continue</strong>
-      <p>${data.error || "Please try again."}</p>
-    `;
-
-    return false;
+    setFeedback(`
+      <div class="lesson-state lesson-state-error">
+        <strong>Unable to continue</strong>
+        <p>${escapeHtml(data.error || "Please try again.")}</p>
+      </div>
+    `);
   } catch (error) {
-    console.error(error);
-
-    lessonFeedback.innerHTML = `
-      <strong>Connection problem</strong>
-      <p>Please try again.</p>
-    `;
-
-    return false;
+    console.error("Lesson access check failed:", error);
+    setFeedback(`
+      <div class="lesson-state lesson-state-error">
+        <strong>Connection problem</strong>
+        <p>Please check your connection and try again.</p>
+      </div>
+    `);
   }
-}
-async function loadLesson() {
-  try {
-    const response = await fetch("/a5a-linear-equations.json");
 
-    if (!response.ok) {
-      throw new Error(`Lesson failed to load: ${response.status}`);
-    }
-
-    lessonModule = await response.json();
-
-    lessonTitle.textContent = lessonModule.title;
-    lessonTeks.textContent =
-      `${lessonModule.course} • TEKS ${lessonModule.teks.join(", ")}`;
-
-    lessonItems = lessonModule.items.filter(
-      item => item.type === "diagnostic"
-    );
-
-    currentItemIndex = 0;
-
-    showCurrentItem();
-  } catch (error) {
-    lessonContent.innerHTML = `
-      <h2>Lesson unavailable</h2>
-      <p>Please return to the dashboard and try again.</p>
-    `;
-
-    console.error(error);
-  }
+  return false;
 }
 
-function showCurrentItem() {
-  const item = activeSimilarItem || lessonItems[currentItemIndex];
-hintLevel = 0;
-activeSimilarItem = null;
+function renderSolutionSteps(item, heading = "Step-by-step solution") {
+  if (!Array.isArray(item.solution_steps) || item.solution_steps.length === 0) {
+    return "";
+  }
+
+  const steps = item.solution_steps
+    .map((step, index) => `
+      <li>
+        <span class="solution-step-number">${index + 1}</span>
+        <div>
+          <div class="math-line">${escapeHtml(step.equation)}</div>
+          <p>${escapeHtml(step.explanation)}</p>
+        </div>
+      </li>
+    `)
+    .join("");
+
+  return `
+    <div class="solution-panel">
+      <h3>${escapeHtml(heading)}</h3>
+      <ol class="solution-steps">${steps}</ol>
+    </div>
+  `;
+}
+
+function stageHeading(type) {
+  const labels = {
+    diagnostic: "Quick Readiness Check",
+    guided_practice: "Solve with Tolux",
+    independent_practice: "Your Turn",
+    mastery_check: "Mastery Check",
+    recheck: "Remediation Recheck"
+  };
+
+  return labels[type] || "Lesson Question";
+}
+
+function getCurrentItem() {
+  return activeSimilarItem || stageItems[currentItemIndex] || null;
+}
+
+function currentUsageKey(item) {
+  if (activeSimilarItem) return item.id;
+  if (currentStageType === "recheck") {
+    return recheckUsageKeys.get(item.id) || item.id;
+  }
+  return item.id;
+}
+
+function renderCurrentQuestion() {
+  const item = getCurrentItem();
+
   if (!item) {
-    showReadinessComplete();
+    advanceAfterQuestionStage();
     return;
   }
 
-  lessonStage.textContent =
-    `Quick Readiness Check ${currentItemIndex + 1} of ${lessonItems.length}`;
+  hintLevel = 0;
+  const isSimilar = Boolean(activeSimilarItem);
+  const isMastery = currentStageType === "mastery_check" && !isSimilar;
+  const heading = isSimilar ? "Similar Problem" : stageHeading(currentStageType);
+  const counter = isSimilar
+    ? "Practice the same skill"
+    : `${currentItemIndex + 1} of ${stageItems.length}`;
 
+  lessonStage.textContent = `${heading} • ${counter}`;
   lessonContent.innerHTML = `
-    <h2>Quick Readiness Check</h2>
-    <p>${item.prompt}</p>
+    <div class="question-header">
+      <span class="difficulty-badge">${escapeHtml(item.difficulty || "Practice")}</span>
+      <span>${escapeHtml(item.id || "")}</span>
+    </div>
+    <h2>${escapeHtml(heading)}</h2>
+    <div class="math-prompt">${escapeHtml(item.prompt)}</div>
+    ${item.explanation_prompt ? `
+      <div class="explanation-field">
+        <label for="lessonExplanation">
+          <strong>${escapeHtml(item.explanation_prompt)}</strong>
+        </label>
+        <textarea
+          id="lessonExplanation"
+          rows="4"
+          placeholder="Explain your reasoning in your own words"
+        ></textarea>
+      </div>
+    ` : ""}
+    ${isMastery ? `
+      <p class="mastery-note">
+        Work independently. Tolux will review all five responses together.
+      </p>
+    ` : ""}
   `;
 
   lessonAnswer.value = "";
+  lessonAnswer.placeholder = item.answer_placeholder || "Type your answer here";
+  showInterface({ answer: true, help: !isMastery, next: false });
   lessonAnswer.disabled = false;
   submitLessonAnswer.disabled = false;
-
-  lessonFeedback.textContent = "";
-  nextLessonStep.style.display = "none";
-
-  const progress =
-    ((currentItemIndex + 1) / lessonItems.length) * 15;
-
-  lessonProgressBar.style.width = `${progress}%`;
-
+  lessonStuckBtn.disabled = false;
+  lessonExplainBtn.disabled = false;
+  lessonSimilarBtn.disabled = false;
+  setFeedback(
+    isSimilar
+      ? "<strong>Practice the same skill.</strong> Solve this problem, then Tolux will return you to the original question."
+      : ""
+  );
+  updateProgress();
   lessonAnswer.focus();
 }
 
-function normalizeAnswer(value) {
-  return String(value)
-    .toLowerCase()
-    .replace(/\s+/g, "")
-    .replace(/\*/g, "")
-    .replace(/−/g, "-");
-}
+function startQuestionStage(type, items) {
+  currentStageType = type;
+  stageItems = items || selectStageItems(lessonModule, type);
+  currentItemIndex = 0;
+  activeSimilarItem = null;
 
-async function checkCurrentAnswer() {
-  const item = activeSimilarItem || lessonItems[currentItemIndex];
-
-  if (!item) return;
-
-  const studentAnswer = normalizeAnswer(lessonAnswer.value);
-  const expectedAnswer = normalizeAnswer(item.answer_key);
-
-  if (!studentAnswer) {
-    lessonFeedback.textContent =
-      "Enter an answer before checking your work.";
-    return;
-  }
-const allowed = await ensureLessonAccess(item);
-
-if (!allowed) {
-  return;
-}
-  const isCorrect =
-    studentAnswer === expectedAnswer;
-
-  if (isCorrect) {
-  if (activeSimilarItem) {
-    lessonFeedback.innerHTML = `
-      <strong>Correct.</strong>
-      <p>You solved the similar problem successfully.</p>
-      <p>Now return to your original lesson problem.</p>
-    `;
-
-    activeSimilarItem = null;
-    hintLevel = 0;
-
-    const originalItem = lessonItems[currentItemIndex];
-
-    lessonContent.innerHTML = `
-      <h2>Quick Readiness Check</h2>
-      <p>${originalItem.prompt}</p>
-    `;
-
-    lessonAnswer.value = "";
-    lessonAnswer.disabled = false;
-    submitLessonAnswer.disabled = false;
-    nextLessonStep.style.display = "none";
-    lessonAnswer.focus();
-
+  if (stageItems.length === 0) {
+    advanceStage();
     return;
   }
 
-  lessonFeedback.innerHTML =
-    "<strong>Correct.</strong> Nice work.";
-
-  lessonAnswer.disabled = true;
-  submitLessonAnswer.disabled = true;
-  nextLessonStep.style.display = "inline-block";
-  } else {
-    lessonFeedback.innerHTML = `
-      <strong>Not quite yet.</strong>
-      <p>${item.tutor_behavior}</p>
-      <p>Try the problem again.</p>
-    `;
-  }
+  renderCurrentQuestion();
 }
 
-function showReadinessComplete() {
-  lessonStage.textContent = "Readiness Check Complete";
-  lessonProgressBar.style.width = "25%";
+function renderConceptStage() {
+  currentStageType = "concept";
+  stageItems = [];
+  const cards = lessonModule.concept_cards
+    .map(card => `
+      <article class="concept-card">
+        <span>${escapeHtml(card.id)}</span>
+        <h3>${escapeHtml(card.title)}</h3>
+        <p>${escapeHtml(card.content)}</p>
+      </article>
+    `)
+    .join("");
 
-  lessonContent.innerHTML = `
-    <h2>You're ready to learn</h2>
-    <p>
-      Next, Tolux will teach the core ideas behind solving
-      linear equations before moving into worked examples
-      and guided practice.
-    </p>
-
-    <button id="continueToConceptBtn" type="button">
-      Continue to Learn the Concept →
-    </button>
-  `;
-
-  const continueBtn =
-    document.querySelector("#continueToConceptBtn");
-
-  if (continueBtn) {
-    continueBtn.addEventListener("click", showLearnConcept);
-  }
-}
-
-function showLearnConcept() {
   lessonStage.textContent = "2. Learn the Concept";
-  lessonProgressBar.style.width = "35%";
-
   lessonContent.innerHTML = `
-    <h2>Learn the Concept: Solving Linear Equations</h2>
-
-    <p>
-      An equation is like a balanced scale. Whatever operation
-      you perform on one side must also be performed on the other side.
+    <h2>Learn the ideas before using the steps</h2>
+    <p class="lesson-intro">
+      Read each card carefully. The equations are shown directly so you can
+      connect every explanation to the mathematics.
     </p>
-
-    <h3>The Goal</h3>
-    <p>
-      Isolate the variable so that the equation eventually looks like:
-      <strong>x = a number</strong>.
-    </p>
-
-    <h3>Core Steps</h3>
-    <ol>
-      <li>Simplify each side if necessary.</li>
-      <li>Use inverse operations to move constants away from the variable.</li>
-      <li>Divide or multiply to isolate the variable.</li>
-      <li>Check your answer in the original equation.</li>
-    </ol>
-
-    <h3>Example</h3>
-    <p><strong>3x + 5 = 17</strong></p>
-    <p>Subtract 5 from both sides:</p>
-    <p><strong>3x = 12</strong></p>
-    <p>Divide both sides by 3:</p>
-    <p><strong>x = 4</strong></p>
-
-    <p>
-      Check: 3(4) + 5 = 17, so the solution is correct.
-    </p>
-
-    <button id="continueToExamplesBtn" type="button">
+    <div class="concept-grid">${cards}</div>
+    <button id="continueLessonBtn" class="lesson-primary-button" type="button">
       Continue to Worked Examples →
     </button>
   `;
-  const continueExamplesBtn =
-  document.querySelector("#continueToExamplesBtn");
-
-if (continueExamplesBtn) {
-  continueExamplesBtn.addEventListener("click", showWorkedExamples);
-}
-}
-function showWorkedExamples() {
-  lessonStage.textContent = "3. Worked Examples";
-  lessonProgressBar.style.width = "50%";
-
-  document.querySelector("#lessonAnswerArea").style.display = "none";
-  lessonFeedback.textContent = "";
-  nextLessonStep.style.display = "none";
-
-  lessonContent.innerHTML = `
-    <h2>Worked Examples</h2>
-
-    <h3>Example 1: One-Step Equation</h3>
-    <p><strong>x + 6 = 14</strong></p>
-    <p>Subtract 6 from both sides:</p>
-    <p><strong>x = 8</strong></p>
-
-    <h3>Example 2: Two-Step Equation</h3>
-    <p><strong>3x + 5 = 20</strong></p>
-    <p>Subtract 5 from both sides:</p>
-    <p><strong>3x = 15</strong></p>
-    <p>Divide both sides by 3:</p>
-    <p><strong>x = 5</strong></p>
-
-    <h3>Example 3: Variables on Both Sides</h3>
-    <p><strong>5x + 2 = 3x + 10</strong></p>
-    <p>Subtract 3x from both sides:</p>
-    <p><strong>2x + 2 = 10</strong></p>
-    <p>Subtract 2:</p>
-    <p><strong>2x = 8</strong></p>
-    <p>Divide both sides by 2:</p>
-    <p><strong>x = 4</strong></p>
-
-    <button id="continueToGuidedBtn" type="button">
-      Continue to Guided Practice →
-    </button>
-  `;
-}
-const continueGuidedBtn =
-  document.querySelector("#continueToGuidedBtn");
-
-if (continueGuidedBtn) {
-  continueGuidedBtn.addEventListener("click", showGuidedPractice);
+  showInterface();
+  setFeedback();
+  updateProgress();
+  document.querySelector("#continueLessonBtn")
+    .addEventListener("click", advanceStage);
 }
 
-function showGuidedPractice() {
-  lessonStage.textContent = "4. Guided Practice";
-  lessonProgressBar.style.width = "65%";
-
-  document.querySelector("#lessonAnswerArea").style.display = "none";
-  lessonFeedback.textContent = "";
-  nextLessonStep.style.display = "none";
-
-  lessonContent.innerHTML = `
-    <h2>Guided Practice</h2>
-
-    <h3>Problem</h3>
-    <p><strong>4x + 7 = 23</strong></p>
-
-    <p><strong>Step 1:</strong> What should we remove first?</p>
-    <p>Subtract 7 from both sides.</p>
-
-    <p><strong>4x = 16</strong></p>
-
-    <p><strong>Step 2:</strong> How do we isolate x?</p>
-    <p>Divide both sides by 4.</p>
-
-    <p><strong>x = 4</strong></p>
-
-    <p>
-      Check: 4(4) + 7 = 23, so the solution is correct.
-    </p>
-
-    <button id="continueToIndependentBtn" type="button">
-      Continue to Independent Practice →
-    </button>
-  `;
-  const continueIndependentBtn =
-  document.querySelector("#continueToIndependentBtn");
-
-if (continueIndependentBtn) {
-  continueIndependentBtn.addEventListener(
-    "click",
-    showIndependentPractice
+function renderWorkedExample() {
+  const workedItems = lessonModule.items.filter(
+    item => item.type === "worked_example"
   );
-}
-  function showIndependentPractice() {
-  lessonStage.textContent = "5. Independent Practice";
-  lessonProgressBar.style.width = "80%";
+  const item = workedItems[workedExampleIndex];
 
-  document.querySelector("#lessonAnswerArea").style.display = "none";
-  lessonFeedback.textContent = "";
-  nextLessonStep.style.display = "none";
+  if (!item) {
+    advanceStage();
+    return;
+  }
+
+  currentStageType = "worked_examples";
+  stageItems = [];
+  const isLast = workedExampleIndex === workedItems.length - 1;
+
+  lessonStage.textContent =
+    `3. Worked Examples • ${workedExampleIndex + 1} of ${workedItems.length}`;
+  lessonContent.innerHTML = `
+    <div class="question-header">
+      <span class="difficulty-badge">${escapeHtml(item.difficulty)}</span>
+      <span>${escapeHtml(item.id)}</span>
+    </div>
+    <h2>Watch Tolux solve one step at a time</h2>
+    <div class="math-prompt">${escapeHtml(item.prompt)}</div>
+    ${renderSolutionSteps(item)}
+    <button id="workedNextBtn" class="lesson-primary-button" type="button">
+      ${isLast ? "Continue to Guided Practice →" : "Next Worked Example →"}
+    </button>
+  `;
+  showInterface();
+  setFeedback();
+  updateProgress();
+
+  document.querySelector("#workedNextBtn").addEventListener("click", () => {
+    workedExampleIndex += 1;
+    if (workedExampleIndex >= workedItems.length) advanceStage();
+    else renderWorkedExample();
+  });
+}
+
+function renderCompletion() {
+  currentStageType = "complete";
+  stageItems = [];
+  lessonStage.textContent = "Lesson Complete";
+  lessonProgressBar.style.width = "100%";
+  lessonProgressBar.setAttribute("aria-valuenow", "100");
+  stageIndex = lessonModule.lesson_flow.length;
+  updateLessonPath();
 
   lessonContent.innerHTML = `
-    <h2>Independent Practice</h2>
+    <div class="lesson-complete">
+      <div class="completion-mark" aria-hidden="true">✓</div>
+      <h2>${escapeHtml(masterySummary.label)}</h2>
+      <p class="mastery-score">${masterySummary.scorePercent}%</p>
+      <p>
+        You answered ${masterySummary.correctCount} of
+        ${masterySummary.total} mastery questions correctly.
+      </p>
+      <p>
+        You completed TEKS ${escapeHtml(lessonModule.teks.join(", "))}:
+        ${escapeHtml(lessonModule.title)}.
+      </p>
+      <a class="lesson-link-button" href="/">Return to Dashboard</a>
+    </div>
+  `;
+  showInterface();
+  setFeedback();
+  saveLessonCompletion();
+}
 
-    <p>
-      Now solve this problem on your own.
+function saveLessonCompletion() {
+  const report = {
+    module_id: lessonModule.module_id,
+    completed_at: new Date().toISOString(),
+    mastery_label: masterySummary.label,
+    mastery_score: masterySummary.scorePercent,
+    is_subscriber: isSubscriber,
+    time_on_skill_seconds: Math.round((Date.now() - lessonStartedAt) / 1000),
+    item_records: [...itemRecords.values()]
+  };
+
+  try {
+    localStorage.setItem(
+      `toluxLessonProgress:${lessonModule.module_id}`,
+      JSON.stringify(report)
+    );
+  } catch (error) {
+    console.warn("Lesson completion could not be saved locally:", error);
+  }
+}
+
+function remediationReviewMarkup() {
+  return missedMasteryItems
+    .map(item => {
+      const route = lessonModule.misconception_routes[item.diagnostic_tag];
+
+      return `
+        <article class="remediation-card">
+          <span>${escapeHtml(route?.error_code || item.diagnostic_tag)}</span>
+          <h3>${escapeHtml(route?.teacher_signal || "Targeted review")}</h3>
+          <p><strong>Question:</strong> ${escapeHtml(item.prompt)}</p>
+          <p><strong>Correct answer:</strong> ${escapeHtml(item.answer_key)}</p>
+          <p>${escapeHtml(item.tutor_behavior)}</p>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function prepareRecheckItems() {
+  const count = lessonModule.mastery_policy.recheck_after_remediation_items || 2;
+  recheckItems = buildRecheckItems(lessonModule, missedMasteryItems, count);
+  recheckUsageKeys = new Map();
+
+  recheckItems.forEach((item, index) => {
+    const missed = missedMasteryItems[index % missedMasteryItems.length];
+    recheckUsageKeys.set(item.id, missed.id);
+  });
+}
+
+function renderRemediationStage() {
+  currentStageType = "remediation";
+  stageItems = [];
+  prepareRecheckItems();
+  lessonStage.textContent = "7. Next Best Step • Targeted Remediation";
+  lessonContent.innerHTML = `
+    <h2>Let’s repair the exact skills that caused difficulty</h2>
+    <p class="lesson-intro">
+      Your mastery score was ${masterySummary.scorePercent}%. Review the items
+      below, then complete a ${recheckItems.length}-question recheck before
+      trying mastery again.
     </p>
-
-    <h3>Solve:</h3>
-    <p><strong>5x - 9 = 21</strong></p>
-
-    <label for="independentAnswer">
-      <strong>Your answer</strong>
-    </label>
-
-    <input
-      id="independentAnswer"
-      type="text"
-      placeholder="Enter x = ..."
-    />
-
-    <button id="checkIndependentBtn" type="button">
-      Check Answer
+    <div class="remediation-grid">${remediationReviewMarkup()}</div>
+    <button id="startRecheckBtn" class="lesson-primary-button" type="button">
+      Start Targeted Recheck →
     </button>
-
-    <div id="independentFeedback"></div>
   `;
-
-  const answerInput =
-    document.querySelector("#independentAnswer");
-
-  const checkBtn =
-    document.querySelector("#checkIndependentBtn");
-
-  const feedback =
-    document.querySelector("#independentFeedback");
-
-  checkBtn.addEventListener("click", () => {
-    const answer = answerInput.value
-      .toLowerCase()
-      .replace(/\s+/g, "");
-
-    if (answer === "x=6" || answer === "6") {
-      feedback.innerHTML = `
-        <p><strong>Correct!</strong></p>
-        <p>
-          Add 9 to both sides: 5x = 30.
-          Then divide by 5: x = 6.
-        </p>
-
-        <button id="continueToMasteryBtn" type="button">
-          Continue to Mastery Check →
-        </button>
-      `;
-      const continueMasteryBtn =
-  document.querySelector("#continueToMasteryBtn");
-
-if (continueMasteryBtn) {
-  continueMasteryBtn.addEventListener("click", showMasteryCheck);
-}
-    } else {
-      feedback.innerHTML = `
-        <p><strong>Not quite yet.</strong></p>
-        <p>
-          Start by undoing the -9.
-          What operation will cancel -9?
-        </p>
-      `;
-    }
+  showInterface();
+  setFeedback();
+  updateProgress();
+  document.querySelector("#startRecheckBtn").addEventListener("click", () => {
+    recheckResults = [];
+    startQuestionStage("recheck", recheckItems);
   });
 }
-}
-function showMasteryCheck() {
-  lessonStage.textContent = "6. Mastery Check";
-  lessonProgressBar.style.width = "95%";
 
-  document.querySelector("#lessonAnswerArea").style.display = "none";
-  lessonFeedback.textContent = "";
-  nextLessonStep.style.display = "none";
+function renderRemediationOutcome() {
+  const allCorrect =
+    recheckResults.length === recheckItems.length &&
+    recheckResults.every(result => result.correct);
 
-  lessonContent.innerHTML = `
-    <h2>Mastery Check</h2>
+  currentStageType = "remediation_outcome";
+  stageItems = [];
+  lessonStage.textContent = "7. Next Best Step • Recheck Complete";
 
-    <p>Solve all three problems independently.</p>
-
-    <p><strong>1. 2x + 7 = 19</strong></p>
-    <input id="mastery1" type="text" placeholder="x = ?" />
-
-    <p><strong>2. 4x - 5 = 23</strong></p>
-    <input id="mastery2" type="text" placeholder="x = ?" />
-
-    <p><strong>3. 3x + 4 = x + 16</strong></p>
-    <input id="mastery3" type="text" placeholder="x = ?" />
-
-    <br><br>
-
-    <button id="checkMasteryBtn" type="button">
-      Check Mastery
-    </button>
-
-    <div id="masteryFeedback"></div>
-  `;
-
-  const checkMasteryBtn =
-    document.querySelector("#checkMasteryBtn");
-
-  checkMasteryBtn.addEventListener("click", () => {
-    const clean = value =>
-      value.toLowerCase().replace(/\s+/g, "").replace("x=", "");
-
-    const a1 = clean(document.querySelector("#mastery1").value);
-    const a2 = clean(document.querySelector("#mastery2").value);
-    const a3 = clean(document.querySelector("#mastery3").value);
-
-    const feedback =
-      document.querySelector("#masteryFeedback");
-
-    if (a1 === "6" && a2 === "7" && a3 === "6") {
-      lessonProgressBar.style.width = "100%";
-      lessonStage.textContent = "Lesson Complete";
-
-      feedback.innerHTML = `
-        <h3>Mastery achieved! 🎉</h3>
-        <p>You completed TEKS A.5A: Solving Linear Equations.</p>
-        <p>You are ready to continue to the next Algebra 1 lesson.</p>
-
-        <button id="finishLessonBtn" type="button">
-          Return to Dashboard
+  if (allCorrect) {
+    lessonContent.innerHTML = `
+      <div class="lesson-state lesson-state-success">
+        <h2>Targeted remediation complete</h2>
+        <p>You corrected the prerequisite skills. Now retake the five-question mastery check.</p>
+        <button id="retakeMasteryBtn" class="lesson-primary-button" type="button">
+          Retake Mastery Check →
         </button>
-      `;
+      </div>
+    `;
+    document.querySelector("#retakeMasteryBtn").addEventListener("click", () => {
+      masteryResults = [];
+      masterySummary = null;
+      missedMasteryItems = [];
+      stageIndex = findStageIndex("mastery_check");
+      renderStage();
+    });
+  } else {
+    lessonContent.innerHTML = `
+      <div class="lesson-state lesson-state-warning">
+        <h2>More focused practice is needed</h2>
+        <p>Review the targeted explanation once more, then try the recheck again.</p>
+        <button id="retryRemediationBtn" class="lesson-primary-button" type="button">
+          Review and Try Again →
+        </button>
+      </div>
+    `;
+    document.querySelector("#retryRemediationBtn")
+      .addEventListener("click", renderRemediationStage);
+  }
 
-      document
-        .querySelector("#finishLessonBtn")
-        .addEventListener("click", () => {
-          window.location.href = "/";
-        });
-    } else {
-      feedback.innerHTML = `
-        <p><strong>Not mastered yet.</strong></p>
-        <p>Review your answers and try again.</p>
-      `;
-    }
-  });
+  showInterface();
+  setFeedback();
+  updateProgress();
 }
-submitLessonAnswer.addEventListener(
-  "click",
-  checkCurrentAnswer
-);
 
-lessonAnswer.addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    checkCurrentAnswer();
-   
-});
+function renderFinalStage() {
+  if (masterySummary?.mastered) renderCompletion();
+  else renderRemediationStage();
+}
 
-nextLessonStep.addEventListener("click", () => {
+function renderStage() {
+  const stage = currentFlowStage();
+
+  if (!stage) {
+    showFatalLessonError("The lesson path is incomplete.");
+    return;
+  }
+
+  activeSimilarItem = null;
+  hintLevel = 0;
+  workedExampleIndex = 0;
+
+  switch (stage.type) {
+    case "prerequisite_diagnostic":
+      startQuestionStage("diagnostic", selectStageItems(lessonModule, "diagnostic"));
+      break;
+    case "concept":
+      renderConceptStage();
+      break;
+    case "worked_examples":
+      renderWorkedExample();
+      break;
+    case "guided_practice":
+      startQuestionStage(
+        "guided_practice",
+        selectStageItems(lessonModule, "guided_practice")
+      );
+      break;
+    case "independent_practice":
+      startQuestionStage(
+        "independent_practice",
+        selectStageItems(lessonModule, "independent_practice")
+      );
+      break;
+    case "mastery_check":
+      masteryResults = [];
+      startQuestionStage(
+        "mastery_check",
+        selectStageItems(lessonModule, "mastery_check")
+      );
+      break;
+    case "remediation_or_complete":
+      renderFinalStage();
+      break;
+    default:
+      showFatalLessonError(`Unsupported lesson stage: ${stage.type}.`);
+  }
+}
+
+function advanceStage() {
+  stageIndex += 1;
+  renderStage();
+}
+
+function advanceAfterQuestionStage() {
+  if (currentStageType === "mastery_check") {
+    finalizeMastery();
+    return;
+  }
+
+  if (currentStageType === "recheck") {
+    renderRemediationOutcome();
+    return;
+  }
+
+  advanceStage();
+}
+
+function advanceQuestion() {
   currentItemIndex += 1;
-  showCurrentItem();
-});
-function getCurrentLessonItem() {
-  return activeSimilarItem || lessonItems[currentItemIndex];
+
+  if (currentItemIndex >= stageItems.length) {
+    advanceAfterQuestionStage();
+  } else {
+    renderCurrentQuestion();
+  }
+}
+
+function finalizeMastery() {
+  masterySummary = calculateMastery(
+    masteryResults,
+    lessonModule.mastery_policy
+  );
+  missedMasteryItems = masteryResults
+    .filter(result => !result.correct)
+    .map(result => result.item);
+  stageIndex = findStageIndex("remediation_or_complete");
+  renderStage();
+}
+
+async function checkCurrentAnswer() {
+  const item = getCurrentItem();
+  if (!item || lessonLocked) return;
+
+  const studentAnswer = lessonAnswer.value.trim();
+  const explanation = document.querySelector("#lessonExplanation")?.value.trim() || "";
+
+  if (!studentAnswer) {
+    setFeedback("Enter an answer before checking your work.");
+    return;
+  }
+
+  if (item.explanation_prompt && !explanation) {
+    setFeedback("Add your explanation before checking this mastery response.");
+    return;
+  }
+
+  const allowed = await ensureLessonAccess(item, currentUsageKey(item));
+  if (!allowed) return;
+
+  const answerCorrect = answersEquivalent(studentAnswer, item);
+  const explanationCorrect = explanationSatisfies(explanation, item);
+  const correct = answerCorrect && explanationCorrect;
+  recordAttempt(item, correct);
+
+  if (activeSimilarItem) {
+    if (!correct) {
+      setFeedback(`
+        <strong>Not quite yet.</strong>
+        <p>${escapeHtml(item.tutor_behavior)}</p>
+        <p>Try the similar problem again.</p>
+      `);
+      return;
+    }
+
+    activeSimilarItem = null;
+    renderCurrentQuestion();
+    setFeedback(`
+      <strong>Correct.</strong>
+      <p>You solved the similar problem. Now return to the original lesson question.</p>
+    `);
+    return;
+  }
+
+  if (currentStageType === "mastery_check") {
+    masteryResults.push({
+      item,
+      correct,
+      answerCorrect,
+      explanationCorrect,
+      studentAnswer,
+      explanation
+    });
+    lessonAnswer.disabled = true;
+    submitLessonAnswer.disabled = true;
+    const explanationField = document.querySelector("#lessonExplanation");
+    if (explanationField) explanationField.disabled = true;
+    nextLessonStep.textContent =
+      currentItemIndex === stageItems.length - 1
+        ? "Review Mastery Results"
+        : "Next Mastery Question";
+    showInterface({ answer: true, help: false, next: true });
+    setFeedback(`
+      <strong>Response recorded.</strong>
+      <p>Tolux will score all five questions together at the end.</p>
+    `);
+    return;
+  }
+
+  if (currentStageType === "recheck") {
+    recheckResults.push({ item, correct, studentAnswer });
+    lessonAnswer.disabled = true;
+    submitLessonAnswer.disabled = true;
+    nextLessonStep.textContent =
+      currentItemIndex === stageItems.length - 1
+        ? "View Recheck Result"
+        : "Next Recheck Question";
+    showInterface({ answer: true, help: true, next: true });
+    setFeedback(correct
+      ? `<strong>Correct.</strong>${renderSolutionSteps(item, "Why it works")}`
+      : `
+          <strong>Not correct yet.</strong>
+          <p>The expected result is <span class="inline-math">${escapeHtml(item.answer_key)}</span>.</p>
+          ${renderSolutionSteps(item, "Review the steps")}
+        `
+    );
+    return;
+  }
+
+  if (correct) {
+    lessonAnswer.disabled = true;
+    submitLessonAnswer.disabled = true;
+    nextLessonStep.textContent =
+      currentItemIndex === stageItems.length - 1 ? "Continue" : "Next Question";
+    showInterface({ answer: true, help: true, next: true });
+    setFeedback(`
+      <strong>Correct.</strong>
+      ${renderSolutionSteps(item, "See the complete reasoning")}
+    `);
+  } else {
+    setFeedback(`
+      <strong>Not quite yet.</strong>
+      <p>${escapeHtml(item.tutor_behavior)}</p>
+      <p>Try the problem again, or use one of the help buttons.</p>
+    `);
+  }
+}
+
+function canonicalHintTag(item) {
+  const aliases = {
+    distribution_or_division: "distribution",
+    distribution_variables_both_sides: "distribution",
+    distribution_combine_terms: "distribution",
+    sign_distribution: "signed_numbers",
+    fraction_coefficient: "fraction_equation",
+    mixed_multi_step: "multi_step"
+  };
+
+  return aliases[item.diagnostic_tag] || item.diagnostic_tag || "";
+}
+
+function distributionDetails(prompt) {
+  const match = prompt.match(
+    /(-?\d+)\s*\(\s*(-?\d*)x\s*([+-])\s*(\d+)\s*\)/i
+  );
+  if (!match) return null;
+
+  const outside = Number(match[1]);
+  const coefficientText = match[2];
+  const coefficient = coefficientText === ""
+    ? 1
+    : coefficientText === "-"
+      ? -1
+      : Number(coefficientText);
+  const signedConstant = match[3] === "+"
+    ? Number(match[4])
+    : -Number(match[4]);
+
+  return { outside, coefficient, signedConstant };
 }
 
 function getProgressiveHint(item, level) {
-  const tag = item.diagnostic_tag || "";
-const prompt = item.prompt || "";
-
-let distributionHints = [
-  "Look at the number outside the parentheses. It must multiply every term inside.",
-  "Multiply the outside number by the first term, then multiply it by the second term.",
-  "Distribute the outside factor to both terms inside the parentheses."
-];
-
-const distributionMatch = prompt.match(
-  /(-?\d+)\s*\(\s*(-?\d*)x\s*([+-])\s*(\d+)\s*\)/i
-);
-
-if (distributionMatch) {
-  const outside = Number(distributionMatch[1]);
-
-  const coefficientText = distributionMatch[2];
-  const coefficient =
-    coefficientText === "" ? 1 :
-    coefficientText === "-" ? -1 :
-    Number(coefficientText);
-
-  const sign = distributionMatch[3];
-  const constant = Number(distributionMatch[4]);
-
-  const firstTerm =
-    coefficient === 1 ? "x" :
-    coefficient === -1 ? "-x" :
-    `${coefficient}x`;
-
-  const signedConstant =
-    sign === "+" ? constant : -constant;
-
-  distributionHints = [
-    `Look at ${outside} outside the parentheses. It must multiply every term inside.`,
-    `Multiply ${outside} by ${firstTerm}, then multiply ${outside} by ${signedConstant}.`,
-    `First calculate ${outside} × ${firstTerm}. Then calculate ${outside} × ${signedConstant}. Combine those two results.`
-  ];
-}
+  const tag = canonicalHintTag(item);
+  const details = distributionDetails(item.prompt || "");
+  const distributionHints = details
+    ? [
+        `${details.outside} outside the parentheses must multiply every term inside.`,
+        `Multiply ${details.outside} by the x-term, then by ${details.signedConstant}.`,
+        "Write both products before combining or isolating the variable."
+      ]
+    : [
+        "The factor outside the parentheses must multiply every term inside.",
+        "Write the two products separately.",
+        "Combine the distributed terms before solving."
+      ];
   const hints = {
-   distribution: distributionHints,
-
+    distribution: distributionHints,
     combine_like_terms: [
-      "Look for terms that have exactly the same variable part.",
-      "Group the x-terms together and keep constants together.",
-      "Add or subtract the coefficients of the like terms."
+      "Look for terms with exactly the same variable part.",
+      "Group x-terms together and constants together.",
+      "Combine the coefficients of the like terms."
     ],
-
     inverse_operations: [
-      "Identify what operation is being done to the variable.",
-      "Undo operations in reverse order while keeping both sides balanced.",
-      "Use the same inverse operation on both sides until the variable is isolated."
+      "Identify the operation closest to the variable.",
+      "Undo operations in reverse order on both sides.",
+      "Keep both sides balanced until the variable is isolated."
     ],
-
     signed_numbers: [
-      "Pay close attention to the positive and negative signs.",
-      "Work one signed-number operation at a time.",
-      "Check the sign of your result before moving to the next algebra step."
+      "Slow down at every negative sign.",
+      "Distribute a negative factor to every term.",
+      "Check each signed-number operation before continuing."
     ],
-
     variables_both_sides: [
-      "Try collecting the variable terms on one side first.",
-      "Use the same operation on both sides to move one variable term.",
-      "Once the variables are together, combine constants and isolate the variable."
+      "Collect the variable terms on one side first.",
+      "Use the same operation on both sides to move a variable term.",
+      "Then collect constants and isolate the variable."
     ],
-
     special_case_identity: [
       "Simplify both sides completely.",
-      "Notice what happens if the variable terms cancel.",
-      "If both sides become the same true statement, there are infinitely many solutions."
+      "Notice what remains after the variable terms cancel.",
+      "A true statement means every value of x works."
     ],
-
     special_case_contradiction: [
       "Simplify both sides completely.",
-      "Watch what remains if the variable terms cancel.",
-      "If you end with a false statement, such as 5 = 9, there is no solution."
+      "Notice what remains after the variable terms cancel.",
+      "A false statement means no value of x works."
     ],
-
     fraction_equation: [
-      "Look for the least common denominator.",
-      "Multiply every term by the least common denominator to clear the fractions.",
-      "After the fractions disappear, solve the resulting linear equation normally."
+      "Find the least common denominator.",
+      "Multiply every term by it to clear the fractions.",
+      "Solve the resulting linear equation and verify."
+    ],
+    multi_step: [
+      "Simplify each side before moving terms.",
+      "Distribute, then combine like terms.",
+      "Collect variable terms, collect constants, then divide."
+    ],
+    application_modeling: [
+      "Define a variable for the unknown quantity.",
+      "Write fixed cost + rate × quantity = total.",
+      "Solve the equation and include the correct unit."
     ]
   };
-
-  const skillHints = hints[tag];
-
-  if (skillHints) {
-    return skillHints[Math.min(level, skillHints.length - 1)];
-  }
-
-  const fallback = [
-    "Think about the first mathematical step you can justify.",
-    item.tutor_behavior || "Work through the problem one step at a time.",
-    "Write only the next valid step instead of trying to jump directly to the answer."
+  const options = hints[tag] || [
+    "Identify the first mathematical step you can justify.",
+    item.tutor_behavior || "Work one step at a time.",
+    "Write only the next valid step instead of jumping to the answer."
   ];
 
-  return fallback[Math.min(level, fallback.length - 1)];
+  return options[Math.min(level, options.length - 1)];
 }
 
-lessonStuckBtn.addEventListener("click", async () => {
-  const item = getCurrentLessonItem();
-  if (!item) return;
-const allowed = await ensureLessonAccess(item);
+function alternateExplanation(item) {
+  const tag = canonicalHintTag(item);
+  const details = distributionDetails(item.prompt || "");
 
-if (!allowed) {
-  return;
-}
-  const hint = getProgressiveHint(item, hintLevel);
-
-  lessonFeedback.innerHTML = `
-    <strong>Hint ${Math.min(hintLevel + 1, 3)}</strong>
-    <p>${hint}</p>
-  `;
-
-  hintLevel += 1;
-});
- 
- lessonExplainBtn.addEventListener("click", async () => {
-  const item = getCurrentLessonItem();
-  if (!item) return;
-const allowed = await ensureLessonAccess(item);
-
-if (!allowed) {
-  return;
-}
-  const tag = item.diagnostic_tag || "";
-const prompt = item.prompt || "";
-
-let distributionExplanation = `
-  <strong>Another way: separate the two products.</strong>
-  <p>Use the distributive property on the current expression.</p>
-`;
-
-const distributionMatch = prompt.match(
-  /(-?\d+)\s*\(\s*(-?\d*)x\s*([+-])\s*(\d+)\s*\)/i
-);
-
-if (distributionMatch) {
-  const outside = Number(distributionMatch[1]);
-
-  const coefficientText = distributionMatch[2];
-  const coefficient =
-    coefficientText === "" ? 1 :
-    coefficientText === "-" ? -1 :
-    Number(coefficientText);
-
-  const sign = distributionMatch[3];
-  const constant = Number(distributionMatch[4]);
-
-  const signedConstant = sign === "+" ? constant : -constant;
-
-  const xProduct = outside * coefficient;
-  const constantProduct = outside * signedConstant;
-
-  const insideX =
-    coefficient === 1 ? "x" :
-    coefficient === -1 ? "-x" :
-    `${coefficient}x`;
-
-  const finalConstant =
-    constantProduct >= 0
+  if (tag === "distribution" && details) {
+    const xProduct = details.outside * details.coefficient;
+    const constantProduct = details.outside * details.signedConstant;
+    const constantText = constantProduct >= 0
       ? `+ ${constantProduct}`
       : `- ${Math.abs(constantProduct)}`;
 
-  distributionExplanation = `
-    <strong>Another way: separate the two products.</strong>
-    <p>${outside}(${insideX} ${sign} ${constant})</p>
-    <p>= (${outside} × ${insideX}) + (${outside} × ${signedConstant})</p>
-    <p>= ${xProduct}x ${finalConstant}</p>
-    <p>So each term inside the parentheses is multiplied by ${outside} separately.</p>
-  `;
-}
-  const explanations = {
-    distribution: distributionExplanation,
+    return `
+      <strong>Another way: separate the products.</strong>
+      <div class="math-line">
+        (${details.outside} × ${details.coefficient}x) +
+        (${details.outside} × ${details.signedConstant})
+      </div>
+      <div class="math-line">${xProduct}x ${constantText}</div>
+      <p>The outside factor is applied to each term separately.</p>
+    `;
+  }
 
+  const explanations = {
     combine_like_terms: `
       <strong>Another way: sort terms into families.</strong>
-      <p>Terms can only combine when their variable parts match exactly.</p>
-      <p>Put matching variable terms together, then combine their coefficients.</p>
+      <p>Only terms with the same variable part belong to the same family.</p>
     `,
-
     inverse_operations: `
-      <strong>Another way: use the balance-scale idea.</strong>
-      <p>An equation says both sides have equal value.</p>
-      <p>Whatever operation you perform on one side must also be performed on the other.</p>
-      <p>Keep the equation balanced while isolating the variable.</p>
+      <strong>Another way: picture a balance scale.</strong>
+      <p>Every move must preserve equality, so do the same operation to both sides.</p>
     `,
-
     variables_both_sides: `
-      <strong>Another way: organize first.</strong>
-      <p>Collect variable terms on one side and constants on the other.</p>
-      <p>Then simplify and isolate the variable.</p>
+      <strong>Another way: organize before isolating.</strong>
+      <p>Move variable terms to one side and constants to the other, then simplify.</p>
     `,
-
     fraction_equation: `
       <strong>Another way: remove the fractions first.</strong>
-      <p>Find the least common denominator and multiply every term by it.</p>
-      <p>Then solve the equivalent equation with whole-number coefficients.</p>
+      <p>Multiply every term by the least common denominator, then solve normally.</p>
+    `,
+    special_case_identity: `
+      <strong>Another way: test the structure.</strong>
+      <p>If both sides simplify to the same expression, the equation is true for every x.</p>
+    `,
+    special_case_contradiction: `
+      <strong>Another way: test the structure.</strong>
+      <p>If the variables cancel and leave a false statement, no x can satisfy the equation.</p>
     `
   };
 
-  lessonFeedback.innerHTML =
-    explanations[tag] ||
-    `
-      <strong>Another way to think about it</strong>
-      <p>${item.tutor_behavior}</p>
-      <p>Focus on why the next mathematical step is valid.</p>
-    `;
-});
-function generateDistributionSimplifyProblem() {
+  return explanations[tag] || `
+    <strong>Another way to think about it</strong>
+    <p>${escapeHtml(item.tutor_behavior)}</p>
+    <p>Focus on why the next mathematical step preserves equality.</p>
+  `;
+}
+
+function generateDistributionProblem() {
   const outside = Math.floor(Math.random() * 8) + 2;
   const coefficient = Math.floor(Math.random() * 6) + 1;
   const constant = Math.floor(Math.random() * 9) + 1;
   const sign = Math.random() < 0.5 ? 1 : -1;
-
-  const signedConstant =
-    sign === 1 ? `+ ${constant}` : `- ${constant}`;
-const insideX =
-  coefficient === 1 ? "x" : `${coefficient}x`;
-  const answerConstant = outside * constant * sign;
   const answerCoefficient = outside * coefficient;
+  const answerConstant = outside * constant * sign;
+  const constantPrompt = sign > 0 ? `+ ${constant}` : `- ${constant}`;
+  const answer = answerConstant >= 0
+    ? `${answerCoefficient}x + ${answerConstant}`
+    : `${answerCoefficient}x - ${Math.abs(answerConstant)}`;
 
   return {
-    id: `generated-${Date.now()}`,
+    id: `generated-distribution-${Date.now()}`,
     type: "generated",
     diagnostic_tag: "distribution",
-    difficulty: "introductory",
-   prompt: `Simplify ${outside}(${insideX} ${signedConstant}).`,
-    answer_key:
-      answerConstant >= 0
-        ? `${answerCoefficient}x+${answerConstant}`
-        : `${answerCoefficient}x${answerConstant}`,
-    tutor_behavior:
-      "Distribute the outside factor to every term inside the parentheses."
+    difficulty: "Foundational",
+    prompt: `Simplify ${outside}(${coefficient}x ${constantPrompt}).`,
+    answer_key: answer,
+    tutor_behavior: "Distribute the outside factor to every term."
   };
 }
 
 function generateCombineLikeTermsProblem() {
-    const a = Math.floor(Math.random() * 8) + 2;
-  const c = Math.floor(Math.random() * 8) + 2;
-
-  const bValue = Math.floor(Math.random() * 9) + 1;
-  const dValue = Math.floor(Math.random() * 9) + 1;
-
-  const bSign = Math.random() < 0.5 ? 1 : -1;
-  const dSign = Math.random() < 0.5 ? 1 : -1;
-
-  const b = bValue * bSign;
-  const d = dValue * dSign;
-
-  const bText = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
-  const dText = d >= 0 ? `+ ${d}` : `- ${Math.abs(d)}`;
-
-  const answerCoefficient = a + c;
-  const answerConstant = b + d;
-
-  const answerKey =
-    answerConstant > 0
-      ? `${answerCoefficient}x+${answerConstant}`
-      : answerConstant < 0
-      ? `${answerCoefficient}x${answerConstant}`
-      : `${answerCoefficient}x`;
+  const firstCoefficient = Math.floor(Math.random() * 8) + 2;
+  const secondCoefficient = Math.floor(Math.random() * 8) + 2;
+  const firstConstant = Math.floor(Math.random() * 9) + 1;
+  const secondConstant = Math.floor(Math.random() * 9) + 1;
+  const answerCoefficient = firstCoefficient + secondCoefficient;
+  const answerConstant = firstConstant - secondConstant;
+  const answer = answerConstant >= 0
+    ? `${answerCoefficient}x + ${answerConstant}`
+    : `${answerCoefficient}x - ${Math.abs(answerConstant)}`;
 
   return {
-    id: `generated-combine-${Date.now()}`,
+    id: `generated-like-terms-${Date.now()}`,
     type: "generated",
     diagnostic_tag: "combine_like_terms",
-    difficulty: "introductory",
-    prompt: `Simplify ${a}x ${bText} + ${c}x ${dText}.`,
-    answer_key: answerKey,
-    tutor_behavior:
-      "Combine the x-terms together, then combine the constant terms."
+    difficulty: "Foundational",
+    prompt:
+      `Simplify ${firstCoefficient}x + ${firstConstant} + ` +
+      `${secondCoefficient}x - ${secondConstant}.`,
+    answer_key: answer,
+    tutor_behavior: "Combine the x-terms, then combine the constants."
   };
 }
-lessonSimilarBtn.addEventListener("click", async () => {
-  const currentItem = getCurrentLessonItem();
-  if (!currentItem || !lessonModule) return;
 
- function getTaskType(item) {
+function taskType(item) {
   const prompt = (item.prompt || "").toLowerCase();
-
+  if (item.diagnostic_tag?.startsWith("special_case")) return "special-case";
   if (prompt.startsWith("simplify")) return "simplify";
   if (prompt.startsWith("solve")) return "solve";
-  if (prompt.includes("no solution") || prompt.includes("infinitely many")) {
-    return "special-case";
-  }
-  if (prompt.startsWith("write") || prompt.startsWith("create")) {
-    return "model";
-  }
-
+  if (prompt.startsWith("write") || prompt.startsWith("create")) return "model";
   return "other";
 }
 
-const currentTaskType = getTaskType(currentItem);
+function findSimilarProblem(item) {
+  const tag = canonicalHintTag(item);
+  if (tag === "distribution" && taskType(item) === "simplify") {
+    return generateDistributionProblem();
+  }
+  if (tag === "combine_like_terms" && taskType(item) === "simplify") {
+    return generateCombineLikeTermsProblem();
+  }
 
-let candidates = [];
-
-if (
-  currentItem.diagnostic_tag === "distribution" &&
-  currentTaskType === "simplify"
-) {
-  candidates = [generateDistributionSimplifyProblem()];
-} else if (
-  currentItem.diagnostic_tag === "combine_like_terms" &&
-  currentTaskType === "simplify"
-) {
-  candidates = [generateCombineLikeTermsProblem()];
-} else {
-  candidates = lessonModule.items.filter(
-    item =>
-      item.id !== currentItem.id &&
-      item.diagnostic_tag === currentItem.diagnostic_tag &&
-      getTaskType(item) === currentTaskType &&
-      item.difficulty === currentItem.difficulty
+  const type = taskType(item);
+  let candidates = lessonModule.items.filter(candidate =>
+    candidate.id !== item.id &&
+    canonicalHintTag(candidate) === tag &&
+    taskType(candidate) === type &&
+    candidate.difficulty === item.difficulty
   );
 
-  if (!candidates.length) {
-    candidates = lessonModule.items.filter(
-      item =>
-        item.id !== currentItem.id &&
-        item.diagnostic_tag === currentItem.diagnostic_tag &&
-        getTaskType(item) === currentTaskType
+  if (candidates.length === 0) {
+    candidates = lessonModule.items.filter(candidate =>
+      candidate.id !== item.id &&
+      canonicalHintTag(candidate) === tag &&
+      taskType(candidate) === type
     );
   }
+
+  return candidates.length
+    ? candidates[Math.floor(Math.random() * candidates.length)]
+    : null;
 }
-   
-  if (!candidates.length) {
-    lessonFeedback.innerHTML = `
+
+async function loadLesson() {
+  try {
+    const requestedModule =
+      new URLSearchParams(window.location.search).get("module") ||
+      "alg1-a5a-linear-equations";
+    const modulePath = LESSON_MODULE_PATHS[requestedModule];
+
+    if (!modulePath) throw new Error("That lesson module is not available.");
+
+    const response = await fetch(modulePath);
+    if (!response.ok) {
+      throw new Error(`Lesson data could not be loaded (${response.status}).`);
+    }
+
+    const module = await response.json();
+    const validationErrors = validateLessonModule(module);
+    if (validationErrors.length > 0) {
+      throw new Error(validationErrors[0]);
+    }
+
+    lessonModule = module;
+    lessonTitle.textContent = lessonModule.title;
+    lessonTeks.textContent =
+      `${lessonModule.course} • TEKS ${lessonModule.teks.join(", ")}`;
+    lessonGoal.textContent = `Master TEKS ${lessonModule.teks.join(", ")}`;
+    stageIndex = 0;
+    renderStage();
+  } catch (error) {
+    console.error("Lesson failed to load:", error);
+    showFatalLessonError(error.message || "Please return to the dashboard and try again.");
+  }
+}
+
+submitLessonAnswer.addEventListener("click", checkCurrentAnswer);
+
+lessonAnswer.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    checkCurrentAnswer();
+  }
+});
+
+nextLessonStep.addEventListener("click", advanceQuestion);
+
+lessonStuckBtn.addEventListener("click", async () => {
+  const item = getCurrentItem();
+  if (!item) return;
+
+  const allowed = await ensureLessonAccess(item, currentUsageKey(item));
+  if (!allowed) return;
+
+  const record = getItemRecord(item);
+  record.hint_count += 1;
+  const hint = getProgressiveHint(item, hintLevel);
+  setFeedback(`
+    <strong>Hint ${Math.min(hintLevel + 1, 3)}</strong>
+    <p>${escapeHtml(hint)}</p>
+  `);
+  hintLevel += 1;
+});
+
+lessonExplainBtn.addEventListener("click", async () => {
+  const item = getCurrentItem();
+  if (!item) return;
+
+  const allowed = await ensureLessonAccess(item, currentUsageKey(item));
+  if (!allowed) return;
+  setFeedback(alternateExplanation(item));
+});
+
+lessonSimilarBtn.addEventListener("click", async () => {
+  const item = getCurrentItem();
+  if (!item || activeSimilarItem) return;
+
+  const similar = findSimilarProblem(item);
+  if (!similar) {
+    setFeedback(`
       <strong>Similar Problem</strong>
       <p>Tolux does not yet have another stored problem for this exact skill.</p>
-    `;
+    `);
     return;
   }
 
-  activeSimilarItem =
-    candidates[Math.floor(Math.random() * candidates.length)];
-  const allowed = await ensureLessonAccess(activeSimilarItem);
+  const allowed = await ensureLessonAccess(similar, similar.id);
+  if (!allowed) return;
 
-if (!allowed) {
-  activeSimilarItem = null;
-  return;
-}
-
-  hintLevel = 0;
-
-  lessonContent.innerHTML = `
-    <h2>Similar Problem</h2>
-    <p>${activeSimilarItem.prompt}</p>
-  `;
-
-  lessonAnswer.value = "";
-  lessonAnswer.disabled = false;
-  submitLessonAnswer.disabled = false;
-  nextLessonStep.style.display = "none";
-
-  lessonFeedback.innerHTML = `
-    <strong>Practice the same skill.</strong>
-    <p>Solve this problem. After you get it correct, Tolux will return you to the original lesson problem.</p>
-  `;
-
-  lessonAnswer.focus();
+  activeSimilarItem = similar;
+  renderCurrentQuestion();
 });
+
 loadLesson();

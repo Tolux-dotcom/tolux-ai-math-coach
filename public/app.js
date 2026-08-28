@@ -13,6 +13,7 @@ async function loadA5AModule() {
     if (!response.ok) throw new Error(`A5A module load failed: ${response.status}`);
     a5aModule = await response.json();
     console.log("Tolux A.5A curriculum loaded:", a5aModule.title);
+    refreshA5ALessonPanel();
   } catch (error) {
     console.error("Unable to load Tolux A.5A curriculum:", error);
   }

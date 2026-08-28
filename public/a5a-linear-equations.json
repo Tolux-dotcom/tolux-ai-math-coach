@@ -15,6 +15,27 @@
     "requires_explanation_item": true,
     "recheck_after_remediation_items": 2
   },
+  "lesson_settings": {
+    "diagnostic_item_ids": [
+      "A5A-D01",
+      "A5A-D02"
+    ],
+    "guided_item_ids": [
+      "A5A-G01",
+      "A5A-G02"
+    ],
+    "independent_item_ids": [
+      "A5A-P03"
+    ],
+    "mastery_item_ids": [
+      "A5A-M01",
+      "A5A-M02",
+      "A5A-M03",
+      "A5A-M04",
+      "A5A-M05"
+    ],
+    "assessed_items_in_core_lesson": 10
+  },
   "lesson_flow": [
     {
       "step": 1,
@@ -111,6 +132,32 @@
       "answer_key": "x = 5",
       "diagnostic_tag": "inverse_operations",
       "tutor_behavior": "Explain subtract 5 from both sides, then divide both sides by 3; verify.",
+      "solution_steps": [
+        {
+          "equation": "3x + 5 = 20",
+          "explanation": "Start with the original equation."
+        },
+        {
+          "equation": "3x + 5 - 5 = 20 - 5",
+          "explanation": "Subtract 5 from both sides to keep the equation balanced."
+        },
+        {
+          "equation": "3x = 15",
+          "explanation": "Simplify both sides."
+        },
+        {
+          "equation": "3x / 3 = 15 / 3",
+          "explanation": "Divide both sides by 3."
+        },
+        {
+          "equation": "x = 5",
+          "explanation": "The variable is isolated."
+        },
+        {
+          "equation": "3(5) + 5 = 20 ✓",
+          "explanation": "Substitute 5 into the original equation to verify the solution."
+        }
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -125,6 +172,32 @@
       "answer_key": "x = 4",
       "diagnostic_tag": "distribution",
       "tutor_behavior": "Model distribution, combine, isolate x, verify.",
+      "solution_steps": [
+        {
+          "equation": "4(2x - 3) = 20",
+          "explanation": "Start with the original equation."
+        },
+        {
+          "equation": "8x - 12 = 20",
+          "explanation": "Distribute 4 to both terms inside the parentheses."
+        },
+        {
+          "equation": "8x - 12 + 12 = 20 + 12",
+          "explanation": "Add 12 to both sides."
+        },
+        {
+          "equation": "8x = 32",
+          "explanation": "Simplify both sides."
+        },
+        {
+          "equation": "x = 4",
+          "explanation": "Divide both sides by 8."
+        },
+        {
+          "equation": "4(2(4) - 3) = 20 ✓",
+          "explanation": "Check the solution in the original equation."
+        }
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -139,6 +212,36 @@
       "answer_key": "x = 6",
       "diagnostic_tag": "variables_both_sides",
       "tutor_behavior": "Ask which variable term to move first and why.",
+      "solution_steps": [
+        {
+          "equation": "5x + 7 = 2x + 25",
+          "explanation": "Start with the original equation."
+        },
+        {
+          "equation": "5x - 2x + 7 = 2x - 2x + 25",
+          "explanation": "Subtract 2x from both sides."
+        },
+        {
+          "equation": "3x + 7 = 25",
+          "explanation": "Combine like terms."
+        },
+        {
+          "equation": "3x + 7 - 7 = 25 - 7",
+          "explanation": "Subtract 7 from both sides."
+        },
+        {
+          "equation": "3x = 18",
+          "explanation": "Simplify both sides."
+        },
+        {
+          "equation": "x = 6",
+          "explanation": "Divide both sides by 3."
+        },
+        {
+          "equation": "5(6) + 7 = 2(6) + 25 ✓",
+          "explanation": "Check the solution in the original equation."
+        }
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -149,10 +252,28 @@
       "id": "A5A-G01",
       "type": "guided_practice",
       "difficulty": "Grade-level",
-      "prompt": "Solve 2(x + 4) = 18. What should you do first?",
+      "prompt": "Solve 2(x + 4) = 18. You may divide first or distribute first.",
       "answer_key": "x = 5",
       "diagnostic_tag": "distribution_or_division",
       "tutor_behavior": "Accept either valid efficient path; ask student for first step before revealing solution.",
+      "solution_steps": [
+        {
+          "equation": "2(x + 4) = 18",
+          "explanation": "Start with the original equation."
+        },
+        {
+          "equation": "x + 4 = 9",
+          "explanation": "Divide both sides by 2 first. Distribution would also be valid."
+        },
+        {
+          "equation": "x = 5",
+          "explanation": "Subtract 4 from both sides."
+        },
+        {
+          "equation": "2(5 + 4) = 18 ✓",
+          "explanation": "Check the solution."
+        }
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -167,6 +288,28 @@
       "answer_key": "x = 6",
       "diagnostic_tag": "variables_both_sides",
       "tutor_behavior": "Prompt: get variable terms on one side; then constants.",
+      "solution_steps": [
+        {
+          "equation": "7x - 5 = 3x + 19",
+          "explanation": "Start with the original equation."
+        },
+        {
+          "equation": "4x - 5 = 19",
+          "explanation": "Subtract 3x from both sides."
+        },
+        {
+          "equation": "4x = 24",
+          "explanation": "Add 5 to both sides."
+        },
+        {
+          "equation": "x = 6",
+          "explanation": "Divide both sides by 4."
+        },
+        {
+          "equation": "7(6) - 5 = 3(6) + 19 ✓",
+          "explanation": "Check the solution."
+        }
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -223,6 +366,36 @@
       "answer_key": "x = 3",
       "diagnostic_tag": "multi_step",
       "tutor_behavior": "Require step-by-step work or explanation.",
+      "solution_steps": [
+        {
+          "equation": "4(2x + 1) - 3 = 5x + 10",
+          "explanation": "Start with the original equation."
+        },
+        {
+          "equation": "8x + 4 - 3 = 5x + 10",
+          "explanation": "Distribute 4 to both terms inside the parentheses."
+        },
+        {
+          "equation": "8x + 1 = 5x + 10",
+          "explanation": "Combine the constants on the left."
+        },
+        {
+          "equation": "3x + 1 = 10",
+          "explanation": "Subtract 5x from both sides."
+        },
+        {
+          "equation": "3x = 9",
+          "explanation": "Subtract 1 from both sides."
+        },
+        {
+          "equation": "x = 3",
+          "explanation": "Divide both sides by 3."
+        },
+        {
+          "equation": "4(2(3) + 1) - 3 = 5(3) + 10 ✓",
+          "explanation": "Check the solution in the original equation."
+        }
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -263,8 +436,29 @@
       "difficulty": "Challenging",
       "prompt": "Solve 2(3x + 5) = 6x + 10.",
       "answer_key": "Infinitely many solutions",
+      "accepted_answers": [
+        "All real numbers",
+        "All values of x"
+      ],
       "diagnostic_tag": "special_case_identity",
       "tutor_behavior": "Must classify solution set correctly.",
+      "critical_misconception": true,
+      "explanation_prompt": "Why does this equation have infinitely many solutions?",
+      "explanation_keywords": [
+        [
+          "same",
+          "identical",
+          "true statement",
+          "6x + 10 = 6x + 10"
+        ],
+        [
+          "both sides",
+          "each side",
+          "every value",
+          "all x",
+          "all real"
+        ]
+      ],
       "process_teks_tags": [
         "A.1B",
         "A.1D",
@@ -431,6 +625,22 @@
       "difficulty": "Foundational",
       "prompt": "A student writes 3(x + 2) = 3x + 2. What is the first error?",
       "answer_key": "The 3 must multiply both x and 2; correct result is 3x + 6.",
+      "answer_keywords": [
+        [
+          "multiply",
+          "distribute"
+        ],
+        [
+          "both",
+          "every",
+          "the 2"
+        ],
+        [
+          "3x + 6",
+          "+ 6"
+        ]
+      ],
+      "minimum_keyword_groups": 2,
       "diagnostic_tag": "incomplete_distribution",
       "tutor_behavior": "Show distributive-property visual and one near-transfer item.",
       "process_teks_tags": [
@@ -445,6 +655,20 @@
       "difficulty": "Foundational",
       "prompt": "A student changes 5x + 7 = 2x + 25 to 3x + 7 = 25. Explain the step.",
       "answer_key": "Subtract 2x from both sides.",
+      "answer_keywords": [
+        [
+          "subtract",
+          "minus"
+        ],
+        [
+          "2x"
+        ],
+        [
+          "both sides",
+          "each side"
+        ]
+      ],
+      "minimum_keyword_groups": 2,
       "diagnostic_tag": "balance_model",
       "tutor_behavior": "Reinforce equal operations on both sides.",
       "process_teks_tags": [
