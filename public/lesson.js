@@ -185,13 +185,46 @@ function getCurrentLessonItem() {
 
 function getProgressiveHint(item, level) {
   const tag = item.diagnostic_tag || "";
+const prompt = item.prompt || "";
 
+let distributionHints = [
+  "Look at the number outside the parentheses. It must multiply every term inside.",
+  "Multiply the outside number by the first term, then multiply it by the second term.",
+  "Distribute the outside factor to both terms inside the parentheses."
+];
+
+const distributionMatch = prompt.match(
+  /(-?\d+)\s*\(\s*(-?\d*)x\s*([+-])\s*(\d+)\s*\)/i
+);
+
+if (distributionMatch) {
+  const outside = Number(distributionMatch[1]);
+
+  const coefficientText = distributionMatch[2];
+  const coefficient =
+    coefficientText === "" ? 1 :
+    coefficientText === "-" ? -1 :
+    Number(coefficientText);
+
+  const sign = distributionMatch[3];
+  const constant = Number(distributionMatch[4]);
+
+  const firstTerm =
+    coefficient === 1 ? "x" :
+    coefficient === -1 ? "-x" :
+    `${coefficient}x`;
+
+  const signedConstant =
+    sign === "+" ? constant : -constant;
+
+  distributionHints = [
+    `Look at ${outside} outside the parentheses. It must multiply every term inside.`,
+    `Multiply ${outside} by ${firstTerm}, then multiply ${outside} by ${signedConstant}.`,
+    `First calculate ${outside} × ${firstTerm}. Then calculate ${outside} × ${signedConstant}. Combine those two results.`
+  ];
+}
   const hints = {
-    distribution: [
-      "Look at the number outside the parentheses. It must multiply every term inside.",
-      "Multiply the outside number by the first term, then multiply it by the second term.",
-      "For 3(x + 4), first get 3x. Then calculate 3 × 4."
-    ],
+   distribution: distributionHints,
 
     combine_like_terms: [
       "Look for terms that have exactly the same variable part.",
