@@ -313,7 +313,32 @@ lessonStuckBtn.addEventListener("click", () => {
       <p>Focus on why the next mathematical step is valid.</p>
     `;
 });
+function generateDistributionSimplifyProblem() {
+  const outside = Math.floor(Math.random() * 8) + 2;
+  const coefficient = Math.floor(Math.random() * 6) + 1;
+  const constant = Math.floor(Math.random() * 9) + 1;
+  const sign = Math.random() < 0.5 ? 1 : -1;
 
+  const signedConstant =
+    sign === 1 ? `+ ${constant}` : `- ${constant}`;
+
+  const answerConstant = outside * constant * sign;
+  const answerCoefficient = outside * coefficient;
+
+  return {
+    id: `generated-${Date.now()}`,
+    type: "generated",
+    diagnostic_tag: "distribution",
+    difficulty: "introductory",
+    prompt: `Simplify ${outside}(${coefficient}x ${signedConstant}).`,
+    answer_key:
+      answerConstant >= 0
+        ? `${answerCoefficient}x+${answerConstant}`
+        : `${answerCoefficient}x${answerConstant}`,
+    tutor_behavior:
+      "Distribute the outside factor to every term inside the parentheses."
+  };
+}
 lessonSimilarBtn.addEventListener("click", () => {
   const currentItem = getCurrentLessonItem();
   if (!currentItem || !lessonModule) return;
@@ -335,23 +360,32 @@ lessonSimilarBtn.addEventListener("click", () => {
 
 const currentTaskType = getTaskType(currentItem);
 
-let candidates = lessonModule.items.filter(
-  item =>
-    item.id !== currentItem.id &&
-    item.diagnostic_tag === currentItem.diagnostic_tag &&
-    getTaskType(item) === currentTaskType &&
-    item.difficulty === currentItem.difficulty
-);
+let candidates = [];
 
-if (!candidates.length) {
+if (
+  currentItem.diagnostic_tag === "distribution" &&
+  currentTaskType === "simplify"
+) {
+  candidates = [generateDistributionSimplifyProblem()];
+} else {
   candidates = lessonModule.items.filter(
     item =>
       item.id !== currentItem.id &&
       item.diagnostic_tag === currentItem.diagnostic_tag &&
-      getTaskType(item) === currentTaskType
+      getTaskType(item) === currentTaskType &&
+      item.difficulty === currentItem.difficulty
   );
-}
 
+  if (!candidates.length) {
+    candidates = lessonModule.items.filter(
+      item =>
+        item.id !== currentItem.id &&
+        item.diagnostic_tag === currentItem.diagnostic_tag &&
+        getTaskType(item) === currentTaskType
+    );
+  }
+}
+   
   if (!candidates.length) {
     lessonFeedback.innerHTML = `
       <strong>Similar Problem</strong>
