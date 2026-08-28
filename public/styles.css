@@ -308,3 +308,36 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
     order: 2;
   }
 }
+/* Lesson page layout override */
+body:has(.lesson-page) {
+  display: block;
+  min-height: 100vh;
+}
+
+body:has(.lesson-page) .lesson-page {
+  display: block;
+  width: min(1200px, calc(100% - 48px));
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  box-sizing: border-box;
+}
+
+body:has(.lesson-page) .lesson-header {
+  width: 100%;
+}
+
+body:has(.lesson-page) .lesson-header > div {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+body:has(.lesson-page) .lesson-header h1 {
+  max-width: 850px;
+  white-space: normal;
+}
+
+body:has(.lesson-page) .lesson-progress,
+body:has(.lesson-page) .lesson-workspace {
+  width: 100%;
+}
