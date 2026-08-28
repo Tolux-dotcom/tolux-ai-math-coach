@@ -318,11 +318,39 @@ lessonSimilarBtn.addEventListener("click", () => {
   const currentItem = getCurrentLessonItem();
   if (!currentItem || !lessonModule) return;
 
-  const candidates = lessonModule.items.filter(
+ function getTaskType(item) {
+  const prompt = (item.prompt || "").toLowerCase();
+
+  if (prompt.startsWith("simplify")) return "simplify";
+  if (prompt.startsWith("solve")) return "solve";
+  if (prompt.includes("no solution") || prompt.includes("infinitely many")) {
+    return "special-case";
+  }
+  if (prompt.startsWith("write") || prompt.startsWith("create")) {
+    return "model";
+  }
+
+  return "other";
+}
+
+const currentTaskType = getTaskType(currentItem);
+
+let candidates = lessonModule.items.filter(
+  item =>
+    item.id !== currentItem.id &&
+    item.diagnostic_tag === currentItem.diagnostic_tag &&
+    getTaskType(item) === currentTaskType &&
+    item.difficulty === currentItem.difficulty
+);
+
+if (!candidates.length) {
+  candidates = lessonModule.items.filter(
     item =>
       item.id !== currentItem.id &&
-      item.diagnostic_tag === currentItem.diagnostic_tag
+      item.diagnostic_tag === currentItem.diagnostic_tag &&
+      getTaskType(item) === currentTaskType
   );
+}
 
   if (!candidates.length) {
     lessonFeedback.innerHTML = `
