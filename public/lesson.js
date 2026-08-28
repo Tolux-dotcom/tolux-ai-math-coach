@@ -1,3 +1,9 @@
+const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 let lessonModule = null;
 let lessonItems = [];
 let currentItemIndex = 0;
@@ -15,7 +21,107 @@ const lessonStuckBtn = document.querySelector("#lessonStuckBtn");
 const lessonExplainBtn = document.querySelector("#lessonExplainBtn");
 const lessonSimilarBtn = document.querySelector("#lessonSimilarBtn");
 const lessonProgressBar = document.querySelector("#lessonProgressBar");
+const countedLessonInteractions = new Set();
 
+async function getLessonSession() {
+  let {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  if (!session) {
+    const { data: refreshData } =
+      await supabaseClient.auth.refreshSession();
+
+    session = refreshData?.session || null;
+  }
+
+  return session;
+}
+
+function showLessonUpgrade(message) {
+  lessonFeedback.innerHTML = `
+    <strong>Upgrade to continue</strong>
+    <p>${message}</p>
+  `;
+
+  const upgradeBtn = document.createElement("button");
+  upgradeBtn.type = "button";
+  upgradeBtn.textContent = "Go to Dashboard to Upgrade";
+  upgradeBtn.className = "upgrade-btn";
+
+  upgradeBtn.addEventListener("click", () => {
+    window.location.href = "/";
+  });
+
+  lessonFeedback.appendChild(upgradeBtn);
+
+  lessonAnswer.disabled = true;
+  submitLessonAnswer.disabled = true;
+  lessonStuckBtn.disabled = true;
+  lessonExplainBtn.disabled = true;
+  lessonSimilarBtn.disabled = true;
+}
+
+async function ensureLessonAccess(item) {
+  if (!item) return false;
+
+  const interactionKey = item.id || item.prompt;
+
+  // Do not charge twice for the same problem.
+  if (countedLessonInteractions.has(interactionKey)) {
+    return true;
+  }
+
+  try {
+    const session = await getLessonSession();
+
+    if (!session) {
+      lessonFeedback.innerHTML = `
+        <strong>Sign in required</strong>
+        <p>Please sign in to continue your Tolux lesson.</p>
+      `;
+      return false;
+    }
+
+    const response = await fetch("/api/lesson-usage", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${session.access_token}`
+      }
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.allowed) {
+      countedLessonInteractions.add(interactionKey);
+      return true;
+    }
+
+    if (data.limitReached) {
+      showLessonUpgrade(
+        data.error ||
+        "You've completed your 10 free learning interactions."
+      );
+      return false;
+    }
+
+    lessonFeedback.innerHTML = `
+      <strong>Unable to continue</strong>
+      <p>${data.error || "Please try again."}</p>
+    `;
+
+    return false;
+  } catch (error) {
+    console.error(error);
+
+    lessonFeedback.innerHTML = `
+      <strong>Connection problem</strong>
+      <p>Please try again.</p>
+    `;
+
+    return false;
+  }
+}
 async function loadLesson() {
   try {
     const response = await fetch("/a5a-linear-equations.json");
@@ -87,7 +193,7 @@ function normalizeAnswer(value) {
     .replace(/−/g, "-");
 }
 
-function checkCurrentAnswer() {
+async function checkCurrentAnswer() {
   const item = activeSimilarItem || lessonItems[currentItemIndex];
 
   if (!item) return;
@@ -100,7 +206,11 @@ function checkCurrentAnswer() {
       "Enter an answer before checking your work.";
     return;
   }
+const allowed = await ensureLessonAccess(item);
 
+if (!allowed) {
+  return;
+}
   const isCorrect =
     studentAnswer === expectedAnswer;
 
