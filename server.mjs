@@ -407,7 +407,53 @@ if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
     }
     return;
   }
+if (req.method === "POST" && req.url === "/api/lesson-usage") {
+  try {
+    const user = await getAuthenticatedUser(req);
 
+    if (!user) {
+      return send(res, 401, { error: "Please sign in to continue." });
+    }
+
+    const usage = await getStudentUsage(user.id);
+
+    if (!usage) {
+      return send(res, 500, {
+        error: "Unable to verify your learning usage right now."
+      });
+    }
+
+    if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
+      return send(res, 403, {
+        error: `You've completed your ${FREE_QUESTION_LIMIT} free learning interactions. Upgrade to continue with Tolux AI Math Coach.`,
+        limitReached: true
+      });
+    }
+
+    if (!usage.is_subscriber) {
+      const updatedUsage = await incrementStudentUsage(
+        user.id,
+        usage.questions_used
+      );
+
+      if (!updatedUsage) {
+        return send(res, 500, {
+          error: "Unable to update your learning usage right now."
+        });
+      }
+    }
+
+    return send(res, 200, {
+      allowed: true,
+      isSubscriber: usage.is_subscriber
+    });
+  } catch (err) {
+    console.error(err);
+    return send(res, 500, {
+      error: err?.message || "Unexpected server error."
+    });
+  }
+}
   if (req.method === "GET") return serveStatic(req, res);
   send(res, 405, "Method not allowed", "text/plain");
 });
