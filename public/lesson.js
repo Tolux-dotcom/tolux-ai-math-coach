@@ -394,10 +394,14 @@ if (distributionMatch) {
   return fallback[Math.min(level, fallback.length - 1)];
 }
 
-lessonStuckBtn.addEventListener("click", () => {
+lessonStuckBtn.addEventListener("click", async () => {
   const item = getCurrentLessonItem();
   if (!item) return;
+const allowed = await ensureLessonAccess(item);
 
+if (!allowed) {
+  return;
+}
   const hint = getProgressiveHint(item, hintLevel);
 
   lessonFeedback.innerHTML = `
@@ -408,10 +412,14 @@ lessonStuckBtn.addEventListener("click", () => {
   hintLevel += 1;
 });
  
- lessonExplainBtn.addEventListener("click", () => {
+ lessonExplainBtn.addEventListener("click", async () => {
   const item = getCurrentLessonItem();
   if (!item) return;
+const allowed = await ensureLessonAccess(item);
 
+if (!allowed) {
+  return;
+}
   const tag = item.diagnostic_tag || "";
 const prompt = item.prompt || "";
 
@@ -561,7 +569,7 @@ function generateCombineLikeTermsProblem() {
       "Combine the x-terms together, then combine the constant terms."
   };
 }
-lessonSimilarBtn.addEventListener("click", () => {
+lessonSimilarBtn.addEventListener("click", async () => {
   const currentItem = getCurrentLessonItem();
   if (!currentItem || !lessonModule) return;
 
@@ -623,6 +631,12 @@ if (
 
   activeSimilarItem =
     candidates[Math.floor(Math.random() * candidates.length)];
+  const allowed = await ensureLessonAccess(activeSimilarItem);
+
+if (!allowed) {
+  activeSimilarItem = null;
+  return;
+}
 
   hintLevel = 0;
 
