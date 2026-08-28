@@ -413,6 +413,44 @@ const insideX =
       "Distribute the outside factor to every term inside the parentheses."
   };
 }
+
+function generateCombineLikeTermsProblem() {
+    const a = Math.floor(Math.random() * 8) + 2;
+  const c = Math.floor(Math.random() * 8) + 2;
+
+  const bValue = Math.floor(Math.random() * 9) + 1;
+  const dValue = Math.floor(Math.random() * 9) + 1;
+
+  const bSign = Math.random() < 0.5 ? 1 : -1;
+  const dSign = Math.random() < 0.5 ? 1 : -1;
+
+  const b = bValue * bSign;
+  const d = dValue * dSign;
+
+  const bText = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+  const dText = d >= 0 ? `+ ${d}` : `- ${Math.abs(d)}`;
+
+  const answerCoefficient = a + c;
+  const answerConstant = b + d;
+
+  const answerKey =
+    answerConstant > 0
+      ? `${answerCoefficient}x+${answerConstant}`
+      : answerConstant < 0
+      ? `${answerCoefficient}x${answerConstant}`
+      : `${answerCoefficient}x`;
+
+  return {
+    id: `generated-combine-${Date.now()}`,
+    type: "generated",
+    diagnostic_tag: "combine_like_terms",
+    difficulty: "introductory",
+    prompt: `Simplify ${a}x ${bText} + ${c}x ${dText}.`,
+    answer_key: answerKey,
+    tutor_behavior:
+      "Combine the x-terms together, then combine the constant terms."
+  };
+}
 lessonSimilarBtn.addEventListener("click", () => {
   const currentItem = getCurrentLessonItem();
   if (!currentItem || !lessonModule) return;
@@ -441,6 +479,11 @@ if (
   currentTaskType === "simplify"
 ) {
   candidates = [generateDistributionSimplifyProblem()];
+} else if (
+  currentItem.diagnostic_tag === "combine_like_terms" &&
+  currentTaskType === "simplify"
+) {
+  candidates = [generateCombineLikeTermsProblem()];
 } else {
   candidates = lessonModule.items.filter(
     item =>
