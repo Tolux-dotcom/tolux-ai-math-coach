@@ -258,6 +258,7 @@ if (!allowed) {
 
 function showReadinessComplete() {
   lessonStage.textContent = "Readiness Check Complete";
+  lessonProgressBar.style.width = "25%";
 
   lessonContent.innerHTML = `
     <h2>You're ready to learn</h2>
@@ -266,14 +267,304 @@ function showReadinessComplete() {
       linear equations before moving into worked examples
       and guided practice.
     </p>
+
+    <button id="continueToConceptBtn" type="button">
+      Continue to Learn the Concept →
+    </button>
   `;
+
+  const continueBtn =
+    document.querySelector("#continueToConceptBtn");
+
+  if (continueBtn) {
+    continueBtn.addEventListener("click", showLearnConcept);
+  }
+}
+
+function showLearnConcept() {
+  lessonStage.textContent = "2. Learn the Concept";
+  lessonProgressBar.style.width = "35%";
+
+  lessonContent.innerHTML = `
+    <h2>Learn the Concept: Solving Linear Equations</h2>
+
+    <p>
+      An equation is like a balanced scale. Whatever operation
+      you perform on one side must also be performed on the other side.
+    </p>
+
+    <h3>The Goal</h3>
+    <p>
+      Isolate the variable so that the equation eventually looks like:
+      <strong>x = a number</strong>.
+    </p>
+
+    <h3>Core Steps</h3>
+    <ol>
+      <li>Simplify each side if necessary.</li>
+      <li>Use inverse operations to move constants away from the variable.</li>
+      <li>Divide or multiply to isolate the variable.</li>
+      <li>Check your answer in the original equation.</li>
+    </ol>
+
+    <h3>Example</h3>
+    <p><strong>3x + 5 = 17</strong></p>
+    <p>Subtract 5 from both sides:</p>
+    <p><strong>3x = 12</strong></p>
+    <p>Divide both sides by 3:</p>
+    <p><strong>x = 4</strong></p>
+
+    <p>
+      Check: 3(4) + 5 = 17, so the solution is correct.
+    </p>
+
+    <button id="continueToExamplesBtn" type="button">
+      Continue to Worked Examples →
+    </button>
+  `;
+  const continueExamplesBtn =
+  document.querySelector("#continueToExamplesBtn");
+
+if (continueExamplesBtn) {
+  continueExamplesBtn.addEventListener("click", showWorkedExamples);
+}
+}
+function showWorkedExamples() {
+  lessonStage.textContent = "3. Worked Examples";
+  lessonProgressBar.style.width = "50%";
 
   document.querySelector("#lessonAnswerArea").style.display = "none";
   lessonFeedback.textContent = "";
   nextLessonStep.style.display = "none";
-  lessonProgressBar.style.width = "15%";
+
+  lessonContent.innerHTML = `
+    <h2>Worked Examples</h2>
+
+    <h3>Example 1: One-Step Equation</h3>
+    <p><strong>x + 6 = 14</strong></p>
+    <p>Subtract 6 from both sides:</p>
+    <p><strong>x = 8</strong></p>
+
+    <h3>Example 2: Two-Step Equation</h3>
+    <p><strong>3x + 5 = 20</strong></p>
+    <p>Subtract 5 from both sides:</p>
+    <p><strong>3x = 15</strong></p>
+    <p>Divide both sides by 3:</p>
+    <p><strong>x = 5</strong></p>
+
+    <h3>Example 3: Variables on Both Sides</h3>
+    <p><strong>5x + 2 = 3x + 10</strong></p>
+    <p>Subtract 3x from both sides:</p>
+    <p><strong>2x + 2 = 10</strong></p>
+    <p>Subtract 2:</p>
+    <p><strong>2x = 8</strong></p>
+    <p>Divide both sides by 2:</p>
+    <p><strong>x = 4</strong></p>
+
+    <button id="continueToGuidedBtn" type="button">
+      Continue to Guided Practice →
+    </button>
+  `;
+}
+const continueGuidedBtn =
+  document.querySelector("#continueToGuidedBtn");
+
+if (continueGuidedBtn) {
+  continueGuidedBtn.addEventListener("click", showGuidedPractice);
 }
 
+function showGuidedPractice() {
+  lessonStage.textContent = "4. Guided Practice";
+  lessonProgressBar.style.width = "65%";
+
+  document.querySelector("#lessonAnswerArea").style.display = "none";
+  lessonFeedback.textContent = "";
+  nextLessonStep.style.display = "none";
+
+  lessonContent.innerHTML = `
+    <h2>Guided Practice</h2>
+
+    <h3>Problem</h3>
+    <p><strong>4x + 7 = 23</strong></p>
+
+    <p><strong>Step 1:</strong> What should we remove first?</p>
+    <p>Subtract 7 from both sides.</p>
+
+    <p><strong>4x = 16</strong></p>
+
+    <p><strong>Step 2:</strong> How do we isolate x?</p>
+    <p>Divide both sides by 4.</p>
+
+    <p><strong>x = 4</strong></p>
+
+    <p>
+      Check: 4(4) + 7 = 23, so the solution is correct.
+    </p>
+
+    <button id="continueToIndependentBtn" type="button">
+      Continue to Independent Practice →
+    </button>
+  `;
+  const continueIndependentBtn =
+  document.querySelector("#continueToIndependentBtn");
+
+if (continueIndependentBtn) {
+  continueIndependentBtn.addEventListener(
+    "click",
+    showIndependentPractice
+  );
+}
+  function showIndependentPractice() {
+  lessonStage.textContent = "5. Independent Practice";
+  lessonProgressBar.style.width = "80%";
+
+  document.querySelector("#lessonAnswerArea").style.display = "none";
+  lessonFeedback.textContent = "";
+  nextLessonStep.style.display = "none";
+
+  lessonContent.innerHTML = `
+    <h2>Independent Practice</h2>
+
+    <p>
+      Now solve this problem on your own.
+    </p>
+
+    <h3>Solve:</h3>
+    <p><strong>5x - 9 = 21</strong></p>
+
+    <label for="independentAnswer">
+      <strong>Your answer</strong>
+    </label>
+
+    <input
+      id="independentAnswer"
+      type="text"
+      placeholder="Enter x = ..."
+    />
+
+    <button id="checkIndependentBtn" type="button">
+      Check Answer
+    </button>
+
+    <div id="independentFeedback"></div>
+  `;
+
+  const answerInput =
+    document.querySelector("#independentAnswer");
+
+  const checkBtn =
+    document.querySelector("#checkIndependentBtn");
+
+  const feedback =
+    document.querySelector("#independentFeedback");
+
+  checkBtn.addEventListener("click", () => {
+    const answer = answerInput.value
+      .toLowerCase()
+      .replace(/\s+/g, "");
+
+    if (answer === "x=6" || answer === "6") {
+      feedback.innerHTML = `
+        <p><strong>Correct!</strong></p>
+        <p>
+          Add 9 to both sides: 5x = 30.
+          Then divide by 5: x = 6.
+        </p>
+
+        <button id="continueToMasteryBtn" type="button">
+          Continue to Mastery Check →
+        </button>
+      `;
+      const continueMasteryBtn =
+  document.querySelector("#continueToMasteryBtn");
+
+if (continueMasteryBtn) {
+  continueMasteryBtn.addEventListener("click", showMasteryCheck);
+}
+    } else {
+      feedback.innerHTML = `
+        <p><strong>Not quite yet.</strong></p>
+        <p>
+          Start by undoing the -9.
+          What operation will cancel -9?
+        </p>
+      `;
+    }
+  });
+}
+}
+function showMasteryCheck() {
+  lessonStage.textContent = "6. Mastery Check";
+  lessonProgressBar.style.width = "95%";
+
+  document.querySelector("#lessonAnswerArea").style.display = "none";
+  lessonFeedback.textContent = "";
+  nextLessonStep.style.display = "none";
+
+  lessonContent.innerHTML = `
+    <h2>Mastery Check</h2>
+
+    <p>Solve all three problems independently.</p>
+
+    <p><strong>1. 2x + 7 = 19</strong></p>
+    <input id="mastery1" type="text" placeholder="x = ?" />
+
+    <p><strong>2. 4x - 5 = 23</strong></p>
+    <input id="mastery2" type="text" placeholder="x = ?" />
+
+    <p><strong>3. 3x + 4 = x + 16</strong></p>
+    <input id="mastery3" type="text" placeholder="x = ?" />
+
+    <br><br>
+
+    <button id="checkMasteryBtn" type="button">
+      Check Mastery
+    </button>
+
+    <div id="masteryFeedback"></div>
+  `;
+
+  const checkMasteryBtn =
+    document.querySelector("#checkMasteryBtn");
+
+  checkMasteryBtn.addEventListener("click", () => {
+    const clean = value =>
+      value.toLowerCase().replace(/\s+/g, "").replace("x=", "");
+
+    const a1 = clean(document.querySelector("#mastery1").value);
+    const a2 = clean(document.querySelector("#mastery2").value);
+    const a3 = clean(document.querySelector("#mastery3").value);
+
+    const feedback =
+      document.querySelector("#masteryFeedback");
+
+    if (a1 === "6" && a2 === "7" && a3 === "6") {
+      lessonProgressBar.style.width = "100%";
+      lessonStage.textContent = "Lesson Complete";
+
+      feedback.innerHTML = `
+        <h3>Mastery achieved! 🎉</h3>
+        <p>You completed TEKS A.5A: Solving Linear Equations.</p>
+        <p>You are ready to continue to the next Algebra 1 lesson.</p>
+
+        <button id="finishLessonBtn" type="button">
+          Return to Dashboard
+        </button>
+      `;
+
+      document
+        .querySelector("#finishLessonBtn")
+        .addEventListener("click", () => {
+          window.location.href = "/";
+        });
+    } else {
+      feedback.innerHTML = `
+        <p><strong>Not mastered yet.</strong></p>
+        <p>Review your answers and try again.</p>
+      `;
+    }
+  });
+}
 submitLessonAnswer.addEventListener(
   "click",
   checkCurrentAnswer
@@ -282,7 +573,7 @@ submitLessonAnswer.addEventListener(
 lessonAnswer.addEventListener("keydown", event => {
   if (event.key === "Enter") {
     checkCurrentAnswer();
-  }
+   
 });
 
 nextLessonStep.addEventListener("click", () => {
