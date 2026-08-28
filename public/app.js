@@ -22,25 +22,10 @@ loadA5AModule();
 const startA5ALessonBtn = document.querySelector("#startA5ALessonBtn");
 
 function startA5ALesson() {
-  if (!a5aModule) {
-    addMessage("assistant", "The A.5A lesson is still loading. Please try again in a moment.");
-    return;
-  }
-
-  const firstDiagnostic = a5aModule.items.find(
-    item => item.type === "diagnostic"
-  );
-
-  addMessage(
-    "assistant",
-    `<strong>${a5aModule.title}</strong>
-     <p>${a5aModule.student_objective}</p>
-     <p><strong>Quick Readiness Check</strong></p>
-     <p>${firstDiagnostic.prompt}</p>`
-  );
-
-  chat.scrollTop = chat.scrollHeight;
+  window.location.href = "/lesson.html?module=alg1-a5a-linear-equations";
 }
+
+ 
 
 if (startA5ALessonBtn) {
   startA5ALessonBtn.addEventListener("click", startA5ALesson);
