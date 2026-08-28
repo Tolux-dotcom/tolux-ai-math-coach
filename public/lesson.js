@@ -1,7 +1,8 @@
 let lessonModule = null;
 let lessonItems = [];
 let currentItemIndex = 0;
-
+let hintLevel = 0;
+let activeSimilarItem = null;
 const lessonTitle = document.querySelector("#lessonTitle");
 const lessonTeks = document.querySelector("#lessonTeks");
 const lessonStage = document.querySelector("#lessonStage");
@@ -10,6 +11,9 @@ const lessonAnswer = document.querySelector("#lessonAnswer");
 const submitLessonAnswer = document.querySelector("#submitLessonAnswer");
 const lessonFeedback = document.querySelector("#lessonFeedback");
 const nextLessonStep = document.querySelector("#nextLessonStep");
+const lessonStuckBtn = document.querySelector("#lessonStuckBtn");
+const lessonExplainBtn = document.querySelector("#lessonExplainBtn");
+const lessonSimilarBtn = document.querySelector("#lessonSimilarBtn");
 const lessonProgressBar = document.querySelector("#lessonProgressBar");
 
 async function loadLesson() {
@@ -44,8 +48,9 @@ async function loadLesson() {
 }
 
 function showCurrentItem() {
-  const item = lessonItems[currentItemIndex];
-
+  const item = activeSimilarItem || lessonItems[currentItemIndex];
+hintLevel = 0;
+activeSimilarItem = null;
   if (!item) {
     showReadinessComplete();
     return;
@@ -83,7 +88,7 @@ function normalizeAnswer(value) {
 }
 
 function checkCurrentAnswer() {
-  const item = lessonItems[currentItemIndex];
+  const item = activeSimilarItem || lessonItems[currentItemIndex];
 
   if (!item) return;
 
@@ -100,12 +105,38 @@ function checkCurrentAnswer() {
     studentAnswer === expectedAnswer;
 
   if (isCorrect) {
-    lessonFeedback.innerHTML =
-      "<strong>Correct.</strong> Nice work.";
+  if (activeSimilarItem) {
+    lessonFeedback.innerHTML = `
+      <strong>Correct.</strong>
+      <p>You solved the similar problem successfully.</p>
+      <p>Now return to your original lesson problem.</p>
+    `;
 
-    lessonAnswer.disabled = true;
-    submitLessonAnswer.disabled = true;
-    nextLessonStep.style.display = "inline-block";
+    activeSimilarItem = null;
+    hintLevel = 0;
+
+    const originalItem = lessonItems[currentItemIndex];
+
+    lessonContent.innerHTML = `
+      <h2>Quick Readiness Check</h2>
+      <p>${originalItem.prompt}</p>
+    `;
+
+    lessonAnswer.value = "";
+    lessonAnswer.disabled = false;
+    submitLessonAnswer.disabled = false;
+    nextLessonStep.style.display = "none";
+    lessonAnswer.focus();
+
+    return;
+  }
+
+  lessonFeedback.innerHTML =
+    "<strong>Correct.</strong> Nice work.";
+
+  lessonAnswer.disabled = true;
+  submitLessonAnswer.disabled = true;
+  nextLessonStep.style.display = "inline-block";
   } else {
     lessonFeedback.innerHTML = `
       <strong>Not quite yet.</strong>
@@ -148,5 +179,179 @@ nextLessonStep.addEventListener("click", () => {
   currentItemIndex += 1;
   showCurrentItem();
 });
+function getCurrentLessonItem() {
+  return activeSimilarItem || lessonItems[currentItemIndex];
+}
 
+function getProgressiveHint(item, level) {
+  const tag = item.diagnostic_tag || "";
+
+  const hints = {
+    distribution: [
+      "Look at the number outside the parentheses. It must multiply every term inside.",
+      "Multiply the outside number by the first term, then multiply it by the second term.",
+      "For 3(x + 4), first get 3x. Then calculate 3 × 4."
+    ],
+
+    combine_like_terms: [
+      "Look for terms that have exactly the same variable part.",
+      "Group the x-terms together and keep constants together.",
+      "Add or subtract the coefficients of the like terms."
+    ],
+
+    inverse_operations: [
+      "Identify what operation is being done to the variable.",
+      "Undo operations in reverse order while keeping both sides balanced.",
+      "Use the same inverse operation on both sides until the variable is isolated."
+    ],
+
+    signed_numbers: [
+      "Pay close attention to the positive and negative signs.",
+      "Work one signed-number operation at a time.",
+      "Check the sign of your result before moving to the next algebra step."
+    ],
+
+    variables_both_sides: [
+      "Try collecting the variable terms on one side first.",
+      "Use the same operation on both sides to move one variable term.",
+      "Once the variables are together, combine constants and isolate the variable."
+    ],
+
+    special_case_identity: [
+      "Simplify both sides completely.",
+      "Notice what happens if the variable terms cancel.",
+      "If both sides become the same true statement, there are infinitely many solutions."
+    ],
+
+    special_case_contradiction: [
+      "Simplify both sides completely.",
+      "Watch what remains if the variable terms cancel.",
+      "If you end with a false statement, such as 5 = 9, there is no solution."
+    ],
+
+    fraction_equation: [
+      "Look for the least common denominator.",
+      "Multiply every term by the least common denominator to clear the fractions.",
+      "After the fractions disappear, solve the resulting linear equation normally."
+    ]
+  };
+
+  const skillHints = hints[tag];
+
+  if (skillHints) {
+    return skillHints[Math.min(level, skillHints.length - 1)];
+  }
+
+  const fallback = [
+    "Think about the first mathematical step you can justify.",
+    item.tutor_behavior || "Work through the problem one step at a time.",
+    "Write only the next valid step instead of trying to jump directly to the answer."
+  ];
+
+  return fallback[Math.min(level, fallback.length - 1)];
+}
+
+lessonStuckBtn.addEventListener("click", () => {
+  const item = getCurrentLessonItem();
+  if (!item) return;
+
+  const hint = getProgressiveHint(item, hintLevel);
+
+  lessonFeedback.innerHTML = `
+    <strong>Hint ${Math.min(hintLevel + 1, 3)}</strong>
+    <p>${hint}</p>
+  `;
+
+  hintLevel += 1;
+});
+ 
+ lessonExplainBtn.addEventListener("click", () => {
+  const item = getCurrentLessonItem();
+  if (!item) return;
+
+  const tag = item.diagnostic_tag || "";
+
+  const explanations = {
+    distribution: `
+      <strong>Another way: think in groups.</strong>
+      <p>3(x + 4) means three groups of (x + 4).</p>
+      <p>(x + 4) + (x + 4) + (x + 4)</p>
+      <p>Combine the x terms, then combine the constants.</p>
+    `,
+
+    combine_like_terms: `
+      <strong>Another way: sort terms into families.</strong>
+      <p>Terms can only combine when their variable parts match exactly.</p>
+      <p>Put matching variable terms together, then combine their coefficients.</p>
+    `,
+
+    inverse_operations: `
+      <strong>Another way: use the balance-scale idea.</strong>
+      <p>An equation says both sides have equal value.</p>
+      <p>Whatever operation you perform on one side must also be performed on the other.</p>
+      <p>Keep the equation balanced while isolating the variable.</p>
+    `,
+
+    variables_both_sides: `
+      <strong>Another way: organize first.</strong>
+      <p>Collect variable terms on one side and constants on the other.</p>
+      <p>Then simplify and isolate the variable.</p>
+    `,
+
+    fraction_equation: `
+      <strong>Another way: remove the fractions first.</strong>
+      <p>Find the least common denominator and multiply every term by it.</p>
+      <p>Then solve the equivalent equation with whole-number coefficients.</p>
+    `
+  };
+
+  lessonFeedback.innerHTML =
+    explanations[tag] ||
+    `
+      <strong>Another way to think about it</strong>
+      <p>${item.tutor_behavior}</p>
+      <p>Focus on why the next mathematical step is valid.</p>
+    `;
+});
+
+lessonSimilarBtn.addEventListener("click", () => {
+  const currentItem = getCurrentLessonItem();
+  if (!currentItem || !lessonModule) return;
+
+  const candidates = lessonModule.items.filter(
+    item =>
+      item.id !== currentItem.id &&
+      item.diagnostic_tag === currentItem.diagnostic_tag
+  );
+
+  if (!candidates.length) {
+    lessonFeedback.innerHTML = `
+      <strong>Similar Problem</strong>
+      <p>Tolux does not yet have another stored problem for this exact skill.</p>
+    `;
+    return;
+  }
+
+  activeSimilarItem =
+    candidates[Math.floor(Math.random() * candidates.length)];
+
+  hintLevel = 0;
+
+  lessonContent.innerHTML = `
+    <h2>Similar Problem</h2>
+    <p>${activeSimilarItem.prompt}</p>
+  `;
+
+  lessonAnswer.value = "";
+  lessonAnswer.disabled = false;
+  submitLessonAnswer.disabled = false;
+  nextLessonStep.style.display = "none";
+
+  lessonFeedback.innerHTML = `
+    <strong>Practice the same skill.</strong>
+    <p>Solve this problem. After you get it correct, Tolux will return you to the original lesson problem.</p>
+  `;
+
+  lessonAnswer.focus();
+});
 loadLesson();
