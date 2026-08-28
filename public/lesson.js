@@ -303,14 +303,54 @@ lessonStuckBtn.addEventListener("click", () => {
   if (!item) return;
 
   const tag = item.diagnostic_tag || "";
+const prompt = item.prompt || "";
 
+let distributionExplanation = `
+  <strong>Another way: separate the two products.</strong>
+  <p>Use the distributive property on the current expression.</p>
+`;
+
+const distributionMatch = prompt.match(
+  /(-?\d+)\s*\(\s*(-?\d*)x\s*([+-])\s*(\d+)\s*\)/i
+);
+
+if (distributionMatch) {
+  const outside = Number(distributionMatch[1]);
+
+  const coefficientText = distributionMatch[2];
+  const coefficient =
+    coefficientText === "" ? 1 :
+    coefficientText === "-" ? -1 :
+    Number(coefficientText);
+
+  const sign = distributionMatch[3];
+  const constant = Number(distributionMatch[4]);
+
+  const signedConstant = sign === "+" ? constant : -constant;
+
+  const xProduct = outside * coefficient;
+  const constantProduct = outside * signedConstant;
+
+  const insideX =
+    coefficient === 1 ? "x" :
+    coefficient === -1 ? "-x" :
+    `${coefficient}x`;
+
+  const finalConstant =
+    constantProduct >= 0
+      ? `+ ${constantProduct}`
+      : `- ${Math.abs(constantProduct)}`;
+
+  distributionExplanation = `
+    <strong>Another way: separate the two products.</strong>
+    <p>${outside}(${insideX} ${sign} ${constant})</p>
+    <p>= (${outside} × ${insideX}) + (${outside} × ${signedConstant})</p>
+    <p>= ${xProduct}x ${finalConstant}</p>
+    <p>So each term inside the parentheses is multiplied by ${outside} separately.</p>
+  `;
+}
   const explanations = {
-    distribution: `
-      <strong>Another way: think in groups.</strong>
-      <p>3(x + 4) means three groups of (x + 4).</p>
-      <p>(x + 4) + (x + 4) + (x + 4)</p>
-      <p>Combine the x terms, then combine the constants.</p>
-    `,
+    distribution: distributionExplanation,
 
     combine_like_terms: `
       <strong>Another way: sort terms into families.</strong>
