@@ -394,7 +394,8 @@ function generateDistributionSimplifyProblem() {
 
   const signedConstant =
     sign === 1 ? `+ ${constant}` : `- ${constant}`;
-
+const insideX =
+  coefficient === 1 ? "x" : `${coefficient}x`;
   const answerConstant = outside * constant * sign;
   const answerCoefficient = outside * coefficient;
 
@@ -403,7 +404,7 @@ function generateDistributionSimplifyProblem() {
     type: "generated",
     diagnostic_tag: "distribution",
     difficulty: "introductory",
-    prompt: `Simplify ${outside}(${coefficient}x ${signedConstant}).`,
+   prompt: `Simplify ${outside}(${insideX} ${signedConstant}).`,
     answer_key:
       answerConstant >= 0
         ? `${answerCoefficient}x+${answerConstant}`
