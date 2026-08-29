@@ -179,6 +179,33 @@ async function getLessonSession() {
   return session;
 }
 
+async function fetchWithLessonSession(url, options = {}) {
+  let session = await getLessonSession();
+  if (!session) return { response: null, session: null };
+
+  const request = activeSession => fetch(url, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      Authorization: `Bearer ${activeSession.access_token}`
+    }
+  });
+
+  let response = await request(session);
+
+  if (response.status === 401) {
+    const { data, error } = await supabaseClient.auth.refreshSession();
+    const refreshedSession = error ? null : data?.session;
+
+    if (refreshedSession) {
+      session = refreshedSession;
+      response = await request(session);
+    }
+  }
+
+  return { response, session };
+}
+
 function showLessonUpgrade(message) {
   lessonLocked = true;
   setFeedback(`
@@ -207,9 +234,12 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
   }
 
   try {
-    const session = await getLessonSession();
+    const { response, session } = await fetchWithLessonSession(
+      "/api/lesson-usage",
+      { method: "POST" }
+    );
 
-    if (!session) {
+    if (!session || !response) {
       setFeedback(`
         <div class="lesson-state lesson-state-warning">
           <strong>Sign in required</strong>
@@ -220,12 +250,6 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
       return false;
     }
 
-    const response = await fetch("/api/lesson-usage", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${session.access_token}`
-      }
-    });
     const data = await response.json();
 
     if (response.ok && data.allowed) {
@@ -574,19 +598,19 @@ async function saveLessonCompletion() {
     console.warn("Lesson completion could not be saved locally:", error);
   }
 
-  const session = await getLessonSession();
-  if (!session) {
+  const { response, session } = await fetchWithLessonSession(
+    "/api/lesson-progress",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(report)
+    }
+  );
+  if (!session || !response) {
     throw new Error("Sign in is required to sync lesson progress.");
   }
-
-  const response = await fetch("/api/lesson-progress", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${session.access_token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(report)
-  });
   const data = await response.json();
 
   if (!response.ok || !data.activity) {
