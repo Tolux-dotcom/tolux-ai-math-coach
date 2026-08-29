@@ -7,13 +7,14 @@ import {
   selectStageItems,
   validateLessonModule
 } from "./lesson-core.mjs";
+import {
+  findCourseModule,
+  validateCourseCatalog
+} from "./course-core.mjs";
 
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
-const LESSON_MODULE_PATHS = Object.freeze({
-  "alg1-a5a-linear-equations": "/a5a-linear-equations.json"
-});
 const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
 const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 
@@ -1188,9 +1189,22 @@ async function loadLesson() {
     const requestedModule =
       new URLSearchParams(window.location.search).get("module") ||
       "alg1-a5a-linear-equations";
-    const modulePath = LESSON_MODULE_PATHS[requestedModule];
+    const catalogResponse = await fetch("/algebra1-course.json");
+    if (!catalogResponse.ok) {
+      throw new Error(
+        `Course catalog could not be loaded (${catalogResponse.status}).`
+      );
+    }
+    const catalog = await catalogResponse.json();
+    const catalogErrors = validateCourseCatalog(catalog);
+    if (catalogErrors.length > 0) throw new Error(catalogErrors[0]);
 
-    if (!modulePath) throw new Error("That lesson module is not available.");
+    const moduleEntry = findCourseModule(catalog, requestedModule);
+    const modulePath = moduleEntry?.lesson_path;
+
+    if (!modulePath || !moduleEntry.available_modes?.includes("lesson")) {
+      throw new Error("That lesson module is not available yet.");
+    }
 
     const response = await fetch(modulePath);
     if (!response.ok) {

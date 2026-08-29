@@ -1,0 +1,156 @@
+{
+  "catalog_version": "2026.08",
+  "course_id": "algebra-1",
+  "course": "Algebra 1",
+  "jurisdiction": "Texas",
+  "standards_framework": "TEKS §111.39",
+  "standards_source": "https://tea2.tea.texas.gov/WorkArea/linkit.aspx?ItemID=2147507302&LinkIdentifier=id",
+  "content_standard_count": 49,
+  "curriculum_commitment": "Every Algebra 1 content expectation is mapped to one teachable module. Mathematical process standards are embedded across lessons, practice, feedback, and assessments.",
+  "embedded_process_standards": [
+    { "teks": "A.1A", "title": "Apply mathematics to real situations" },
+    { "teks": "A.1B", "title": "Use and evaluate a problem-solving model" },
+    { "teks": "A.1C", "title": "Select appropriate tools and techniques" },
+    { "teks": "A.1D", "title": "Communicate with multiple representations" },
+    { "teks": "A.1E", "title": "Create and use mathematical representations" },
+    { "teks": "A.1F", "title": "Analyze and connect mathematical relationships" },
+    { "teks": "A.1G", "title": "Explain and justify with precise language" }
+  ],
+  "practice_difficulties": [
+    { "id": "foundational", "label": "Foundational", "description": "Build fluency with one clear concept at a time." },
+    { "id": "grade-level", "label": "Grade-level", "description": "Apply the complete standard in representative Algebra 1 problems." },
+    { "id": "challenging", "label": "Challenging", "description": "Handle multi-step reasoning, edge cases, and deeper transfer." },
+    { "id": "mixed", "label": "Mixed", "description": "Rotate through all three levels for cumulative practice." }
+  ],
+  "units": [
+    {
+      "unit_id": "algebraic-tools",
+      "sequence": 1,
+      "title": "Algebraic Tools and Expressions",
+      "description": "Build the symbolic fluency used throughout the course: radicals, exponents, polynomial operations, equivalent forms, and factoring.",
+      "modules": [
+        { "module_id": "alg1-a11a-radical-expressions", "sequence": 1, "teks": ["A.11A"], "title": "Simplify Numerical Radicals", "summary": "Simplify numerical expressions involving square roots.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a11b-laws-of-exponents", "sequence": 2, "teks": ["A.11B"], "title": "Laws of Exponents", "summary": "Simplify numeric and algebraic expressions with integral and rational exponents.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10a-add-subtract-polynomials", "sequence": 3, "teks": ["A.10A"], "title": "Add and Subtract Polynomials", "summary": "Combine polynomial expressions of degree one and two.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10b-multiply-polynomials", "sequence": 4, "teks": ["A.10B"], "title": "Multiply Polynomials", "summary": "Multiply polynomials of degree one and two using structure and the distributive property.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10c-divide-polynomials", "sequence": 5, "teks": ["A.10C"], "title": "Divide Polynomials", "summary": "Find polynomial quotients when the divisor degree does not exceed the dividend degree.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10d-equivalent-polynomial-forms", "sequence": 6, "teks": ["A.10D"], "title": "Equivalent Polynomial Forms", "summary": "Rewrite first- and second-degree polynomial expressions using the distributive property.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10e-factor-trinomials", "sequence": 7, "teks": ["A.10E"], "title": "Factor Trinomials", "summary": "Factor quadratic trinomials over the real numbers, including perfect-square trinomials.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10f-difference-of-squares", "sequence": 8, "teks": ["A.10F"], "title": "Difference of Two Squares", "summary": "Recognize and factor binomials that have difference-of-squares structure.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "functions-sequences-formulas",
+      "sequence": 2,
+      "title": "Functions, Sequences, and Formulas",
+      "description": "Use function language, recognize relations, analyze sequences, and rearrange formulas.",
+      "modules": [
+        { "module_id": "alg1-a12a-identify-functions", "sequence": 1, "teks": ["A.12A"], "title": "Identify Functions", "summary": "Decide whether verbal, tabular, graphical, and symbolic relations define functions.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a12b-evaluate-functions", "sequence": 2, "teks": ["A.12B"], "title": "Evaluate Function Notation", "summary": "Evaluate functions at one or more inputs from their domains.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a12c-sequence-terms", "sequence": 3, "teks": ["A.12C"], "title": "Terms of Arithmetic and Geometric Sequences", "summary": "Identify sequence terms from function rules and recursive processes.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a12d-sequence-formulas", "sequence": 4, "teks": ["A.12D"], "title": "Write Sequence Formulas", "summary": "Write nth-term formulas for arithmetic and geometric sequences.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a12e-literal-equations", "sequence": 5, "teks": ["A.12E"], "title": "Solve Literal Equations", "summary": "Rearrange mathematical and scientific formulas for a specified variable.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "writing-linear-models",
+      "sequence": 3,
+      "title": "Writing Linear Models",
+      "description": "Represent linear functions, inequalities, and systems from points, tables, graphs, descriptions, and real situations.",
+      "modules": [
+        { "module_id": "alg1-a2a-linear-domain-range", "sequence": 1, "teks": ["A.2A"], "title": "Linear Domain and Range", "summary": "Determine and represent domain and range for mathematical and real-world linear functions.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2b-equations-from-points", "sequence": 2, "teks": ["A.2B"], "title": "Write Lines from Points and Slope", "summary": "Write linear equations in slope-intercept, standard, and point-slope form from points and slope information.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2c-equations-from-representations", "sequence": 3, "teks": ["A.2C"], "title": "Write Lines from Tables, Graphs, and Descriptions", "summary": "Construct a linear equation from a table, graph, or verbal description.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2d-direct-variation", "sequence": 4, "teks": ["A.2D"], "title": "Direct Variation", "summary": "Write and solve equations that model direct variation.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2e-parallel-lines", "sequence": 5, "teks": ["A.2E"], "title": "Equations of Parallel Lines", "summary": "Write an equation of a line through a point and parallel to a given line.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2f-perpendicular-lines", "sequence": 6, "teks": ["A.2F"], "title": "Equations of Perpendicular Lines", "summary": "Write an equation of a line through a point and perpendicular to a given line.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2g-horizontal-vertical-lines", "sequence": 7, "teks": ["A.2G"], "title": "Horizontal and Vertical Lines", "summary": "Write equations parallel or perpendicular to an axis and classify zero or undefined slope.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2h-write-linear-inequalities", "sequence": 8, "teks": ["A.2H"], "title": "Write Linear Inequalities in Two Variables", "summary": "Construct two-variable linear inequalities from tables, graphs, and descriptions.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a2i-write-linear-systems", "sequence": 9, "teks": ["A.2I"], "title": "Write Systems of Linear Equations", "summary": "Construct systems of two linear equations from tables, graphs, and descriptions.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "graphing-linear-relationships",
+      "sequence": 4,
+      "title": "Graphing Linear Relationships",
+      "description": "Analyze slope, rate of change, intercepts, transformations, systems, and solution regions on the coordinate plane.",
+      "modules": [
+        { "module_id": "alg1-a3a-determine-slope", "sequence": 1, "teks": ["A.3A"], "title": "Determine Slope", "summary": "Find slope from a table, graph, points, or equation in multiple forms.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3b-rate-of-change", "sequence": 2, "teks": ["A.3B"], "title": "Rate of Change in Context", "summary": "Calculate and interpret linear rate of change from tables, graphs, and equations.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3c-graph-linear-functions", "sequence": 3, "teks": ["A.3C"], "title": "Graph Linear Functions and Key Features", "summary": "Graph lines and identify slope, intercepts, and zeros in mathematical and real contexts.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3d-graph-linear-inequalities", "sequence": 4, "teks": ["A.3D"], "title": "Graph Linear Inequalities", "summary": "Graph solution sets of two-variable linear inequalities.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3e-linear-transformations", "sequence": 5, "teks": ["A.3E"], "title": "Transform the Linear Parent Function", "summary": "Determine how parameter changes transform the graph of f(x) = x.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3f-graph-linear-systems", "sequence": 6, "teks": ["A.3F"], "title": "Graph Systems of Linear Equations", "summary": "Graph two linear equations and determine whether and where they intersect.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3g-estimate-system-solutions", "sequence": 7, "teks": ["A.3G"], "title": "Estimate System Solutions from Graphs", "summary": "Estimate solutions to real-world linear systems graphically.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a3h-graph-systems-of-inequalities", "sequence": 8, "teks": ["A.3H"], "title": "Graph Systems of Linear Inequalities", "summary": "Graph and interpret overlapping solution regions for systems of inequalities.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "linear-data-modeling",
+      "sequence": 5,
+      "title": "Linear Data Modeling",
+      "description": "Evaluate linear association, separate association from causation, and use lines of best fit for prediction.",
+      "modules": [
+        { "module_id": "alg1-a4a-correlation-coefficient", "sequence": 1, "teks": ["A.4A"], "title": "Correlation Coefficient", "summary": "Use technology to calculate correlation and interpret the strength of linear association.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a4b-association-causation", "sequence": 2, "teks": ["A.4B"], "title": "Association versus Causation", "summary": "Compare statistical association with evidence of cause and effect.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a4c-linear-regression", "sequence": 3, "teks": ["A.4C"], "title": "Linear Models for Data", "summary": "Write reasonable linear fits, estimate values, and make real-world predictions.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "solving-linear-equations",
+      "sequence": 6,
+      "title": "Solving Equations, Inequalities, and Systems",
+      "description": "Solve the core linear relationships that power Algebra 1, including distribution, variables on both sides, inequalities, and two-variable systems.",
+      "modules": [
+        { "module_id": "alg1-a5a-linear-equations", "sequence": 1, "teks": ["A.5A"], "title": "Solving Linear Equations", "summary": "Solve one-variable linear equations, including distribution and variables on both sides.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a5a-linear-equations.json", "practice_generator": "a5a" },
+        { "module_id": "alg1-a5b-linear-inequalities", "sequence": 2, "teks": ["A.5B"], "title": "Solving Linear Inequalities", "summary": "Solve one-variable linear inequalities, including distribution, variables on both sides, and inequality reversal.", "status": "available", "available_modes": ["practice"], "practice_generator": "a5b" },
+        { "module_id": "alg1-a5c-linear-systems", "sequence": 3, "teks": ["A.5C"], "title": "Solving Systems of Linear Equations", "summary": "Solve two-variable linear systems in mathematical and real-world problems.", "status": "available", "available_modes": ["practice"], "practice_generator": "a5c" }
+      ]
+    },
+    {
+      "unit_id": "writing-quadratic-functions",
+      "sequence": 7,
+      "title": "Writing Quadratic Functions",
+      "description": "Represent quadratic functions from domains, ranges, vertices, points, solutions, and graphs.",
+      "modules": [
+        { "module_id": "alg1-a6a-quadratic-domain-range", "sequence": 1, "teks": ["A.6A"], "title": "Quadratic Domain and Range", "summary": "Determine and represent domains and ranges of quadratic functions.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a6b-write-quadratics-from-vertex", "sequence": 2, "teks": ["A.6B"], "title": "Write Quadratics from a Vertex and Point", "summary": "Write vertex form from a vertex and another point, then convert it to standard form.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a6c-write-quadratics-from-solutions", "sequence": 3, "teks": ["A.6C"], "title": "Write Quadratics from Solutions and Graphs", "summary": "Construct quadratic functions from real zeros and related graphs.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "graphing-quadratics",
+      "sequence": 8,
+      "title": "Graphing and Transforming Quadratics",
+      "description": "Analyze every key feature of a parabola and connect its graph, factors, zeros, and transformations.",
+      "modules": [
+        { "module_id": "alg1-a7a-quadratic-key-features", "sequence": 1, "teks": ["A.7A"], "title": "Graph Quadratics and Identify Key Features", "summary": "Graph parabolas and identify intercepts, zeros, extrema, vertex, and axis of symmetry.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a7b-factors-and-zeros", "sequence": 2, "teks": ["A.7B"], "title": "Connect Factors and Zeros", "summary": "Explain how linear factors of a quadratic expression determine function zeros.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a7c-quadratic-transformations", "sequence": 3, "teks": ["A.7C"], "title": "Transform the Quadratic Parent Function", "summary": "Determine how parameter changes transform the graph of f(x) = x².", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "solving-modeling-quadratics",
+      "sequence": 9,
+      "title": "Solving and Modeling Quadratics",
+      "description": "Solve quadratic equations by multiple methods and use quadratic models to make data-based predictions.",
+      "modules": [
+        { "module_id": "alg1-a8a-solve-quadratic-equations", "sequence": 1, "teks": ["A.8A"], "title": "Solve Quadratic Equations", "summary": "Solve real-solution quadratics by factoring, square roots, completing the square, and the quadratic formula.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a8b-quadratic-regression", "sequence": 2, "teks": ["A.8B"], "title": "Quadratic Models for Data", "summary": "Use technology to fit quadratic models and make estimates and predictions.", "status": "planned", "available_modes": [] }
+      ]
+    },
+    {
+      "unit_id": "exponential-functions",
+      "sequence": 10,
+      "title": "Exponential Functions and Models",
+      "description": "Write, graph, interpret, and fit exponential growth and decay models.",
+      "modules": [
+        { "module_id": "alg1-a9a-exponential-domain-range", "sequence": 1, "teks": ["A.9A"], "title": "Exponential Domain and Range", "summary": "Determine and represent domains and ranges of functions in the form f(x) = abˣ.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a9b-interpret-exponential-parameters", "sequence": 2, "teks": ["A.9B"], "title": "Interpret Exponential Parameters", "summary": "Explain the real-world meanings of a and b in f(x) = abˣ.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a9c-write-exponential-models", "sequence": 3, "teks": ["A.9C"], "title": "Write Growth and Decay Models", "summary": "Write exponential functions with rational bases for mathematical and real-world growth or decay.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a9d-graph-exponential-functions", "sequence": 4, "teks": ["A.9D"], "title": "Graph Exponential Functions", "summary": "Graph exponential growth and decay and identify intercepts and asymptotes.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a9e-exponential-regression", "sequence": 5, "teks": ["A.9E"], "title": "Exponential Models for Data", "summary": "Use technology to fit exponential functions and make real-world predictions.", "status": "planned", "available_modes": [] }
+      ]
+    }
+  ]
+}
