@@ -3,6 +3,15 @@
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
+const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
+let dashboardProgressActivities = [];
+let dashboardProgressSource = "empty";
+let progressRefreshSequence = 0;
+
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
 
 // Tolux Algebra 1 A.5A curriculum module
 let a5aModule = null;
@@ -13,6 +22,11 @@ async function loadA5AModule() {
     if (!response.ok) throw new Error(`A5A module load failed: ${response.status}`);
     a5aModule = await response.json();
     console.log("Tolux A.5A curriculum loaded:", a5aModule.title);
+    refreshA5ALessonPanel();
+    renderDashboardProgress(
+      dashboardProgressActivities,
+      dashboardProgressSource
+    );
   } catch (error) {
     console.error("Unable to load Tolux A.5A curriculum:", error);
   }
@@ -42,9 +56,125 @@ const updatePasswordBtn = document.querySelector("#updatePasswordBtn");
 const resetPasswordMessage = document.querySelector("#resetPasswordMessage");
 const signOutBtn = document.querySelector("#signOutBtn");
 const authMessage = document.querySelector("#authMessage");
+const authPanel = document.querySelector("#authPanel");
 const authLoggedOut = document.querySelector("#authLoggedOut");
 const authLoggedIn = document.querySelector("#authLoggedIn");
 const signedInEmail = document.querySelector("#signedInEmail");
+const internalQaPanel = document.querySelector("#internalQaPanel");
+const internalQaStatus = document.querySelector("#internalQaStatus");
+const startInternalQaBtn = document.querySelector("#startInternalQaBtn");
+const endInternalQaBtn = document.querySelector("#endInternalQaBtn");
+
+function hideInternalQaPanel() {
+  internalQaPanel.hidden = true;
+  internalQaStatus.textContent = "";
+  startInternalQaBtn.disabled = false;
+  startInternalQaBtn.textContent = "Start Fresh QA Session";
+  endInternalQaBtn.hidden = true;
+  endInternalQaBtn.disabled = false;
+}
+
+function renderInternalQaState(data) {
+  internalQaPanel.hidden = false;
+  const questionsUsed = Number(data.questionsUsed) || 0;
+  const limit = Number(data.limit) || 10;
+
+  if (data.active) {
+    internalQaStatus.textContent =
+      `Active: ${questionsUsed} of ${limit} simulated interactions used.`;
+    startInternalQaBtn.textContent = "Restart QA Session at 0";
+    endInternalQaBtn.hidden = false;
+  } else {
+    internalQaStatus.textContent =
+      "Inactive. Normal student usage rules are currently in effect.";
+    startInternalQaBtn.textContent = "Start Fresh QA Session";
+    endInternalQaBtn.hidden = true;
+  }
+}
+
+async function refreshInternalQaUI(session) {
+  if (!session?.user) {
+    hideInternalQaPanel();
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/internal-qa/session", {
+      headers: { Authorization: `Bearer ${session.access_token}` }
+    });
+
+    if (!response.ok) {
+      hideInternalQaPanel();
+      return;
+    }
+
+    renderInternalQaState(await response.json());
+  } catch (error) {
+    console.error("Unable to load internal QA status:", error);
+    hideInternalQaPanel();
+  }
+}
+
+function renderAuthSession(session) {
+  if (resetPasswordPanel.style.display === "block") return;
+
+  if (session?.user) {
+    authLoggedOut.style.display = "none";
+    authLoggedIn.style.display = "block";
+    signedInEmail.textContent = session.user.email || "Signed-in student";
+    authMessage.textContent = "";
+    void refreshInternalQaUI(session);
+    void refreshDashboardProgress(session);
+    return;
+  }
+
+  authLoggedIn.style.display = "none";
+  authLoggedOut.style.display = "block";
+  signedInEmail.textContent = "";
+  hideInternalQaPanel();
+  renderDashboardProgress(readLocalLessonActivities(), "local");
+}
+
+async function updateInternalQaSession(action) {
+  startInternalQaBtn.disabled = true;
+  endInternalQaBtn.disabled = true;
+  internalQaStatus.textContent =
+    action === "start" ? "Starting a fresh QA session…" : "Ending QA session…";
+
+  try {
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+      hideInternalQaPanel();
+      authMessage.textContent = "Please sign in again to manage QA testing.";
+      return;
+    }
+
+    const response = await fetch("/api/internal-qa/session", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ action })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to update the QA session.");
+    }
+
+    renderInternalQaState(data);
+  } catch (error) {
+    internalQaPanel.hidden = false;
+    internalQaStatus.textContent = error.message;
+  } finally {
+    startInternalQaBtn.disabled = false;
+    endInternalQaBtn.disabled = false;
+  }
+}
 
 signUpBtn.addEventListener("click", async () => {
   const email = authEmail.value.trim();
@@ -90,10 +220,7 @@ signInBtn.addEventListener("click", async () => {
     return;
   }
 
-  authMessage.textContent = "";
-  authLoggedOut.style.display = "none";
-  authLoggedIn.style.display = "block";
-  signedInEmail.textContent = data.user.email;
+  renderAuthSession(data.session);
 });
 forgotPasswordBtn.addEventListener("click", async () => {
   const email = authEmail.value.trim();
@@ -166,9 +293,7 @@ signOutBtn.addEventListener("click", async () => {
     return;
   }
 
-  authLoggedIn.style.display = "none";
-  authLoggedOut.style.display = "block";
-  signedInEmail.textContent = "";
+  renderAuthSession(null);
   authEmail.value = "";
   authPassword.value = "";
   authMessage.textContent = "You have been signed out.";
@@ -181,27 +306,55 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     resetPasswordPanel.style.display = "block";
     resetPasswordMessage.textContent =
       "Enter and confirm your new password.";
+    hideInternalQaPanel();
+    return;
   }
+
+  renderAuthSession(session);
 });
 async function refreshAuthUI() {
   if (resetPasswordPanel.style.display === "block") {
-  return;
-}
-  const { data: { session } } = await supabaseClient.auth.getSession();
+    return;
+  }
 
-  if (session?.user) {
-    authLoggedOut.style.display = "none";
-    authLoggedIn.style.display = "block";
-    signedInEmail.textContent = session.user.email;
-    authMessage.textContent = "";
-  } else {
-    authLoggedIn.style.display = "none";
-    authLoggedOut.style.display = "block";
-    signedInEmail.textContent = "";
+  authPanel.setAttribute("aria-busy", "true");
+
+  try {
+    const {
+      data: { session },
+      error
+    } = await supabaseClient.auth.getSession();
+
+    if (error) throw error;
+    renderAuthSession(session);
+  } catch (error) {
+    console.error("Unable to refresh authentication state:", error);
+    renderAuthSession(null);
+    authMessage.textContent =
+      "We could not confirm your sign-in status. Please try again.";
+  } finally {
+    authPanel.setAttribute("aria-busy", "false");
   }
 }
 
-refreshAuthUI();
+startInternalQaBtn.addEventListener("click", () => {
+  void updateInternalQaSession("start");
+});
+
+endInternalQaBtn.addEventListener("click", () => {
+  void updateInternalQaSession("end");
+});
+
+void refreshAuthUI();
+window.addEventListener("pageshow", event => {
+  if (event.persisted) void refreshAuthUI();
+
+  if (!window.location.hash) {
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  }
+});
 let course = "Algebra 1";
 let mode = "Tutor Mode";
 let imageDataUrl = null;
@@ -880,7 +1033,238 @@ document.querySelectorAll("[data-math]").forEach((button) => {
     input.setSelectionRange(newPosition, newPosition);
   });
 });
-// Update Continue Where You Left Off and Recent Activity
+// Keep lesson completion and mastery visible across devices and sessions.
+
+function moduleTitle(moduleId) {
+  if (a5aModule?.module_id === moduleId) return a5aModule.title;
+  return String(moduleId || "Lesson")
+    .split("-")
+    .filter(Boolean)
+    .map(word => word[0].toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function generateProgressCompletionId() {
+  if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+
+  const bytes = new Uint8Array(16);
+  if (window.crypto?.getRandomValues) {
+    window.crypto.getRandomValues(bytes);
+  } else {
+    for (let index = 0; index < bytes.length; index += 1) {
+      bytes[index] = Math.floor(Math.random() * 256);
+    }
+  }
+
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = [...bytes].map(value => value.toString(16).padStart(2, "0"));
+  return [
+    hex.slice(0, 4).join(""),
+    hex.slice(4, 6).join(""),
+    hex.slice(6, 8).join(""),
+    hex.slice(8, 10).join(""),
+    hex.slice(10).join("")
+  ].join("-");
+}
+
+function migrateLegacyLocalLessonProgress() {
+  try {
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
+
+      const activity = JSON.parse(localStorage.getItem(key));
+      if (!activity?.module_id || activity.completion_id) continue;
+
+      activity.completion_id = generateProgressCompletionId();
+      localStorage.setItem(key, JSON.stringify(activity));
+      localStorage.setItem(
+        `${PENDING_PROGRESS_PREFIX}${activity.completion_id}`,
+        JSON.stringify(activity)
+      );
+    }
+  } catch (error) {
+    console.warn("Unable to prepare legacy lesson progress for sync:", error);
+  }
+}
+
+function formatCompletionDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Completion time unavailable";
+
+  return date.toLocaleString([], {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+}
+
+function formatSkillTime(seconds) {
+  const minutes = Math.max(1, Math.round((Number(seconds) || 0) / 60));
+  return `${minutes} min on skill`;
+}
+
+function readLocalLessonActivities() {
+  const activities = [];
+
+  try {
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
+
+      const activity = JSON.parse(localStorage.getItem(key));
+      if (activity?.module_id && activity?.completed_at) {
+        activities.push(activity);
+      }
+    }
+  } catch (error) {
+    console.warn("Unable to read locally saved lesson progress:", error);
+  }
+
+  return activities.sort(
+    (left, right) =>
+      new Date(right.completed_at).getTime() -
+      new Date(left.completed_at).getTime()
+  );
+}
+
+function readPendingLessonProgress() {
+  const pending = [];
+
+  try {
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (!key?.startsWith(PENDING_PROGRESS_PREFIX)) continue;
+
+      const report = JSON.parse(localStorage.getItem(key));
+      if (report?.completion_id) pending.push({ key, report });
+    }
+  } catch (error) {
+    console.warn("Unable to read pending lesson progress:", error);
+  }
+
+  return pending.slice(0, 25);
+}
+
+async function syncPendingLessonProgress(session) {
+  migrateLegacyLocalLessonProgress();
+
+  for (const { key, report } of readPendingLessonProgress()) {
+    try {
+      const response = await fetch("/api/lesson-progress", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(report)
+      });
+
+      if (response.ok) localStorage.removeItem(key);
+    } catch (error) {
+      console.warn("Pending lesson progress will be retried later:", error);
+    }
+  }
+}
+
+function renderDashboardProgress(activities, source = "account") {
+  const continueTopic = document.querySelector("#continueTopic");
+  const continueProgress = document.querySelector("#continueProgress");
+  const recentActivity = document.querySelector("#recentActivity");
+  const progressStatus = document.querySelector("#progressStatus");
+  const safeActivities = Array.isArray(activities) ? activities : [];
+
+  dashboardProgressActivities = safeActivities;
+  dashboardProgressSource = safeActivities.length ? source : "empty";
+
+  if (safeActivities.length === 0) {
+    if (continueTopic) {
+      continueTopic.innerHTML =
+        "<strong>No lesson activity yet</strong><span>Start a lesson to begin building mastery.</span>";
+    }
+    if (continueProgress) continueProgress.value = 0;
+    if (recentActivity) {
+      recentActivity.innerHTML =
+        '<li class="progress-empty">Your completed lessons will appear here.</li>';
+    }
+    if (progressStatus) {
+      progressStatus.textContent =
+        source === "local" ? "Sign in to sync progress across devices." : "";
+    }
+    return;
+  }
+
+  const latest = safeActivities[0];
+  const latestTitle = moduleTitle(latest.module_id);
+
+  if (continueTopic) {
+    continueTopic.replaceChildren();
+    const title = document.createElement("strong");
+    title.textContent = latestTitle;
+    const detail = document.createElement("span");
+    detail.textContent =
+      `${latest.mastery_label} • ${latest.mastery_score}% • ` +
+      formatSkillTime(latest.time_on_skill_seconds);
+    continueTopic.append(title, detail);
+  }
+
+  if (continueProgress) continueProgress.value = latest.mastery_score;
+
+  if (recentActivity) {
+    recentActivity.replaceChildren();
+    for (const activity of safeActivities.slice(0, 5)) {
+      const item = document.createElement("li");
+      const title = document.createElement("strong");
+      title.textContent = moduleTitle(activity.module_id);
+      const detail = document.createElement("span");
+      detail.textContent =
+        `${activity.mastery_label} • ${activity.mastery_score}% • ` +
+        `${formatCompletionDate(activity.completed_at)}` +
+        (activity.qa_mode ? " • Internal QA" : "");
+      item.append(title, detail);
+      recentActivity.append(item);
+    }
+  }
+
+  if (progressStatus) {
+    progressStatus.textContent = source === "account"
+      ? "Synced to your Tolux account."
+      : "Saved on this device; sign in to sync across devices.";
+  }
+}
+
+async function refreshDashboardProgress(session) {
+  if (!session?.access_token) {
+    renderDashboardProgress(readLocalLessonActivities(), "local");
+    return;
+  }
+
+  const refreshId = ++progressRefreshSequence;
+
+  try {
+    await syncPendingLessonProgress(session);
+    const response = await fetch("/api/lesson-progress", {
+      headers: { Authorization: `Bearer ${session.access_token}` }
+    });
+    const data = await response.json();
+
+    if (!response.ok || !Array.isArray(data.activities)) {
+      throw new Error(data.error || "Unable to load lesson progress.");
+    }
+
+    if (refreshId !== progressRefreshSequence) return;
+    renderDashboardProgress(data.activities, "account");
+  } catch (error) {
+    console.error("Unable to refresh lesson progress:", error);
+    if (refreshId !== progressRefreshSequence) return;
+    renderDashboardProgress(readLocalLessonActivities(), "local");
+    const progressStatus = document.querySelector("#progressStatus");
+    if (progressStatus) {
+      progressStatus.textContent =
+        "Account progress is temporarily unavailable; showing this device's saved activity.";
+    }
+  }
+}
 
 function updateDashboardActivity(problemText) {
   const continueTopic = document.querySelector("#continueTopic");
@@ -888,17 +1272,21 @@ function updateDashboardActivity(problemText) {
   const recentActivity = document.querySelector("#recentActivity");
 
   if (continueTopic) {
-    continueTopic.innerHTML =
-      `<b>Current problem</b><br>${problemText}`;
+    continueTopic.innerHTML = "";
+    const title = document.createElement("strong");
+    title.textContent = "Current problem";
+    const detail = document.createElement("span");
+    detail.textContent = problemText;
+    continueTopic.append(title, detail);
   }
 
-  if (continueProgress) {
-    continueProgress.value = 50;
-  }
+  if (continueProgress) continueProgress.value = 50;
 
   if (recentActivity) {
-    recentActivity.textContent =
-      `Latest: ${problemText}`;
+    recentActivity.innerHTML = "";
+    const item = document.createElement("li");
+    item.textContent = `Latest problem: ${problemText}`;
+    recentActivity.append(item);
   }
 }
 
@@ -908,20 +1296,31 @@ function saveDashboardActivity(problemText) {
 }
 
 function restoreDashboardActivity() {
+  migrateLegacyLocalLessonProgress();
   const savedProblem = localStorage.getItem("toluxLastProblem");
 
   if (savedProblem) {
     updateDashboardActivity(savedProblem);
+  }
+
+  const localLessonActivities = readLocalLessonActivities();
+  if (localLessonActivities.length > 0) {
+    renderDashboardProgress(localLessonActivities, "local");
   }
 }
 
 restoreDashboardActivity();
 
 dashboardBtn?.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  void refreshAuthUI();
+  authPanel.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-progressBtn?.addEventListener("click", () => {
+progressBtn?.addEventListener("click", async () => {
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+  await refreshDashboardProgress(session);
   document.querySelector("#continueTopic")?.scrollIntoView({
     behavior: "smooth",
     block: "center"

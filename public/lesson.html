@@ -23,7 +23,15 @@
       <p id="lessonStage">Getting your lesson ready...</p>
 
       <div class="progress-track">
-        <div id="lessonProgressBar" class="progress-fill"></div>
+        <div
+          id="lessonProgressBar"
+          class="progress-fill"
+          role="progressbar"
+          aria-label="Lesson progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        ></div>
       </div>
     </section>
 
@@ -55,7 +63,7 @@
           </button>
         </div>
 
-        <div class="lesson-help">
+        <div id="lessonHelp" class="lesson-help">
           <button id="lessonStuckBtn" type="button">
             I'm Stuck
           </button>
@@ -79,7 +87,7 @@
       <aside class="lesson-sidebar">
         <h3>Lesson Path</h3>
 
-        <ol>
+        <ol id="lessonPath">
           <li>Quick Readiness Check</li>
           <li>Learn the Concept</li>
           <li>Worked Examples</li>
@@ -90,7 +98,7 @@
 
         <p>
           <strong>Goal:</strong>
-          Master TEKS A.5A
+          <span id="lessonGoal">Master TEKS A.5A</span>
         </p>
       </aside>
 
@@ -98,6 +106,6 @@
 
   </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/lesson.js"></script>
+  <script type="module" src="/lesson.js"></script>
 </body>
 </html>

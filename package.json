@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/app.js && node --check public/lesson.js && node --check public/lesson-core.mjs",
+    "test": "node --test"
   },
   "dependencies": {
   "openai": "^5.0.0",

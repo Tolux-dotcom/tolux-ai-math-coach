@@ -38,7 +38,7 @@
       </div>
       <div class="status"><span>🔥 5 day streak</span><span>★ 1,250 pts</span></div>
     </header>
-<section class="panel" id="authPanel">
+<section class="panel" id="authPanel" aria-live="polite">
   <h2>Student Sign In</h2>
 
  <div id="authLoggedOut">
@@ -82,6 +82,21 @@
   <div id="authLoggedIn" style="display:none;">
     <p>Signed in as <strong id="signedInEmail"></strong></p>
     <button id="signOutBtn" type="button">Sign Out</button>
+  </div>
+  <div id="internalQaPanel" class="internal-qa-panel" hidden>
+    <h3>Internal QA Session</h3>
+    <p>
+      Preview-only test usage is isolated from the student's real allowance.
+    </p>
+    <p id="internalQaStatus"></p>
+    <div class="internal-qa-actions">
+      <button id="startInternalQaBtn" type="button">
+        Start Fresh QA Session
+      </button>
+      <button id="endInternalQaBtn" type="button" hidden>
+        End QA Session
+      </button>
+    </div>
   </div>
 </section>
     <section class="panel">
@@ -167,15 +182,21 @@
       <p class="fine">Prototype: text and photo input. AI runs when an OpenAI API key is configured; otherwise Demo Mode responds locally.</p>
     </section>
 
-    <section class="bottom-grid">
+    <section class="bottom-grid" id="progressOverview" aria-labelledby="progressHeading">
       <div class="panel mini">
-  <h3>Continue where you left off</h3>
-  <p id="continueTopic"><b>No activity yet</b><br>Start a problem to begin.</p>
+  <h3 id="progressHeading">My Progress</h3>
+  <div id="continueTopic" class="progress-summary">
+    <strong>No lesson activity yet</strong>
+    <span>Start a lesson to begin building mastery.</span>
+  </div>
   <progress id="continueProgress" value="0" max="100"></progress>
+  <p id="progressStatus" class="progress-sync-status" aria-live="polite"></p>
 </div>
     <div class="panel mini">
   <h3>Recent activity</h3>
-  <p id="recentActivity">Your latest work will appear here.</p>
+  <ul id="recentActivity" class="progress-activity-list">
+    <li class="progress-empty">Your completed lessons will appear here.</li>
+  </ul>
 </div>
     </section>
 

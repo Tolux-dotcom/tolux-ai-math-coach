@@ -5,6 +5,11 @@ import { fileURLToPath } from "node:url";
 import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
+import { createInternalQaController } from "./internal-qa.mjs";
+import {
+  buildLessonProgressRow,
+  normalizeLessonProgressReport
+} from "./lesson-progress.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.join(__dirname, "public");
@@ -12,6 +17,7 @@ const port = process.env.PORT || 3000;
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
+const internalQa = createInternalQaController();
 
 const supabaseAdmin =
   process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY
@@ -96,6 +102,59 @@ async function incrementStudentUsage(userId, currentCount) {
   return data;
 }
 
+const LESSON_PROGRESS_FIELDS = [
+  "client_completion_id",
+  "module_id",
+  "completed_at",
+  "mastery_label",
+  "mastery_score",
+  "is_subscriber",
+  "qa_mode",
+  "time_on_skill_seconds",
+  "item_records"
+].join(", ");
+
+async function saveStudentLessonProgress(userId, report, options = {}) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const row = {
+    ...buildLessonProgressRow(userId, report, options),
+    updated_at: new Date().toISOString()
+  };
+  const { data, error } = await supabaseAdmin
+    .from("lesson_completions")
+    .upsert(row, {
+      onConflict: "user_id,client_completion_id"
+    })
+    .select(LESSON_PROGRESS_FIELDS)
+    .single();
+
+  if (error) {
+    console.error("Failed to save lesson progress:", error);
+    return null;
+  }
+
+  return data;
+}
+
+async function getStudentLessonProgress(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("lesson_completions")
+    .select(LESSON_PROGRESS_FIELDS)
+    .eq("user_id", userId)
+    .order("completed_at", { ascending: false })
+    .limit(25);
+
+  if (error) {
+    console.error("Failed to read lesson progress:", error);
+    return null;
+  }
+
+  return data || [];
+}
+
 const FREE_QUESTION_LIMIT = 10;
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
@@ -126,11 +185,12 @@ Core rules:
 - Do not ask whether the student wants a plotted image, graph, or list of plotting points when the student has already requested a graph; the app renders the interactive graph automatically.
 `;
 
-function send(res, status, data, type="application/json") {
+function send(res, status, data, type="application/json", extraHeaders = {}) {
   res.writeHead(status, {
     "Content-Type": type,
     "Cache-Control": "no-store",
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
+    ...extraHeaders
   });
   res.end(type === "application/json" ? JSON.stringify(data) : data);
 }
@@ -166,6 +226,8 @@ if (rel === "/") rel = "/index.html";
     ".html": "text/html; charset=utf-8",
     ".css": "text/css; charset=utf-8",
     ".js": "application/javascript; charset=utf-8",
+    ".mjs": "application/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
     ".svg": "image/svg+xml",
     ".png": "image/png"
   };
@@ -180,6 +242,133 @@ const server = http.createServer(async (req, res) => {
       "Access-Control-Allow-Methods": "POST,GET,OPTIONS"
     });
     return res.end();
+  }
+  if (
+    (req.method === "GET" || req.method === "POST") &&
+    req.url === "/api/internal-qa/session"
+  ) {
+    try {
+      const user = await getAuthenticatedUser(req);
+
+      if (!user || !internalQa.isAuthorized(user.id)) {
+        return send(res, 404, { error: "Not found." });
+      }
+
+      const currentSession = internalQa.readSession(
+        req.headers.cookie,
+        user.id
+      );
+
+      if (req.method === "GET") {
+        return send(res, 200, {
+          available: true,
+          active: Boolean(currentSession),
+          questionsUsed: currentSession?.questionsUsed || 0,
+          limit: FREE_QUESTION_LIMIT
+        });
+      }
+
+      const { action } = await readJson(req);
+
+      if (action === "end") {
+        return send(
+          res,
+          200,
+          { available: true, active: false },
+          "application/json",
+          { "Set-Cookie": internalQa.clearCookie() }
+        );
+      }
+
+      if (action !== "start") {
+        return send(res, 400, { error: "Unsupported QA session action." });
+      }
+
+      const started = internalQa.start(user.id);
+      return send(
+        res,
+        200,
+        {
+          available: true,
+          active: true,
+          questionsUsed: started.session.questionsUsed,
+          limit: FREE_QUESTION_LIMIT
+        },
+        "application/json",
+        { "Set-Cookie": started.cookie }
+      );
+    } catch (err) {
+      console.error("Internal QA session error:", err);
+      return send(res, 500, { error: "Unable to manage the QA session." });
+    }
+  }
+  if (
+    (req.method === "GET" || req.method === "POST") &&
+    req.url === "/api/lesson-progress"
+  ) {
+    try {
+      const user = await getAuthenticatedUser(req);
+
+      if (!user) {
+        return send(res, 401, { error: "Please sign in to view progress." });
+      }
+
+      if (!supabaseAdmin) {
+        return send(res, 503, { error: "Progress storage is not configured." });
+      }
+
+      if (req.method === "GET") {
+        const activities = await getStudentLessonProgress(user.id);
+
+        if (!activities) {
+          return send(res, 500, {
+            error: "Unable to load lesson progress right now."
+          });
+        }
+
+        return send(res, 200, { activities });
+      }
+
+      const input = await readJson(req);
+      let report;
+
+      try {
+        report = normalizeLessonProgressReport(input);
+      } catch (error) {
+        return send(res, 400, { error: error.message });
+      }
+
+      const qaSession = internalQa.readSession(req.headers.cookie, user.id);
+      let isSubscriber = false;
+
+      if (!qaSession) {
+        const usage = await getStudentUsage(user.id);
+        if (!usage) {
+          return send(res, 500, {
+            error: "Unable to verify the student account right now."
+          });
+        }
+        isSubscriber = Boolean(usage.is_subscriber);
+      }
+
+      const saved = await saveStudentLessonProgress(user.id, report, {
+        isSubscriber,
+        qaMode: Boolean(qaSession)
+      });
+
+      if (!saved) {
+        return send(res, 500, {
+          error: "Unable to save lesson progress right now."
+        });
+      }
+
+      return send(res, 200, { activity: saved });
+    } catch (err) {
+      console.error("Lesson progress error:", err);
+      return send(res, 500, {
+        error: err?.message || "Unexpected server error."
+      });
+    }
   }
 if (req.method === "POST" && req.url === "/api/stripe-webhook") {
   try {
@@ -350,7 +539,14 @@ if (!user) {
   });
 }
 
-const usage = await getStudentUsage(user.id);
+const qaSession = internalQa.readSession(req.headers.cookie, user.id);
+const usage = qaSession
+  ? {
+      user_id: user.id,
+      questions_used: qaSession.questionsUsed,
+      is_subscriber: false
+    }
+  : await getStudentUsage(user.id);
 
 if (!usage) {
   return send(res, 500, {
@@ -361,7 +557,8 @@ if (!usage) {
 if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
   return send(res, 403, {
     error: `You’ve completed your ${FREE_QUESTION_LIMIT} free coaching questions. Upgrade to continue learning with Tolux AI Math Coach.`,
-    limitReached: true
+    limitReached: true,
+    qaMode: Boolean(qaSession)
   });
 }
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -397,10 +594,25 @@ if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
       });
 
       
-      if (!usage.is_subscriber) {
-  await incrementStudentUsage(user.id, usage.questions_used);
-}
-      send(res, 200, { reply: response.output_text || "I could not generate a response." });
+      let responseHeaders = {};
+
+      if (qaSession) {
+        const advancedQa = internalQa.advance(qaSession);
+        responseHeaders = { "Set-Cookie": advancedQa.cookie };
+      } else if (!usage.is_subscriber) {
+        await incrementStudentUsage(user.id, usage.questions_used);
+      }
+
+      send(
+        res,
+        200,
+        {
+          reply: response.output_text || "I could not generate a response.",
+          qaMode: Boolean(qaSession)
+        },
+        "application/json",
+        responseHeaders
+      );
     } catch (err) {
       console.error(err);
       send(res, 500, { error: err?.message || "Unexpected server error." });
@@ -415,7 +627,14 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
       return send(res, 401, { error: "Please sign in to continue." });
     }
 
-    const usage = await getStudentUsage(user.id);
+    const qaSession = internalQa.readSession(req.headers.cookie, user.id);
+    const usage = qaSession
+      ? {
+          user_id: user.id,
+          questions_used: qaSession.questionsUsed,
+          is_subscriber: false
+        }
+      : await getStudentUsage(user.id);
 
     if (!usage) {
       return send(res, 500, {
@@ -426,8 +645,28 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
     if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
       return send(res, 403, {
         error: `You've completed your ${FREE_QUESTION_LIMIT} free learning interactions. Upgrade to continue with Tolux AI Math Coach.`,
-        limitReached: true
+        limitReached: true,
+        qaMode: Boolean(qaSession),
+        questionsUsed: usage.questions_used,
+        limit: FREE_QUESTION_LIMIT
       });
+    }
+
+    if (qaSession) {
+      const advancedQa = internalQa.advance(qaSession);
+      return send(
+        res,
+        200,
+        {
+          allowed: true,
+          isSubscriber: false,
+          qaMode: true,
+          questionsUsed: advancedQa.session.questionsUsed,
+          limit: FREE_QUESTION_LIMIT
+        },
+        "application/json",
+        { "Set-Cookie": advancedQa.cookie }
+      );
     }
 
     if (!usage.is_subscriber) {
@@ -445,7 +684,8 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
 
     return send(res, 200, {
       allowed: true,
-      isSubscriber: usage.is_subscriber
+      isSubscriber: usage.is_subscriber,
+      qaMode: false
     });
   } catch (err) {
     console.error(err);
