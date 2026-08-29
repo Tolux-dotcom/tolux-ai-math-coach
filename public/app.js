@@ -1303,12 +1303,12 @@ function renderDashboardProgress(activities, source = "account") {
   if (safeActivities.length === 0) {
     if (continueTopic) {
       continueTopic.innerHTML =
-        "<strong>No lesson activity yet</strong><span>Start a lesson to begin building mastery.</span>";
+        "<strong>No learning activity yet</strong><span>Start a lesson or practice session to begin building mastery.</span>";
     }
     if (continueProgress) continueProgress.value = 0;
     if (recentActivity) {
       recentActivity.innerHTML =
-        '<li class="progress-empty">Your completed lessons will appear here.</li>';
+        '<li class="progress-empty">Your completed lessons and practice sessions will appear here.</li>';
     }
     if (progressStatus) {
       progressStatus.textContent =
