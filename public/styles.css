@@ -432,6 +432,61 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
   cursor: pointer;
 }
 
+.lesson-link-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.completion-save-status {
+  min-height: 24px;
+  margin: 18px 0 0;
+  color: #475467;
+}
+
+.progress-summary {
+  display: grid;
+  gap: 5px;
+  min-height: 54px;
+  margin-bottom: 10px;
+}
+
+.progress-summary span,
+.progress-activity-list span {
+  display: block;
+  margin-top: 4px;
+  color: #5d6879;
+  font-size: 0.92rem;
+}
+
+.progress-sync-status {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: #5d6879;
+  font-size: 0.84rem;
+}
+
+.progress-activity-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progress-activity-list li {
+  padding-bottom: 11px;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.progress-activity-list li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.progress-activity-list .progress-empty {
+  color: #5d6879;
+}
+
 .explanation-field {
   margin-top: 20px;
 }

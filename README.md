@@ -10,6 +10,7 @@ This starter is a working local web prototype for the approved Tolux AI Math Coa
 - Chat-style tutoring area
 - “I’m stuck,” “Explain another way,” and “Similar problem” controls
 - Photo attachment and preview
+- Persistent authenticated lesson-completion and mastery history
 - Local Demo Mode for simple linear equations
 - Optional live AI connection through the OpenAI Responses API
 - Master tutoring rules enforced server-side, where students cannot edit them
@@ -65,6 +66,20 @@ the normal student gate.
 The mechanism is disabled in production even if the other variables are present.
 Do not place the cookie secret or the allowlist in browser-side code.
 
+## Lesson progress storage
+
+Apply `supabase/migrations/202608290001_create_lesson_completions.sql` to the
+linked Supabase project before deploying code that uses persistent progress.
+The server records one append-only completion per student attempt and uses a
+client completion UUID to make retries idempotent. Browser storage is retained
+only as an offline/retry bridge; the authenticated account record is the source
+used by Dashboard and My Progress.
+
+The `lesson_completions` table has row-level security enabled and no browser
+policies. Only the server-side Supabase service role reads or writes it. Internal
+preview QA completions are marked with `qa_mode` so test activity remains
+identifiable without weakening the real student usage gate.
+
 ## Phase 1 acceptance tests
 
 Before inviting students, test at least:
@@ -87,7 +102,7 @@ For every test, score:
 ## Next build
 
 1. Add Supabase authentication and student accounts.
-2. Store sessions and skill mastery.
+2. Expand persistent skill mastery into longitudinal skill-level analytics.
 3. Add curriculum/topic picker.
 4. Add structured practice generation and scoring.
 5. Add teacher-quality eval suite.

@@ -121,6 +121,7 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
   const document = new FakeDocument();
   const storage = new Map();
   let usageCalls = 0;
+  const progressRequests = [];
 
   const localStorage = {
     getItem(key) {
@@ -128,6 +129,9 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
     },
     setItem(key, value) {
       storage.set(key, String(value));
+    },
+    removeItem(key) {
+      storage.delete(key);
     }
   };
   const window = {
@@ -153,7 +157,7 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
       }
     }
   };
-  const fetch = async url => {
+  const fetch = async (url, options = {}) => {
     if (url === "/a5a-linear-equations.json") {
       return {
         ok: true,
@@ -184,6 +188,24 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
         status: 200,
         async json() {
           return { allowed: true, isSubscriber: false };
+        }
+      };
+    }
+
+    if (url === "/api/lesson-progress") {
+      const report = JSON.parse(options.body);
+      progressRequests.push(report);
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return {
+            activity: {
+              ...report,
+              client_completion_id: report.completion_id,
+              qa_mode: true
+            }
+          };
         }
       };
     }
@@ -221,6 +243,7 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
     content,
     get,
     next,
+    progressRequests,
     stage,
     storage,
     submit,
@@ -259,7 +282,14 @@ async function moveToMastery(harness) {
 
 test("student can complete the entire data-driven A5A lesson", async () => {
   const harness = await createHarness("mastery-pass");
-  const { content, stage, storage, submitAndAdvance, usageCalls } = harness;
+  const {
+    content,
+    progressRequests,
+    stage,
+    storage,
+    submitAndAdvance,
+    usageCalls
+  } = harness;
 
   assert.match(content.innerHTML, /Simplify 3\(x \+ 4\)/);
   await moveToMastery(harness);
@@ -287,6 +317,22 @@ test("student can complete the entire data-driven A5A lesson", async () => {
   );
   assert.equal(saved.mastery_label, "Mastered");
   assert.equal(saved.mastery_score, 100);
+
+  await waitFor(
+    () => progressRequests.length === 1,
+    "The lesson completion was not sent to persistent progress storage."
+  );
+  assert.equal(progressRequests[0].module_id, "alg1-a5a-linear-equations");
+  assert.equal(progressRequests[0].item_records.length, 10);
+  await waitFor(
+    () => harness.get("completionSaveStatus").textContent.includes("Progress saved"),
+    "The completion save status did not reach its success state."
+  );
+  assert.equal(harness.get("returnDashboardBtn").disabled, false);
+  assert.match(
+    harness.get("completionSaveStatus").textContent,
+    /Progress saved/
+  );
 });
 
 test("help and a similar problem preserve capacity for all ten assessed items", async () => {

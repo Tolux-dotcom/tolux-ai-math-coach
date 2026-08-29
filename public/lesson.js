@@ -14,6 +14,8 @@ const SUPABASE_PUBLISHABLE_KEY =
 const LESSON_MODULE_PATHS = Object.freeze({
   "alg1-a5a-linear-equations": "/a5a-linear-equations.json"
 });
+const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
+const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
@@ -53,6 +55,8 @@ let recheckResults = [];
 let recheckUsageKeys = new Map();
 let lessonLocked = false;
 let isSubscriber = false;
+let completionReport = null;
+let completionSavePromise = null;
 
 const countedLessonInteractions = new Set();
 const itemRecords = new Map();
@@ -474,16 +478,73 @@ function renderCompletion() {
         You completed TEKS ${escapeHtml(lessonModule.teks.join(", "))}:
         ${escapeHtml(lessonModule.title)}.
       </p>
-      <a class="lesson-link-button" href="/">Return to Dashboard</a>
+      <p id="completionSaveStatus" class="completion-save-status" role="status">
+        Saving your mastery progress…
+      </p>
+      <button
+        id="returnDashboardBtn"
+        class="lesson-link-button"
+        type="button"
+        disabled
+      >
+        Return to Dashboard
+      </button>
     </div>
   `;
   showInterface();
   setFeedback();
-  saveLessonCompletion();
+  const returnDashboardBtn = document.querySelector("#returnDashboardBtn");
+  const completionSaveStatus = document.querySelector("#completionSaveStatus");
+
+  completionSavePromise = saveLessonCompletion()
+    .then(() => {
+      completionSaveStatus.textContent =
+        "Progress saved. Your dashboard and My Progress are up to date.";
+    })
+    .catch(error => {
+      console.warn("Lesson progress will be retried from the dashboard:", error);
+      completionSaveStatus.textContent =
+        "Saved on this device. Tolux will retry the secure account save on your dashboard.";
+    })
+    .finally(() => {
+      returnDashboardBtn.disabled = false;
+    });
+
+  returnDashboardBtn.addEventListener("click", async () => {
+    await completionSavePromise;
+    window.location.href = "/";
+  });
 }
 
-function saveLessonCompletion() {
-  const report = {
+function generateCompletionId() {
+  if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+
+  const bytes = new Uint8Array(16);
+  if (window.crypto?.getRandomValues) {
+    window.crypto.getRandomValues(bytes);
+  } else {
+    for (let index = 0; index < bytes.length; index += 1) {
+      bytes[index] = Math.floor(Math.random() * 256);
+    }
+  }
+
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = [...bytes].map(value => value.toString(16).padStart(2, "0"));
+  return [
+    hex.slice(0, 4).join(""),
+    hex.slice(4, 6).join(""),
+    hex.slice(6, 8).join(""),
+    hex.slice(8, 10).join(""),
+    hex.slice(10).join("")
+  ].join("-");
+}
+
+function buildLessonCompletionReport() {
+  if (completionReport) return completionReport;
+
+  completionReport = {
+    completion_id: generateCompletionId(),
     module_id: lessonModule.module_id,
     completed_at: new Date().toISOString(),
     mastery_label: masterySummary.label,
@@ -493,14 +554,48 @@ function saveLessonCompletion() {
     item_records: [...itemRecords.values()]
   };
 
+  return completionReport;
+}
+
+async function saveLessonCompletion() {
+  const report = buildLessonCompletionReport();
+  const moduleKey = `${LESSON_PROGRESS_PREFIX}${lessonModule.module_id}`;
+  const pendingKey = `${PENDING_PROGRESS_PREFIX}${report.completion_id}`;
+
   try {
-    localStorage.setItem(
-      `toluxLessonProgress:${lessonModule.module_id}`,
-      JSON.stringify(report)
-    );
+    localStorage.setItem(moduleKey, JSON.stringify(report));
+    localStorage.setItem(pendingKey, JSON.stringify(report));
   } catch (error) {
     console.warn("Lesson completion could not be saved locally:", error);
   }
+
+  const session = await getLessonSession();
+  if (!session) {
+    throw new Error("Sign in is required to sync lesson progress.");
+  }
+
+  const response = await fetch("/api/lesson-progress", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${session.access_token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(report)
+  });
+  const data = await response.json();
+
+  if (!response.ok || !data.activity) {
+    throw new Error(data.error || "Unable to save lesson progress.");
+  }
+
+  try {
+    localStorage.setItem(moduleKey, JSON.stringify(data.activity));
+    localStorage.removeItem(pendingKey);
+  } catch (error) {
+    console.warn("Saved progress could not be reconciled locally:", error);
+  }
+
+  return data.activity;
 }
 
 function remediationReviewMarkup() {

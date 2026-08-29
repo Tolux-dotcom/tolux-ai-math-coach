@@ -182,15 +182,21 @@
       <p class="fine">Prototype: text and photo input. AI runs when an OpenAI API key is configured; otherwise Demo Mode responds locally.</p>
     </section>
 
-    <section class="bottom-grid">
+    <section class="bottom-grid" id="progressOverview" aria-labelledby="progressHeading">
       <div class="panel mini">
-  <h3>Continue where you left off</h3>
-  <p id="continueTopic"><b>No activity yet</b><br>Start a problem to begin.</p>
+  <h3 id="progressHeading">My Progress</h3>
+  <div id="continueTopic" class="progress-summary">
+    <strong>No lesson activity yet</strong>
+    <span>Start a lesson to begin building mastery.</span>
+  </div>
   <progress id="continueProgress" value="0" max="100"></progress>
+  <p id="progressStatus" class="progress-sync-status" aria-live="polite"></p>
 </div>
     <div class="panel mini">
   <h3>Recent activity</h3>
-  <p id="recentActivity">Your latest work will appear here.</p>
+  <ul id="recentActivity" class="progress-activity-list">
+    <li class="progress-empty">Your completed lessons will appear here.</li>
+  </ul>
 </div>
     </section>
 

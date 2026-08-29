@@ -6,6 +6,10 @@ import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { createInternalQaController } from "./internal-qa.mjs";
+import {
+  buildLessonProgressRow,
+  normalizeLessonProgressReport
+} from "./lesson-progress.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.join(__dirname, "public");
@@ -96,6 +100,59 @@ async function incrementStudentUsage(userId, currentCount) {
   }
 
   return data;
+}
+
+const LESSON_PROGRESS_FIELDS = [
+  "client_completion_id",
+  "module_id",
+  "completed_at",
+  "mastery_label",
+  "mastery_score",
+  "is_subscriber",
+  "qa_mode",
+  "time_on_skill_seconds",
+  "item_records"
+].join(", ");
+
+async function saveStudentLessonProgress(userId, report, options = {}) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const row = {
+    ...buildLessonProgressRow(userId, report, options),
+    updated_at: new Date().toISOString()
+  };
+  const { data, error } = await supabaseAdmin
+    .from("lesson_completions")
+    .upsert(row, {
+      onConflict: "user_id,client_completion_id"
+    })
+    .select(LESSON_PROGRESS_FIELDS)
+    .single();
+
+  if (error) {
+    console.error("Failed to save lesson progress:", error);
+    return null;
+  }
+
+  return data;
+}
+
+async function getStudentLessonProgress(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("lesson_completions")
+    .select(LESSON_PROGRESS_FIELDS)
+    .eq("user_id", userId)
+    .order("completed_at", { ascending: false })
+    .limit(25);
+
+  if (error) {
+    console.error("Failed to read lesson progress:", error);
+    return null;
+  }
+
+  return data || [];
 }
 
 const FREE_QUESTION_LIMIT = 10;
@@ -243,6 +300,74 @@ const server = http.createServer(async (req, res) => {
     } catch (err) {
       console.error("Internal QA session error:", err);
       return send(res, 500, { error: "Unable to manage the QA session." });
+    }
+  }
+  if (
+    (req.method === "GET" || req.method === "POST") &&
+    req.url === "/api/lesson-progress"
+  ) {
+    try {
+      const user = await getAuthenticatedUser(req);
+
+      if (!user) {
+        return send(res, 401, { error: "Please sign in to view progress." });
+      }
+
+      if (!supabaseAdmin) {
+        return send(res, 503, { error: "Progress storage is not configured." });
+      }
+
+      if (req.method === "GET") {
+        const activities = await getStudentLessonProgress(user.id);
+
+        if (!activities) {
+          return send(res, 500, {
+            error: "Unable to load lesson progress right now."
+          });
+        }
+
+        return send(res, 200, { activities });
+      }
+
+      const input = await readJson(req);
+      let report;
+
+      try {
+        report = normalizeLessonProgressReport(input);
+      } catch (error) {
+        return send(res, 400, { error: error.message });
+      }
+
+      const qaSession = internalQa.readSession(req.headers.cookie, user.id);
+      let isSubscriber = false;
+
+      if (!qaSession) {
+        const usage = await getStudentUsage(user.id);
+        if (!usage) {
+          return send(res, 500, {
+            error: "Unable to verify the student account right now."
+          });
+        }
+        isSubscriber = Boolean(usage.is_subscriber);
+      }
+
+      const saved = await saveStudentLessonProgress(user.id, report, {
+        isSubscriber,
+        qaMode: Boolean(qaSession)
+      });
+
+      if (!saved) {
+        return send(res, 500, {
+          error: "Unable to save lesson progress right now."
+        });
+      }
+
+      return send(res, 200, { activity: saved });
+    } catch (err) {
+      console.error("Lesson progress error:", err);
+      return send(res, 500, {
+        error: err?.message || "Unexpected server error."
+      });
     }
   }
 if (req.method === "POST" && req.url === "/api/stripe-webhook") {
