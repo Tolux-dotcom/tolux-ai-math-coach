@@ -44,6 +44,7 @@ let currentItemIndex = 0;
 let workedExampleIndex = 0;
 let hintLevel = 0;
 let activeSimilarItem = null;
+let activeSimilarUsageKey = null;
 let masteryResults = [];
 let masterySummary = null;
 let missedMasteryItems = [];
@@ -297,7 +298,7 @@ function getCurrentItem() {
 }
 
 function currentUsageKey(item) {
-  if (activeSimilarItem) return item.id;
+  if (activeSimilarItem) return activeSimilarUsageKey || item.id;
   if (currentStageType === "recheck") {
     return recheckUsageKeys.get(item.id) || item.id;
   }
@@ -369,6 +370,7 @@ function startQuestionStage(type, items) {
   stageItems = items || selectStageItems(lessonModule, type);
   currentItemIndex = 0;
   activeSimilarItem = null;
+  activeSimilarUsageKey = null;
 
   if (stageItems.length === 0) {
     advanceStage();
@@ -615,6 +617,7 @@ function renderStage() {
   }
 
   activeSimilarItem = null;
+  activeSimilarUsageKey = null;
   hintLevel = 0;
   workedExampleIndex = 0;
 
@@ -732,6 +735,7 @@ async function checkCurrentAnswer() {
     }
 
     activeSimilarItem = null;
+    activeSimilarUsageKey = null;
     renderCurrentQuestion();
     setFeedback(`
       <strong>Correct.</strong>
@@ -1133,9 +1137,11 @@ lessonSimilarBtn.addEventListener("click", async () => {
     return;
   }
 
-  const allowed = await ensureLessonAccess(similar, similar.id);
+  const usageKey = currentUsageKey(item);
+  const allowed = await ensureLessonAccess(item, usageKey);
   if (!allowed) return;
 
+  activeSimilarUsageKey = usageKey;
   activeSimilarItem = similar;
   renderCurrentQuestion();
 });
