@@ -30,5 +30,11 @@ create index if not exists lesson_completions_user_module_idx
 
 alter table public.lesson_completions enable row level security;
 
+revoke all on table public.lesson_completions from anon, authenticated;
+grant select, insert, update on table public.lesson_completions to service_role;
+
+revoke all on sequence public.lesson_completions_id_seq from anon, authenticated;
+grant usage, select on sequence public.lesson_completions_id_seq to service_role;
+
 comment on table public.lesson_completions is
   'Authenticated lesson-completion and mastery history. Accessed only by the Tolux server service role.';
