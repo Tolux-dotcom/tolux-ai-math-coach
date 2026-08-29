@@ -19,11 +19,13 @@ const stripe = process.env.STRIPE_SECRET_KEY
   : null;
 const internalQa = createInternalQaController();
 
+const supabaseServerKey =
+  process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabaseAdmin =
-  process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY
+  process.env.SUPABASE_URL && supabaseServerKey
     ? createClient(
         process.env.SUPABASE_URL,
-        process.env.SUPABASE_SECRET_KEY,
+        supabaseServerKey,
         {
           auth: {
             persistSession: false,
@@ -32,19 +34,40 @@ const supabaseAdmin =
         }
       )
     : null;
+
+if (!supabaseAdmin) {
+  console.error("[auth] Supabase server client is not configured", {
+    hasUrl: Boolean(process.env.SUPABASE_URL),
+    hasServerKey: Boolean(supabaseServerKey)
+  });
+}
+
 async function getAuthenticatedUser(req) {
-  if (!supabaseAdmin) return null;
+  if (!supabaseAdmin) {
+    console.error("[auth] Authentication unavailable: missing Supabase server configuration");
+    return null;
+  }
 
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ")
     ? authHeader.slice(7)
     : null;
 
-  if (!token) return null;
+  if (!token) {
+    console.warn("[auth] Authentication rejected: bearer token is missing");
+    return null;
+  }
 
   const { data, error } = await supabaseAdmin.auth.getUser(token);
 
-  if (error || !data?.user) return null;
+  if (error || !data?.user) {
+    console.warn("[auth] Supabase rejected bearer token", {
+      code: error?.code || null,
+      status: error?.status || null,
+      message: error?.message || "User was not returned"
+    });
+    return null;
+  }
 
   return data.user;
 }
