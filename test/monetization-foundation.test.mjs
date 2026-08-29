@@ -19,6 +19,10 @@ test("revenue funnel exposes diagnostic, membership, cohort, and school paths", 
 
 test("checkout uses authenticated server-controlled Tolux plans", () => {
   assert.match(app, /Authorization: `Bearer \$\{session\.access_token\}`/);
+  assert.match(
+    server,
+    /process\.env\.SUPABASE_SECRET_KEY \|\| process\.env\.SUPABASE_SERVICE_ROLE_KEY/
+  );
   assert.match(app, /startCheckout\("student"\)/);
   assert.match(app, /startCheckout\("family"\)/);
   assert.doesNotMatch(app, /startCheckout\("price_/);
