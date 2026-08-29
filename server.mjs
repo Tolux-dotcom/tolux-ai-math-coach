@@ -156,6 +156,29 @@ async function getStudentLessonProgress(userId) {
 }
 
 const FREE_QUESTION_LIMIT = 10;
+const STRIPE_PLAN_PRICE_IDS = {
+  student: process.env.STRIPE_STUDENT_PRICE_ID || "price_1U7IAuDF1jioApSQbIgJxCnl",
+  family: process.env.STRIPE_FAMILY_PRICE_ID || "price_1U7IAuDF1jioApSQbhKRA280"
+};
+
+async function setStudentSubscription(userId, isSubscriber) {
+  if (!supabaseAdmin || !userId) return false;
+
+  const usage = await getStudentUsage(userId);
+  if (!usage) return false;
+
+  const { error } = await supabaseAdmin
+    .from("student_usage")
+    .update({ is_subscriber: Boolean(isSubscriber) })
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("Failed to update subscription status:", error);
+    return false;
+  }
+
+  return true;
+}
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
 
@@ -238,7 +261,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Access-Control-Allow-Methods": "POST,GET,OPTIONS"
     });
     return res.end();
@@ -427,25 +450,23 @@ try {
   }
 }
     if (event.type === "checkout.session.completed") {
-  const session = event.data.object;
+      const session = event.data.object;
+      const userId = session.client_reference_id || session.metadata?.tolux_user_id;
 
-  console.log(
-    "Stripe checkout completed:",
-    session.id,
-    session.customer,
-    session.subscription
-  );
-}
+      if (userId && session.payment_status === "paid") {
+        await setStudentSubscription(userId, true);
+      }
 
-if (event.type === "customer.subscription.deleted") {
-  const subscription = event.data.object;
+      console.log("Stripe checkout completed:", session.id);
+    }
 
-  console.log(
-    "Stripe subscription cancelled:",
-    subscription.id,
-    subscription.customer
-  );
-}
+    if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object;
+      const userId = subscription.metadata?.tolux_user_id;
+
+      if (userId) await setStudentSubscription(userId, false);
+      console.log("Stripe subscription cancelled:", subscription.id);
+    }
 
 if (event.type === "invoice.payment_failed") {
   const invoice = event.data.object;
@@ -470,15 +491,33 @@ if (event.type === "invoice.payment_failed") {
       return send(res, 503, { error: "Stripe is not configured." });
     }
 
-    const { priceId } = await readJson(req);
+    const user = await getAuthenticatedUser(req);
+    if (!user) {
+      return send(res, 401, { error: "Please sign in before choosing a plan." });
+    }
+
+    const { plan } = await readJson(req);
+    const priceId = STRIPE_PLAN_PRICE_IDS[plan];
 
     if (!priceId) {
-      return send(res, 400, { error: "Missing priceId." });
+      return send(res, 400, { error: "Please choose a valid Tolux plan." });
     }
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
+      customer_email: user.email || undefined,
+      client_reference_id: user.id,
+      metadata: {
+        tolux_user_id: user.id,
+        tolux_plan: plan
+      },
+      subscription_data: {
+        metadata: {
+          tolux_user_id: user.id,
+          tolux_plan: plan
+        }
+      },
       success_url: "https://mathcoach.tolux.org/?payment=success&session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "https://mathcoach.tolux.org/?payment=cancelled"
     });
@@ -497,12 +536,21 @@ if (event.type === "invoice.payment_failed") {
 
     const url = new URL(req.url, `http://${req.headers.host}`);
     const sessionId = url.searchParams.get("session_id");
+    const user = await getAuthenticatedUser(req);
+
+    if (!user) {
+      return send(res, 401, { error: "Please sign in to verify this payment." });
+    }
 
     if (!sessionId) {
       return send(res, 400, { error: "Missing session_id." });
     }
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (session.client_reference_id !== user.id) {
+      return send(res, 403, { error: "This checkout does not belong to your account." });
+    }
 
     const paid =
       session.status === "complete" &&
@@ -511,7 +559,6 @@ if (event.type === "invoice.payment_failed") {
     return send(res, 200, {
       verified: paid,
       paymentStatus: session.payment_status,
-      customerEmail: session.customer_details?.email || null,
       subscriptionId: session.subscription || null
     });
   } catch (err) {
