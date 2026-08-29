@@ -7,6 +7,7 @@ const MASTERY_LABELS = new Set([
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const MODULE_PATTERN = /^[a-z0-9][a-z0-9-]{1,79}$/;
+const ITEM_ID_PATTERN = /^[a-z0-9][a-z0-9-]{1,79}$/i;
 
 function boundedInteger(value, minimum, maximum, fieldName) {
   const number = Number(value);
@@ -24,7 +25,7 @@ function normalizeItemRecord(value) {
   }
 
   const itemId = String(value.item_id || "").trim();
-  if (!MODULE_PATTERN.test(itemId)) {
+  if (!ITEM_ID_PATTERN.test(itemId)) {
     throw new Error("item_records contains an invalid item_id.");
   }
 

@@ -14,7 +14,7 @@ const validReport = {
   time_on_skill_seconds: 742,
   item_records: [
     {
-      item_id: "a5a-diag-01",
+      item_id: "A5A-D01",
       attempt_count: 1,
       first_attempt_correct: true,
       hint_count: 1,
