@@ -44,6 +44,27 @@ Example workflow:
 
 The server uses the OpenAI Responses API and accepts both text and base64 image input.
 
+## Preview-only internal QA sessions
+
+Authorized testers can exercise the free-usage flow repeatedly without changing
+`student_usage` when all of these server-side conditions are met:
+
+- `VERCEL_ENV` is exactly `preview`.
+- `INTERNAL_QA_ENABLED` is exactly `true`.
+- The signed-in Supabase user UUID is listed in `INTERNAL_QA_USER_IDS` (a
+  comma-separated UUID allowlist).
+- `INTERNAL_QA_COOKIE_SECRET` is a private value of at least 32 characters.
+
+An allowlisted tester must explicitly start a QA session from the dashboard.
+The server then keeps the simulated 0-to-10 usage count in a signed, secure,
+HTTP-only, host-only browser cookie. Lesson and coach requests use that simulated
+count and do not read or write the tester's `student_usage` row while the QA
+session is active. Ending the session deletes the cookie and immediately restores
+the normal student gate.
+
+The mechanism is disabled in production even if the other variables are present.
+Do not place the cookie secret or the allowlist in browser-side code.
+
 ## Phase 1 acceptance tests
 
 Before inviting students, test at least:

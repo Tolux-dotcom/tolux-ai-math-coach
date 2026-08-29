@@ -4,6 +4,10 @@ const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 // Tolux Algebra 1 A.5A curriculum module
 let a5aModule = null;
 
@@ -43,9 +47,123 @@ const updatePasswordBtn = document.querySelector("#updatePasswordBtn");
 const resetPasswordMessage = document.querySelector("#resetPasswordMessage");
 const signOutBtn = document.querySelector("#signOutBtn");
 const authMessage = document.querySelector("#authMessage");
+const authPanel = document.querySelector("#authPanel");
 const authLoggedOut = document.querySelector("#authLoggedOut");
 const authLoggedIn = document.querySelector("#authLoggedIn");
 const signedInEmail = document.querySelector("#signedInEmail");
+const internalQaPanel = document.querySelector("#internalQaPanel");
+const internalQaStatus = document.querySelector("#internalQaStatus");
+const startInternalQaBtn = document.querySelector("#startInternalQaBtn");
+const endInternalQaBtn = document.querySelector("#endInternalQaBtn");
+
+function hideInternalQaPanel() {
+  internalQaPanel.hidden = true;
+  internalQaStatus.textContent = "";
+  startInternalQaBtn.disabled = false;
+  startInternalQaBtn.textContent = "Start Fresh QA Session";
+  endInternalQaBtn.hidden = true;
+  endInternalQaBtn.disabled = false;
+}
+
+function renderInternalQaState(data) {
+  internalQaPanel.hidden = false;
+  const questionsUsed = Number(data.questionsUsed) || 0;
+  const limit = Number(data.limit) || 10;
+
+  if (data.active) {
+    internalQaStatus.textContent =
+      `Active: ${questionsUsed} of ${limit} simulated interactions used.`;
+    startInternalQaBtn.textContent = "Restart QA Session at 0";
+    endInternalQaBtn.hidden = false;
+  } else {
+    internalQaStatus.textContent =
+      "Inactive. Normal student usage rules are currently in effect.";
+    startInternalQaBtn.textContent = "Start Fresh QA Session";
+    endInternalQaBtn.hidden = true;
+  }
+}
+
+async function refreshInternalQaUI(session) {
+  if (!session?.user) {
+    hideInternalQaPanel();
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/internal-qa/session", {
+      headers: { Authorization: `Bearer ${session.access_token}` }
+    });
+
+    if (!response.ok) {
+      hideInternalQaPanel();
+      return;
+    }
+
+    renderInternalQaState(await response.json());
+  } catch (error) {
+    console.error("Unable to load internal QA status:", error);
+    hideInternalQaPanel();
+  }
+}
+
+function renderAuthSession(session) {
+  if (resetPasswordPanel.style.display === "block") return;
+
+  if (session?.user) {
+    authLoggedOut.style.display = "none";
+    authLoggedIn.style.display = "block";
+    signedInEmail.textContent = session.user.email || "Signed-in student";
+    authMessage.textContent = "";
+    void refreshInternalQaUI(session);
+    return;
+  }
+
+  authLoggedIn.style.display = "none";
+  authLoggedOut.style.display = "block";
+  signedInEmail.textContent = "";
+  hideInternalQaPanel();
+}
+
+async function updateInternalQaSession(action) {
+  startInternalQaBtn.disabled = true;
+  endInternalQaBtn.disabled = true;
+  internalQaStatus.textContent =
+    action === "start" ? "Starting a fresh QA session…" : "Ending QA session…";
+
+  try {
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+      hideInternalQaPanel();
+      authMessage.textContent = "Please sign in again to manage QA testing.";
+      return;
+    }
+
+    const response = await fetch("/api/internal-qa/session", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ action })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Unable to update the QA session.");
+    }
+
+    renderInternalQaState(data);
+  } catch (error) {
+    internalQaPanel.hidden = false;
+    internalQaStatus.textContent = error.message;
+  } finally {
+    startInternalQaBtn.disabled = false;
+    endInternalQaBtn.disabled = false;
+  }
+}
 
 signUpBtn.addEventListener("click", async () => {
   const email = authEmail.value.trim();
@@ -91,10 +209,7 @@ signInBtn.addEventListener("click", async () => {
     return;
   }
 
-  authMessage.textContent = "";
-  authLoggedOut.style.display = "none";
-  authLoggedIn.style.display = "block";
-  signedInEmail.textContent = data.user.email;
+  renderAuthSession(data.session);
 });
 forgotPasswordBtn.addEventListener("click", async () => {
   const email = authEmail.value.trim();
@@ -167,9 +282,7 @@ signOutBtn.addEventListener("click", async () => {
     return;
   }
 
-  authLoggedIn.style.display = "none";
-  authLoggedOut.style.display = "block";
-  signedInEmail.textContent = "";
+  renderAuthSession(null);
   authEmail.value = "";
   authPassword.value = "";
   authMessage.textContent = "You have been signed out.";
@@ -182,27 +295,55 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     resetPasswordPanel.style.display = "block";
     resetPasswordMessage.textContent =
       "Enter and confirm your new password.";
+    hideInternalQaPanel();
+    return;
   }
+
+  renderAuthSession(session);
 });
 async function refreshAuthUI() {
   if (resetPasswordPanel.style.display === "block") {
-  return;
-}
-  const { data: { session } } = await supabaseClient.auth.getSession();
+    return;
+  }
 
-  if (session?.user) {
-    authLoggedOut.style.display = "none";
-    authLoggedIn.style.display = "block";
-    signedInEmail.textContent = session.user.email;
-    authMessage.textContent = "";
-  } else {
-    authLoggedIn.style.display = "none";
-    authLoggedOut.style.display = "block";
-    signedInEmail.textContent = "";
+  authPanel.setAttribute("aria-busy", "true");
+
+  try {
+    const {
+      data: { session },
+      error
+    } = await supabaseClient.auth.getSession();
+
+    if (error) throw error;
+    renderAuthSession(session);
+  } catch (error) {
+    console.error("Unable to refresh authentication state:", error);
+    renderAuthSession(null);
+    authMessage.textContent =
+      "We could not confirm your sign-in status. Please try again.";
+  } finally {
+    authPanel.setAttribute("aria-busy", "false");
   }
 }
 
-refreshAuthUI();
+startInternalQaBtn.addEventListener("click", () => {
+  void updateInternalQaSession("start");
+});
+
+endInternalQaBtn.addEventListener("click", () => {
+  void updateInternalQaSession("end");
+});
+
+void refreshAuthUI();
+window.addEventListener("pageshow", event => {
+  if (event.persisted) void refreshAuthUI();
+
+  if (!window.location.hash) {
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+  }
+});
 let course = "Algebra 1";
 let mode = "Tutor Mode";
 let imageDataUrl = null;
@@ -919,7 +1060,8 @@ function restoreDashboardActivity() {
 restoreDashboardActivity();
 
 dashboardBtn?.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  void refreshAuthUI();
+  authPanel.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 progressBtn?.addEventListener("click", () => {

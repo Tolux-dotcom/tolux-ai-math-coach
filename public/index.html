@@ -38,7 +38,7 @@
       </div>
       <div class="status"><span>🔥 5 day streak</span><span>★ 1,250 pts</span></div>
     </header>
-<section class="panel" id="authPanel">
+<section class="panel" id="authPanel" aria-live="polite">
   <h2>Student Sign In</h2>
 
  <div id="authLoggedOut">
@@ -82,6 +82,21 @@
   <div id="authLoggedIn" style="display:none;">
     <p>Signed in as <strong id="signedInEmail"></strong></p>
     <button id="signOutBtn" type="button">Sign Out</button>
+  </div>
+  <div id="internalQaPanel" class="internal-qa-panel" hidden>
+    <h3>Internal QA Session</h3>
+    <p>
+      Preview-only test usage is isolated from the student's real allowance.
+    </p>
+    <p id="internalQaStatus"></p>
+    <div class="internal-qa-actions">
+      <button id="startInternalQaBtn" type="button">
+        Start Fresh QA Session
+      </button>
+      <button id="endInternalQaBtn" type="button" hidden>
+        End QA Session
+      </button>
+    </div>
   </div>
 </section>
     <section class="panel">
