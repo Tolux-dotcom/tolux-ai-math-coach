@@ -338,6 +338,11 @@ function renderCurrentQuestion() {
         <label for="lessonExplanation">
           <strong>${escapeHtml(item.explanation_prompt)}</strong>
         </label>
+        ${item.explanation_guidance ? `
+          <p class="explanation-guidance">
+            ${escapeHtml(item.explanation_guidance)}
+          </p>
+        ` : ""}
         <textarea
           id="lessonExplanation"
           rows="4"
@@ -865,22 +870,51 @@ async function checkCurrentAnswer() {
   }
 
   if (currentStageType === "recheck") {
-    recheckResults.push({ item, correct, studentAnswer });
+    recheckResults.push({
+      item,
+      correct,
+      answerCorrect,
+      explanationCorrect,
+      studentAnswer,
+      explanation
+    });
     lessonAnswer.disabled = true;
     submitLessonAnswer.disabled = true;
+    const explanationField = document.querySelector("#lessonExplanation");
+    if (explanationField) explanationField.disabled = true;
     nextLessonStep.textContent =
       currentItemIndex === stageItems.length - 1
         ? "View Recheck Result"
         : "Next Recheck Question";
     showInterface({ answer: true, help: true, next: true });
-    setFeedback(correct
-      ? `<strong>Correct.</strong>${renderSolutionSteps(item, "Why it works")}`
-      : `
-          <strong>Not correct yet.</strong>
-          <p>The expected result is <span class="inline-math">${escapeHtml(item.answer_key)}</span>.</p>
-          ${renderSolutionSteps(item, "Review the steps")}
-        `
-    );
+    if (correct) {
+      setFeedback(
+        `<strong>Correct.</strong>${renderSolutionSteps(item, "Why it works")}`
+      );
+    } else if (answerCorrect && !explanationCorrect) {
+      setFeedback(`
+        <strong>Your solution-set answer is correct.</strong>
+        <p>Your explanation needs one more mathematical step.</p>
+        <p>${escapeHtml(
+          item.explanation_guidance ||
+          "Explain why the equation has that solution set."
+        )}</p>
+        ${renderSolutionSteps(item, "Review the reasoning")}
+      `);
+    } else if (!answerCorrect && explanationCorrect) {
+      setFeedback(`
+        <strong>Your explanation shows the right idea.</strong>
+        <p>Revise the solution-set answer. The expected result is <span class="inline-math">${escapeHtml(item.answer_key)}</span>.</p>
+        ${renderSolutionSteps(item, "Review the answer")}
+      `);
+    } else {
+      setFeedback(`
+        <strong>The answer and explanation both need revision.</strong>
+        <p>The expected solution-set answer is <span class="inline-math">${escapeHtml(item.answer_key)}</span>.</p>
+        ${item.explanation_guidance ? `<p>${escapeHtml(item.explanation_guidance)}</p>` : ""}
+        ${renderSolutionSteps(item, "Review the steps")}
+      `);
+    }
     return;
   }
 

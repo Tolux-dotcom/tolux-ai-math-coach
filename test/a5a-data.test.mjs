@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 import {
   answersEquivalent,
+  explanationSatisfies,
   selectStageItems,
   validateLessonModule
 } from "../public/lesson-core.mjs";
@@ -67,4 +68,18 @@ test("mastery includes five items and a critical explanation item", () => {
   assert.equal(explanationItems.length, 1);
   assert.equal(explanationItems[0].id, "A5A-M02");
   assert.equal(explanationItems[0].critical_misconception, true);
+});
+
+test("identity explanation accepts common student wording from phone QA", () => {
+  const item = lessonModule.items.find(({ id }) => id === "A5A-M02");
+
+  assert.equal(answersEquivalent("Infinitely many solutions", item), true);
+  assert.equal(
+    explanationSatisfies(
+      "Because the 2 sides of the equation are equal",
+      item
+    ),
+    true
+  );
+  assert.equal(explanationSatisfies("Infinitely many solutions", item), false);
 });

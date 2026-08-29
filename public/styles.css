@@ -496,6 +496,13 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
   margin-bottom: 8px;
 }
 
+.explanation-guidance {
+  margin: -2px 0 10px;
+  color: #5d6879;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .explanation-field textarea {
   width: 100%;
   padding: 12px 14px;

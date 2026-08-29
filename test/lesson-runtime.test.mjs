@@ -420,8 +420,8 @@ test("critical mastery miss routes through remediation and a no-charge retake", 
   assert.match(stage.textContent, /Remediation Recheck/);
   await submitAndAdvance("all real numbers");
   await submitAndAdvance(
-    "all real numbers",
-    "Both sides simplify to the same expression, so all x values work."
+    "Infinitely many solutions",
+    "Because the 2 sides of the equation are equal"
   );
 
   assert.match(stage.textContent, /Recheck Complete/);
@@ -443,4 +443,43 @@ test("critical mastery miss routes through remediation and a no-charge retake", 
   assert.equal(stage.textContent, "Lesson Complete");
   assert.match(content.innerHTML, /Mastered/);
   assert.equal(usageCalls(), 10);
+});
+
+test("recheck feedback distinguishes a correct answer from an incomplete explanation", async () => {
+  const harness = await createHarness("recheck-explanation-feedback");
+  const {
+    answer,
+    get,
+    stage,
+    submit,
+    submitAndAdvance
+  } = harness;
+  await moveToMastery(harness);
+
+  const firstMasteryAttempt = [
+    ["9", null],
+    ["all real numbers", "Because the equation says so."],
+    ["2", null],
+    ["5", null],
+    ["-14", null]
+  ];
+
+  for (const [value, explanation] of firstMasteryAttempt) {
+    await submitAndAdvance(value, explanation);
+  }
+
+  assert.match(stage.textContent, /Targeted Remediation/);
+  await get("startRecheckBtn").emit("click");
+  await submitAndAdvance("all real numbers");
+
+  answer.value = "Infinitely many solutions";
+  get("lessonExplanation").value = "Infinitely many solutions";
+  await submit.emit("click");
+
+  assert.match(
+    get("lessonFeedback").innerHTML,
+    /Your solution-set answer is correct/
+  );
+  assert.match(get("lessonFeedback").innerHTML, /explanation needs one more/);
+  assert.doesNotMatch(get("lessonFeedback").innerHTML, /expected result/);
 });

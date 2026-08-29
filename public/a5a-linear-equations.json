@@ -444,15 +444,19 @@
       "tutor_behavior": "Must classify solution set correctly.",
       "critical_misconception": true,
       "explanation_prompt": "Why does this equation have infinitely many solutions?",
+      "explanation_guidance": "State what both sides become after simplifying and why the equation works for every real value of x.",
       "explanation_keywords": [
         [
           "same",
           "identical",
+          "equal",
           "true statement",
           "6x + 10 = 6x + 10"
         ],
         [
           "both sides",
+          "two sides",
+          "2 sides",
           "each side",
           "every value",
           "all x",
