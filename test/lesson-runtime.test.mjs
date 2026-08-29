@@ -117,10 +117,15 @@ async function waitFor(predicate, message) {
   throw new Error(message);
 }
 
-async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {}) {
+async function createHarness(name, {
+  maxUsage = Number.POSITIVE_INFINITY,
+  rejectFirstToken = false
+} = {}) {
   const document = new FakeDocument();
   const storage = new Map();
   let usageCalls = 0;
+  let refreshCalls = 0;
+  let rejectedToken = false;
   const progressRequests = [];
 
   const localStorage = {
@@ -150,7 +155,13 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
               };
             },
             async refreshSession() {
-              return { data: { session: null } };
+              refreshCalls += 1;
+              return {
+                data: {
+                  session: { access_token: "refreshed-test-session" }
+                },
+                error: null
+              };
             }
           }
         };
@@ -169,6 +180,21 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
     }
 
     if (url === "/api/lesson-usage") {
+      if (
+        rejectFirstToken &&
+        !rejectedToken &&
+        options.headers?.Authorization === "Bearer test-session"
+      ) {
+        rejectedToken = true;
+        return {
+          ok: false,
+          status: 401,
+          async json() {
+            return { error: "Please sign in to continue." };
+          }
+        };
+      }
+
       if (usageCalls >= maxUsage) {
         return {
           ok: false,
@@ -248,7 +274,8 @@ async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {})
     storage,
     submit,
     submitAndAdvance,
-    usageCalls: () => usageCalls
+    usageCalls: () => usageCalls,
+    refreshCalls: () => refreshCalls
   };
 }
 
@@ -394,6 +421,21 @@ test("help and a similar problem preserve capacity for all ten assessed items", 
   assert.equal(stage.textContent, "Lesson Complete");
   assert.match(content.innerHTML, /Mastered/);
   assert.equal(usageCalls(), 10);
+});
+
+test("stale lesson token refreshes once and continues without another sign-in", async () => {
+  const harness = await createHarness("stale-session-refresh", {
+    rejectFirstToken: true
+  });
+
+  harness.answer.value = "3x + 12";
+  await harness.submit.emit("click");
+
+  assert.equal(harness.refreshCalls(), 1);
+  assert.equal(harness.usageCalls(), 1);
+  assert.equal(harness.answer.disabled, true);
+  assert.match(harness.get("lessonFeedback").innerHTML, /Correct/);
+  assert.doesNotMatch(harness.get("lessonFeedback").innerHTML, /sign in/i);
 });
 
 test("critical mastery miss routes through remediation and a no-charge retake", async () => {
