@@ -31,6 +31,27 @@
   </aside>
 
   <main>
+    <section class="revenue-hero" aria-labelledby="revenueHeroTitle">
+      <div>
+        <span class="eyebrow">A complete Algebra mastery system</span>
+        <h1 id="revenueHeroTitle">Find the learning gap. Fix it step by step. Prove mastery.</h1>
+        <p>Start with a free Algebra readiness diagnostic, receive guided instruction and practice, and track real progress—not just completed questions.</p>
+        <div class="hero-actions">
+          <button id="freeDiagnosticBtn" type="button">Start Free Diagnostic</button>
+          <button id="viewPlansBtn" class="secondary-action" type="button">View Memberships</button>
+        </div>
+        <small>No credit card required for the diagnostic.</small>
+      </div>
+      <div class="outcome-card">
+        <strong>What students receive</strong>
+        <ul>
+          <li>Readiness check and misconception diagnosis</li>
+          <li>Clear teaching with worked examples</li>
+          <li>Guided and independent practice</li>
+          <li>Mastery check and targeted remediation</li>
+        </ul>
+      </div>
+    </section>
     <header>
       <div>
         <h1>Welcome to Tolux AI Math Coach 👋</h1>
@@ -121,8 +142,8 @@
   <div class="a5a-lesson-card">
     <small>Algebra 1 • TEKS A.5A</small>
     <h2>Solving Linear Equations</h2>
-    <p>Learn how to solve one-variable linear equations step-by-step, diagnose common mistakes, and check your mastery.</p>
-    <button id="startA5ALessonBtn" type="button">Start Lesson</button>
+    <p>Begin with a readiness diagnostic, learn step by step, practice, and complete a mastery check with targeted remediation.</p>
+    <button id="startA5ALessonBtn" type="button">Start Free Readiness Diagnostic</button>
   </div>
 </section>
     <section class="coach panel">
@@ -219,12 +240,20 @@
   <button id="generateStudyPlanBtn" type="button">Generate My Study Plan</button>
 </section>
 
-    <section id="pricingSection" class="panel">
-  <h2>Choose Your Plan</h2>
-  <p>Unlock Tolux AI Math Coach and get personalized Algebra support whenever you need it.</p>
+<section id="pricingSection" class="panel">
+  <span class="eyebrow">Continue after your free diagnostic</span>
+  <h2>Choose the support that matches your goal</h2>
+  <p>Every paid membership combines step-by-step coaching, structured lessons, practice, and progress tracking.</p>
 
   <div class="pricing-grid">
     <div class="pricing-card">
+      <h3>Free Diagnostic</h3>
+      <h2>$0</h2>
+      <p>Identify readiness gaps and experience the Tolux mastery lesson flow.</p>
+      <button type="button" onclick="document.querySelector('#freeDiagnosticBtn').click()">Start Free</button>
+    </div>
+    <div class="pricing-card">
+      <span class="plan-badge">Most popular</span>
       <h3>Student Plan</h3>
       <h2>$9.99 <small>/ month</small></h2>
       <p>Personalized AI Math Coach for one student.</p>
@@ -241,7 +270,22 @@
         Choose Family Plan
       </button>
     </div>
+    <div class="pricing-card licensing-card">
+      <h3>Educators & Schools</h3>
+      <h2>Custom</h2>
+      <p>Teacher visibility, student mastery reporting, pilot support, and organization licensing.</p>
+      <a class="button-link" href="mailto:info@tolux.org?subject=Tolux%20Math%20Coach%20School%20Pilot">Request a Pilot</a>
+    </div>
   </div>
+</section>
+
+<section class="panel guided-program" aria-labelledby="guidedProgramTitle">
+  <div>
+    <span class="eyebrow">Need more accountability?</span>
+    <h2 id="guidedProgramTitle">Guided Algebra Mastery Program</h2>
+    <p>A structured small-group program combining live instruction, Tolux practice assignments, mastery checks, and parent progress updates.</p>
+  </div>
+  <a class="button-link" href="mailto:info@tolux.org?subject=Guided%20Algebra%20Mastery%20Program">Join the Interest List</a>
 </section>
 
     <section class="panel seo-section">

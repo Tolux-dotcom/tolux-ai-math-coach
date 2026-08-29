@@ -393,8 +393,19 @@ async function handlePaymentReturn() {
   }
 
   try {
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+      throw new Error("Please sign in to verify your payment.");
+    }
+
     const response = await fetch(
-      `/api/verify-session?session_id=${encodeURIComponent(sessionId)}`
+      `/api/verify-session?session_id=${encodeURIComponent(sessionId)}`,
+      {
+        headers: { Authorization: `Bearer ${session.access_token}` }
+      }
     );
 
     const data = await response.json();
@@ -417,14 +428,25 @@ async function handlePaymentReturn() {
 }
 
 handlePaymentReturn();
-async function startCheckout(priceId) {
+async function startCheckout(plan) {
   try {
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+      authMessage.textContent = "Please sign in or create an account before choosing a plan.";
+      authPanel.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
     const response = await fetch("/api/create-checkout-session", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`
       },
-      body: JSON.stringify({ priceId })
+      body: JSON.stringify({ plan })
     });
 
     const data = await response.json();
@@ -439,10 +461,15 @@ async function startCheckout(priceId) {
   }
 }
 studentPlanBtn?.addEventListener("click", () => {
-  startCheckout("price_1U7IAuDF1jioApSQbIgJxCnl");
+  startCheckout("student");
 });
 familyPlanBtn?.addEventListener("click", () => {
-  startCheckout("price_1U7IAuDF1jioApSQbhKRA280");
+  startCheckout("family");
+});
+
+document.querySelector("#freeDiagnosticBtn")?.addEventListener("click", startA5ALesson);
+document.querySelector("#viewPlansBtn")?.addEventListener("click", () => {
+  document.querySelector("#pricingSection")?.scrollIntoView({ behavior: "smooth" });
 });
 
 studyPlanBtn?.addEventListener("click", () => {
