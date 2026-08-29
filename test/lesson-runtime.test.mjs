@@ -117,7 +117,7 @@ async function waitFor(predicate, message) {
   throw new Error(message);
 }
 
-async function createHarness(name) {
+async function createHarness(name, { maxUsage = Number.POSITIVE_INFINITY } = {}) {
   const document = new FakeDocument();
   const storage = new Map();
   let usageCalls = 0;
@@ -165,6 +165,19 @@ async function createHarness(name) {
     }
 
     if (url === "/api/lesson-usage") {
+      if (usageCalls >= maxUsage) {
+        return {
+          ok: false,
+          status: 403,
+          async json() {
+            return {
+              error: "You've completed your 10 free learning interactions.",
+              limitReached: true
+            };
+          }
+        };
+      }
+
       usageCalls += 1;
       return {
         ok: true,
@@ -274,6 +287,67 @@ test("student can complete the entire data-driven A5A lesson", async () => {
   );
   assert.equal(saved.mastery_label, "Mastered");
   assert.equal(saved.mastery_score, 100);
+});
+
+test("help and a similar problem preserve capacity for all ten assessed items", async () => {
+  const harness = await createHarness("help-with-free-cap", { maxUsage: 10 });
+  const {
+    answer,
+    content,
+    get,
+    stage,
+    submit,
+    submitAndAdvance,
+    usageCalls
+  } = harness;
+
+  await get("lessonStuckBtn").emit("click");
+  assert.equal(usageCalls(), 1);
+
+  await get("lessonExplainBtn").emit("click");
+  assert.equal(usageCalls(), 1);
+
+  await get("lessonSimilarBtn").emit("click");
+  assert.match(stage.textContent, /Similar Problem/);
+  assert.equal(usageCalls(), 1);
+
+  const generatedPrompt = content.innerHTML.match(
+    /Simplify (\d+)\((\d+)x ([+-]) (\d+)\)\./
+  );
+  assert.ok(generatedPrompt, "Expected a generated distribution problem.");
+
+  const [, outsideText, coefficientText, sign, constantText] = generatedPrompt;
+  const outside = Number(outsideText);
+  const coefficient = Number(coefficientText);
+  const signedConstant = sign === "+" ? Number(constantText) : -Number(constantText);
+  const answerCoefficient = outside * coefficient;
+  const answerConstant = outside * signedConstant;
+  answer.value = answerConstant >= 0
+    ? `${answerCoefficient}x + ${answerConstant}`
+    : `${answerCoefficient}x - ${Math.abs(answerConstant)}`;
+  await submit.emit("click");
+
+  assert.match(stage.textContent, /Quick Readiness Check/);
+  assert.match(content.innerHTML, /Simplify 3\(x \+ 4\)/);
+  assert.equal(usageCalls(), 1);
+
+  await moveToMastery(harness);
+
+  const masteryResponses = [
+    ["9", null],
+    ["all real numbers", "Both sides are the same, so all x values work."],
+    ["2", null],
+    ["5", null],
+    ["-14", null]
+  ];
+
+  for (const [value, explanation] of masteryResponses) {
+    await submitAndAdvance(value, explanation);
+  }
+
+  assert.equal(stage.textContent, "Lesson Complete");
+  assert.match(content.innerHTML, /Mastered/);
+  assert.equal(usageCalls(), 10);
 });
 
 test("critical mastery miss routes through remediation and a no-charge retake", async () => {
