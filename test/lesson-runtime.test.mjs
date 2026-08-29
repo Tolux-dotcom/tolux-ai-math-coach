@@ -430,7 +430,7 @@ test("critical mastery miss routes through remediation and a no-charge retake", 
 
   const passingRetake = [
     ["9", null],
-    ["all real numbers", "Both sides are the same, so all x values work."],
+    ["all real numbers", "The two sides cancel out, so all real x values work."],
     ["2", null],
     ["5", null],
     ["-14", null]

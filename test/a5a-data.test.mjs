@@ -81,5 +81,14 @@ test("identity explanation accepts common student wording from phone QA", () => 
     ),
     true
   );
+  assert.equal(
+    explanationSatisfies("The two sides cancel out", item),
+    true
+  );
+  assert.equal(
+    explanationSatisfies("They cancel out each other", item),
+    true
+  );
   assert.equal(explanationSatisfies("Infinitely many solutions", item), false);
+  assert.equal(explanationSatisfies("The terms cancel", item), false);
 });
