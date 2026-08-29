@@ -6,87 +6,42 @@
   <title>Tolux AI Math Coach | Algebra 1 Lesson</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
-
 <body>
   <main class="lesson-page">
-
     <header class="lesson-header">
       <a href="/" class="back-dashboard">← Back to Dashboard</a>
-
       <div>
         <small id="lessonTeks">Algebra 1 • TEKS A.5A</small>
         <h1 id="lessonTitle">Solving Linear Equations</h1>
       </div>
     </header>
-
     <section class="lesson-progress">
       <p id="lessonStage">Getting your lesson ready...</p>
-
       <div class="progress-track">
-        <div
-          id="lessonProgressBar"
-          class="progress-fill"
-          role="progressbar"
-          aria-label="Lesson progress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-        ></div>
+        <div id="lessonProgressBar" class="progress-fill" role="progressbar" aria-label="Lesson progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
       </div>
     </section>
-
     <section class="lesson-workspace">
-
       <div class="lesson-card">
         <div id="lessonContent">
           <h2>Welcome to your lesson</h2>
-          <p>
-            Tolux will teach you step-by-step, give you guided practice,
-            diagnose mistakes, and help you reach mastery.
-          </p>
+          <p>Tolux will teach you step-by-step, give you guided practice, diagnose mistakes, and help you reach mastery.</p>
         </div>
-
         <div id="lessonAnswerArea">
-          <label for="lessonAnswer">
-            <strong>Your answer</strong>
-          </label>
-
-          <input
-            id="lessonAnswer"
-            type="text"
-            placeholder="Type your answer here"
-            autocomplete="off"
-          >
-
-          <button id="submitLessonAnswer" type="button">
-            Check Answer
-          </button>
+          <label for="lessonAnswer"><strong>Your answer</strong></label>
+          <input id="lessonAnswer" type="text" placeholder="Type your answer here" autocomplete="off">
+          <button id="submitLessonAnswer" type="button">Check Answer</button>
         </div>
-
         <div id="lessonHelp" class="lesson-help">
-          <button id="lessonStuckBtn" type="button">
-            I'm Stuck
-          </button>
-
-          <button id="lessonExplainBtn" type="button">
-            Explain Another Way
-          </button>
-
-          <button id="lessonSimilarBtn" type="button">
-            Similar Problem
-          </button>
+          <button id="lessonStuckBtn" type="button">I'm Stuck</button>
+          <button id="lessonExplainBtn" type="button">Explain Another Way</button>
+          <button id="lessonSimilarBtn" type="button">Similar Problem</button>
         </div>
-
         <div id="lessonFeedback" aria-live="polite"></div>
-
-        <button id="nextLessonStep" type="button" style="display:none;">
-          Next
-        </button>
+        <button id="nextLessonStep" type="button" style="display:none;">Next</button>
       </div>
-
       <aside class="lesson-sidebar">
         <h3>Lesson Path</h3>
-
         <ol id="lessonPath">
           <li>Quick Readiness Check</li>
           <li>Learn the Concept</li>
@@ -95,17 +50,12 @@
           <li>Independent Practice</li>
           <li>Mastery Check</li>
         </ol>
-
-        <p>
-          <strong>Goal:</strong>
-          <span id="lessonGoal">Master TEKS A.5A</span>
-        </p>
+        <p><strong>Goal:</strong> <span id="lessonGoal">Master TEKS A.5A</span></p>
       </aside>
-
     </section>
-
   </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/free-access-policy.js"></script>
   <script type="module" src="/lesson.js"></script>
 </body>
 </html>
