@@ -6,6 +6,7 @@ import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { isPreviewQaUser } from "./qa-access.mjs";
 import {
   buildLessonProgressRow,
   normalizeLessonProgressReport
@@ -166,11 +167,11 @@ async function addStudentTrialSeconds(userId, currentSeconds, heartbeatSeconds) 
   return data;
 }
 
-async function resetQaTrialSeconds(userId) {
+async function resetQaTrialSeconds(user) {
   if (
     process.env.VERCEL_ENV !== "preview" ||
     !supabaseAdmin ||
-    !internalQa.isAuthorized(userId)
+    !isPreviewQaUser(user)
   ) {
     return null;
   }
@@ -181,7 +182,7 @@ async function resetQaTrialSeconds(userId) {
       trial_seconds_used: 0,
       updated_at: new Date().toISOString()
     })
-    .eq("user_id", userId)
+    .eq("user_id", user.id)
     .select("user_id, trial_seconds_used")
     .single();
 
@@ -906,8 +907,8 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
     );
 
     if (!isFreeDiagnostic && trialStatus.trialExpired) {
-      const qaAutoReset = internalQa.isAuthorized(user.id)
-        ? await resetQaTrialSeconds(user.id)
+      const qaAutoReset = isPreviewQaUser(user)
+        ? await resetQaTrialSeconds(user)
         : null;
       return send(res, 403, {
         error: qaAutoReset
@@ -987,8 +988,8 @@ if (
 
     const current = buildTrialStatus(trial.trial_seconds_used);
     if (current.trialExpired) {
-      const qaAutoReset = internalQa.isAuthorized(user.id)
-        ? await resetQaTrialSeconds(user.id)
+      const qaAutoReset = isPreviewQaUser(user)
+        ? await resetQaTrialSeconds(user)
         : null;
       return send(res, 403, {
         allowed: false,
@@ -1013,8 +1014,8 @@ if (
     }
 
     const status = buildTrialStatus(updated.trial_seconds_used);
-    const qaAutoReset = status.trialExpired && internalQa.isAuthorized(user.id)
-      ? await resetQaTrialSeconds(user.id)
+    const qaAutoReset = status.trialExpired && isPreviewQaUser(user)
+      ? await resetQaTrialSeconds(user)
       : null;
     return send(res, status.trialExpired ? 403 : 200, {
       allowed: !status.trialExpired,
