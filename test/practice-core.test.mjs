@@ -145,6 +145,19 @@ test("A.10F generates and grades conjugate difference-of-squares factors", () =>
   }
 });
 
+test("A.10F accepts a complete factorization with an outside GCF", () => {
+  const item = {
+    answer_type: "factored-quadratic",
+    expected: { a: 4, b: 0, c: -16 }
+  };
+
+  assert.equal(gradePracticeAnswer("4(x-2)(x+2)", item), true);
+  assert.equal(gradePracticeAnswer("4(x+2)(x-2)", item), true);
+  assert.equal(gradePracticeAnswer("4 · (x − 2)(x + 2)", item), true);
+  assert.equal(gradePracticeAnswer("(2x-4)(2x+4)", item), false);
+  assert.equal(gradePracticeAnswer("4(x-2)(x-2)", item), false);
+});
+
 test("practice summary uses first attempts and identifies review items", () => {
   const session = generatePracticeSession(
     { skill: "A.5A", difficulty: "foundational", count: 5 },
