@@ -57,6 +57,7 @@ let lessonLocked = false;
 let isSubscriber = false;
 let completionReport = null;
 let completionSavePromise = null;
+let trialHeartbeatTimer = null;
 
 const countedLessonInteractions = new Set();
 const itemRecords = new Map();
@@ -236,7 +237,13 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
   try {
     const { response, session } = await fetchWithLessonSession(
       "/api/lesson-usage",
-      { method: "POST" }
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          itemId: item.id
+        })
+      }
     );
 
     if (!session || !response) {
@@ -282,6 +289,44 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
   }
 
   return false;
+}
+
+async function sendTrialHeartbeat() {
+  if (
+    lessonLocked ||
+    isSubscriber ||
+    document.visibilityState !== "visible" ||
+    currentStageType === "prerequisite_diagnostic"
+  ) {
+    return;
+  }
+
+  try {
+    const { response } = await fetchWithLessonSession(
+      "/api/lesson-trial-heartbeat",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ activeSeconds: 15 })
+      }
+    );
+    if (!response) return;
+    const data = await response.json();
+    if (data.limitReached) {
+      showLessonUpgrade(
+        data.error || "You've completed your 10-minute free learning trial."
+      );
+    }
+  } catch (error) {
+    console.error("Lesson trial heartbeat failed:", error);
+  }
+}
+
+if (typeof window.setInterval === "function") {
+  trialHeartbeatTimer = window.setInterval(sendTrialHeartbeat, 15000);
+  window.addEventListener("pagehide", () => {
+    if (trialHeartbeatTimer) window.clearInterval(trialHeartbeatTimer);
+  });
 }
 
 function renderSolutionSteps(item, heading = "Step-by-step solution") {

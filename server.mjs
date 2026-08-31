@@ -10,6 +10,11 @@ import {
   buildLessonProgressRow,
   normalizeLessonProgressReport
 } from "./lesson-progress.mjs";
+import {
+  TRIAL_SECONDS,
+  advanceTrial,
+  buildTrialStatus
+} from "./trial-access.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.join(__dirname, "public");
@@ -125,6 +130,58 @@ async function incrementStudentUsage(userId, currentCount) {
   return data;
 }
 
+async function getStudentTrialAccess(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("student_trial_access")
+    .select("user_id, trial_seconds_used")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Failed to read student trial access:", error);
+    return null;
+  }
+
+  if (data) return data;
+
+  const { data: created, error: createError } = await supabaseAdmin
+    .from("student_trial_access")
+    .insert({ user_id: userId, trial_seconds_used: 0 })
+    .select("user_id, trial_seconds_used")
+    .single();
+
+  if (createError) {
+    console.error("Failed to create student trial access:", createError);
+    return null;
+  }
+
+  return created;
+}
+
+async function addStudentTrialSeconds(userId, currentSeconds, heartbeatSeconds) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const next = advanceTrial(currentSeconds, heartbeatSeconds);
+  const { data, error } = await supabaseAdmin
+    .from("student_trial_access")
+    .update({
+      trial_seconds_used: next.trialSecondsUsed,
+      updated_at: new Date().toISOString()
+    })
+    .eq("user_id", userId)
+    .select("user_id, trial_seconds_used")
+    .single();
+
+  if (error) {
+    console.error("Failed to update student trial access:", error);
+    return null;
+  }
+
+  return data;
+}
+
 const LESSON_PROGRESS_FIELDS = [
   "client_completion_id",
   "module_id",
@@ -179,6 +236,7 @@ async function getStudentLessonProgress(userId) {
 }
 
 const FREE_QUESTION_LIMIT = 10;
+const FREE_DIAGNOSTIC_ITEM_IDS = new Set(["A5A-D01", "A5A-D02"]);
 const STRIPE_PLAN_PRICE_IDS = {
   student: process.env.STRIPE_STUDENT_PRICE_ID || "price_1U7IAuDF1jioApSQbIgJxCnl",
   family: process.env.STRIPE_FAMILY_PRICE_ID || "price_1U7IAuDF1jioApSQbhKRA280"
@@ -691,6 +749,7 @@ if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
   }
 if (req.method === "POST" && req.url === "/api/lesson-usage") {
   try {
+    const body = await readJson(req);
     const user = await getAuthenticatedUser(req);
 
     if (!user) {
@@ -712,13 +771,30 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
       });
     }
 
-    if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
+    const isFreeDiagnostic = FREE_DIAGNOSTIC_ITEM_IDS.has(String(body?.itemId || ""));
+    const trial = usage.is_subscriber || isFreeDiagnostic
+      ? null
+      : await getStudentTrialAccess(user.id);
+
+    if (!usage.is_subscriber && !isFreeDiagnostic && !trial) {
+      return send(res, 500, {
+        error: "Unable to verify your free learning time right now."
+      });
+    }
+
+    const trialStatus = buildTrialStatus(
+      trial?.trial_seconds_used || 0,
+      usage.is_subscriber
+    );
+
+    if (!isFreeDiagnostic && trialStatus.trialExpired) {
       return send(res, 403, {
-        error: `You've completed your ${FREE_QUESTION_LIMIT} free learning interactions. Upgrade to continue with Tolux AI Math Coach.`,
+        error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
         limitReached: true,
         qaMode: Boolean(qaSession),
-        questionsUsed: usage.questions_used,
-        limit: FREE_QUESTION_LIMIT
+        trialSecondsUsed: trialStatus.trialSecondsUsed,
+        trialSecondsRemaining: 0,
+        trialSecondsLimit: TRIAL_SECONDS
       });
     }
 
@@ -731,37 +807,88 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
           allowed: true,
           isSubscriber: false,
           qaMode: true,
-          questionsUsed: advancedQa.session.questionsUsed,
-          limit: FREE_QUESTION_LIMIT
+          isFreeDiagnostic,
+          trialSecondsRemaining: TRIAL_SECONDS
         },
         "application/json",
         { "Set-Cookie": advancedQa.cookie }
       );
     }
 
-    if (!usage.is_subscriber) {
-      const updatedUsage = await incrementStudentUsage(
-        user.id,
-        usage.questions_used
-      );
-
-      if (!updatedUsage) {
-        return send(res, 500, {
-          error: "Unable to update your learning usage right now."
-        });
-      }
-    }
-
     return send(res, 200, {
       allowed: true,
       isSubscriber: usage.is_subscriber,
-      qaMode: false
+      qaMode: false,
+      isFreeDiagnostic,
+      trialSecondsUsed: trialStatus.trialSecondsUsed,
+      trialSecondsRemaining: trialStatus.trialSecondsRemaining,
+      trialSecondsLimit: TRIAL_SECONDS
     });
   } catch (err) {
     console.error(err);
     return send(res, 500, {
       error: err?.message || "Unexpected server error."
     });
+  }
+}
+if (req.method === "POST" && req.url === "/api/lesson-trial-heartbeat") {
+  try {
+    const body = await readJson(req);
+    const user = await getAuthenticatedUser(req);
+
+    if (!user) {
+      return send(res, 401, { error: "Please sign in to continue." });
+    }
+
+    const usage = await getStudentUsage(user.id);
+    if (!usage) {
+      return send(res, 500, { error: "Unable to verify your learning access." });
+    }
+
+    if (usage.is_subscriber) {
+      return send(res, 200, {
+        allowed: true,
+        ...buildTrialStatus(0, true)
+      });
+    }
+
+    const trial = await getStudentTrialAccess(user.id);
+    if (!trial) {
+      return send(res, 500, { error: "Unable to verify your free learning time." });
+    }
+
+    const current = buildTrialStatus(trial.trial_seconds_used);
+    if (current.trialExpired) {
+      return send(res, 403, {
+        allowed: false,
+        limitReached: true,
+        error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        ...current
+      });
+    }
+
+    const updated = await addStudentTrialSeconds(
+      user.id,
+      trial.trial_seconds_used,
+      body?.activeSeconds
+    );
+
+    if (!updated) {
+      return send(res, 500, { error: "Unable to update your free learning time." });
+    }
+
+    const status = buildTrialStatus(updated.trial_seconds_used);
+    return send(res, status.trialExpired ? 403 : 200, {
+      allowed: !status.trialExpired,
+      limitReached: status.trialExpired,
+      error: status.trialExpired
+        ? "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach."
+        : undefined,
+      ...status
+    });
+  } catch (err) {
+    console.error(err);
+    return send(res, 500, { error: err?.message || "Unexpected server error." });
   }
 }
   if (req.method === "GET") return serveStatic(req, res);
