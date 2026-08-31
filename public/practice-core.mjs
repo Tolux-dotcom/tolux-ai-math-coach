@@ -475,17 +475,34 @@ function factoredQuadraticItem(difficulty, index, random) {
   const a = firstCoefficient * secondCoefficient;
   const b = firstCoefficient * secondConstant + secondCoefficient * firstConstant;
   const c = firstConstant * secondConstant;
-  const firstFactor = formatLinearFactor(firstCoefficient, firstConstant);
-  const secondFactor = formatLinearFactor(secondCoefficient, secondConstant);
+  const firstFactorGcf = greatestCommonDivisor(firstCoefficient, firstConstant);
+  const secondFactorGcf = greatestCommonDivisor(secondCoefficient, secondConstant);
+  const outsideFactor = firstFactorGcf * secondFactorGcf;
+  const firstFactor = formatLinearFactor(
+    firstCoefficient / firstFactorGcf,
+    firstConstant / firstFactorGcf
+  );
+  const secondFactor = formatLinearFactor(
+    secondCoefficient / secondFactorGcf,
+    secondConstant / secondFactorGcf
+  );
+  const outside = outsideFactor === 1 ? "" : String(outsideFactor);
+  const completeFactorization = `${outside}${firstFactor}${secondFactor}`;
 
   return {
     variant,
     prompt: `Factor completely: ${formatPolynomial(a, b, c)}.`,
-    answer_key: `${firstFactor}${secondFactor}`,
+    answer_key: completeFactorization,
     answer_type: "factored-quadratic",
     expected: { a, b, c },
     hint,
     alternate_explanation: "Work backward from multiplication: the outer and inner products must combine to the middle term while the constants multiply to the final term.",
+    alternate_explanation_steps: [
+      `Multiply the proposed factors mentally and compare all three coefficients with ${formatPolynomial(a, b, c)}.`,
+      `The first terms must multiply to ${a}x², the constants must multiply to ${c}, and the two cross-products must add to ${b}x.`,
+      `Remove any common factor still trapped inside either binomial so the final form is completely factored.`,
+      `The complete factorization is ${completeFactorization}.`
+    ],
     diagnostic_tag: diagnosticTag,
     solution_steps: [
       {
@@ -495,7 +512,7 @@ function factoredQuadraticItem(difficulty, index, random) {
           : "Use the ac method to identify a pair that multiplies to ac and adds to b."
       },
       {
-        equation: `${firstFactor}${secondFactor}`,
+        equation: completeFactorization,
         explanation: "Write the two binomial factors."
       },
       {
@@ -519,25 +536,45 @@ function differenceOfSquaresItem(difficulty, index, random) {
   );
   const a = xCoefficient ** 2;
   const c = -(constant ** 2);
-  const left = formatLinearFactor(xCoefficient, -constant);
-  const right = formatLinearFactor(xCoefficient, constant);
+  const commonFactor = greatestCommonDivisor(xCoefficient, constant);
+  const outsideFactor = commonFactor ** 2;
+  const reducedXCoefficient = xCoefficient / commonFactor;
+  const reducedConstant = constant / commonFactor;
+  const left = formatLinearFactor(reducedXCoefficient, -reducedConstant);
+  const right = formatLinearFactor(reducedXCoefficient, reducedConstant);
+  const outside = outsideFactor === 1 ? "" : String(outsideFactor);
+  const completeFactorization = `${outside}${left}${right}`;
 
   return {
     variant: xCoefficient === 1 ? "basic-difference-squares" : "scaled-difference-squares",
     prompt: `Factor completely: ${formatPolynomial(a, 0, c)}.`,
-    answer_key: `${left}${right}`,
+    answer_key: completeFactorization,
     answer_type: "factored-quadratic",
     expected: { a, b: 0, c },
-    hint: `Rewrite the expression as (${xCoefficient}x)² − ${constant}², then use a² − b² = (a − b)(a + b).`,
-    alternate_explanation: "A difference of squares uses conjugate factors: the terms match, but one factor subtracts and the other adds. Their middle terms cancel when multiplied.",
+    hint: outsideFactor === 1
+      ? `Rewrite the expression as (${xCoefficient}x)² − ${constant}², then use a² − b² = (a − b)(a + b).`
+      : `First factor out the GCF ${outsideFactor}. Then apply a² − b² = (a − b)(a + b) to the remaining expression.`,
+    alternate_explanation: `First remove the greatest common factor, then factor the remaining difference of squares. This prevents stopping at an equivalent expression that is not completely factored.`,
+    alternate_explanation_steps: [
+      ...(outsideFactor === 1
+        ? []
+        : [`The greatest common factor of ${a}x² and ${Math.abs(c)} is ${outsideFactor}: ${formatPolynomial(a, 0, c)} = ${outsideFactor}(${formatPolynomial(a / outsideFactor, 0, c / outsideFactor)}).`]),
+      `Inside the parentheses, identify (${reducedXCoefficient}x)² − ${reducedConstant}².`,
+      `Apply A² − B² = (A − B)(A + B): ${completeFactorization}.`,
+      `Check by multiplying: ${left}${right} = ${formatPolynomial(a / outsideFactor, 0, c / outsideFactor)}, then multiply by ${outsideFactor}.`
+    ],
     diagnostic_tag: "difference_of_squares_pattern",
     solution_steps: [
       {
-        equation: `(${xCoefficient}x)² − ${constant}²`,
-        explanation: "Identify both perfect-square terms."
+        equation: outsideFactor === 1
+          ? `(${reducedXCoefficient}x)² − ${reducedConstant}²`
+          : `${outsideFactor}((${reducedXCoefficient}x)² − ${reducedConstant}²)`,
+        explanation: outsideFactor === 1
+          ? "Identify both perfect-square terms."
+          : `Factor out the greatest common factor ${outsideFactor}, then identify the two squares.`
       },
       {
-        equation: `${left}${right}`,
+        equation: completeFactorization,
         explanation: "Apply a² − b² = (a − b)(a + b)."
       },
       {
@@ -546,6 +583,15 @@ function differenceOfSquaresItem(difficulty, index, random) {
       }
     ]
   };
+}
+
+function greatestCommonDivisor(first, second) {
+  let a = Math.abs(Number(first));
+  let b = Math.abs(Number(second));
+  while (b !== 0) {
+    [a, b] = [b, a % b];
+  }
+  return a || 1;
 }
 
 export function validatePracticeOptions({ skill, difficulty, count }) {
@@ -673,22 +719,26 @@ function parseFactoredQuadratic(value) {
     .replace(/[·×*]/g, "")
     .replace(/\^?2/g, "2");
   const match = normalized.match(
-    /^\(([-+]?\d*)x([+-]\d+)\)\(([-+]?\d*)x([+-]\d+)\)$/
+    /^([-+]?\d*)\(([-+]?\d*)x([+-]\d+)\)\(([-+]?\d*)x([+-]\d+)\)$/
   );
   if (!match) return null;
 
-  const firstCoefficient = parseFactorCoefficient(match[1]);
-  const firstConstant = Number(match[2]);
-  const secondCoefficient = parseFactorCoefficient(match[3]);
-  const secondConstant = Number(match[4]);
-  if (![firstCoefficient, firstConstant, secondCoefficient, secondConstant].every(Number.isFinite)) {
+  const outsideCoefficient = parseFactorCoefficient(match[1]);
+  const firstCoefficient = parseFactorCoefficient(match[2]);
+  const firstConstant = Number(match[3]);
+  const secondCoefficient = parseFactorCoefficient(match[4]);
+  const secondConstant = Number(match[5]);
+  if (![outsideCoefficient, firstCoefficient, firstConstant, secondCoefficient, secondConstant].every(Number.isFinite)) {
     return null;
   }
 
   return {
-    a: firstCoefficient * secondCoefficient,
-    b: firstCoefficient * secondConstant + secondCoefficient * firstConstant,
-    c: firstConstant * secondConstant
+    a: outsideCoefficient * firstCoefficient * secondCoefficient,
+    b: outsideCoefficient * (firstCoefficient * secondConstant + secondCoefficient * firstConstant),
+    c: outsideCoefficient * firstConstant * secondConstant,
+    completelyFactored:
+      greatestCommonDivisor(firstCoefficient, firstConstant) === 1 &&
+      greatestCommonDivisor(secondCoefficient, secondConstant) === 1
   };
 }
 
@@ -717,6 +767,7 @@ export function gradePracticeAnswer(studentAnswer, item) {
     const parsed = parseFactoredQuadratic(studentAnswer);
     return Boolean(
       parsed &&
+      parsed.completelyFactored &&
       parsed.a === item.expected?.a &&
       parsed.b === item.expected?.b &&
       parsed.c === item.expected?.c
