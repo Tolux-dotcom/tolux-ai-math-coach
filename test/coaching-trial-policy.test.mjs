@@ -33,3 +33,9 @@ test("only an allowlisted preview QA account can auto-reset a completed trial", 
   assert.match(serverSource, /QA cycle complete\. Refresh to begin a fresh 10-minute test window\./);
   assert.match(serverSource, /qaAutoReset: Boolean\(qaAutoReset\)/);
 });
+
+test("dashboard automatically opens the next QA trial window without an upgrade offer", () => {
+  assert.match(appSource, /data\.limitReached && data\.qaAutoReset/);
+  assert.match(appSource, /function restartQaTrialWindow/);
+  assert.match(appSource, /window\.setTimeout\(\(\) => window\.location\.reload\(\), 2000\)/);
+});
