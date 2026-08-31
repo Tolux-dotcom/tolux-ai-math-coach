@@ -19,6 +19,23 @@ const stripe = process.env.STRIPE_SECRET_KEY
   : null;
 const internalQa = createInternalQaController();
 
+// Authentication must be verified by the same Supabase project used by the
+// browser clients in public/app.js and public/lesson.js. Database access still
+// uses the server-only service key below.
+const SUPABASE_AUTH_URL = "https://xnadszfvjkyxltskywin.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const supabaseAuth = createClient(
+  SUPABASE_AUTH_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false
+    }
+  }
+);
+
 const supabaseServerKey =
   process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabaseAdmin =
@@ -40,14 +57,14 @@ if (!supabaseAdmin) {
     hasUrl: Boolean(process.env.SUPABASE_URL),
     hasServerKey: Boolean(supabaseServerKey)
   });
+} else if (process.env.SUPABASE_URL !== SUPABASE_AUTH_URL) {
+  console.error("[auth] Supabase project mismatch", {
+    expectedProject: new URL(SUPABASE_AUTH_URL).hostname,
+    configuredProject: new URL(process.env.SUPABASE_URL).hostname
+  });
 }
 
 async function getAuthenticatedUser(req) {
-  if (!supabaseAdmin) {
-    console.error("[auth] Authentication unavailable: missing Supabase server configuration");
-    return null;
-  }
-
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ")
     ? authHeader.slice(7)
@@ -58,7 +75,7 @@ async function getAuthenticatedUser(req) {
     return null;
   }
 
-  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  const { data, error } = await supabaseAuth.auth.getUser(token);
 
   if (error || !data?.user) {
     console.warn("[auth] Supabase rejected bearer token", {
