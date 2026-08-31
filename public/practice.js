@@ -558,10 +558,14 @@ practiceStuckBtn.addEventListener("click", async () => {
 practiceExplainBtn.addEventListener("click", async () => {
   const item = currentItem();
   if (!item || !(await ensurePracticeAccess(item))) return;
+  const detailedSteps = Array.isArray(item.alternate_explanation_steps)
+    ? `<ol>${item.alternate_explanation_steps.map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol>`
+    : "";
   setFeedback(`
     <div class="lesson-state lesson-state-success">
       <strong>Another way to think about it</strong>
       <p>${escapeHtml(item.alternate_explanation)}</p>
+      ${detailedSteps}
     </div>
   `);
 });
