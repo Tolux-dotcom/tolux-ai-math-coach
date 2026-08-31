@@ -25,10 +25,10 @@ test("dashboard starts the shared trial heartbeat and uses timed-trial copy", ()
 });
 
 test("only an allowlisted preview QA account can auto-reset a completed trial", () => {
-  assert.match(serverSource, /async function resetQaTrialSeconds\(userId\)/);
+  assert.match(serverSource, /async function resetQaTrialSeconds\(user\)/);
   assert.match(
     serverSource,
-    /process\.env\.VERCEL_ENV !== "preview"[\s\S]*?!internalQa\.isAuthorized\(userId\)/
+    /process\.env\.VERCEL_ENV !== "preview"[\s\S]*?!isPreviewQaUser\(user\)/
   );
   assert.match(serverSource, /QA cycle complete\. Refresh to begin a fresh 10-minute test window\./);
   assert.match(serverSource, /qaAutoReset: Boolean\(qaAutoReset\)/);
