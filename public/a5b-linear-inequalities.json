@@ -1,0 +1,67 @@
+{
+  "module_id": "alg1-a5b-linear-inequalities",
+  "version": "1.0.0-pilot",
+  "course": "Algebra 1",
+  "teks": ["A.5B"],
+  "title": "Solving Linear Inequalities in One Variable",
+  "student_objective": "I can solve one-variable linear inequalities, reverse the inequality when multiplying or dividing by a negative number, represent solutions, and justify each step.",
+  "teacher_objective": "Diagnose inequality-solving misconceptions at the first incorrect step, especially failure to reverse the inequality after multiplying or dividing by a negative number, and route students to targeted remediation.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": true,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_settings": {
+    "diagnostic_item_ids": ["A5B-D01", "A5B-D02"],
+    "guided_item_ids": ["A5B-G01", "A5B-G02"],
+    "independent_item_ids": ["A5B-P01", "A5B-P02"],
+    "mastery_item_ids": ["A5B-M01", "A5B-M02", "A5B-M03", "A5B-M04", "A5B-M05"],
+    "assessed_items_in_core_lesson": 11
+  },
+  "lesson_flow": [
+    {"step": 1, "type": "prerequisite_diagnostic", "label": "Quick readiness check"},
+    {"step": 2, "type": "concept", "label": "Inequality meaning and inverse operations"},
+    {"step": 3, "type": "worked_examples", "label": "Watch Tolux solve"},
+    {"step": 4, "type": "guided_practice", "label": "Solve with Tolux"},
+    {"step": 5, "type": "independent_practice", "label": "Your turn"},
+    {"step": 6, "type": "mastery_check", "label": "Check mastery"},
+    {"step": 7, "type": "remediation_or_complete", "label": "Next best step"}
+  ],
+  "concept_cards": [
+    {"id": "A5B-C01", "title": "An inequality describes a set of values", "content": "Unlike an equation that may identify specific values, an inequality usually describes many values that make a comparison true."},
+    {"id": "A5B-C02", "title": "Keep equivalent inequalities", "content": "Adding or subtracting the same quantity on both sides preserves the inequality. Multiplying or dividing both sides by the same positive quantity also preserves its direction."},
+    {"id": "A5B-C03", "title": "Reverse for a negative multiplier or divisor", "content": "When both sides are multiplied or divided by a negative number, reverse the inequality symbol. For example, -2x > 6 becomes x < -3."},
+    {"id": "A5B-C04", "title": "Check a solution value", "content": "Choose a value from the proposed solution set and substitute it into the original inequality. Also check a value outside the set when useful."},
+    {"id": "A5B-C05", "title": "Represent the solution", "content": "Use an open endpoint for < or > and a closed endpoint for ≤ or ≥, then shade in the direction of all values that satisfy the inequality."}
+  ],
+  "items": [
+    {"id":"A5B-D01","type":"diagnostic","difficulty":"Foundational","prompt":"Solve x + 5 > 12.","answer_key":"x > 7","diagnostic_tag":"inverse_operations","tutor_behavior":"If incorrect, connect inequality solving to maintaining an equivalent comparison and review subtraction on both sides.","process_teks_tags":["A.1B","A.1D","A.1G"]},
+    {"id":"A5B-D02","type":"diagnostic","difficulty":"Foundational","prompt":"Which statement is equivalent to -2x > 8?","answer_key":"x < -4","accepted_answers":["x<-4","x < -4"],"diagnostic_tag":"negative_division_reversal","critical_misconception":true,"tutor_behavior":"If incorrect, demonstrate with numerical comparisons why multiplying or dividing by a negative reverses order.","process_teks_tags":["A.1B","A.1D","A.1F","A.1G"]},
+    {"id":"A5B-L01","type":"worked_example","difficulty":"Foundational","prompt":"Solve 3x - 4 ≤ 11.","answer_key":"x ≤ 5","diagnostic_tag":"positive_coefficient","solution_steps":[{"equation":"3x - 4 ≤ 11","explanation":"Start with the original inequality."},{"equation":"3x ≤ 15","explanation":"Add 4 to both sides. The inequality direction stays the same."},{"equation":"x ≤ 5","explanation":"Divide both sides by positive 3, so the inequality direction stays the same."},{"equation":"3(5) - 4 ≤ 11","explanation":"Check the boundary value: 11 ≤ 11 is true."}],"process_teks_tags":["A.1B","A.1D","A.1G"]},
+    {"id":"A5B-L02","type":"worked_example","difficulty":"Grade-level","prompt":"Solve -4x + 7 > 19.","answer_key":"x < -3","diagnostic_tag":"negative_division_reversal","critical_misconception":true,"solution_steps":[{"equation":"-4x + 7 > 19","explanation":"Start with the original inequality."},{"equation":"-4x > 12","explanation":"Subtract 7 from both sides."},{"equation":"x < -3","explanation":"Divide both sides by -4 and reverse > to < because division is by a negative number."},{"equation":"-4(-4) + 7 > 19","explanation":"Check a value in the solution set, such as -4: 23 > 19 is true."}],"process_teks_tags":["A.1B","A.1D","A.1F","A.1G"]},
+    {"id":"A5B-L03","type":"worked_example","difficulty":"Grade-level","prompt":"Solve 5(x - 2) ≤ 3x + 6.","answer_key":"x ≤ 8","diagnostic_tag":"distribution_variables_both_sides","solution_steps":[{"equation":"5(x - 2) ≤ 3x + 6","explanation":"Start with the original inequality."},{"equation":"5x - 10 ≤ 3x + 6","explanation":"Distribute 5 to both terms."},{"equation":"2x - 10 ≤ 6","explanation":"Subtract 3x from both sides."},{"equation":"2x ≤ 16","explanation":"Add 10 to both sides."},{"equation":"x ≤ 8","explanation":"Divide by positive 2; do not reverse the inequality."}],"process_teks_tags":["A.1B","A.1D","A.1G"]},
+    {"id":"A5B-G01","type":"guided_practice","difficulty":"Grade-level","prompt":"Solve 6x + 1 ≥ 25. Give your first step before finishing.","answer_key":"x ≥ 4","diagnostic_tag":"inverse_operations","tutor_behavior":"Ask the student to identify the operation to undo first; do not reveal the full solution immediately.","solution_steps":[{"equation":"6x + 1 ≥ 25","explanation":"Start with the original inequality."},{"equation":"6x ≥ 24","explanation":"Subtract 1 from both sides."},{"equation":"x ≥ 4","explanation":"Divide by positive 6; the direction stays the same."}],"process_teks_tags":["A.1B","A.1D","A.1G"]},
+    {"id":"A5B-G02","type":"guided_practice","difficulty":"Grade-level","prompt":"Solve -3(x + 2) < 12.","answer_key":"x > -6","diagnostic_tag":"distribution_negative_reversal","critical_misconception":true,"tutor_behavior":"Prompt for distribution first, then explicitly ask whether the final division requires reversing the symbol.","solution_steps":[{"equation":"-3(x + 2) < 12","explanation":"Start with the original inequality."},{"equation":"-3x - 6 < 12","explanation":"Distribute -3 to both terms."},{"equation":"-3x < 18","explanation":"Add 6 to both sides."},{"equation":"x > -6","explanation":"Divide by -3 and reverse < to >."}],"process_teks_tags":["A.1B","A.1D","A.1F","A.1G"]},
+    {"id":"A5B-P01","type":"independent_practice","difficulty":"Grade-level","prompt":"Solve 4x - 9 > 2x + 5.","answer_key":"x > 7","diagnostic_tag":"variables_both_sides","tutor_behavior":"Score the first attempt and tag the first incorrect algebraic move.","process_teks_tags":["A.1B","A.1D","A.1G"]},
+    {"id":"A5B-P02","type":"independent_practice","difficulty":"Challenging","prompt":"Solve 2 - 5x ≥ 17.","answer_key":"x ≤ -3","diagnostic_tag":"negative_division_reversal","critical_misconception":true,"tutor_behavior":"Require a justification for the final inequality direction.","process_teks_tags":["A.1B","A.1D","A.1F","A.1G"]},
+    {"id":"A5B-M01","type":"mastery_check","difficulty":"Foundational","prompt":"Solve 7x + 3 < 31.","answer_key":"x < 4","diagnostic_tag":"inverse_operations","process_teks_tags":["A.1B","A.1G"]},
+    {"id":"A5B-M02","type":"mastery_check","difficulty":"Grade-level","prompt":"Solve -6x ≤ 30.","answer_key":"x ≥ -5","diagnostic_tag":"negative_division_reversal","critical_misconception":true,"process_teks_tags":["A.1B","A.1F","A.1G"]},
+    {"id":"A5B-M03","type":"mastery_check","difficulty":"Grade-level","prompt":"Solve 3(x + 4) > 2x + 9.","answer_key":"x > -3","diagnostic_tag":"distribution_variables_both_sides","process_teks_tags":["A.1B","A.1D","A.1G"]},
+    {"id":"A5B-M04","type":"mastery_check","difficulty":"Challenging","prompt":"Solve 8 - 2(3x - 1) ≥ 22.","answer_key":"x ≤ -2","diagnostic_tag":"multi_step_negative_division","critical_misconception":true,"process_teks_tags":["A.1B","A.1D","A.1F","A.1G"]},
+    {"id":"A5B-M05","type":"mastery_check","difficulty":"Reasoning","prompt":"A student solves -5x > 20 and writes x > -4. Identify the mistake and give the correct solution.","answer_key":"The inequality must reverse when dividing by -5; x < -4.","accepted_answers":["x < -4","x<-4"],"diagnostic_tag":"explain_negative_reversal","critical_misconception":true,"requires_explanation":true,"tutor_behavior":"Require the student to state that division by a negative reverses the inequality direction.","process_teks_tags":["A.1B","A.1F","A.1G"]}
+  ],
+  "misconceptions": [
+    {"tag":"negative_division_reversal","description":"Student divides or multiplies by a negative number without reversing the inequality.","remediation":"Use concrete ordered-number examples such as 2 < 5 and multiply both sides by -1 to observe -2 > -5, then reconnect to symbolic solving."},
+    {"tag":"distribution_negative_reversal","description":"Student mishandles negative distribution or reverses the inequality during distribution rather than during multiplication/division of both sides by a negative.","remediation":"Separate the two ideas: distribute to simplify expressions first; reverse only when the same negative factor is used to multiply or divide both complete sides."},
+    {"tag":"variables_both_sides","description":"Student changes a term's sign without applying the same operation to both sides.","remediation":"Write the same subtraction or addition explicitly on both sides before simplifying."},
+    {"tag":"endpoint_representation","description":"Student confuses open and closed endpoints or shades in the wrong direction.","remediation":"Connect < and > to excluded endpoints and ≤ and ≥ to included endpoints, then test one shaded value in the original inequality."},
+    {"tag":"multi_step_negative_division","description":"Student performs earlier algebra correctly but fails at the final negative division.","remediation":"Pause before the final division and require the student to name the sign of the divisor and predict whether the symbol must reverse."}
+  ],
+  "remediation_recheck": [
+    {"id":"A5B-R01","prompt":"Solve -2x > 10.","answer_key":"x < -5","targets":["negative_division_reversal","multi_step_negative_division"]},
+    {"id":"A5B-R02","prompt":"Solve -4(x - 1) ≤ 12.","answer_key":"x ≥ -2","targets":["distribution_negative_reversal"]},
+    {"id":"A5B-R03","prompt":"Solve 5x + 2 ≥ 3x + 14.","answer_key":"x ≥ 6","targets":["variables_both_sides"]}
+  ]
+}
