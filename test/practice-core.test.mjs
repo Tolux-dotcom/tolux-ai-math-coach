@@ -158,6 +158,21 @@ test("A.10F accepts a complete factorization with an outside GCF", () => {
   assert.equal(gradePracticeAnswer("4(x-2)(x-2)", item), false);
 });
 
+test("A.10F explanations never tell students to multiply by one", () => {
+  const session = generatePracticeSession(
+    { skill: "A.10F", difficulty: "grade-level", count: 20 },
+    seededRandom(91)
+  );
+
+  assert.ok(
+    session.items.every(item =>
+      item.alternate_explanation_steps.every(
+        step => !step.toLowerCase().includes("multiply by 1")
+      )
+    )
+  );
+});
+
 test("practice summary uses first attempts and identifies review items", () => {
   const session = generatePracticeSession(
     { skill: "A.5A", difficulty: "foundational", count: 5 },
