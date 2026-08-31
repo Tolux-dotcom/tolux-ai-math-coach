@@ -37,11 +37,12 @@ const supabaseAuth = createClient(
 );
 
 const supabaseServerKey =
-  process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
+const supabaseServerUrl = process.env.SUPABASE_URL || SUPABASE_AUTH_URL;
 const supabaseAdmin =
-  process.env.SUPABASE_URL && supabaseServerKey
+  supabaseServerKey
     ? createClient(
-        process.env.SUPABASE_URL,
+        supabaseServerUrl,
         supabaseServerKey,
         {
           auth: {
@@ -57,10 +58,10 @@ if (!supabaseAdmin) {
     hasUrl: Boolean(process.env.SUPABASE_URL),
     hasServerKey: Boolean(supabaseServerKey)
   });
-} else if (process.env.SUPABASE_URL !== SUPABASE_AUTH_URL) {
+} else if (supabaseServerUrl !== SUPABASE_AUTH_URL) {
   console.error("[auth] Supabase project mismatch", {
     expectedProject: new URL(SUPABASE_AUTH_URL).hostname,
-    configuredProject: new URL(process.env.SUPABASE_URL).hostname
+    configuredProject: new URL(supabaseServerUrl).hostname
   });
 }
 
