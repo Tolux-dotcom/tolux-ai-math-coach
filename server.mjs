@@ -110,26 +110,6 @@ async function getStudentUsage(userId) {
   return created;
 }
 
-async function incrementStudentUsage(userId, currentCount) {
-  if (!supabaseAdmin || !userId) return null;
-
-  const newCount = (currentCount || 0) + 1;
-
-  const { data, error } = await supabaseAdmin
-    .from("student_usage")
-    .update({ questions_used: newCount })
-    .eq("user_id", userId)
-    .select("user_id, questions_used, is_subscriber")
-    .single();
-
-  if (error) {
-    console.error("Failed to update student usage:", error);
-    return null;
-  }
-
-  return data;
-}
-
 async function getStudentTrialAccess(userId) {
   if (!supabaseAdmin || !userId) return null;
 
@@ -678,15 +658,33 @@ const usage = qaSession
 
 if (!usage) {
   return send(res, 500, {
-    error: "Unable to verify your question usage right now."
+    error: "Unable to verify your learning access right now."
   });
 }
 
-if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
+const trial = usage.is_subscriber || qaSession
+  ? null
+  : await getStudentTrialAccess(user.id);
+
+if (!usage.is_subscriber && !qaSession && !trial) {
+  return send(res, 500, {
+    error: "Unable to verify your free learning time right now."
+  });
+}
+
+const trialStatus = buildTrialStatus(
+  trial?.trial_seconds_used || 0,
+  usage.is_subscriber
+);
+
+if (!qaSession && trialStatus.trialExpired) {
   return send(res, 403, {
-    error: `You’ve completed your ${FREE_QUESTION_LIMIT} free coaching questions. Upgrade to continue learning with Tolux AI Math Coach.`,
+    error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
     limitReached: true,
-    qaMode: Boolean(qaSession)
+    qaMode: false,
+    trialSecondsUsed: trialStatus.trialSecondsUsed,
+    trialSecondsRemaining: 0,
+    trialSecondsLimit: TRIAL_SECONDS
   });
 }
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -727,8 +725,6 @@ if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
       if (qaSession) {
         const advancedQa = internalQa.advance(qaSession);
         responseHeaders = { "Set-Cookie": advancedQa.cookie };
-      } else if (!usage.is_subscriber) {
-        await incrementStudentUsage(user.id, usage.questions_used);
       }
 
       send(
@@ -736,7 +732,13 @@ if (!usage.is_subscriber && usage.questions_used >= FREE_QUESTION_LIMIT) {
         200,
         {
           reply: response.output_text || "I could not generate a response.",
-          qaMode: Boolean(qaSession)
+          qaMode: Boolean(qaSession),
+          isSubscriber: usage.is_subscriber,
+          trialSecondsUsed: qaSession ? 0 : trialStatus.trialSecondsUsed,
+          trialSecondsRemaining: qaSession
+            ? TRIAL_SECONDS
+            : trialStatus.trialSecondsRemaining,
+          trialSecondsLimit: TRIAL_SECONDS
         },
         "application/json",
         responseHeaders
@@ -831,7 +833,11 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
     });
   }
 }
-if (req.method === "POST" && req.url === "/api/lesson-trial-heartbeat") {
+if (
+  req.method === "POST" &&
+  (req.url === "/api/trial-heartbeat" ||
+    req.url === "/api/lesson-trial-heartbeat")
+) {
   try {
     const body = await readJson(req);
     const user = await getAuthenticatedUser(req);

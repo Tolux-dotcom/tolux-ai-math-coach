@@ -267,7 +267,7 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
 
     if (data.limitReached) {
       showLessonUpgrade(
-        data.error || "You've completed your 10 free learning interactions."
+        data.error || "You've completed your 10-minute free learning trial."
       );
       return false;
     }
@@ -303,7 +303,7 @@ async function sendTrialHeartbeat() {
 
   try {
     const { response } = await fetchWithLessonSession(
-      "/api/lesson-trial-heartbeat",
+      "/api/trial-heartbeat",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
