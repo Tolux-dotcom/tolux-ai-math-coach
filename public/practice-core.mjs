@@ -561,7 +561,9 @@ function differenceOfSquaresItem(difficulty, index, random) {
         : [`The greatest common factor of ${a}x² and ${Math.abs(c)} is ${outsideFactor}: ${formatPolynomial(a, 0, c)} = ${outsideFactor}(${formatPolynomial(a / outsideFactor, 0, c / outsideFactor)}).`]),
       `Inside the parentheses, identify (${reducedXCoefficient}x)² − ${reducedConstant}².`,
       `Apply A² − B² = (A − B)(A + B): ${completeFactorization}.`,
-      `Check by multiplying: ${left}${right} = ${formatPolynomial(a / outsideFactor, 0, c / outsideFactor)}, then multiply by ${outsideFactor}.`
+      outsideFactor === 1
+        ? `Check by multiplying: ${left}${right} = ${formatPolynomial(a, 0, c)}.`
+        : `Check by multiplying: ${left}${right} = ${formatPolynomial(a / outsideFactor, 0, c / outsideFactor)}, then multiply by ${outsideFactor}.`
     ],
     diagnostic_tag: "difference_of_squares_pattern",
     solution_steps: [
