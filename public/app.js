@@ -667,7 +667,10 @@ function addMessage(role, text, error=false){
   el.querySelector("p").textContent = normalizeMathText(text);
   chat.appendChild(el);
   if (window.MathJax?.typesetPromise) {
-  window.MathJax.typesetPromise([el]).catch(console.error);
+    window.MathJax.typesetPromise([el]).catch(console.error);
+  }
+  chat.scrollTop = chat.scrollHeight;
+  if (!error) history.push({ role, text });
 }
 
 function appendUpgradeOffer(message) {
@@ -740,9 +743,6 @@ window.addEventListener("pagehide", () => {
     coachTrialHeartbeatTimer = null;
   }
 });
-  chat.scrollTop = chat.scrollHeight;
-  if(!error) history.push({role, text});
-}
 
 function demoReply(text){
   const t = text.toLowerCase();
