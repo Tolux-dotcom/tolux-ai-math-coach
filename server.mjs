@@ -166,6 +166,33 @@ async function addStudentTrialSeconds(userId, currentSeconds, heartbeatSeconds) 
   return data;
 }
 
+async function resetQaTrialSeconds(userId) {
+  if (
+    process.env.VERCEL_ENV !== "preview" ||
+    !supabaseAdmin ||
+    !internalQa.isAuthorized(userId)
+  ) {
+    return null;
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("student_trial_access")
+    .update({
+      trial_seconds_used: 0,
+      updated_at: new Date().toISOString()
+    })
+    .eq("user_id", userId)
+    .select("user_id, trial_seconds_used")
+    .single();
+
+  if (error) {
+    console.error("Failed to reset the internal QA trial:", error);
+    return null;
+  }
+
+  return data;
+}
+
 const LESSON_PROGRESS_FIELDS = [
   "client_completion_id",
   "module_id",
@@ -879,10 +906,16 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
     );
 
     if (!isFreeDiagnostic && trialStatus.trialExpired) {
+      const qaAutoReset = internalQa.isAuthorized(user.id)
+        ? await resetQaTrialSeconds(user.id)
+        : null;
       return send(res, 403, {
-        error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        error: qaAutoReset
+          ? "QA cycle complete. Refresh to begin a fresh 10-minute test window."
+          : "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
         limitReached: true,
         qaMode: Boolean(qaSession),
+        qaAutoReset: Boolean(qaAutoReset),
         trialSecondsUsed: trialStatus.trialSecondsUsed,
         trialSecondsRemaining: 0,
         trialSecondsLimit: TRIAL_SECONDS
@@ -954,10 +987,17 @@ if (
 
     const current = buildTrialStatus(trial.trial_seconds_used);
     if (current.trialExpired) {
+      const qaAutoReset = internalQa.isAuthorized(user.id)
+        ? await resetQaTrialSeconds(user.id)
+        : null;
       return send(res, 403, {
         allowed: false,
         limitReached: true,
-        error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        error: qaAutoReset
+          ? "QA cycle complete. Refresh to begin a fresh 10-minute test window."
+          : "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        qaMode: Boolean(qaAutoReset),
+        qaAutoReset: Boolean(qaAutoReset),
         ...current
       });
     }
@@ -973,12 +1013,19 @@ if (
     }
 
     const status = buildTrialStatus(updated.trial_seconds_used);
+    const qaAutoReset = status.trialExpired && internalQa.isAuthorized(user.id)
+      ? await resetQaTrialSeconds(user.id)
+      : null;
     return send(res, status.trialExpired ? 403 : 200, {
       allowed: !status.trialExpired,
       limitReached: status.trialExpired,
       error: status.trialExpired
-        ? "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach."
+        ? qaAutoReset
+          ? "QA cycle complete. Refresh to begin a fresh 10-minute test window."
+          : "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach."
         : undefined,
+      qaMode: Boolean(qaAutoReset),
+      qaAutoReset: Boolean(qaAutoReset),
       ...status
     });
   } catch (err) {
