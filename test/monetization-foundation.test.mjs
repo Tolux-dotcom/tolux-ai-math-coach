@@ -32,6 +32,17 @@ test("checkout uses authenticated server-controlled Tolux plans", () => {
   assert.match(server, /subscription_data:/);
 });
 
+test("server verifies browser tokens against the browser Supabase project", () => {
+  assert.match(
+    server,
+    /const SUPABASE_AUTH_URL = "https:\/\/xnadszfvjkyxltskywin\.supabase\.co"/
+  );
+  assert.match(server, /const supabaseAuth = createClient\(/);
+  assert.match(server, /supabaseAuth\.auth\.getUser\(token\)/);
+  assert.doesNotMatch(server, /supabaseAdmin\.auth\.getUser\(token\)/);
+  assert.match(server, /\[auth\] Supabase project mismatch/);
+});
+
 test("payment lifecycle updates access and protects session verification", () => {
   assert.match(server, /setStudentSubscription\(userId, true\)/);
   assert.match(server, /setStudentSubscription\(userId, false\)/);
