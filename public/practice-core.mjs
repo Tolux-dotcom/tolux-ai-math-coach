@@ -12,6 +12,14 @@ export const PRACTICE_SKILLS = Object.freeze({
   "A.5C": {
     moduleId: "alg1-a5c-linear-systems",
     title: "Solving Systems of Linear Equations"
+  },
+  "A.10E": {
+    moduleId: "alg1-a10e-factor-trinomials",
+    title: "Factoring Quadratic Trinomials"
+  },
+  "A.10F": {
+    moduleId: "alg1-a10f-difference-of-squares",
+    title: "Factoring a Difference of Squares"
   }
 });
 
@@ -399,6 +407,147 @@ function systemItem(difficulty, index, random) {
   };
 }
 
+function formatPolynomial(a, b, c) {
+  const terms = [];
+  const pushTerm = (coefficient, body) => {
+    if (coefficient === 0) return;
+    const magnitude = Math.abs(coefficient);
+    const value = body && magnitude === 1 ? body : `${magnitude}${body}`;
+    terms.push({ sign: coefficient < 0 ? "-" : "+", value });
+  };
+
+  pushTerm(a, "x²");
+  pushTerm(b, "x");
+  pushTerm(c, "");
+  return terms.map((term, index) => {
+    if (index === 0) return `${term.sign === "-" ? "-" : ""}${term.value}`;
+    return ` ${term.sign} ${term.value}`;
+  }).join("");
+}
+
+function formatLinearFactor(coefficient, constant) {
+  const variable = coefficient === 1
+    ? "x"
+    : coefficient === -1
+      ? "-x"
+      : `${coefficient}x`;
+  if (constant === 0) return `(${variable})`;
+  return `(${variable} ${constant > 0 ? "+" : "-"} ${Math.abs(constant)})`;
+}
+
+function factoredQuadraticItem(difficulty, index, random) {
+  const salt = index * 5;
+  let firstCoefficient = 1;
+  let secondCoefficient = 1;
+  let firstConstant;
+  let secondConstant;
+  let variant;
+  let hint;
+  let diagnosticTag;
+
+  if (difficulty === "foundational") {
+    firstConstant = pickNonZero(random, 1, 9, salt);
+    secondConstant = pickNonZero(random, 1, 9, salt + 1);
+    variant = "monic-positive";
+    hint = `Find two integers whose product is ${firstConstant * secondConstant} and whose sum is ${firstConstant + secondConstant}.`;
+    diagnosticTag = "factor_pair";
+  } else if (difficulty === "grade-level") {
+    firstConstant = pickNonZero(random, -9, 9, salt);
+    secondConstant = index % 3 === 0
+      ? firstConstant
+      : pickNonZero(random, -9, 9, salt + 1);
+    variant = firstConstant === secondConstant ? "perfect-square" : "monic-mixed-signs";
+    hint = firstConstant === secondConstant
+      ? "Check whether the first and last terms are perfect squares and the middle term is twice their product."
+      : `Find two integers whose product is ${firstConstant * secondConstant} and whose sum is ${firstConstant + secondConstant}.`;
+    diagnosticTag = firstConstant === secondConstant
+      ? "perfect_square_pattern"
+      : "signed_factor_pair";
+  } else {
+    firstCoefficient = pickInt(random, 2, 5, salt + 2);
+    firstConstant = pickNonZero(random, -8, 8, salt);
+    secondConstant = pickNonZero(random, -8, 8, salt + 1);
+    variant = "non-monic";
+    hint = "Multiply the leading coefficient and constant term, split the middle term using a matching factor pair, then factor by grouping.";
+    diagnosticTag = "ac_method";
+  }
+
+  const a = firstCoefficient * secondCoefficient;
+  const b = firstCoefficient * secondConstant + secondCoefficient * firstConstant;
+  const c = firstConstant * secondConstant;
+  const firstFactor = formatLinearFactor(firstCoefficient, firstConstant);
+  const secondFactor = formatLinearFactor(secondCoefficient, secondConstant);
+
+  return {
+    variant,
+    prompt: `Factor completely: ${formatPolynomial(a, b, c)}.`,
+    answer_key: `${firstFactor}${secondFactor}`,
+    answer_type: "factored-quadratic",
+    expected: { a, b, c },
+    hint,
+    alternate_explanation: "Work backward from multiplication: the outer and inner products must combine to the middle term while the constants multiply to the final term.",
+    diagnostic_tag: diagnosticTag,
+    solution_steps: [
+      {
+        equation: `${a} · ${c} = ${a * c}`,
+        explanation: a === 1
+          ? "Identify the product and sum needed for the two constant terms."
+          : "Use the ac method to identify a pair that multiplies to ac and adds to b."
+      },
+      {
+        equation: `${firstFactor}${secondFactor}`,
+        explanation: "Write the two binomial factors."
+      },
+      {
+        equation: formatPolynomial(a, b, c),
+        explanation: "Multiply the factors to verify the original trinomial."
+      }
+    ]
+  };
+}
+
+function differenceOfSquaresItem(difficulty, index, random) {
+  const salt = index * 4;
+  const xCoefficient = difficulty === "foundational"
+    ? 1
+    : pickInt(random, 2, difficulty === "grade-level" ? 6 : 12, salt);
+  const constant = pickInt(
+    random,
+    difficulty === "challenging" ? 6 : 2,
+    difficulty === "challenging" ? 20 : 12,
+    salt + 1
+  );
+  const a = xCoefficient ** 2;
+  const c = -(constant ** 2);
+  const left = formatLinearFactor(xCoefficient, -constant);
+  const right = formatLinearFactor(xCoefficient, constant);
+
+  return {
+    variant: xCoefficient === 1 ? "basic-difference-squares" : "scaled-difference-squares",
+    prompt: `Factor completely: ${formatPolynomial(a, 0, c)}.`,
+    answer_key: `${left}${right}`,
+    answer_type: "factored-quadratic",
+    expected: { a, b: 0, c },
+    hint: `Rewrite the expression as (${xCoefficient}x)² − ${constant}², then use a² − b² = (a − b)(a + b).`,
+    alternate_explanation: "A difference of squares uses conjugate factors: the terms match, but one factor subtracts and the other adds. Their middle terms cancel when multiplied.",
+    diagnostic_tag: "difference_of_squares_pattern",
+    solution_steps: [
+      {
+        equation: `(${xCoefficient}x)² − ${constant}²`,
+        explanation: "Identify both perfect-square terms."
+      },
+      {
+        equation: `${left}${right}`,
+        explanation: "Apply a² − b² = (a − b)(a + b)."
+      },
+      {
+        equation: formatPolynomial(a, 0, c),
+        explanation: "Multiply the conjugates to verify that the middle terms cancel."
+      }
+    ]
+  };
+}
+
 export function validatePracticeOptions({ skill, difficulty, count }) {
   const normalizedSkill = String(skill || "").toUpperCase();
   const normalizedDifficulty = String(difficulty || "").toLowerCase();
@@ -432,11 +581,14 @@ export function generatePracticeSession(options, random = Math.random) {
   }
 
   const { skill, difficulty, count } = validation.options;
-  const generator = skill === "A.5A"
-    ? equationItem
-    : skill === "A.5B"
-      ? inequalityItem
-      : systemItem;
+  const generators = {
+    "A.5A": equationItem,
+    "A.5B": inequalityItem,
+    "A.5C": systemItem,
+    "A.10E": factoredQuadraticItem,
+    "A.10F": differenceOfSquaresItem
+  };
+  const generator = generators[skill];
   const items = [];
 
   for (let index = 0; index < count; index += 1) {
@@ -510,6 +662,36 @@ function parseOrderedPair(value) {
   return pair ? { x: Number(pair[1]), y: Number(pair[2]) } : null;
 }
 
+function parseFactorCoefficient(value) {
+  if (value === "" || value === "+") return 1;
+  if (value === "-") return -1;
+  return Number(value);
+}
+
+function parseFactoredQuadratic(value) {
+  const normalized = normalizeComparison(value)
+    .replace(/[·×*]/g, "")
+    .replace(/\^?2/g, "2");
+  const match = normalized.match(
+    /^\(([-+]?\d*)x([+-]\d+)\)\(([-+]?\d*)x([+-]\d+)\)$/
+  );
+  if (!match) return null;
+
+  const firstCoefficient = parseFactorCoefficient(match[1]);
+  const firstConstant = Number(match[2]);
+  const secondCoefficient = parseFactorCoefficient(match[3]);
+  const secondConstant = Number(match[4]);
+  if (![firstCoefficient, firstConstant, secondCoefficient, secondConstant].every(Number.isFinite)) {
+    return null;
+  }
+
+  return {
+    a: firstCoefficient * secondCoefficient,
+    b: firstCoefficient * secondConstant + secondCoefficient * firstConstant,
+    c: firstConstant * secondConstant
+  };
+}
+
 export function gradePracticeAnswer(studentAnswer, item) {
   if (!item || !normalizeComparison(studentAnswer)) return false;
 
@@ -528,6 +710,16 @@ export function gradePracticeAnswer(studentAnswer, item) {
       parsed &&
       Math.abs(parsed.x - item.expected?.x) < 1e-8 &&
       Math.abs(parsed.y - item.expected?.y) < 1e-8
+    );
+  }
+
+  if (item.answer_type === "factored-quadratic") {
+    const parsed = parseFactoredQuadratic(studentAnswer);
+    return Boolean(
+      parsed &&
+      parsed.a === item.expected?.a &&
+      parsed.b === item.expected?.b &&
+      parsed.c === item.expected?.c
     );
   }
 

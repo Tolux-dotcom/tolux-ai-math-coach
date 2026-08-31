@@ -11,6 +11,10 @@ import {
   normalizeLessonProgressReport
 } from "./lesson-progress.mjs";
 import {
+  buildSkillAttemptRow,
+  mergeSkillMastery
+} from "./skill-mastery.mjs";
+import {
   TRIAL_SECONDS,
   advanceTrial,
   buildTrialStatus
@@ -215,6 +219,84 @@ async function getStudentLessonProgress(userId) {
   return data || [];
 }
 
+const SKILL_MASTERY_FIELDS = [
+  "skill_code",
+  "attempts_count",
+  "latest_score",
+  "best_score",
+  "mastery_label",
+  "total_time_on_skill_seconds",
+  "misconception_counts",
+  "last_practiced_at",
+  "updated_at"
+].join(", ");
+
+async function saveStudentSkillProgress(userId, report, { qaMode = false } = {}) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const attempt = buildSkillAttemptRow(userId, report, { qaMode });
+  if (!attempt) return null;
+
+  const { data: inserted, error: attemptError } = await supabaseAdmin
+    .from("skill_attempts")
+    .upsert(attempt, {
+      onConflict: "user_id,client_completion_id",
+      ignoreDuplicates: true
+    })
+    .select("user_id, client_completion_id, skill_code, completed_at, mastery_label, mastery_score, time_on_skill_seconds, item_records, qa_mode")
+    .maybeSingle();
+
+  if (attemptError) {
+    console.error("Failed to save skill attempt:", attemptError);
+    return null;
+  }
+
+  if (!inserted || qaMode) return null;
+
+  const { data: current, error: readError } = await supabaseAdmin
+    .from("skill_mastery")
+    .select(SKILL_MASTERY_FIELDS)
+    .eq("user_id", userId)
+    .eq("skill_code", inserted.skill_code)
+    .maybeSingle();
+
+  if (readError) {
+    console.error("Failed to read skill mastery:", readError);
+    return null;
+  }
+
+  const mastery = mergeSkillMastery(current, inserted);
+  const { data, error } = await supabaseAdmin
+    .from("skill_mastery")
+    .upsert(mastery, { onConflict: "user_id,skill_code" })
+    .select(SKILL_MASTERY_FIELDS)
+    .single();
+
+  if (error) {
+    console.error("Failed to update skill mastery:", error);
+    return null;
+  }
+
+  return data;
+}
+
+async function getStudentSkillMastery(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("skill_mastery")
+    .select(SKILL_MASTERY_FIELDS)
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false });
+
+  if (error) {
+    console.error("Failed to read skill mastery:", error);
+    return null;
+  }
+
+  return data || [];
+}
+
 const FREE_QUESTION_LIMIT = 10;
 const FREE_DIAGNOSTIC_ITEM_IDS = new Set(["A5A-D01", "A5A-D02"]);
 const STRIPE_PLAN_PRICE_IDS = {
@@ -402,15 +484,18 @@ const server = http.createServer(async (req, res) => {
       }
 
       if (req.method === "GET") {
-        const activities = await getStudentLessonProgress(user.id);
+        const [activities, mastery] = await Promise.all([
+          getStudentLessonProgress(user.id),
+          getStudentSkillMastery(user.id)
+        ]);
 
-        if (!activities) {
+        if (!activities || !mastery) {
           return send(res, 500, {
             error: "Unable to load lesson progress right now."
           });
         }
 
-        return send(res, 200, { activities });
+        return send(res, 200, { activities, mastery });
       }
 
       const input = await readJson(req);
@@ -446,7 +531,11 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
-      return send(res, 200, { activity: saved });
+      const mastery = await saveStudentSkillProgress(user.id, report, {
+        qaMode: Boolean(qaSession)
+      });
+
+      return send(res, 200, { activity: saved, mastery });
     } catch (err) {
       console.error("Lesson progress error:", err);
       return send(res, 500, {

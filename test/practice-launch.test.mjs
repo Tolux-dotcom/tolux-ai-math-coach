@@ -49,3 +49,10 @@ test("Practice uses the shared timed-trial heartbeat", () => {
   assert.match(practiceHtml, /free trial measures active learning time/i);
   assert.doesNotMatch(practiceHtml, /Each question counts once/i);
 });
+
+test("dashboard exposes persistent skill mastery returned by the progress API", () => {
+  assert.match(html, /id="skillMastery"/);
+  assert.match(app, /renderDashboardProgress\(data\.activities, "account", data\.mastery\)/);
+  assert.match(app, /Latest \$\{skill\.latest_score\}%/);
+  assert.match(app, /Best \$\{skill\.best_score\}%/);
+});

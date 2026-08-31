@@ -119,6 +119,32 @@ test("A.5C accepts coordinate and labeled-pair answers", () => {
   assert.equal(gradePracticeAnswer(`(${y}, ${x})`, item), x === y);
 });
 
+test("A.10E accepts equivalent factor order and rejects incorrect signs", () => {
+  const item = generatePracticeSession(
+    { skill: "A.10E", difficulty: "grade-level", count: 5 },
+    seededRandom(44)
+  ).items[1];
+  const match = item.answer_key.match(/^(\([^)]*\))(\([^)]*\))$/);
+
+  assert.ok(match);
+  assert.equal(gradePracticeAnswer(item.answer_key, item), true);
+  assert.equal(gradePracticeAnswer(`${match[2]}${match[1]}`, item), true);
+  assert.equal(gradePracticeAnswer("(x + 1)(x + 1)", item), false);
+});
+
+test("A.10F generates and grades conjugate difference-of-squares factors", () => {
+  for (const difficulty of PRACTICE_DIFFICULTIES) {
+    const item = generatePracticeSession(
+      { skill: "A.10F", difficulty, count: 5 },
+      seededRandom(71)
+    ).items[0];
+
+    assert.equal(item.expected.b, 0);
+    assert.ok(item.expected.c < 0);
+    assert.equal(gradePracticeAnswer(item.answer_key, item), true);
+  }
+});
+
 test("practice summary uses first attempts and identifies review items", () => {
   const session = generatePracticeSession(
     { skill: "A.5A", difficulty: "foundational", count: 5 },

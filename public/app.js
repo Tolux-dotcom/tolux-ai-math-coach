@@ -1367,12 +1367,14 @@ async function syncPendingLessonProgress(session) {
   }
 }
 
-function renderDashboardProgress(activities, source = "account") {
+function renderDashboardProgress(activities, source = "account", mastery = []) {
   const continueTopic = document.querySelector("#continueTopic");
   const continueProgress = document.querySelector("#continueProgress");
   const recentActivity = document.querySelector("#recentActivity");
   const progressStatus = document.querySelector("#progressStatus");
+  const skillMastery = document.querySelector("#skillMastery");
   const safeActivities = Array.isArray(activities) ? activities : [];
+  const safeMastery = Array.isArray(mastery) ? mastery : [];
 
   dashboardProgressActivities = safeActivities;
   dashboardProgressSource = safeActivities.length ? source : "empty";
@@ -1390,6 +1392,10 @@ function renderDashboardProgress(activities, source = "account") {
     if (progressStatus) {
       progressStatus.textContent =
         source === "local" ? "Sign in to sync progress across devices." : "";
+    }
+    if (skillMastery) {
+      skillMastery.innerHTML =
+        '<li class="progress-empty">Complete a practice session to begin tracking skill mastery.</li>';
     }
     return;
   }
@@ -1431,6 +1437,26 @@ function renderDashboardProgress(activities, source = "account") {
       ? "Synced to your Tolux account."
       : "Saved on this device; sign in to sync across devices.";
   }
+
+  if (skillMastery) {
+    skillMastery.replaceChildren();
+    if (safeMastery.length === 0) {
+      skillMastery.innerHTML =
+        '<li class="progress-empty">Your next completed skill session will create a mastery record.</li>';
+    } else {
+      for (const skill of safeMastery.slice(0, 5)) {
+        const item = document.createElement("li");
+        const title = document.createElement("strong");
+        title.textContent = `TEKS ${skill.skill_code}`;
+        const detail = document.createElement("span");
+        detail.textContent =
+          `${skill.mastery_label} • Latest ${skill.latest_score}% • ` +
+          `Best ${skill.best_score}% • ${skill.attempts_count} session${skill.attempts_count === 1 ? "" : "s"}`;
+        item.append(title, detail);
+        skillMastery.append(item);
+      }
+    }
+  }
 }
 
 async function refreshDashboardProgress(session) {
@@ -1453,7 +1479,7 @@ async function refreshDashboardProgress(session) {
     }
 
     if (refreshId !== progressRefreshSequence) return;
-    renderDashboardProgress(data.activities, "account");
+    renderDashboardProgress(data.activities, "account", data.mastery);
   } catch (error) {
     console.error("Unable to refresh lesson progress:", error);
     if (refreshId !== progressRefreshSequence) return;
