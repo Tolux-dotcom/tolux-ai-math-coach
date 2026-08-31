@@ -2,11 +2,12 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-const [html, app, styles, practice] = await Promise.all([
+const [html, app, styles, practice, practiceHtml] = await Promise.all([
   readFile(new URL("../public/index.html", import.meta.url), "utf8"),
   readFile(new URL("../public/app.js", import.meta.url), "utf8"),
   readFile(new URL("../public/styles.css", import.meta.url), "utf8"),
-  readFile(new URL("../public/practice.js", import.meta.url), "utf8")
+  readFile(new URL("../public/practice.js", import.meta.url), "utf8"),
+  readFile(new URL("../public/practice.html", import.meta.url), "utf8")
 ]);
 
 test("dashboard exposes a real Practice launcher and does not imply Test Prep is live", () => {
@@ -45,4 +46,6 @@ test("Practice uses the shared timed-trial heartbeat", () => {
   assert.match(practice, /activeSeconds:\s*15/);
   assert.match(practice, /window\.setInterval\(sendPracticeTrialHeartbeat, 15000\)/);
   assert.doesNotMatch(practice, /10 free learning interactions/);
+  assert.match(practiceHtml, /free trial measures active learning time/i);
+  assert.doesNotMatch(practiceHtml, /Each question counts once/i);
 });
