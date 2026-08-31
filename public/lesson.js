@@ -226,6 +226,23 @@ function showLessonUpgrade(message) {
   nextLessonStep.style.display = "none";
 }
 
+function restartQaLessonWindow() {
+  lessonLocked = true;
+  lessonAnswer.disabled = true;
+  submitLessonAnswer.disabled = true;
+  lessonStuckBtn.disabled = true;
+  lessonExplainBtn.disabled = true;
+  lessonSimilarBtn.disabled = true;
+  nextLessonStep.style.display = "none";
+  setFeedback(`
+    <div class="lesson-state lesson-state-success">
+      <strong>QA cycle complete</strong>
+      <p>Starting a fresh 10-minute test window…</p>
+    </div>
+  `);
+  window.setTimeout(() => window.location.reload(), 2000);
+}
+
 async function ensureLessonAccess(item, interactionKey = item?.id) {
   if (!item || lessonLocked) return false;
 
@@ -267,9 +284,13 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
     }
 
     if (data.limitReached) {
-      showLessonUpgrade(
-        data.error || "You've completed your 10-minute free learning trial."
-      );
+      if (data.qaAutoReset) {
+        restartQaLessonWindow();
+      } else {
+        showLessonUpgrade(
+          data.error || "You've completed your 10-minute free learning trial."
+        );
+      }
       return false;
     }
 
@@ -314,9 +335,13 @@ async function sendTrialHeartbeat() {
     if (!response) return;
     const data = await response.json();
     if (data.limitReached) {
-      showLessonUpgrade(
-        data.error || "You've completed your 10-minute free learning trial."
-      );
+      if (data.qaAutoReset) {
+        restartQaLessonWindow();
+      } else {
+        showLessonUpgrade(
+          data.error || "You've completed your 10-minute free learning trial."
+        );
+      }
     }
   } catch (error) {
     console.error("Lesson trial heartbeat failed:", error);

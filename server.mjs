@@ -6,10 +6,15 @@ import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { isPreviewQaUser } from "./qa-access.mjs";
 import {
   buildLessonProgressRow,
   normalizeLessonProgressReport
 } from "./lesson-progress.mjs";
+import {
+  buildSkillAttemptRow,
+  mergeSkillMastery
+} from "./skill-mastery.mjs";
 import {
   TRIAL_SECONDS,
   advanceTrial,
@@ -162,6 +167,33 @@ async function addStudentTrialSeconds(userId, currentSeconds, heartbeatSeconds) 
   return data;
 }
 
+async function resetQaTrialSeconds(user) {
+  if (
+    process.env.VERCEL_ENV !== "preview" ||
+    !supabaseAdmin ||
+    !isPreviewQaUser(user)
+  ) {
+    return null;
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("student_trial_access")
+    .update({
+      trial_seconds_used: 0,
+      updated_at: new Date().toISOString()
+    })
+    .eq("user_id", user.id)
+    .select("user_id, trial_seconds_used")
+    .single();
+
+  if (error) {
+    console.error("Failed to reset the internal QA trial:", error);
+    return null;
+  }
+
+  return data;
+}
+
 const LESSON_PROGRESS_FIELDS = [
   "client_completion_id",
   "module_id",
@@ -209,6 +241,84 @@ async function getStudentLessonProgress(userId) {
 
   if (error) {
     console.error("Failed to read lesson progress:", error);
+    return null;
+  }
+
+  return data || [];
+}
+
+const SKILL_MASTERY_FIELDS = [
+  "skill_code",
+  "attempts_count",
+  "latest_score",
+  "best_score",
+  "mastery_label",
+  "total_time_on_skill_seconds",
+  "misconception_counts",
+  "last_practiced_at",
+  "updated_at"
+].join(", ");
+
+async function saveStudentSkillProgress(userId, report, { qaMode = false } = {}) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const attempt = buildSkillAttemptRow(userId, report, { qaMode });
+  if (!attempt) return null;
+
+  const { data: inserted, error: attemptError } = await supabaseAdmin
+    .from("skill_attempts")
+    .upsert(attempt, {
+      onConflict: "user_id,client_completion_id",
+      ignoreDuplicates: true
+    })
+    .select("user_id, client_completion_id, skill_code, completed_at, mastery_label, mastery_score, time_on_skill_seconds, item_records, qa_mode")
+    .maybeSingle();
+
+  if (attemptError) {
+    console.error("Failed to save skill attempt:", attemptError);
+    return null;
+  }
+
+  if (!inserted || qaMode) return null;
+
+  const { data: current, error: readError } = await supabaseAdmin
+    .from("skill_mastery")
+    .select(SKILL_MASTERY_FIELDS)
+    .eq("user_id", userId)
+    .eq("skill_code", inserted.skill_code)
+    .maybeSingle();
+
+  if (readError) {
+    console.error("Failed to read skill mastery:", readError);
+    return null;
+  }
+
+  const mastery = mergeSkillMastery(current, inserted);
+  const { data, error } = await supabaseAdmin
+    .from("skill_mastery")
+    .upsert(mastery, { onConflict: "user_id,skill_code" })
+    .select(SKILL_MASTERY_FIELDS)
+    .single();
+
+  if (error) {
+    console.error("Failed to update skill mastery:", error);
+    return null;
+  }
+
+  return data;
+}
+
+async function getStudentSkillMastery(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("skill_mastery")
+    .select(SKILL_MASTERY_FIELDS)
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false });
+
+  if (error) {
+    console.error("Failed to read skill mastery:", error);
     return null;
   }
 
@@ -402,15 +512,18 @@ const server = http.createServer(async (req, res) => {
       }
 
       if (req.method === "GET") {
-        const activities = await getStudentLessonProgress(user.id);
+        const [activities, mastery] = await Promise.all([
+          getStudentLessonProgress(user.id),
+          getStudentSkillMastery(user.id)
+        ]);
 
-        if (!activities) {
+        if (!activities || !mastery) {
           return send(res, 500, {
             error: "Unable to load lesson progress right now."
           });
         }
 
-        return send(res, 200, { activities });
+        return send(res, 200, { activities, mastery });
       }
 
       const input = await readJson(req);
@@ -446,7 +559,11 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
-      return send(res, 200, { activity: saved });
+      const mastery = await saveStudentSkillProgress(user.id, report, {
+        qaMode: Boolean(qaSession)
+      });
+
+      return send(res, 200, { activity: saved, mastery });
     } catch (err) {
       console.error("Lesson progress error:", err);
       return send(res, 500, {
@@ -790,10 +907,16 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
     );
 
     if (!isFreeDiagnostic && trialStatus.trialExpired) {
+      const qaAutoReset = isPreviewQaUser(user)
+        ? await resetQaTrialSeconds(user)
+        : null;
       return send(res, 403, {
-        error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        error: qaAutoReset
+          ? "QA cycle complete. Refresh to begin a fresh 10-minute test window."
+          : "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
         limitReached: true,
         qaMode: Boolean(qaSession),
+        qaAutoReset: Boolean(qaAutoReset),
         trialSecondsUsed: trialStatus.trialSecondsUsed,
         trialSecondsRemaining: 0,
         trialSecondsLimit: TRIAL_SECONDS
@@ -865,10 +988,17 @@ if (
 
     const current = buildTrialStatus(trial.trial_seconds_used);
     if (current.trialExpired) {
+      const qaAutoReset = isPreviewQaUser(user)
+        ? await resetQaTrialSeconds(user)
+        : null;
       return send(res, 403, {
         allowed: false,
         limitReached: true,
-        error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        error: qaAutoReset
+          ? "QA cycle complete. Refresh to begin a fresh 10-minute test window."
+          : "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
+        qaMode: Boolean(qaAutoReset),
+        qaAutoReset: Boolean(qaAutoReset),
         ...current
       });
     }
@@ -884,12 +1014,19 @@ if (
     }
 
     const status = buildTrialStatus(updated.trial_seconds_used);
+    const qaAutoReset = status.trialExpired && isPreviewQaUser(user)
+      ? await resetQaTrialSeconds(user)
+      : null;
     return send(res, status.trialExpired ? 403 : 200, {
       allowed: !status.trialExpired,
       limitReached: status.trialExpired,
       error: status.trialExpired
-        ? "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach."
+        ? qaAutoReset
+          ? "QA cycle complete. Refresh to begin a fresh 10-minute test window."
+          : "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach."
         : undefined,
+      qaMode: Boolean(qaAutoReset),
+      qaAutoReset: Boolean(qaAutoReset),
       ...status
     });
   } catch (err) {

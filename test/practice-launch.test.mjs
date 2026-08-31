@@ -9,6 +9,7 @@ const [html, app, styles, practice, practiceHtml] = await Promise.all([
   readFile(new URL("../public/practice.js", import.meta.url), "utf8"),
   readFile(new URL("../public/practice.html", import.meta.url), "utf8")
 ]);
+const lesson = await readFile(new URL("../public/lesson.js", import.meta.url), "utf8");
 
 test("dashboard exposes a real Practice launcher and does not imply Test Prep is live", () => {
   assert.match(html, /id="practiceModePanel"/);
@@ -48,4 +49,18 @@ test("Practice uses the shared timed-trial heartbeat", () => {
   assert.doesNotMatch(practice, /10 free learning interactions/);
   assert.match(practiceHtml, /free trial measures active learning time/i);
   assert.doesNotMatch(practiceHtml, /Each question counts once/i);
+});
+
+test("dashboard exposes persistent skill mastery returned by the progress API", () => {
+  assert.match(html, /id="skillMastery"/);
+  assert.match(app, /renderDashboardProgress\(data\.activities, "account", data\.mastery\)/);
+  assert.match(app, /Latest \$\{skill\.latest_score\}%/);
+  assert.match(app, /Best \$\{skill\.best_score\}%/);
+});
+
+test("lesson and practice automatically reload after a preview QA cycle resets", () => {
+  for (const source of [lesson, practice]) {
+    assert.match(source, /data\.qaAutoReset/);
+    assert.match(source, /window\.setTimeout\(\(\) => window\.location\.reload\(\), 2000\)/);
+  }
 });

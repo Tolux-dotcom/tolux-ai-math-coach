@@ -167,6 +167,19 @@ function showUpgrade(message) {
   `);
 }
 
+function restartQaPracticeWindow() {
+  lessonLocked = true;
+  setQuestionControlsDisabled(true);
+  nextPracticeQuestion.hidden = true;
+  setFeedback(`
+    <div class="lesson-state lesson-state-success">
+      <strong>QA cycle complete</strong>
+      <p>Starting a fresh 10-minute test window…</p>
+    </div>
+  `);
+  window.setTimeout(() => window.location.reload(), 2000);
+}
+
 async function ensurePracticeAccess(item) {
   if (!item || lessonLocked) return false;
   if (countedInteractions.has(item.id)) return true;
@@ -199,9 +212,13 @@ async function ensurePracticeAccess(item) {
     }
 
     if (data.limitReached) {
-      showUpgrade(
-        data.error || "You've completed your 10-minute free learning trial."
-      );
+      if (data.qaAutoReset) {
+        restartQaPracticeWindow();
+      } else {
+        showUpgrade(
+          data.error || "You've completed your 10-minute free learning trial."
+        );
+      }
       return false;
     }
 
@@ -246,9 +263,13 @@ async function sendPracticeTrialHeartbeat() {
     if (!response) return;
     const data = await response.json();
     if (data.limitReached) {
-      showUpgrade(
-        data.error || "You've completed your 10-minute free learning trial."
-      );
+      if (data.qaAutoReset) {
+        restartQaPracticeWindow();
+      } else {
+        showUpgrade(
+          data.error || "You've completed your 10-minute free learning trial."
+        );
+      }
     }
   } catch (error) {
     console.error("Practice trial heartbeat failed:", error);
@@ -558,10 +579,14 @@ practiceStuckBtn.addEventListener("click", async () => {
 practiceExplainBtn.addEventListener("click", async () => {
   const item = currentItem();
   if (!item || !(await ensurePracticeAccess(item))) return;
+  const detailedSteps = Array.isArray(item.alternate_explanation_steps)
+    ? `<ol>${item.alternate_explanation_steps.map(step => `<li>${escapeHtml(step)}</li>`).join("")}</ol>`
+    : "";
   setFeedback(`
     <div class="lesson-state lesson-state-success">
       <strong>Another way to think about it</strong>
       <p>${escapeHtml(item.alternate_explanation)}</p>
+      ${detailedSteps}
     </div>
   `);
 });

@@ -35,8 +35,8 @@
         { "module_id": "alg1-a10b-multiply-polynomials", "sequence": 4, "teks": ["A.10B"], "title": "Multiply Polynomials", "summary": "Multiply polynomials of degree one and two using structure and the distributive property.", "status": "planned", "available_modes": [] },
         { "module_id": "alg1-a10c-divide-polynomials", "sequence": 5, "teks": ["A.10C"], "title": "Divide Polynomials", "summary": "Find polynomial quotients when the divisor degree does not exceed the dividend degree.", "status": "planned", "available_modes": [] },
         { "module_id": "alg1-a10d-equivalent-polynomial-forms", "sequence": 6, "teks": ["A.10D"], "title": "Equivalent Polynomial Forms", "summary": "Rewrite first- and second-degree polynomial expressions using the distributive property.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a10e-factor-trinomials", "sequence": 7, "teks": ["A.10E"], "title": "Factor Trinomials", "summary": "Factor quadratic trinomials over the real numbers, including perfect-square trinomials.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a10f-difference-of-squares", "sequence": 8, "teks": ["A.10F"], "title": "Difference of Two Squares", "summary": "Recognize and factor binomials that have difference-of-squares structure.", "status": "planned", "available_modes": [] }
+        { "module_id": "alg1-a10e-factor-trinomials", "sequence": 7, "teks": ["A.10E"], "title": "Factor Trinomials", "summary": "Factor quadratic trinomials over the real numbers, including perfect-square trinomials.", "status": "available", "available_modes": ["practice"], "practice_generator": "a10e" },
+        { "module_id": "alg1-a10f-difference-of-squares", "sequence": 8, "teks": ["A.10F"], "title": "Difference of Two Squares", "summary": "Recognize and factor binomials that have difference-of-squares structure.", "status": "available", "available_modes": ["practice"], "practice_generator": "a10f" }
       ]
     },
     {

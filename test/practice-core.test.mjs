@@ -119,6 +119,60 @@ test("A.5C accepts coordinate and labeled-pair answers", () => {
   assert.equal(gradePracticeAnswer(`(${y}, ${x})`, item), x === y);
 });
 
+test("A.10E accepts equivalent factor order and rejects incorrect signs", () => {
+  const item = generatePracticeSession(
+    { skill: "A.10E", difficulty: "grade-level", count: 5 },
+    seededRandom(44)
+  ).items[1];
+  const match = item.answer_key.match(/^(\([^)]*\))(\([^)]*\))$/);
+
+  assert.ok(match);
+  assert.equal(gradePracticeAnswer(item.answer_key, item), true);
+  assert.equal(gradePracticeAnswer(`${match[2]}${match[1]}`, item), true);
+  assert.equal(gradePracticeAnswer("(x + 1)(x + 1)", item), false);
+});
+
+test("A.10F generates and grades conjugate difference-of-squares factors", () => {
+  for (const difficulty of PRACTICE_DIFFICULTIES) {
+    const item = generatePracticeSession(
+      { skill: "A.10F", difficulty, count: 5 },
+      seededRandom(71)
+    ).items[0];
+
+    assert.equal(item.expected.b, 0);
+    assert.ok(item.expected.c < 0);
+    assert.equal(gradePracticeAnswer(item.answer_key, item), true);
+  }
+});
+
+test("A.10F accepts a complete factorization with an outside GCF", () => {
+  const item = {
+    answer_type: "factored-quadratic",
+    expected: { a: 4, b: 0, c: -16 }
+  };
+
+  assert.equal(gradePracticeAnswer("4(x-2)(x+2)", item), true);
+  assert.equal(gradePracticeAnswer("4(x+2)(x-2)", item), true);
+  assert.equal(gradePracticeAnswer("4 · (x − 2)(x + 2)", item), true);
+  assert.equal(gradePracticeAnswer("(2x-4)(2x+4)", item), false);
+  assert.equal(gradePracticeAnswer("4(x-2)(x-2)", item), false);
+});
+
+test("A.10F explanations never tell students to multiply by one", () => {
+  const session = generatePracticeSession(
+    { skill: "A.10F", difficulty: "grade-level", count: 20 },
+    seededRandom(91)
+  );
+
+  assert.ok(
+    session.items.every(item =>
+      item.alternate_explanation_steps.every(
+        step => !step.toLowerCase().includes("multiply by 1")
+      )
+    )
+  );
+});
+
 test("practice summary uses first attempts and identifies review items", () => {
   const session = generatePracticeSession(
     { skill: "A.5A", difficulty: "foundational", count: 5 },
