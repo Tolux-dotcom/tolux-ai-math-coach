@@ -8,6 +8,12 @@ const lessonModule = JSON.parse(
     "utf8"
   )
 );
+const courseCatalog = JSON.parse(
+  await readFile(
+    new URL("../public/algebra1-course.json", import.meta.url),
+    "utf8"
+  )
+);
 
 class FakeElement {
   constructor(id, onHtmlChange = null) {
@@ -169,6 +175,16 @@ async function createHarness(name, {
     }
   };
   const fetch = async (url, options = {}) => {
+    if (url === "/algebra1-course.json") {
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return structuredClone(courseCatalog);
+        }
+      };
+    }
+
     if (url === "/a5a-linear-equations.json") {
       return {
         ok: true,

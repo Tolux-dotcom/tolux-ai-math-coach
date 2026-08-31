@@ -18,25 +18,115 @@ if ("scrollRestoration" in window.history) {
 
 // Tolux Algebra 1 A.5A curriculum module
 let a5aModule = null;
+let algebra1Catalog = null;
+let algebra1Modules = [];
 
-async function loadA5AModule() {
+function renderAlgebra1Coverage() {
+  const coverage = document.querySelector("#algebra1Coverage");
+  if (!coverage || !algebra1Catalog) return;
+
+  const liveModules = algebra1Modules.filter(
+    module => module.status === "available"
+  );
+  coverage.innerHTML = `
+    <span class="coverage-badge">49 of 49 TEKS mapped</span>
+    <span><strong>${liveModules.length} live skill modules</strong> • full course build-out tracked across ${algebra1Catalog.units.length} units</span>
+  `;
+}
+
+function renderPracticeControls() {
+  const skillSelect = document.querySelector("#practiceSkillSelect");
+  const difficultySelect = document.querySelector("#practiceDifficultySelect");
+  const availability = document.querySelector("#practiceAvailability");
+  const startButton = document.querySelector("#startPracticeBtn");
+  if (!skillSelect || !difficultySelect || !algebra1Catalog) return;
+
+  const modules = algebra1Modules.filter(module =>
+    module.available_modes?.includes("practice")
+  );
+  skillSelect.replaceChildren();
+  for (const module of modules) {
+    const option = document.createElement("option");
+    option.value = module.teks[0];
+    option.textContent = `${module.teks[0]} • ${module.title}`;
+    skillSelect.append(option);
+  }
+
+  difficultySelect.replaceChildren();
+  for (const difficulty of algebra1Catalog.practice_difficulties || []) {
+    const option = document.createElement("option");
+    option.value = difficulty.id;
+    option.textContent = difficulty.label;
+    if (difficulty.id === "grade-level") option.selected = true;
+    difficultySelect.append(option);
+  }
+
+  if (availability) {
+    availability.textContent =
+      `${modules.length} live skills: A.5A equations, A.5B inequalities, and A.5C systems.`;
+  }
+  if (startButton) startButton.disabled = modules.length === 0;
+}
+
+function activatePracticeModeFromHash() {
+  if (window.location.hash !== "#practiceModePanel") return;
+  const practiceButton = document.querySelector(
+    '.mode[data-mode="Practice Mode"]'
+  );
+  if (!practiceButton) return;
+
+  document.querySelectorAll(".mode").forEach(button =>
+    button.classList.remove("selected")
+  );
+  practiceButton.classList.add("selected");
+  mode = "Practice Mode";
+  refreshLabel();
+  refreshA5ALessonPanel();
+  document.querySelector("#practiceModePanel")?.scrollIntoView();
+}
+
+async function loadAlgebra1Foundation() {
   try {
-    const response = await fetch("/a5a-linear-equations.json");
-    if (!response.ok) throw new Error(`A5A module load failed: ${response.status}`);
-    a5aModule = await response.json();
-    console.log("Tolux A.5A curriculum loaded:", a5aModule.title);
+    const [lessonResponse, catalogResponse] = await Promise.all([
+      fetch("/a5a-linear-equations.json"),
+      fetch("/algebra1-course.json")
+    ]);
+    if (!lessonResponse.ok) {
+      throw new Error(`A5A module load failed: ${lessonResponse.status}`);
+    }
+    if (!catalogResponse.ok) {
+      throw new Error(`Course catalog load failed: ${catalogResponse.status}`);
+    }
+
+    [a5aModule, algebra1Catalog] = await Promise.all([
+      lessonResponse.json(),
+      catalogResponse.json()
+    ]);
+    algebra1Modules = algebra1Catalog.units.flatMap(unit => unit.modules || []);
+    console.log(
+      "Tolux Algebra 1 foundation loaded:",
+      `${algebra1Modules.length} standards modules`
+    );
+    renderAlgebra1Coverage();
+    renderPracticeControls();
     refreshA5ALessonPanel();
     renderDashboardProgress(
       dashboardProgressActivities,
       dashboardProgressSource
     );
+    activatePracticeModeFromHash();
   } catch (error) {
-    console.error("Unable to load Tolux A.5A curriculum:", error);
+    console.error("Unable to load Tolux Algebra 1 foundation:", error);
+    const coverage = document.querySelector("#algebra1Coverage");
+    const availability = document.querySelector("#practiceAvailability");
+    if (coverage) coverage.textContent = "Curriculum map is temporarily unavailable.";
+    if (availability) availability.textContent = "Practice settings could not be loaded.";
   }
 }
 
-loadA5AModule();
+loadAlgebra1Foundation();
 const startA5ALessonBtn = document.querySelector("#startA5ALessonBtn");
+const startPracticeBtn = document.querySelector("#startPracticeBtn");
 
 function startA5ALesson() {
   window.location.href = "/lesson.html?module=alg1-a5a-linear-equations";
@@ -47,6 +137,16 @@ function startA5ALesson() {
 if (startA5ALessonBtn) {
   startA5ALessonBtn.addEventListener("click", startA5ALesson);
 }
+
+startPracticeBtn?.addEventListener("click", () => {
+  const skill = document.querySelector("#practiceSkillSelect")?.value;
+  const difficulty = document.querySelector("#practiceDifficultySelect")?.value;
+  const count = document.querySelector("#practiceCountSelect")?.value;
+  if (!skill || !difficulty || !count) return;
+
+  const params = new URLSearchParams({ skill, difficulty, count });
+  window.location.href = `/practice.html?${params.toString()}`;
+});
 const authEmail = document.querySelector("#authEmail");
 const authPassword = document.querySelector("#authPassword");
 const signUpBtn = document.querySelector("#signUpBtn");
@@ -522,15 +622,27 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
   refreshA5ALessonPanel();
   }));
   function refreshA5ALessonPanel() {
-  const panel = document.querySelector("#a5aLessonPanel");
-  if (!panel) return;
+  const lessonPanel = document.querySelector("#a5aLessonPanel");
+  const practicePanel = document.querySelector("#practiceModePanel");
+  const coachPanel = document.querySelector("#coachPanel");
+  if (!lessonPanel) return;
 
-  const shouldShow =
+  const shouldShowLesson =
     course === "Algebra 1" &&
     mode === "Tutor Mode" &&
     a5aModule;
+  const shouldShowPractice =
+    course === "Algebra 1" &&
+    mode === "Practice Mode" &&
+    algebra1Catalog;
 
-  panel.style.display = shouldShow ? "block" : "none";
+  lessonPanel.style.display = shouldShowLesson ? "block" : "none";
+  if (practicePanel) {
+    practicePanel.style.display = shouldShowPractice ? "block" : "none";
+  }
+  if (coachPanel) {
+    coachPanel.style.display = shouldShowPractice ? "none" : "block";
+  }
 }
 
 refreshA5ALessonPanel();
@@ -1113,7 +1225,18 @@ document.querySelectorAll("[data-math]").forEach((button) => {
 // Keep lesson completion and mastery visible across devices and sessions.
 
 function moduleTitle(moduleId) {
-  if (a5aModule?.module_id === moduleId) return a5aModule.title;
+  const normalizedModuleId = String(moduleId || "").startsWith("practice-")
+    ? String(moduleId).slice("practice-".length)
+    : String(moduleId || "");
+  const catalogModule = algebra1Modules.find(
+    module => module.module_id === normalizedModuleId
+  );
+  if (catalogModule) {
+    return String(moduleId).startsWith("practice-")
+      ? `${catalogModule.title} Practice`
+      : catalogModule.title;
+  }
+  if (a5aModule?.module_id === normalizedModuleId) return a5aModule.title;
   return String(moduleId || "Lesson")
     .split("-")
     .filter(Boolean)
@@ -1257,12 +1380,12 @@ function renderDashboardProgress(activities, source = "account") {
   if (safeActivities.length === 0) {
     if (continueTopic) {
       continueTopic.innerHTML =
-        "<strong>No lesson activity yet</strong><span>Start a lesson to begin building mastery.</span>";
+        "<strong>No learning activity yet</strong><span>Start a lesson or practice session to begin building mastery.</span>";
     }
     if (continueProgress) continueProgress.value = 0;
     if (recentActivity) {
       recentActivity.innerHTML =
-        '<li class="progress-empty">Your completed lessons will appear here.</li>';
+        '<li class="progress-empty">Your completed lessons and practice sessions will appear here.</li>';
     }
     if (progressStatus) {
       progressStatus.textContent =
