@@ -8,6 +8,9 @@ const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 let dashboardProgressActivities = [];
 let dashboardProgressSource = "empty";
 let progressRefreshSequence = 0;
+let coachTrialHeartbeatTimer = null;
+let coachTrialActive = false;
+let coachIsSubscriber = false;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -554,6 +557,64 @@ function addMessage(role, text, error=false){
   if (window.MathJax?.typesetPromise) {
   window.MathJax.typesetPromise([el]).catch(console.error);
 }
+
+function appendUpgradeOffer(message) {
+  addMessage(
+    "assistant",
+    message || "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach."
+  );
+  const upgradeBtn = document.createElement("button");
+  upgradeBtn.type = "button";
+  upgradeBtn.textContent = "Upgrade Now";
+  upgradeBtn.className = "upgrade-btn";
+  upgradeBtn.addEventListener("click", () => studentPlanBtn?.click());
+  chat.appendChild(upgradeBtn);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendCoachTrialHeartbeat() {
+  if (
+    !coachTrialActive ||
+    coachIsSubscriber ||
+    document.visibilityState !== "visible"
+  ) {
+    return;
+  }
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) return;
+
+  try {
+    const response = await fetch("/api/trial-heartbeat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({ activeSeconds: 15 })
+    });
+    const data = await response.json();
+    if (data.limitReached) {
+      coachTrialActive = false;
+      appendUpgradeOffer(data.error);
+    }
+  } catch (error) {
+    console.error("Coach trial heartbeat failed:", error);
+  }
+}
+
+function startCoachTrialHeartbeat() {
+  coachTrialActive = true;
+  if (coachTrialHeartbeatTimer) return;
+  coachTrialHeartbeatTimer = window.setInterval(sendCoachTrialHeartbeat, 15000);
+}
+
+window.addEventListener("pagehide", () => {
+  if (coachTrialHeartbeatTimer) {
+    window.clearInterval(coachTrialHeartbeatTimer);
+    coachTrialHeartbeatTimer = null;
+  }
+});
   chat.scrollTop = chat.scrollHeight;
   if(!error) history.push({role, text});
 }
@@ -727,24 +788,13 @@ const r = await fetch("/api/coach", {method:"POST", headers:{
       apiStatus.textContent = "AI Live";
       apiStatus.className = "badge live";
       addMessage("assistant", data.reply);
+      coachIsSubscriber = Boolean(data.isSubscriber);
+      if (!coachIsSubscriber && !data.qaMode) startCoachTrialHeartbeat();
     } else if (data.limitReached) {
-  apiStatus.textContent = "Free Limit Reached";
+  apiStatus.textContent = "Free Trial Complete";
   apiStatus.className = "badge";
-  addMessage(
-    "assistant",
-    data.error || "You've used your 10 free questions. Please upgrade to continue with Tolux AI Math Coach."
-  );
-      const upgradeBtn = document.createElement("button");
-upgradeBtn.type = "button";
-upgradeBtn.textContent = "Upgrade Now";
-upgradeBtn.className = "upgrade-btn";
-
-upgradeBtn.addEventListener("click", () => {
-  studentPlanBtn?.click();
-});
-
-chat.appendChild(upgradeBtn);
-chat.scrollTop = chat.scrollHeight;
+  coachTrialActive = false;
+  appendUpgradeOffer(data.error);
 } else {
       apiStatus.textContent = "Demo Mode";
       apiStatus.className = "badge demo";
