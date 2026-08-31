@@ -36,6 +36,7 @@ const supabaseAuth = createClient(
   }
 );
 
+// Vercel injects this server-only credential at deployment time.
 const supabaseServerKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 const supabaseServerUrl = process.env.SUPABASE_URL || SUPABASE_AUTH_URL;
