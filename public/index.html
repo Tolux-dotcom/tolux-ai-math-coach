@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AI Algebra Tutor & Homework Help | Tolux AI Math Coach</title>
-  <meta name="description" content="Get step-by-step Algebra 1 and Algebra 2 help with Tolux AI Math Coach. Practice problems, homework help, test preparation, personalized study plans, and clear explanations." />
+  <meta name="description" content="Get step-by-step Algebra help with Tolux AI Math Coach. Use guided tutoring, structured Algebra 1 practice, homework help, progress tracking, and clear explanations." />
   <link rel="stylesheet" href="/styles.css" /> 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css" />
 <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
@@ -126,6 +126,9 @@
         <button class="course selected" data-course="Algebra 1"><b>x²</b><span><strong>Algebra 1</strong><small>Build a strong foundation</small></span></button>
         <button class="course" data-course="Algebra 2"><b>x²</b><span><strong>Algebra 2</strong><small>Take algebra to the next level</small></span></button>
       </div>
+      <p id="algebra1Coverage" class="course-coverage" aria-live="polite">
+        <span class="coverage-badge">Loading curriculum map…</span>
+      </p>
     </section>
 
     <section class="panel">
@@ -134,7 +137,7 @@
         <button class="mode selected" data-mode="Tutor Mode"><i>🎓</i><strong>Tutor Mode</strong><small>Learn step by step</small></button>
         <button class="mode" data-mode="Homework Help"><i>📘</i><strong>Homework Help</strong><small>Get help with a problem</small></button>
         <button class="mode" data-mode="Practice Mode"><i>✏️</i><strong>Practice Mode</strong><small>Practice and master skills</small></button>
-        <button class="mode" data-mode="Test Prep"><i>🎯</i><strong>Test Prep</strong><small>Prepare for tests</small></button>
+        <button class="mode" data-mode="Test Prep" type="button" disabled aria-disabled="true"><i>🎯</i><strong>Test Prep</strong><small>Assessment blueprint in development</small><span class="mode-status">Coming soon</span></button>
         <button class="mode" data-mode="Check My Work"><i>✓</i><strong>Check My Work</strong><small>Find the first mistake</small></button>
       </div>
     </section>
@@ -146,7 +149,42 @@
     <button id="startA5ALessonBtn" type="button">Start Free Readiness Diagnostic</button>
   </div>
 </section>
-    <section class="coach panel">
+<section id="practiceModePanel" class="panel" style="display:none;" tabindex="-1">
+  <div class="practice-launch-card">
+    <div>
+      <small>Algebra 1 • Working Practice Mode</small>
+      <h2>Build skill through focused practice</h2>
+      <p>
+        Choose a live skill, difficulty, and session length. Tolux scores the
+        first attempt, provides targeted help, reviews missed questions, and
+        records the result in student progress.
+      </p>
+    </div>
+    <div class="practice-launch-grid">
+      <label>
+        Skill
+        <select id="practiceSkillSelect" aria-label="Practice skill"></select>
+      </label>
+      <label>
+        Difficulty
+        <select id="practiceDifficultySelect" aria-label="Practice difficulty"></select>
+      </label>
+      <label>
+        Questions
+        <select id="practiceCountSelect" aria-label="Practice question count">
+          <option value="5">5 questions</option>
+          <option value="10">10 questions</option>
+          <option value="20">20 questions</option>
+        </select>
+      </label>
+    </div>
+    <div class="practice-launch-actions">
+      <button id="startPracticeBtn" type="button">Start Practice</button>
+      <p id="practiceAvailability">Loading available Algebra 1 skills…</p>
+    </div>
+  </div>
+</section>
+    <section id="coachPanel" class="coach panel">
       <div class="coach-head">
         <div class="bot">π</div>
         <div><h2>Your AI Math Coach</h2><p id="modeLabel">Algebra 1 • Tutor Mode</p></div>
@@ -207,8 +245,8 @@
       <div class="panel mini">
   <h3 id="progressHeading">My Progress</h3>
   <div id="continueTopic" class="progress-summary">
-    <strong>No lesson activity yet</strong>
-    <span>Start a lesson to begin building mastery.</span>
+    <strong>No learning activity yet</strong>
+    <span>Start a lesson or practice session to begin building mastery.</span>
   </div>
   <progress id="continueProgress" value="0" max="100"></progress>
   <p id="progressStatus" class="progress-sync-status" aria-live="polite"></p>
@@ -216,7 +254,7 @@
     <div class="panel mini">
   <h3>Recent activity</h3>
   <ul id="recentActivity" class="progress-activity-list">
-    <li class="progress-empty">Your completed lessons will appear here.</li>
+    <li class="progress-empty">Your completed lessons and practice sessions will appear here.</li>
   </ul>
 </div>
     </section>
@@ -292,18 +330,18 @@
   <h2>AI Algebra Tutor for Algebra 1 and Algebra 2</h2>
   <p>
     Tolux AI Math Coach gives students step-by-step Algebra help for homework,
-    practice, test preparation, graphing, factoring, linear equations,
-    quadratics, and more.
+    structured practice, graphing, factoring, linear equations, quadratics,
+    and more.
   </p>
   <p>
     Students can get clear explanations, practice similar problems, check their
     work, build personalized study plans, and learn at their own pace.
   </p>
-  <h3>Online Algebra Homework Help and Test Prep</h3>
+  <h3>Online Algebra Homework Help and Structured Practice</h3>
   <p>
     Use Tolux AI Math Coach for Algebra 1 tutoring, Algebra 2 tutoring,
-    homework help, exam preparation, personalized feedback, and guided
-    problem solving.
+    homework help, focused Algebra 1 practice, personalized feedback, and
+    guided problem solving. Test Prep is planned but is not live yet.
   </p>
 </section>
 
