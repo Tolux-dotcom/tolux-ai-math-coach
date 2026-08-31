@@ -684,6 +684,15 @@ function appendUpgradeOffer(message) {
   chat.scrollTop = chat.scrollHeight;
 }
 
+function restartQaTrialWindow() {
+  coachTrialActive = false;
+  addMessage(
+    "assistant",
+    "QA cycle complete. Starting a fresh 10-minute test window…"
+  );
+  window.setTimeout(() => window.location.reload(), 2000);
+}
+
 async function sendCoachTrialHeartbeat() {
   if (
     !coachTrialActive ||
@@ -707,8 +716,12 @@ async function sendCoachTrialHeartbeat() {
     });
     const data = await response.json();
     if (data.limitReached) {
-      coachTrialActive = false;
-      appendUpgradeOffer(data.error);
+      if (data.qaAutoReset) {
+        restartQaTrialWindow();
+      } else {
+        coachTrialActive = false;
+        appendUpgradeOffer(data.error);
+      }
     }
   } catch (error) {
     console.error("Coach trial heartbeat failed:", error);
@@ -902,7 +915,11 @@ const r = await fetch("/api/coach", {method:"POST", headers:{
       addMessage("assistant", data.reply);
       coachIsSubscriber = Boolean(data.isSubscriber);
       if (!coachIsSubscriber && !data.qaMode) startCoachTrialHeartbeat();
-    } else if (data.limitReached) {
+    } else if (data.limitReached && data.qaAutoReset) {
+  apiStatus.textContent = "QA Cycle Complete";
+  apiStatus.className = "badge";
+  restartQaTrialWindow();
+} else if (data.limitReached) {
   apiStatus.textContent = "Free Trial Complete";
   apiStatus.className = "badge";
   coachTrialActive = false;
