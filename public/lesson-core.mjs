@@ -131,6 +131,22 @@ function parseSimpleNumber(value) {
   return Number(fraction[1]) / denominator;
 }
 
+function parseLabeledSolutionSet(value) {
+  const matches = [
+    ...normalizeAnswer(value).matchAll(
+      /x=([-+]?\d+(?:\.\d+)?(?:\/[-+]?\d+(?:\.\d+)?)?)/g
+    )
+  ];
+  if (matches.length < 2) return null;
+
+  const values = matches
+    .map(match => parseSimpleNumber(match[1]))
+    .filter(number => number !== null);
+  if (values.length < 2) return null;
+
+  return [...new Set(values)].sort((a, b) => a - b);
+}
+
 export function keywordGroupsSatisfied(text, groups = [], minimumGroups) {
   if (!Array.isArray(groups) || groups.length === 0) return false;
 
@@ -193,6 +209,19 @@ export function answersEquivalent(studentAnswer, itemOrExpected) {
     return (
       Math.abs(expectedPair[0] - studentPair[0]) < 1e-8 &&
       Math.abs(expectedPair[1] - studentPair[1]) < 1e-8
+    );
+  }
+
+  const expectedSolutions = parseLabeledSolutionSet(expected);
+  const studentSolutions = parseLabeledSolutionSet(studentAnswer);
+
+  if (expectedSolutions && studentSolutions) {
+    return (
+      expectedSolutions.length === studentSolutions.length &&
+      expectedSolutions.every(
+        (solution, index) =>
+          Math.abs(solution - studentSolutions[index]) < 1e-8
+      )
     );
   }
 
