@@ -1010,6 +1010,29 @@ async function checkCurrentAnswer() {
       ${renderSolutionSteps(item, "See the complete reasoning")}
     `);
   } else {
+    const progressAnswer = Array.isArray(item.progress_answers)
+      ? item.progress_answers.find(candidate =>
+          answersEquivalent(studentAnswer, candidate)
+        )
+      : null;
+
+    if (progressAnswer) {
+      setFeedback(`
+        <strong>${displayText(
+          progressAnswer.feedback_title || "That step is correct."
+        )}</strong>
+        <p>${displayText(
+          progressAnswer.feedback ||
+          "Continue from this intermediate step to complete the solution."
+        )}</p>
+        ${renderSolutionSteps(
+          { solution_steps: progressAnswer.next_steps || [] },
+          "Complete the solution"
+        )}
+      `);
+      return;
+    }
+
     setFeedback(`
       <strong>Not quite yet.</strong>
       <p>${displayText(item.tutor_behavior)}</p>
