@@ -36,6 +36,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a9a-exponential-domain-range": {
     lesson_path: "/a9a-exponential-domain-range.json"
+  },
+  "alg1-a9b-interpret-exponential-parameters": {
+    lesson_path: "/a9b-interpret-exponential-parameters.json"
   }
 };
 
