@@ -77,7 +77,10 @@ test("deduplicates repeated completion records without removing distinct attempt
     mastery_label: validReport.mastery_label,
     mastery_score: validReport.mastery_score
   };
-  const repeated = { ...first };
+  const repeated = {
+    ...first,
+    client_completion_id: "cc45d55c-7c3c-4bce-882f-517c0b263394"
+  };
   const later = {
     ...first,
     client_completion_id: "a8e243cb-7f5d-4f13-955b-73ac24bda915",
