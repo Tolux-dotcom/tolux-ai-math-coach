@@ -151,6 +151,59 @@ function reverseOperator(operator) {
   return { "<": ">", ">": "<", "<=": ">=", ">=": "<=" }[operator];
 }
 
+function verificationEquation(coefficient, constant, x, result) {
+  const constantText = constant === 0
+    ? ""
+    : ` ${constant > 0 ? "+" : "-"} ${Math.abs(constant)}`;
+  return `${coefficient}(${x})${constantText} = ${result}`;
+}
+
+function foundationalEquationTeaching(coefficient, constant, result, x) {
+  const removeOperation = constant >= 0 ? "subtract" : "add";
+  const removeValue = Math.abs(constant);
+  const afterConstant = result - constant;
+  const original = `${linearExpression(coefficient, constant)} = ${result}`;
+  const operationEquation = constant === 0
+    ? original
+    : `${linearExpression(coefficient, constant)} ${constant >= 0 ? "-" : "+"} ${removeValue} = ${result} ${constant >= 0 ? "-" : "+"} ${removeValue}`;
+
+  return {
+    title: "Let’s solve it one clear step at a time",
+    overview: "Our goal is to isolate x. Isolate means get x alone while keeping both sides of the equation equal.",
+    steps: [
+      {
+        label: "Remove the constant next to the x-term",
+        equation: operationEquation,
+        explanation: constant === 0
+          ? "There is no added or subtracted number to remove, so the x-term is already by itself on this side."
+          : `The equation has ${constant > 0 ? `+ ${removeValue}` : `- ${removeValue}`} next to the x-term. We ${removeOperation} ${removeValue} on both sides because doing the same operation to both sides keeps the equation balanced.`
+      },
+      {
+        label: "Simplify both sides",
+        equation: `${coefficient}x = ${afterConstant}`,
+        explanation: constant === 0
+          ? "The equation is ready for the final inverse operation."
+          : `The constant cancels on the left. On the right, ${result} ${constant >= 0 ? "-" : "+"} ${removeValue} = ${afterConstant}.`
+      },
+      {
+        label: `Undo multiplication by ${coefficient}`,
+        equation: `${coefficient}x ÷ ${coefficient} = ${afterConstant} ÷ ${coefficient}`,
+        explanation: `The expression ${coefficient}x means ${coefficient} times x. Divide both sides by ${coefficient} so only x remains.`
+      },
+      {
+        label: "State the solution",
+        equation: `x = ${x}`,
+        explanation: `${afterConstant} ÷ ${coefficient} = ${x}.`
+      }
+    ],
+    verification: {
+      equation: `${verificationEquation(coefficient, constant, x, result)} ✓`,
+      explanation: `Substitute ${x} for x in the original equation. The left side equals ${result}, so the solution is correct.`
+    },
+    vocabulary: "Constant: a number without a variable. Inverse operations: operations that undo each other, such as addition and subtraction or multiplication and division."
+  };
+}
+
 function equationItem(difficulty, index, random) {
   const salt = index * 3;
 
@@ -167,6 +220,12 @@ function equationItem(difficulty, index, random) {
       answer_type: "linear-equation",
       hint: `Undo the ${constant >= 0 ? "added" : "subtracted"} constant first, then divide by ${coefficient}.`,
       alternate_explanation: "Think of the equation as a balanced scale. Reverse the constant operation on both sides, then split the remaining value into equal groups.",
+      teaching_explanation: foundationalEquationTeaching(
+        coefficient,
+        constant,
+        result,
+        x
+      ),
       diagnostic_tag: "inverse_operations",
       solution_steps: [
         {
