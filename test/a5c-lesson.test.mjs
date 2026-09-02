@@ -46,7 +46,8 @@ test("A.5C rejects incorrect or incomplete ordered pairs", () => {
 test("A.5C depth bank has 30 unique items and method-specific diagnostics", () => {
   assert.ok(module.items.length >= 30);
   assert.equal(new Set(module.items.map(item => item.id)).size, module.items.length);
-  assert.ok(module.items.filter(item => item.type === "method_diagnostic").length >= 4);
+  assert.ok(module.items.filter(item => item.diagnostic_tag?.includes("method_selection")).length >= 2);
+  assert.deepEqual(module.lesson_settings.diagnostic_item_ids.slice(-2), ["A5C-X01", "A5C-X02"]);
   assert.ok(module.misconception_routes.method_selection_substitution);
   assert.ok(module.misconception_routes.method_selection_elimination);
   assert.ok(module.misconception_routes.elimination_scaling);
