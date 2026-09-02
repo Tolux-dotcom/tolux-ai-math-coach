@@ -76,6 +76,23 @@ test("A.8A square-root help teaches both roots step by step", () => {
   );
 });
 
+test("A.8A P01 hints finish the square-root method and alternate help factors", () => {
+  const item = module.items.find(item => item.id === "A8A-P01");
+  assert.match(item.hint_steps[0], /x\+4=±√25/);
+  assert.match(item.hint_steps[1], /x\+4=5 or x\+4=-5/);
+  assert.match(item.hint_steps.at(-1), /x=1 or x=-9/);
+  assert.deepEqual(
+    item.alternate_solution_steps.map(step => step.equation),
+    [
+      "(x+4)^2-25=0",
+      "[(x+4)-5][(x+4)+5]=0",
+      "(x-1)(x+9)=0",
+      "x-1=0 or x+9=0",
+      "x=1 or x=-9"
+    ]
+  );
+});
+
 test("A.8A answer keys are mathematically correct", () => {
   const expected = {"A8A-L03": "x = -1 or x = -5", "A8A-P03": "x = 2 or x = -6", "A8A-P04": "x = 2 or x = -1/3", "A8A-X11": "t = 0 or t = 4"};
   for (const [id, answer] of Object.entries(expected)) assert.equal(module.items.find(item => item.id === id).answer_key, answer, id);
