@@ -1,4 +1,4 @@
-import { answersEquivalent } from "./lesson-core.mjs";
+import { answersEquivalent, formatMathNotation } from "./lesson-core.mjs";
 
 export const PRACTICE_SKILLS = Object.freeze({
   "A.5A": {
@@ -596,6 +596,14 @@ function structuredSolutionSteps(item) {
 }
 
 function structuredPracticeItem(item, skill, number) {
+  const hint =
+    item.tutor_behavior ||
+    "Identify the structure first, then apply one correct operation at a time.";
+  const alternateExplanation =
+    item.explanation_guidance ||
+    item.tutor_behavior ||
+    "Use the original representation to check that your rewritten answer preserves the same mathematical value.";
+
   return {
     ...item,
     id: `practice-${item.id}`,
@@ -603,14 +611,18 @@ function structuredPracticeItem(item, skill, number) {
     skill,
     number,
     difficulty: normalizeStructuredDifficulty(item.difficulty),
-    hint:
-      item.tutor_behavior ||
-      "Identify the structure first, then apply one correct operation at a time.",
-    alternate_explanation:
-      item.explanation_guidance ||
-      item.tutor_behavior ||
-      "Use the original representation to check that your rewritten answer preserves the same mathematical value.",
-    solution_steps: structuredSolutionSteps(item)
+    prompt: formatMathNotation(item.prompt),
+    answer_key: formatMathNotation(item.answer_key),
+    explanation_prompt: formatMathNotation(item.explanation_prompt),
+    explanation_guidance: formatMathNotation(item.explanation_guidance),
+    tutor_behavior: formatMathNotation(item.tutor_behavior),
+    hint: formatMathNotation(hint),
+    alternate_explanation: formatMathNotation(alternateExplanation),
+    solution_steps: structuredSolutionSteps(item).map(step => ({
+      ...step,
+      equation: formatMathNotation(step.equation),
+      explanation: formatMathNotation(step.explanation)
+    }))
   };
 }
 
