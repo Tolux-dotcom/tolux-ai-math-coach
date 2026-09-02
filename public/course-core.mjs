@@ -51,6 +51,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a10a-add-subtract-polynomials": {
     lesson_path: "/a10a-add-subtract-polynomials.json"
+  },
+  "alg1-a10b-multiply-polynomials": {
+    lesson_path: "/a10b-multiply-polynomials.json"
   }
 };
 
