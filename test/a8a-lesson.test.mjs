@@ -93,6 +93,24 @@ test("A.8A P01 hints finish the square-root method and alternate help factors", 
   );
 });
 
+test("A.8A P02 hints complete factoring and alternate help uses the formula", () => {
+  const item = module.items.find(item => item.id === "A8A-P02");
+  assert.match(item.hint_steps[0], /product is 10.*sum is -7/);
+  assert.match(item.hint_steps[1], /\(x-2\)\(x-5\)=0/);
+  assert.match(item.hint_steps.at(-1), /x=2 or x=5/);
+  assert.deepEqual(
+    item.alternate_solution_steps.map(step => step.equation),
+    [
+      "x=(-b±√(b^2-4ac))/(2a)",
+      "a=1, b=-7, c=10",
+      "x=(-(-7)±√((-7)^2-4(1)(10)))/(2(1))",
+      "x=(7±√9)/2=(7±3)/2",
+      "x=(7+3)/2=5 or x=(7-3)/2=2",
+      "x=2 or x=5"
+    ]
+  );
+});
+
 test("A.8A answer keys are mathematically correct", () => {
   const expected = {"A8A-L03": "x = -1 or x = -5", "A8A-P03": "x = 2 or x = -6", "A8A-P04": "x = 2 or x = -1/3", "A8A-X11": "t = 0 or t = 4"};
   for (const [id, answer] of Object.entries(expected)) assert.equal(module.items.find(item => item.id === id).answer_key, answer, id);
