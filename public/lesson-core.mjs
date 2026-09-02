@@ -28,6 +28,26 @@ const DIAGNOSTIC_TAG_ALIASES = {
   sign_distribution: "signed_numbers"
 };
 
+const SUPERSCRIPT_DIGITS = {
+  "0": "⁰",
+  "1": "¹",
+  "2": "²",
+  "3": "³",
+  "4": "⁴",
+  "5": "⁵",
+  "6": "⁶",
+  "7": "⁷",
+  "8": "⁸",
+  "9": "⁹",
+  "-": "⁻"
+};
+
+export function formatMathNotation(value) {
+  return String(value ?? "").replace(/\^(-?\d+)/g, (_, exponent) =>
+    Array.from(exponent, character => SUPERSCRIPT_DIGITS[character]).join("")
+  );
+}
+
 export function normalizeAnswer(value) {
   return String(value ?? "")
     .normalize("NFKC")

@@ -4,6 +4,7 @@ import {
   calculateMastery,
   escapeHtml,
   explanationSatisfies,
+  formatMathNotation,
   selectStageItems,
   validateLessonModule
 } from "./lesson-core.mjs";
@@ -11,6 +12,10 @@ import {
   findCourseModule,
   validateCourseCatalog
 } from "./course-core.mjs";
+
+function displayText(value) {
+  return escapeHtml(formatMathNotation(value));
+}
 
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
@@ -114,7 +119,7 @@ function updateLessonPath() {
       return `
         <li class="lesson-path-${state}"${current}>
           <span>${index < stageIndex ? "✓" : stage.step}</span>
-          ${escapeHtml(stage.label)}
+          ${displayText(stage.label)}
         </li>
       `;
     })
@@ -340,8 +345,8 @@ function renderSolutionSteps(item, heading = "Step-by-step solution") {
       <li>
         <span class="solution-step-number">${index + 1}</span>
         <div>
-          <div class="math-line">${escapeHtml(step.equation)}</div>
-          <p>${escapeHtml(step.explanation)}</p>
+          <div class="math-line">${displayText(step.equation)}</div>
+          <p>${displayText(step.explanation)}</p>
         </div>
       </li>
     `)
@@ -402,15 +407,15 @@ function renderCurrentQuestion() {
       <span>${escapeHtml(item.id || "")}</span>
     </div>
     <h2>${escapeHtml(heading)}</h2>
-    <div class="math-prompt">${escapeHtml(item.prompt)}</div>
+    <div class="math-prompt">${displayText(item.prompt)}</div>
     ${item.explanation_prompt ? `
       <div class="explanation-field">
         <label for="lessonExplanation">
-          <strong>${escapeHtml(item.explanation_prompt)}</strong>
+          <strong>${displayText(item.explanation_prompt)}</strong>
         </label>
         ${item.explanation_guidance ? `
           <p class="explanation-guidance">
-            ${escapeHtml(item.explanation_guidance)}
+            ${displayText(item.explanation_guidance)}
           </p>
         ` : ""}
         <textarea
@@ -467,7 +472,7 @@ function renderConceptStage() {
       <article class="concept-card">
         <span>${escapeHtml(card.id)}</span>
         <h3>${escapeHtml(card.title)}</h3>
-        <p>${escapeHtml(card.content)}</p>
+        <p>${displayText(card.content)}</p>
       </article>
     `)
     .join("");
@@ -514,7 +519,7 @@ function renderWorkedExample() {
       <span>${escapeHtml(item.id)}</span>
     </div>
     <h2>Watch Tolux solve one step at a time</h2>
-    <div class="math-prompt">${escapeHtml(item.prompt)}</div>
+    <div class="math-prompt">${displayText(item.prompt)}</div>
     ${renderSolutionSteps(item)}
     <button id="workedNextBtn" class="lesson-primary-button" type="button">
       ${isLast ? "Continue to Guided Practice →" : "Next Worked Example →"}
@@ -682,9 +687,9 @@ function remediationReviewMarkup() {
         <article class="remediation-card">
           <span>${escapeHtml(route?.error_code || item.diagnostic_tag)}</span>
           <h3>${escapeHtml(route?.teacher_signal || "Targeted review")}</h3>
-          <p><strong>Question:</strong> ${escapeHtml(item.prompt)}</p>
-          <p><strong>Correct answer:</strong> ${escapeHtml(item.answer_key)}</p>
-          <p>${escapeHtml(item.tutor_behavior)}</p>
+          <p><strong>Question:</strong> ${displayText(item.prompt)}</p>
+          <p><strong>Correct answer:</strong> ${displayText(item.answer_key)}</p>
+          <p>${displayText(item.tutor_behavior)}</p>
         </article>
       `;
     })
@@ -898,7 +903,7 @@ async function checkCurrentAnswer() {
     if (!correct) {
       setFeedback(`
         <strong>Not quite yet.</strong>
-        <p>${escapeHtml(item.tutor_behavior)}</p>
+        <p>${displayText(item.tutor_behavior)}</p>
         <p>Try the similar problem again.</p>
       `);
       return;
@@ -965,7 +970,7 @@ async function checkCurrentAnswer() {
       setFeedback(`
         <strong>Your solution-set answer is correct.</strong>
         <p>Your explanation needs one more mathematical step.</p>
-        <p>${escapeHtml(
+        <p>${displayText(
           item.explanation_guidance ||
           "Explain why the equation has that solution set."
         )}</p>
@@ -974,14 +979,14 @@ async function checkCurrentAnswer() {
     } else if (!answerCorrect && explanationCorrect) {
       setFeedback(`
         <strong>Your explanation shows the right idea.</strong>
-        <p>Revise the solution-set answer. The expected result is <span class="inline-math">${escapeHtml(item.answer_key)}</span>.</p>
+        <p>Revise the solution-set answer. The expected result is <span class="inline-math">${displayText(item.answer_key)}</span>.</p>
         ${renderSolutionSteps(item, "Review the answer")}
       `);
     } else {
       setFeedback(`
         <strong>The answer and explanation both need revision.</strong>
-        <p>The expected solution-set answer is <span class="inline-math">${escapeHtml(item.answer_key)}</span>.</p>
-        ${item.explanation_guidance ? `<p>${escapeHtml(item.explanation_guidance)}</p>` : ""}
+        <p>The expected solution-set answer is <span class="inline-math">${displayText(item.answer_key)}</span>.</p>
+        ${item.explanation_guidance ? `<p>${displayText(item.explanation_guidance)}</p>` : ""}
         ${renderSolutionSteps(item, "Review the steps")}
       `);
     }
@@ -1001,7 +1006,7 @@ async function checkCurrentAnswer() {
   } else {
     setFeedback(`
       <strong>Not quite yet.</strong>
-      <p>${escapeHtml(item.tutor_behavior)}</p>
+      <p>${displayText(item.tutor_behavior)}</p>
       <p>Try the problem again, or use one of the help buttons.</p>
     `);
   }
@@ -1162,7 +1167,7 @@ function alternateExplanation(item) {
 
   return explanations[tag] || `
     <strong>Another way to think about it</strong>
-    <p>${escapeHtml(item.tutor_behavior)}</p>
+    <p>${displayText(item.tutor_behavior)}</p>
     <p>Focus on why the next mathematical step preserves equality.</p>
   `;
 }
@@ -1322,7 +1327,7 @@ lessonStuckBtn.addEventListener("click", async () => {
   const hint = getProgressiveHint(item, hintLevel);
   setFeedback(`
     <strong>Hint ${Math.min(hintLevel + 1, 3)}</strong>
-    <p>${escapeHtml(hint)}</p>
+    <p>${displayText(hint)}</p>
   `);
   hintLevel += 1;
 });
