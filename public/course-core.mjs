@@ -9,6 +9,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a5c-linear-systems": {
     lesson_path: "/a5c-linear-systems.json"
+  },
+  "alg1-a6a-quadratic-domain-range": {
+    lesson_path: "/a6a-quadratic-domain-range.json"
   }
 };
 
