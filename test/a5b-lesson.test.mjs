@@ -50,7 +50,8 @@ test("A.5B depth bank has 30 unique items and targeted graph diagnostics", () =>
   assert.ok(module.items.length >= 30);
   assert.equal(new Set(module.items.map(item => item.id)).size, module.items.length);
   assert.ok(module.items.filter(item => item.critical_misconception).length >= 8);
-  assert.ok(module.items.filter(item => item.type === "graph_diagnostic").length >= 4);
+  assert.ok(module.items.filter(item => item.diagnostic_tag?.includes("graph")).length >= 4);
+  assert.deepEqual(module.lesson_settings.independent_item_ids.slice(-2), ["A5B-X09", "A5B-X10"]);
   assert.ok(module.misconception_routes.graph_endpoint_direction);
   assert.ok(module.misconception_routes.graph_to_inequality);
   assert.ok(module.misconception_routes.boundary_inclusion);
