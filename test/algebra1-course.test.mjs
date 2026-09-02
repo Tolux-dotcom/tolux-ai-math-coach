@@ -54,18 +54,26 @@ test("all seven process standards are embedded across the course", () => {
   );
 });
 
-test("A.5A routes to the existing lesson and A.5A-A.5C route to practice", () => {
+test("all completed structured lessons route to lesson and practice modes", () => {
   const a5a = findCourseModule(catalog, "alg1-a5a-linear-equations");
   assert.equal(a5a.lesson_path, "/a5a-linear-equations.json");
   assert.deepEqual(a5a.available_modes, ["lesson", "practice"]);
 
   assert.deepEqual(
     practiceModules(catalog).map(module => module.teks[0]),
-    ["A.5A", "A.5B", "A.5C"]
+    [
+      "A.10A", "A.10B", "A.10C", "A.10D",
+      "A.5A", "A.5B", "A.5C",
+      "A.6A", "A.6B", "A.6C",
+      "A.7A", "A.7B", "A.7C",
+      "A.8A", "A.8B",
+      "A.9A", "A.9B", "A.9C", "A.9D", "A.9E"
+    ]
   );
 
+  const completed = new Set(practiceModules(catalog).map(module => module.teks[0]));
   const nonLive = flattenCourseModules(catalog).filter(
-    module => !["A.5A", "A.5B", "A.5C"].includes(module.teks[0])
+    module => !completed.has(module.teks[0])
   );
   assert.ok(nonLive.every(module => module.status === "planned"));
   assert.ok(nonLive.every(module => module.available_modes.length === 0));
