@@ -1,7 +1,9 @@
 import { escapeHtml } from "./lesson-core.mjs";
 import {
+  PRACTICE_SKILLS,
   calculatePracticeSummary,
   generatePracticeSession,
+  generateStructuredPracticeSession,
   gradePracticeAnswer,
   validatePracticeOptions
 } from "./practice-core.mjs";
@@ -510,7 +512,7 @@ function showFatalError(message) {
   `;
 }
 
-function startPractice() {
+async function startPractice() {
   try {
     const params = new URLSearchParams(window.location.search);
     const validation = validatePracticeOptions({
@@ -520,7 +522,20 @@ function startPractice() {
     });
     if (validation.errors.length > 0) throw new Error(validation.errors[0]);
 
-    session = generatePracticeSession(validation.options);
+    const config = PRACTICE_SKILLS[validation.options.skill];
+    if (config.lessonPath) {
+      const response = await fetch(config.lessonPath);
+      if (!response.ok) {
+        throw new Error(`Practice bank failed to load: ${response.status}`);
+      }
+      const lessonModule = await response.json();
+      session = generateStructuredPracticeSession(
+        validation.options,
+        lessonModule
+      );
+    } else {
+      session = generatePracticeSession(validation.options);
+    }
     practiceTitle.textContent = session.title;
     practiceMeta.textContent = `Algebra 1 • TEKS ${session.skill}`;
     practiceSkill.textContent = `${session.skill} • ${session.title}`;

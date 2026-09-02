@@ -26,8 +26,16 @@ test("dashboard exposes a real Practice launcher and does not imply Test Prep is
 test("Practice launcher is catalog-driven and navigates with explicit settings", () => {
   assert.match(app, /fetch\("\/algebra1-course\.json"\)/);
   assert.match(app, /module\.available_modes\?\.includes\("practice"\)/);
+  assert.match(app, /\$\{modules\.length\} completed Algebra 1 skills/);
+  assert.doesNotMatch(app, /3 live skills/);
   assert.match(app, /new URLSearchParams\(\{ skill, difficulty, count \}\)/);
   assert.match(app, /window\.location\.href = `\/practice\.html\?\$\{params\.toString\(\)\}`/);
+});
+
+test("Practice loads structured lesson banks for completed skills", () => {
+  assert.match(practice, /PRACTICE_SKILLS/);
+  assert.match(practice, /fetch\(config\.lessonPath\)/);
+  assert.match(practice, /generateStructuredPracticeSession/);
 });
 
 test("Practice launcher and session collapse to one column on small screens", () => {

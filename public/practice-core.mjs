@@ -3,15 +3,103 @@ import { answersEquivalent } from "./lesson-core.mjs";
 export const PRACTICE_SKILLS = Object.freeze({
   "A.5A": {
     moduleId: "alg1-a5a-linear-equations",
-    title: "Solving Linear Equations"
+    title: "Solving Linear Equations",
+    generator: "a5a"
   },
   "A.5B": {
     moduleId: "alg1-a5b-linear-inequalities",
-    title: "Solving Linear Inequalities"
+    title: "Solving Linear Inequalities",
+    generator: "a5b"
   },
   "A.5C": {
     moduleId: "alg1-a5c-linear-systems",
-    title: "Solving Systems of Linear Equations"
+    title: "Solving Systems of Linear Equations",
+    generator: "a5c"
+  },
+  "A.6A": {
+    moduleId: "alg1-a6a-quadratic-domain-range",
+    title: "Quadratic Domain and Range",
+    lessonPath: "/a6a-quadratic-domain-range.json"
+  },
+  "A.6B": {
+    moduleId: "alg1-a6b-write-quadratics-from-vertex",
+    title: "Write Quadratics from a Vertex and Point",
+    lessonPath: "/a6b-write-quadratics-from-vertex.json"
+  },
+  "A.6C": {
+    moduleId: "alg1-a6c-write-quadratics-from-solutions",
+    title: "Write Quadratics from Solutions and Graphs",
+    lessonPath: "/a6c-write-quadratics-from-solutions.json"
+  },
+  "A.7A": {
+    moduleId: "alg1-a7a-quadratic-key-features",
+    title: "Graph Quadratics and Identify Key Features",
+    lessonPath: "/a7a-quadratic-key-features.json"
+  },
+  "A.7B": {
+    moduleId: "alg1-a7b-factors-and-zeros",
+    title: "Connect Factors and Zeros",
+    lessonPath: "/a7b-factors-and-zeros.json"
+  },
+  "A.7C": {
+    moduleId: "alg1-a7c-quadratic-transformations",
+    title: "Transform the Quadratic Parent Function",
+    lessonPath: "/a7c-quadratic-transformations.json"
+  },
+  "A.8A": {
+    moduleId: "alg1-a8a-solve-quadratic-equations",
+    title: "Solve Quadratic Equations",
+    lessonPath: "/a8a-solve-quadratic-equations.json"
+  },
+  "A.8B": {
+    moduleId: "alg1-a8b-quadratic-regression",
+    title: "Quadratic Models for Data",
+    lessonPath: "/a8b-quadratic-regression.json"
+  },
+  "A.9A": {
+    moduleId: "alg1-a9a-exponential-domain-range",
+    title: "Exponential Domain and Range",
+    lessonPath: "/a9a-exponential-domain-range.json"
+  },
+  "A.9B": {
+    moduleId: "alg1-a9b-interpret-exponential-parameters",
+    title: "Interpret Exponential Parameters",
+    lessonPath: "/a9b-interpret-exponential-parameters.json"
+  },
+  "A.9C": {
+    moduleId: "alg1-a9c-write-exponential-models",
+    title: "Write Growth and Decay Models",
+    lessonPath: "/a9c-write-exponential-models.json"
+  },
+  "A.9D": {
+    moduleId: "alg1-a9d-graph-exponential-functions",
+    title: "Graph Exponential Functions",
+    lessonPath: "/a9d-graph-exponential-functions.json"
+  },
+  "A.9E": {
+    moduleId: "alg1-a9e-exponential-regression",
+    title: "Exponential Models for Data",
+    lessonPath: "/a9e-exponential-regression.json"
+  },
+  "A.10A": {
+    moduleId: "alg1-a10a-add-subtract-polynomials",
+    title: "Add and Subtract Polynomials",
+    lessonPath: "/a10a-add-subtract-polynomials.json"
+  },
+  "A.10B": {
+    moduleId: "alg1-a10b-multiply-polynomials",
+    title: "Multiply Polynomials",
+    lessonPath: "/a10b-multiply-polynomials.json"
+  },
+  "A.10C": {
+    moduleId: "alg1-a10c-divide-polynomials",
+    title: "Divide Polynomials",
+    lessonPath: "/a10c-divide-polynomials.json"
+  },
+  "A.10D": {
+    moduleId: "alg1-a10d-equivalent-polynomial-forms",
+    title: "Equivalent Polynomial Forms",
+    lessonPath: "/a10d-equivalent-polynomial-forms.json"
   }
 });
 
@@ -432,6 +520,10 @@ export function generatePracticeSession(options, random = Math.random) {
   }
 
   const { skill, difficulty, count } = validation.options;
+  const skillConfig = PRACTICE_SKILLS[skill];
+  if (!skillConfig.generator) {
+    throw new Error("This skill uses its structured lesson bank.");
+  }
   const generator = skill === "A.5A"
     ? equationItem
     : skill === "A.5B"
@@ -459,6 +551,122 @@ export function generatePracticeSession(options, random = Math.random) {
     module_id: PRACTICE_SKILLS[skill].moduleId,
     difficulty,
     count,
+    items
+  };
+}
+
+function shuffleItems(items, random) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Number(random()) * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [
+      shuffled[swapIndex],
+      shuffled[index]
+    ];
+  }
+  return shuffled;
+}
+
+function normalizeStructuredDifficulty(value) {
+  const normalized = String(value || "").toLowerCase();
+  if (normalized === "foundational") return "foundational";
+  if (normalized === "grade-level") return "grade-level";
+  return "challenging";
+}
+
+function structuredSolutionSteps(item) {
+  if (Array.isArray(item.solution_steps) && item.solution_steps.length > 0) {
+    return item.solution_steps;
+  }
+
+  return [
+    {
+      equation: item.prompt,
+      explanation:
+        item.tutor_behavior ||
+        "Identify the mathematical structure and apply the matching rule."
+    },
+    {
+      equation: item.answer_key,
+      explanation:
+        item.explanation_guidance ||
+        "This is the verified result. Check it using the inverse operation, substitution, or the original representation."
+    }
+  ];
+}
+
+function structuredPracticeItem(item, skill, number) {
+  return {
+    ...item,
+    id: `practice-${item.id}`,
+    source_item_id: item.id,
+    skill,
+    number,
+    difficulty: normalizeStructuredDifficulty(item.difficulty),
+    hint:
+      item.tutor_behavior ||
+      "Identify the structure first, then apply one correct operation at a time.",
+    alternate_explanation:
+      item.explanation_guidance ||
+      item.tutor_behavior ||
+      "Use the original representation to check that your rewritten answer preserves the same mathematical value.",
+    solution_steps: structuredSolutionSteps(item)
+  };
+}
+
+export function generateStructuredPracticeSession(
+  options,
+  lessonModule,
+  random = Math.random
+) {
+  const validation = validatePracticeOptions(options);
+  if (validation.errors.length > 0) {
+    throw new Error(validation.errors[0]);
+  }
+
+  const { skill, difficulty, count } = validation.options;
+  const config = PRACTICE_SKILLS[skill];
+  if (!config.lessonPath) {
+    throw new Error("This skill uses the generated practice engine.");
+  }
+  if (!lessonModule || lessonModule.module_id !== config.moduleId) {
+    throw new Error("The selected structured lesson bank could not be verified.");
+  }
+
+  const bank = Array.isArray(lessonModule.items)
+    ? lessonModule.items.filter(item => item?.id && item?.prompt && item?.answer_key)
+    : [];
+  if (bank.length < count) {
+    throw new Error("This lesson does not yet contain enough verified practice items.");
+  }
+
+  const prioritized = difficulty === "mixed"
+    ? shuffleItems(bank, random)
+    : [
+        ...shuffleItems(
+          bank.filter(item =>
+            normalizeStructuredDifficulty(item.difficulty) === difficulty
+          ),
+          random
+        ),
+        ...shuffleItems(
+          bank.filter(item =>
+            normalizeStructuredDifficulty(item.difficulty) !== difficulty
+          ),
+          random
+        )
+      ];
+  const items = prioritized
+    .slice(0, count)
+    .map((item, index) => structuredPracticeItem(item, skill, index + 1));
+
+  return {
+    skill,
+    title: config.title,
+    module_id: config.moduleId,
+    difficulty,
+    count,
+    source: "structured-lesson-bank",
     items
   };
 }

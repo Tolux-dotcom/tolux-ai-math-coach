@@ -31,10 +31,10 @@
       "modules": [
         { "module_id": "alg1-a11a-radical-expressions", "sequence": 1, "teks": ["A.11A"], "title": "Simplify Numerical Radicals", "summary": "Simplify numerical expressions involving square roots.", "status": "planned", "available_modes": [] },
         { "module_id": "alg1-a11b-laws-of-exponents", "sequence": 2, "teks": ["A.11B"], "title": "Laws of Exponents", "summary": "Simplify numeric and algebraic expressions with integral and rational exponents.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a10a-add-subtract-polynomials", "sequence": 3, "teks": ["A.10A"], "title": "Add and Subtract Polynomials", "summary": "Combine polynomial expressions of degree one and two.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a10b-multiply-polynomials", "sequence": 4, "teks": ["A.10B"], "title": "Multiply Polynomials", "summary": "Multiply polynomials of degree one and two using structure and the distributive property.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a10c-divide-polynomials", "sequence": 5, "teks": ["A.10C"], "title": "Divide Polynomials", "summary": "Find polynomial quotients when the divisor degree does not exceed the dividend degree.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a10d-equivalent-polynomial-forms", "sequence": 6, "teks": ["A.10D"], "title": "Equivalent Polynomial Forms", "summary": "Rewrite first- and second-degree polynomial expressions using the distributive property.", "status": "planned", "available_modes": [] },
+        { "module_id": "alg1-a10a-add-subtract-polynomials", "sequence": 3, "teks": ["A.10A"], "title": "Add and Subtract Polynomials", "summary": "Combine polynomial expressions of degree one and two.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a10a-add-subtract-polynomials.json" },
+        { "module_id": "alg1-a10b-multiply-polynomials", "sequence": 4, "teks": ["A.10B"], "title": "Multiply Polynomials", "summary": "Multiply polynomials of degree one and two using structure and the distributive property.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a10b-multiply-polynomials.json" },
+        { "module_id": "alg1-a10c-divide-polynomials", "sequence": 5, "teks": ["A.10C"], "title": "Divide Polynomials", "summary": "Find polynomial quotients when the divisor degree does not exceed the dividend degree.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a10c-divide-polynomials.json" },
+        { "module_id": "alg1-a10d-equivalent-polynomial-forms", "sequence": 6, "teks": ["A.10D"], "title": "Equivalent Polynomial Forms", "summary": "Rewrite first- and second-degree polynomial expressions using the distributive property.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a10d-equivalent-polynomial-forms.json" },
         { "module_id": "alg1-a10e-factor-trinomials", "sequence": 7, "teks": ["A.10E"], "title": "Factor Trinomials", "summary": "Factor quadratic trinomials over the real numbers, including perfect-square trinomials.", "status": "planned", "available_modes": [] },
         { "module_id": "alg1-a10f-difference-of-squares", "sequence": 8, "teks": ["A.10F"], "title": "Difference of Two Squares", "summary": "Recognize and factor binomials that have difference-of-squares structure.", "status": "planned", "available_modes": [] }
       ]
@@ -103,8 +103,8 @@
       "description": "Solve the core linear relationships that power Algebra 1, including distribution, variables on both sides, inequalities, and two-variable systems.",
       "modules": [
         { "module_id": "alg1-a5a-linear-equations", "sequence": 1, "teks": ["A.5A"], "title": "Solving Linear Equations", "summary": "Solve one-variable linear equations, including distribution and variables on both sides.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a5a-linear-equations.json", "practice_generator": "a5a" },
-        { "module_id": "alg1-a5b-linear-inequalities", "sequence": 2, "teks": ["A.5B"], "title": "Solving Linear Inequalities", "summary": "Solve one-variable linear inequalities, including distribution, variables on both sides, and inequality reversal.", "status": "available", "available_modes": ["practice"], "practice_generator": "a5b" },
-        { "module_id": "alg1-a5c-linear-systems", "sequence": 3, "teks": ["A.5C"], "title": "Solving Systems of Linear Equations", "summary": "Solve two-variable linear systems in mathematical and real-world problems.", "status": "available", "available_modes": ["practice"], "practice_generator": "a5c" }
+        { "module_id": "alg1-a5b-linear-inequalities", "sequence": 2, "teks": ["A.5B"], "title": "Solving Linear Inequalities", "summary": "Solve one-variable linear inequalities, including distribution, variables on both sides, and inequality reversal.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a5b-linear-inequalities.json", "practice_generator": "a5b" },
+        { "module_id": "alg1-a5c-linear-systems", "sequence": 3, "teks": ["A.5C"], "title": "Solving Systems of Linear Equations", "summary": "Solve two-variable linear systems in mathematical and real-world problems.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a5c-linear-systems.json", "practice_generator": "a5c" }
       ]
     },
     {
@@ -113,9 +113,9 @@
       "title": "Writing Quadratic Functions",
       "description": "Represent quadratic functions from domains, ranges, vertices, points, solutions, and graphs.",
       "modules": [
-        { "module_id": "alg1-a6a-quadratic-domain-range", "sequence": 1, "teks": ["A.6A"], "title": "Quadratic Domain and Range", "summary": "Determine and represent domains and ranges of quadratic functions.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a6b-write-quadratics-from-vertex", "sequence": 2, "teks": ["A.6B"], "title": "Write Quadratics from a Vertex and Point", "summary": "Write vertex form from a vertex and another point, then convert it to standard form.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a6c-write-quadratics-from-solutions", "sequence": 3, "teks": ["A.6C"], "title": "Write Quadratics from Solutions and Graphs", "summary": "Construct quadratic functions from real zeros and related graphs.", "status": "planned", "available_modes": [] }
+        { "module_id": "alg1-a6a-quadratic-domain-range", "sequence": 1, "teks": ["A.6A"], "title": "Quadratic Domain and Range", "summary": "Determine and represent domains and ranges of quadratic functions.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a6a-quadratic-domain-range.json" },
+        { "module_id": "alg1-a6b-write-quadratics-from-vertex", "sequence": 2, "teks": ["A.6B"], "title": "Write Quadratics from a Vertex and Point", "summary": "Write vertex form from a vertex and another point, then convert it to standard form.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a6b-write-quadratics-from-vertex.json" },
+        { "module_id": "alg1-a6c-write-quadratics-from-solutions", "sequence": 3, "teks": ["A.6C"], "title": "Write Quadratics from Solutions and Graphs", "summary": "Construct quadratic functions from real zeros and related graphs.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a6c-write-quadratics-from-solutions.json" }
       ]
     },
     {
@@ -124,9 +124,9 @@
       "title": "Graphing and Transforming Quadratics",
       "description": "Analyze every key feature of a parabola and connect its graph, factors, zeros, and transformations.",
       "modules": [
-        { "module_id": "alg1-a7a-quadratic-key-features", "sequence": 1, "teks": ["A.7A"], "title": "Graph Quadratics and Identify Key Features", "summary": "Graph parabolas and identify intercepts, zeros, extrema, vertex, and axis of symmetry.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a7b-factors-and-zeros", "sequence": 2, "teks": ["A.7B"], "title": "Connect Factors and Zeros", "summary": "Explain how linear factors of a quadratic expression determine function zeros.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a7c-quadratic-transformations", "sequence": 3, "teks": ["A.7C"], "title": "Transform the Quadratic Parent Function", "summary": "Determine how parameter changes transform the graph of f(x) = x².", "status": "planned", "available_modes": [] }
+        { "module_id": "alg1-a7a-quadratic-key-features", "sequence": 1, "teks": ["A.7A"], "title": "Graph Quadratics and Identify Key Features", "summary": "Graph parabolas and identify intercepts, zeros, extrema, vertex, and axis of symmetry.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a7a-quadratic-key-features.json" },
+        { "module_id": "alg1-a7b-factors-and-zeros", "sequence": 2, "teks": ["A.7B"], "title": "Connect Factors and Zeros", "summary": "Explain how linear factors of a quadratic expression determine function zeros.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a7b-factors-and-zeros.json" },
+        { "module_id": "alg1-a7c-quadratic-transformations", "sequence": 3, "teks": ["A.7C"], "title": "Transform the Quadratic Parent Function", "summary": "Determine how parameter changes transform the graph of f(x) = x².", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a7c-quadratic-transformations.json" }
       ]
     },
     {
@@ -135,8 +135,8 @@
       "title": "Solving and Modeling Quadratics",
       "description": "Solve quadratic equations by multiple methods and use quadratic models to make data-based predictions.",
       "modules": [
-        { "module_id": "alg1-a8a-solve-quadratic-equations", "sequence": 1, "teks": ["A.8A"], "title": "Solve Quadratic Equations", "summary": "Solve real-solution quadratics by factoring, square roots, completing the square, and the quadratic formula.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a8b-quadratic-regression", "sequence": 2, "teks": ["A.8B"], "title": "Quadratic Models for Data", "summary": "Use technology to fit quadratic models and make estimates and predictions.", "status": "planned", "available_modes": [] }
+        { "module_id": "alg1-a8a-solve-quadratic-equations", "sequence": 1, "teks": ["A.8A"], "title": "Solve Quadratic Equations", "summary": "Solve real-solution quadratics by factoring, square roots, completing the square, and the quadratic formula.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a8a-solve-quadratic-equations.json" },
+        { "module_id": "alg1-a8b-quadratic-regression", "sequence": 2, "teks": ["A.8B"], "title": "Quadratic Models for Data", "summary": "Use technology to fit quadratic models and make estimates and predictions.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a8b-quadratic-regression.json" }
       ]
     },
     {
@@ -145,11 +145,11 @@
       "title": "Exponential Functions and Models",
       "description": "Write, graph, interpret, and fit exponential growth and decay models.",
       "modules": [
-        { "module_id": "alg1-a9a-exponential-domain-range", "sequence": 1, "teks": ["A.9A"], "title": "Exponential Domain and Range", "summary": "Determine and represent domains and ranges of functions in the form f(x) = abˣ.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a9b-interpret-exponential-parameters", "sequence": 2, "teks": ["A.9B"], "title": "Interpret Exponential Parameters", "summary": "Explain the real-world meanings of a and b in f(x) = abˣ.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a9c-write-exponential-models", "sequence": 3, "teks": ["A.9C"], "title": "Write Growth and Decay Models", "summary": "Write exponential functions with rational bases for mathematical and real-world growth or decay.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a9d-graph-exponential-functions", "sequence": 4, "teks": ["A.9D"], "title": "Graph Exponential Functions", "summary": "Graph exponential growth and decay and identify intercepts and asymptotes.", "status": "planned", "available_modes": [] },
-        { "module_id": "alg1-a9e-exponential-regression", "sequence": 5, "teks": ["A.9E"], "title": "Exponential Models for Data", "summary": "Use technology to fit exponential functions and make real-world predictions.", "status": "planned", "available_modes": [] }
+        { "module_id": "alg1-a9a-exponential-domain-range", "sequence": 1, "teks": ["A.9A"], "title": "Exponential Domain and Range", "summary": "Determine and represent domains and ranges of functions in the form f(x) = abˣ.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a9a-exponential-domain-range.json" },
+        { "module_id": "alg1-a9b-interpret-exponential-parameters", "sequence": 2, "teks": ["A.9B"], "title": "Interpret Exponential Parameters", "summary": "Explain the real-world meanings of a and b in f(x) = abˣ.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a9b-interpret-exponential-parameters.json" },
+        { "module_id": "alg1-a9c-write-exponential-models", "sequence": 3, "teks": ["A.9C"], "title": "Write Growth and Decay Models", "summary": "Write exponential functions with rational bases for mathematical and real-world growth or decay.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a9c-write-exponential-models.json" },
+        { "module_id": "alg1-a9d-graph-exponential-functions", "sequence": 4, "teks": ["A.9D"], "title": "Graph Exponential Functions", "summary": "Graph exponential growth and decay and identify intercepts and asymptotes.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a9d-graph-exponential-functions.json" },
+        { "module_id": "alg1-a9e-exponential-regression", "sequence": 5, "teks": ["A.9E"], "title": "Exponential Models for Data", "summary": "Use technology to fit exponential functions and make real-world predictions.", "status": "available", "available_modes": ["lesson", "practice"], "lesson_path": "/a9e-exponential-regression.json" }
       ]
     }
   ]

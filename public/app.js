@@ -41,9 +41,13 @@ function renderPracticeControls() {
   const startButton = document.querySelector("#startPracticeBtn");
   if (!skillSelect || !difficultySelect || !algebra1Catalog) return;
 
-  const modules = algebra1Modules.filter(module =>
-    module.available_modes?.includes("practice")
-  );
+  const modules = algebra1Modules
+    .filter(module => module.available_modes?.includes("practice"))
+    .sort((left, right) => left.teks[0].localeCompare(
+      right.teks[0],
+      undefined,
+      { numeric: true }
+    ));
   skillSelect.replaceChildren();
   for (const module of modules) {
     const option = document.createElement("option");
@@ -62,8 +66,7 @@ function renderPracticeControls() {
   }
 
   if (availability) {
-    availability.textContent =
-      `${modules.length} live skills: A.5A equations, A.5B inequalities, and A.5C systems.`;
+    availability.textContent = `${modules.length} completed Algebra 1 skills available for focused practice.`;
   }
   if (startButton) startButton.disabled = modules.length === 0;
 }
