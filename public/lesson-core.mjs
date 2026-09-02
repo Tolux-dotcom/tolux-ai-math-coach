@@ -62,6 +62,33 @@ function canonicalSpecialAnswer(value) {
   return null;
 }
 
+function parseOrderedPair(value) {
+  const normalized = normalizeAnswer(value);
+  let match = normalized.match(/^\(?([-+]?\d+(?:\.\d+)?),([-+]?\d+(?:\.\d+)?)\)?$/);
+
+  if (match) {
+    return [Number(match[1]), Number(match[2])];
+  }
+
+  match = normalized.match(
+    /^x=([-+]?\d+(?:\.\d+)?),?y=([-+]?\d+(?:\.\d+)?)$/
+  );
+
+  if (match) {
+    return [Number(match[1]), Number(match[2])];
+  }
+
+  match = normalized.match(
+    /^y=([-+]?\d+(?:\.\d+)?),?x=([-+]?\d+(?:\.\d+)?)$/
+  );
+
+  if (match) {
+    return [Number(match[2]), Number(match[1])];
+  }
+
+  return null;
+}
+
 function parseSimpleNumber(value) {
   let normalized = normalizeAnswer(value)
     .replace(/^x=/, "")
@@ -137,6 +164,16 @@ export function answersEquivalent(studentAnswer, itemOrExpected) {
 
   if (studentSpecial && studentSpecial === expectedSpecial) {
     return true;
+  }
+
+  const expectedPair = parseOrderedPair(expected);
+  const studentPair = parseOrderedPair(studentAnswer);
+
+  if (expectedPair && studentPair) {
+    return (
+      Math.abs(expectedPair[0] - studentPair[0]) < 1e-8 &&
+      Math.abs(expectedPair[1] - studentPair[1]) < 1e-8
+    );
   }
 
   const expectedNumber = parseSimpleNumber(expected);
