@@ -33,6 +33,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a8b-quadratic-regression": {
     lesson_path: "/a8b-quadratic-regression.json"
+  },
+  "alg1-a9a-exponential-domain-range": {
+    lesson_path: "/a9a-exponential-domain-range.json"
   }
 };
 
