@@ -1,0 +1,8 @@
+import test from "node:test"; import assert from "node:assert/strict"; import fs from "node:fs";
+import { findCourseModule } from "../public/course-core.mjs"; import { validateLessonModule, answersEquivalent } from "../public/lesson-core.mjs";
+const catalog=JSON.parse(fs.readFileSync(new URL("../public/algebra1-course.json",import.meta.url),"utf8")); const module=JSON.parse(fs.readFileSync(new URL("../public/a6b-write-quadratics-from-vertex.json",import.meta.url),"utf8"));
+test("A.6B resolves as a structured lesson",()=>{const e=findCourseModule(catalog,"alg1-a6b-write-quadratics-from-vertex");assert.ok(e.available_modes.includes("lesson"));assert.equal(e.lesson_path,"/a6b-write-quadratics-from-vertex.json")});
+test("A.6B validates with 30 unique items",()=>{assert.deepEqual(validateLessonModule(module),[]);assert.equal(module.items.length,30);assert.equal(new Set(module.items.map(i=>i.id)).size,30);assert.equal(module.lesson_settings.mastery_item_ids.length,5)});
+test("A.6B covers required diagnostics",()=>{for(const t of ["vertex_sign","point_substitution","solve_for_a","expand_standard_form"]) {assert.ok(module.items.some(i=>i.diagnostic_tag===t),t);assert.ok(module.misconception_routes[t],t)}});
+test("A.6B answer keys accept compact forms",()=>{for(const [id,a] of [["A6B-D01","y=a(x-3)^2-2"],["A6B-G02","y=-2(x+1)^2+3"],["A6B-M04","y=-2x^2+12x-14"]])assert.equal(answersEquivalent(a,module.items.find(i=>i.id===id)),true,id)});
+test("A.6B standard forms are correct",()=>{const x={"A6B-L03":"y = 2x^2 - 12x + 17","A6B-G03":"y = -x^2 - 4x + 2","A6B-P04":"y = 3x^2 + 6x - 5","A6B-X07":"y = -3x^2 - 12x - 11"};for(const [id,a] of Object.entries(x))assert.equal(module.items.find(i=>i.id===id).answer_key,a,id)});
