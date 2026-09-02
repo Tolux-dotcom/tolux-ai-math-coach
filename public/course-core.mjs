@@ -24,6 +24,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a7b-factors-and-zeros": {
     lesson_path: "/a7b-factors-and-zeros.json"
+  },
+  "alg1-a7c-quadratic-transformations": {
+    lesson_path: "/a7c-quadratic-transformations.json"
   }
 };
 
