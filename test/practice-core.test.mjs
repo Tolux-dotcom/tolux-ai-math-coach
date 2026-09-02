@@ -69,7 +69,7 @@ test("every structured lesson bank creates 20 unique answerable practice items",
     ([, config]) => config.lessonPath
   );
 
-  assert.equal(structuredSkills.length, 17);
+  assert.equal(structuredSkills.length, 18);
   for (const [skill, config] of structuredSkills) {
     const lessonModule = JSON.parse(fs.readFileSync(
       new URL(`../public${config.lessonPath}`, import.meta.url),
