@@ -23,6 +23,24 @@ test("dashboard exposes a real Practice launcher and does not imply Test Prep is
   assert.match(html, /Coming soon/);
 });
 
+test("Tutor Mode is a lesson library and keeps readiness diagnostic separate", () => {
+  assert.match(html, /id="tutorModePanel"/);
+  assert.match(html, /id="tutorSkillSelect"/);
+  assert.match(html, /id="startTutorLessonBtn"[^>]*>Start Step-by-Step Lesson/);
+  assert.match(html, /id="startReadinessDiagnosticBtn"[^>]*>Take Readiness Diagnostic/);
+  assert.match(app, /Learn → Watch Tolux solve → Guided practice → Independent practice → Mastery check/);
+  assert.match(app, /module\.available_modes\?\.includes\("lesson"\)/);
+  assert.match(app, /openTutorRoute\(selectedTutorModule\(\), "lesson"\)/);
+  assert.match(app, /openTutorRoute\(selectedTutorModule\(\), "diagnostic"\)/);
+  assert.doesNotMatch(html, /id="startA5ALessonBtn"/);
+});
+
+test("Tutor lessons skip the optional diagnostic while diagnostic links begin there", () => {
+  assert.match(app, /new URLSearchParams\(\{ module, start \}\)/);
+  assert.match(app, /openTutorRoute\("alg1-a5a-linear-equations", "diagnostic"\)/);
+  assert.match(app, /coachPanel\.style\.display = shouldShowLesson \|\| shouldShowPractice/);
+});
+
 test("Practice launcher is catalog-driven and navigates with explicit settings", () => {
   assert.match(app, /fetch\("\/algebra1-course\.json"\)/);
   assert.match(app, /module\.available_modes\?\.includes\("practice"\)/);
