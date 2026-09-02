@@ -126,3 +126,26 @@ export function buildLessonProgressRow(
     qa_mode: Boolean(qaMode)
   };
 }
+
+export function dedupeLessonProgressActivities(activities) {
+  if (!Array.isArray(activities)) return [];
+
+  const seen = new Set();
+
+  return activities.filter(activity => {
+    if (!activity || typeof activity !== "object") return false;
+
+    const key = activity.client_completion_id
+      ? `completion:${activity.client_completion_id}`
+      : [
+          activity.module_id,
+          activity.completed_at,
+          activity.mastery_label,
+          activity.mastery_score
+        ].join("|");
+
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
