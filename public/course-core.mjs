@@ -15,6 +15,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a6b-write-quadratics-from-vertex": {
     lesson_path: "/a6b-write-quadratics-from-vertex.json"
+  },
+  "alg1-a6c-write-quadratics-from-solutions": {
+    lesson_path: "/a6c-write-quadratics-from-solutions.json"
   }
 };
 
