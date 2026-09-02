@@ -8,6 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createInternalQaController } from "./internal-qa.mjs";
 import {
   buildLessonProgressRow,
+  dedupeLessonProgressActivities,
   normalizeLessonProgressReport
 } from "./lesson-progress.mjs";
 import {
@@ -212,7 +213,7 @@ async function getStudentLessonProgress(userId) {
     return null;
   }
 
-  return data || [];
+  return dedupeLessonProgressActivities(data || []);
 }
 
 const FREE_QUESTION_LIMIT = 10;

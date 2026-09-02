@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   buildLessonProgressRow,
+  dedupeLessonProgressActivities,
   normalizeLessonProgressReport
 } from "../lesson-progress.mjs";
 
@@ -66,4 +67,28 @@ test("server derives account and QA fields instead of trusting the client", () =
   assert.equal(row.user_id, "cefac2b0-5c7c-46ca-bc63-58900aacb001");
   assert.equal(row.qa_mode, true);
   assert.equal(row.is_subscriber, false);
+});
+
+test("deduplicates repeated completion records without removing distinct attempts", () => {
+  const first = {
+    client_completion_id: validReport.completion_id,
+    module_id: validReport.module_id,
+    completed_at: validReport.completed_at,
+    mastery_label: validReport.mastery_label,
+    mastery_score: validReport.mastery_score
+  };
+  const repeated = {
+    ...first,
+    client_completion_id: "cc45d55c-7c3c-4bce-882f-517c0b263394"
+  };
+  const later = {
+    ...first,
+    client_completion_id: "a8e243cb-7f5d-4f13-955b-73ac24bda915",
+    completed_at: "2026-08-29T12:10:00.000Z"
+  };
+
+  assert.deepEqual(
+    dedupeLessonProgressActivities([first, repeated, later]),
+    [first, later]
+  );
 });

@@ -115,7 +115,11 @@ test("A.5C accepts coordinate and labeled-pair answers", () => {
   const { x, y } = item.expected;
 
   assert.equal(gradePracticeAnswer(`(${x}, ${y})`, item), true);
+  assert.equal(gradePracticeAnswer(`x=${x} y=${y}`, item), true);
+  assert.equal(gradePracticeAnswer(`y=${y} x=${x}`, item), true);
   assert.equal(gradePracticeAnswer(`y=${y}, x=${x}`, item), true);
+  assert.equal(gradePracticeAnswer(`x=${y} y=${x}`, item), x === y);
+  assert.equal(gradePracticeAnswer(`x=${x}`, item), false);
   assert.equal(gradePracticeAnswer(`(${y}, ${x})`, item), x === y);
 });
 

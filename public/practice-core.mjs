@@ -497,17 +497,26 @@ function parseOrderedPair(value) {
   const normalized = normalizeComparison(value)
     .replace(/[()[\]{}]/g, "")
     .replace(/;/g, ",");
-  const xMatch = normalized.match(/(?:^|,)x=([-+]?\d+(?:\.\d+)?)(?:,|$)/);
-  const yMatch = normalized.match(/(?:^|,)y=([-+]?\d+(?:\.\d+)?)(?:,|$)/);
+  let match = normalized.match(
+    /^x=([-+]?\d+(?:\.\d+)?),?y=([-+]?\d+(?:\.\d+)?)$/
+  );
 
-  if (xMatch && yMatch) {
-    return { x: Number(xMatch[1]), y: Number(yMatch[1]) };
+  if (match) {
+    return { x: Number(match[1]), y: Number(match[2]) };
   }
 
-  const pair = normalized.match(
+  match = normalized.match(
+    /^y=([-+]?\d+(?:\.\d+)?),?x=([-+]?\d+(?:\.\d+)?)$/
+  );
+
+  if (match) {
+    return { x: Number(match[2]), y: Number(match[1]) };
+  }
+
+  match = normalized.match(
     /^([-+]?\d+(?:\.\d+)?),([-+]?\d+(?:\.\d+)?)$/
   );
-  return pair ? { x: Number(pair[1]), y: Number(pair[2]) } : null;
+  return match ? { x: Number(match[1]), y: Number(match[2]) } : null;
 }
 
 export function gradePracticeAnswer(studentAnswer, item) {

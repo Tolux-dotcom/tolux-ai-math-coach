@@ -1,5 +1,17 @@
 const TEKS_PATTERN = /^A\.(?:[1-9]|1[0-2])[A-Z]$/;
 
+// Structured lessons can be activated here while the Algebra 1 completion
+// branch is being built and QA'd. The static catalog remains the source of
+// TEKS/module metadata; these overrides add only verified lesson capability.
+const STRUCTURED_LESSON_OVERRIDES = {
+  "alg1-a5b-linear-inequalities": {
+    lesson_path: "/a5b-linear-inequalities.json"
+  },
+  "alg1-a5c-linear-systems": {
+    lesson_path: "/a5c-linear-systems.json"
+  }
+};
+
 export function flattenCourseModules(catalog) {
   if (!Array.isArray(catalog?.units)) return [];
 
@@ -14,9 +26,24 @@ export function flattenCourseModules(catalog) {
 }
 
 export function findCourseModule(catalog, moduleId) {
-  return flattenCourseModules(catalog).find(
-    module => module.module_id === moduleId
+  const module = flattenCourseModules(catalog).find(
+    candidate => candidate.module_id === moduleId
   ) || null;
+
+  if (!module) return null;
+
+  const override = STRUCTURED_LESSON_OVERRIDES[moduleId];
+  if (!override) return module;
+
+  return {
+    ...module,
+    ...override,
+    status: "available",
+    available_modes: Array.from(new Set([
+      ...(module.available_modes || []),
+      "lesson"
+    ]))
+  };
 }
 
 export function practiceModules(catalog) {
