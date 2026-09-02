@@ -135,14 +135,13 @@ export function dedupeLessonProgressActivities(activities) {
   return activities.filter(activity => {
     if (!activity || typeof activity !== "object") return false;
 
-    const key = activity.client_completion_id
-      ? `completion:${activity.client_completion_id}`
-      : [
-          activity.module_id,
-          activity.completed_at,
-          activity.mastery_label,
-          activity.mastery_score
-        ].join("|");
+    const key = [
+      activity.module_id,
+      activity.completed_at,
+      activity.mastery_label,
+      activity.mastery_score,
+      activity.time_on_skill_seconds
+    ].join("|");
 
     if (seen.has(key)) return false;
     seen.add(key);
