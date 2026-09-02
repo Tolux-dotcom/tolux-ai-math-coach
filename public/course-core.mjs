@@ -18,6 +18,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a6c-write-quadratics-from-solutions": {
     lesson_path: "/a6c-write-quadratics-from-solutions.json"
+  },
+  "alg1-a7a-quadratic-key-features": {
+    lesson_path: "/a7a-quadratic-key-features.json"
   }
 };
 
