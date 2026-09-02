@@ -45,6 +45,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a9d-graph-exponential-functions": {
     lesson_path: "/a9d-graph-exponential-functions.json"
+  },
+  "alg1-a9e-exponential-regression": {
+    lesson_path: "/a9e-exponential-regression.json"
   }
 };
 
