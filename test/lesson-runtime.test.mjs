@@ -125,7 +125,8 @@ async function waitFor(predicate, message) {
 
 async function createHarness(name, {
   maxUsage = Number.POSITIVE_INFINITY,
-  rejectFirstToken = false
+  rejectFirstToken = false,
+  start = "diagnostic"
 } = {}) {
   const document = new FakeDocument();
   const storage = new Map();
@@ -147,7 +148,7 @@ async function createHarness(name, {
   };
   const window = {
     location: {
-      search: "?module=alg1-a5a-linear-equations"
+      search: `?module=alg1-a5a-linear-equations&start=${start}`
     },
     supabase: {
       createClient() {
@@ -265,9 +266,12 @@ async function createHarness(name, {
   const content = get("lessonContent");
   const stage = get("lessonStage");
 
+  const expectedStage = start === "lesson"
+    ? "1. Learn the Concept"
+    : "Quick Readiness Check";
   await waitFor(
-    () => stage.textContent.includes("Quick Readiness Check"),
-    "The readiness check did not load."
+    () => stage.textContent.includes(expectedStage),
+    `${expectedStage} did not load.`
   );
 
   const submitAndAdvance = async (value, explanation = null) => {
@@ -322,6 +326,15 @@ async function moveToMastery(harness) {
 
   assert.match(stage.textContent, /Mastery Check/);
 }
+
+test("Tutor Mode begins with teaching instead of the readiness diagnostic", async () => {
+  const harness = await createHarness("lesson-first", { start: "lesson" });
+  assert.equal(harness.stage.textContent, "1. Learn the Concept");
+  assert.match(harness.content.innerHTML, /Learn the ideas before using the steps/);
+  assert.match(harness.content.innerHTML, /Keep the equation balanced/);
+  assert.doesNotMatch(harness.get("lessonPath").innerHTML, /Quick readiness check/);
+  assert.doesNotMatch(harness.stage.textContent, /Readiness/);
+});
 
 test("student can complete the entire data-driven A5A lesson", async () => {
   const harness = await createHarness("mastery-pass");
