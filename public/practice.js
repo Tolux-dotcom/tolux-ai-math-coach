@@ -116,6 +116,56 @@ function solutionMarkup(item) {
   `;
 }
 
+function teachingExplanationMarkup(item) {
+  const teaching = item.teaching_explanation || {};
+  const teachingSteps = Array.isArray(teaching.steps) && teaching.steps.length > 0
+    ? teaching.steps
+    : (item.solution_steps || []).map((step, index) => ({
+        label: `Step ${index + 1}`,
+        equation: step.equation,
+        explanation: step.explanation
+      }));
+  const steps = teachingSteps.map((step, index) => `
+    <li>
+      <span class="solution-step-number">${index + 1}</span>
+      <div>
+        <strong>${escapeHtml(step.label || `Step ${index + 1}`)}</strong>
+        <div class="math-line">${escapeHtml(step.equation)}</div>
+        <p>${escapeHtml(step.explanation)}</p>
+      </div>
+    </li>
+  `).join("");
+  const verification = teaching.verification ? `
+    <div class="teaching-check">
+      <strong>Check the answer</strong>
+      <div class="math-line">${escapeHtml(teaching.verification.equation)}</div>
+      <p>${escapeHtml(teaching.verification.explanation)}</p>
+    </div>
+  ` : "";
+  const vocabulary = teaching.vocabulary ? `
+    <div class="teaching-vocabulary">
+      <strong>Words to know</strong>
+      <p>${escapeHtml(teaching.vocabulary)}</p>
+    </div>
+  ` : "";
+  const lessonUrl = `/lesson.html?module=${encodeURIComponent(session.module_id)}`;
+
+  return `
+    <div class="lesson-state lesson-state-success teaching-explanation">
+      <h3>${escapeHtml(teaching.title || "Let’s work through the mathematics")}</h3>
+      <p>${escapeHtml(teaching.overview || item.alternate_explanation)}</p>
+      <ol class="solution-steps teaching-steps">${steps}</ol>
+      ${verification}
+      ${vocabulary}
+      <div class="teaching-lesson-link">
+        <strong>Need the complete lesson?</strong>
+        <p>Tutor Mode teaches the concept, vocabulary, worked examples, guided practice, common mistakes, and mastery check.</p>
+        <a href="${escapeHtml(lessonUrl)}">Open the full ${escapeHtml(session.skill)} Tutor lesson</a>
+      </div>
+    </div>
+  `;
+}
+
 async function getPracticeSession() {
   if (!supabaseClient) return null;
 
@@ -573,12 +623,7 @@ practiceStuckBtn.addEventListener("click", async () => {
 practiceExplainBtn.addEventListener("click", async () => {
   const item = currentItem();
   if (!item || !(await ensurePracticeAccess(item))) return;
-  setFeedback(`
-    <div class="lesson-state lesson-state-success">
-      <strong>Another way to think about it</strong>
-      <p>${escapeHtml(item.alternate_explanation)}</p>
-    </div>
-  `);
+  setFeedback(teachingExplanationMarkup(item));
 });
 
 startPractice();
