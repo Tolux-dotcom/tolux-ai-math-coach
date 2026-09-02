@@ -127,6 +127,21 @@ test("A.5A accepts equation values and identity or contradiction language", () =
   );
 });
 
+test("A.5A foundational explanations teach each operation and verify the answer", () => {
+  const item = generatePracticeSession(
+    { skill: "A.5A", difficulty: "foundational", count: 5 },
+    seededRandom(5)
+  ).items[0];
+  const teaching = item.teaching_explanation;
+
+  assert.match(teaching.overview, /isolate means get x alone/i);
+  assert.equal(teaching.steps.length, 4);
+  assert.match(teaching.steps[0].explanation, /both sides/i);
+  assert.match(teaching.steps[2].explanation, /divide both sides/i);
+  assert.match(teaching.verification.explanation, /original equation/i);
+  assert.match(teaching.vocabulary, /inverse operations/i);
+});
+
 test("A.5B accepts equivalent inequality orientation and Unicode symbols", () => {
   const item = generatePracticeSession(
     { skill: "A.5B", difficulty: "foundational", count: 5 },
