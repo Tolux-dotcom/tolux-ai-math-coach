@@ -23,6 +23,26 @@ test("dashboard exposes a real Practice launcher and does not imply Test Prep is
   assert.match(html, /Coming soon/);
 });
 
+test("Tutor Mode is a lesson library and keeps readiness diagnostic separate", () => {
+  assert.match(html, /id="tutorModePanel"/);
+  assert.match(html, /id="tutorSkillSelect"/);
+  assert.match(html, /id="startTutorLessonBtn"[^>]*>Start Step-by-Step Lesson/);
+  assert.match(html, /id="startReadinessDiagnosticBtn"[^>]*>Take Readiness Diagnostic/);
+  assert.match(app, /Learn → Watch Tolux solve → Guided practice → Independent practice → Mastery check/);
+  assert.match(app, /module\.available_modes\?\.includes\("lesson"\)/);
+  assert.match(app, /openTutorRoute\(selectedTutorModule\(\), "lesson"\)/);
+  assert.match(app, /openTutorRoute\(selectedTutorModule\(\), "diagnostic"\)/);
+  assert.doesNotMatch(html, /id="startA5ALessonBtn"/);
+});
+
+test("Tutor lessons skip the optional diagnostic while diagnostic links begin there", () => {
+  assert.match(app, /new URLSearchParams\(\{ module, start \}\)/);
+  assert.match(app, /openTutorRoute\("alg1-a5a-linear-equations", "diagnostic"\)/);
+  assert.match(app, /const coachOnlyElements = \[/);
+  assert.match(app, /document\.querySelector\("#composer"\)/);
+  assert.match(app, /element\.style\.display = shouldShowLesson \|\| shouldShowPractice/);
+});
+
 test("Practice launcher is catalog-driven and navigates with explicit settings", () => {
   assert.match(app, /fetch\("\/algebra1-course\.json"\)/);
   assert.match(app, /module\.available_modes\?\.includes\("practice"\)/);
@@ -36,6 +56,19 @@ test("Practice loads structured lesson banks for completed skills", () => {
   assert.match(practice, /PRACTICE_SKILLS/);
   assert.match(practice, /fetch\(config\.lessonPath\)/);
   assert.match(practice, /generateStructuredPracticeSession/);
+});
+
+test("Explain Another Way renders worked teaching and links to Tutor Mode", () => {
+  assert.match(practice, /function teachingExplanationMarkup\(item\)/);
+  assert.match(practice, /teaching\.steps/);
+  assert.match(practice, /Check the answer/);
+  assert.match(practice, /Words to know/);
+  assert.match(practice, /Open the full.*Tutor lesson/);
+  assert.match(practice, /lesson\.html\?module=/);
+  assert.doesNotMatch(
+    practice,
+    /<strong>Another way to think about it<\/strong>[\s\S]*?<p>\$\{escapeHtml\(item\.alternate_explanation\)\}<\/p>/
+  );
 });
 
 test("Practice launcher and session collapse to one column on small screens", () => {

@@ -61,6 +61,7 @@ let recheckResults = [];
 let recheckUsageKeys = new Map();
 let lessonLocked = false;
 let isSubscriber = false;
+let includeDiagnostic = false;
 let completionReport = null;
 let completionSavePromise = null;
 let trialHeartbeatTimer = null;
@@ -107,8 +108,12 @@ function findStageIndex(type) {
 function updateLessonPath() {
   if (!lessonPath || !lessonModule) return;
 
-  lessonPath.innerHTML = lessonModule.lesson_flow
-    .map((stage, index) => {
+  const visibleFlow = lessonModule.lesson_flow
+    .map((stage, index) => ({ stage, index }))
+    .filter(({ stage }) => includeDiagnostic || stage.type !== "prerequisite_diagnostic");
+
+  lessonPath.innerHTML = visibleFlow
+    .map(({ stage, index }, visibleIndex) => {
       const state = index < stageIndex
         ? "complete"
         : index === stageIndex
@@ -118,7 +123,7 @@ function updateLessonPath() {
 
       return `
         <li class="lesson-path-${state}"${current}>
-          <span>${index < stageIndex ? "✓" : stage.step}</span>
+          <span>${index < stageIndex ? "✓" : visibleIndex + 1}</span>
           ${displayText(stage.label)}
         </li>
       `;
@@ -129,7 +134,8 @@ function updateLessonPath() {
 function updateProgress() {
   if (!lessonModule) return;
 
-  const stageCount = lessonModule.lesson_flow.length;
+  const stageCount = lessonModule.lesson_flow.length - (includeDiagnostic ? 0 : 1);
+  const effectiveStageIndex = stageIndex - (includeDiagnostic ? 0 : 1);
   let withinStage = 0;
 
   if (stageItems.length > 0) {
@@ -141,7 +147,7 @@ function updateProgress() {
 
   const percent = Math.max(
     2,
-    Math.min(100, Math.round(((stageIndex + withinStage) / stageCount) * 100))
+    Math.min(100, Math.round(((effectiveStageIndex + withinStage) / stageCount) * 100))
   );
 
   lessonProgressBar.style.width = `${percent}%`;
@@ -477,7 +483,7 @@ function renderConceptStage() {
     `)
     .join("");
 
-  lessonStage.textContent = "2. Learn the Concept";
+  lessonStage.textContent = `${includeDiagnostic ? 2 : 1}. Learn the Concept`;
   lessonContent.innerHTML = `
     <h2>Learn the ideas before using the steps</h2>
     <p class="lesson-intro">
@@ -512,7 +518,7 @@ function renderWorkedExample() {
   const isLast = workedExampleIndex === workedItems.length - 1;
 
   lessonStage.textContent =
-    `3. Worked Examples • ${workedExampleIndex + 1} of ${workedItems.length}`;
+    `${includeDiagnostic ? 3 : 2}. Worked Examples • ${workedExampleIndex + 1} of ${workedItems.length}`;
   lessonContent.innerHTML = `
     <div class="question-header">
       <span class="difficulty-badge">${escapeHtml(item.difficulty)}</span>
@@ -1260,9 +1266,11 @@ function findSimilarProblem(item) {
 
 async function loadLesson() {
   try {
+    const lessonParams = new URLSearchParams(window.location.search);
     const requestedModule =
-      new URLSearchParams(window.location.search).get("module") ||
+      lessonParams.get("module") ||
       "alg1-a5a-linear-equations";
+    const requestedStart = lessonParams.get("start") || "lesson";
     const catalogResponse = await fetch("/algebra1-course.json");
     if (!catalogResponse.ok) {
       throw new Error(
@@ -1296,7 +1304,11 @@ async function loadLesson() {
     lessonTeks.textContent =
       `${lessonModule.course} • TEKS ${lessonModule.teks.join(", ")}`;
     lessonGoal.textContent = `Master TEKS ${lessonModule.teks.join(", ")}`;
-    stageIndex = 0;
+    const lessonStartIndex = findStageIndex("concept");
+    includeDiagnostic = requestedStart === "diagnostic";
+    stageIndex = includeDiagnostic
+      ? 0
+      : Math.max(0, lessonStartIndex);
     renderStage();
   } catch (error) {
     console.error("Lesson failed to load:", error);
