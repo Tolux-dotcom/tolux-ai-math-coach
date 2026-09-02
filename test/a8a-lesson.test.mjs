@@ -28,9 +28,19 @@ test("A.8A covers every required solution method and method choice", () => {
 });
 
 test("A.8A accepts common multi-root notation", () => {
-  for (const [id, answer] of [["A8A-D02", "-2,3"], ["A8A-G01", "x=±9"], ["A8A-G03", "1,-1.5"], ["A8A-M04", "1/2,3"]]) {
+  for (const [id, answer] of [["A8A-D02", "-2,3"], ["A8A-G01", "x=±9"], ["A8A-G01", "-9 and 9"], ["A8A-G01", "9 and -9"], ["A8A-G01", "x=-9 or x=9"], ["A8A-G03", "1,-1.5"], ["A8A-M04", "1/2,3"]]) {
     assert.equal(answersEquivalent(answer, module.items.find(item => item.id === id)), true, id);
   }
+});
+
+test("A.8A square-root help teaches both roots step by step", () => {
+  const item = module.items.find(item => item.id === "A8A-G01");
+  assert.match(item.hint_steps[0], /x=±√81/);
+  assert.match(item.hint_steps.at(-1), /\(-9\)²=81/);
+  assert.deepEqual(
+    item.alternate_solution_steps.map(step => step.equation),
+    ["x^2-81=0", "(x-9)(x+9)=0", "x-9=0 or x+9=0", "x=9 or x=-9"]
+  );
 });
 
 test("A.8A answer keys are mathematically correct", () => {

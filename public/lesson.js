@@ -1052,6 +1052,10 @@ function distributionDetails(prompt) {
 }
 
 function getProgressiveHint(item, level) {
+  if (Array.isArray(item.hint_steps) && item.hint_steps.length > 0) {
+    return item.hint_steps[Math.min(level, item.hint_steps.length - 1)];
+  }
+
   const tag = canonicalHintTag(item);
   const details = distributionDetails(item.prompt || "");
   const distributionHints = details
@@ -1123,6 +1127,16 @@ function getProgressiveHint(item, level) {
 }
 
 function alternateExplanation(item) {
+  if (
+    Array.isArray(item.alternate_solution_steps) &&
+    item.alternate_solution_steps.length > 0
+  ) {
+    return renderSolutionSteps(
+      { solution_steps: item.alternate_solution_steps },
+      "Another way to think about it"
+    );
+  }
+
   const tag = canonicalHintTag(item);
   const details = distributionDetails(item.prompt || "");
 
