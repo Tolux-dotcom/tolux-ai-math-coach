@@ -53,6 +53,9 @@ test("A.7C worked examples teach vertex form before identifying transformations"
 
 test("A.7C accepts common equation and transformation notation", () => {
   for (const [id, answer] of [
+    ["A7C-G01", "right shift of 3, and up shift 7"],
+    ["A7C-G01", "shift 3 units right and 7 units up"],
+    ["A7C-G01", "h=3, k=7"],
     ["A7C-L03", "y=0.5(x+4)^2+2"],
     ["A7C-P04", "x=-1 y=5"],
     ["A7C-M03", "y=-1(x-2)^2+5"],
