@@ -53,6 +53,8 @@ test("A.7C worked examples teach vertex form before identifying transformations"
 
 test("A.7C accepts common equation and transformation notation", () => {
   for (const [id, answer] of [
+    ["A7C-G01", "right 3, up 7"],
+    ["A7C-G01", "right 3; up 7"],
     ["A7C-G01", "right shift of 3, and up shift 7"],
     ["A7C-G01", "shift 3 units right and 7 units up"],
     ["A7C-G01", "h=3, k=7"],
@@ -61,6 +63,10 @@ test("A.7C accepts common equation and transformation notation", () => {
     ["A7C-M03", "y=-1(x-2)^2+5"],
     ["A7C-X09", "y=-(x-3)^2-2"]
   ]) assert.equal(answersEquivalent(answer, module.items.find(item => item.id === id)), true, id);
+
+  const transformation = module.items.find(item => item.id === "A7C-G01");
+  assert.equal(answersEquivalent("right 3", transformation), false);
+  assert.equal(answersEquivalent("up 7", transformation), false);
 });
 
 test("A.7C transformed equations and mapped points are correct", () => {
