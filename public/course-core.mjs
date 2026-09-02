@@ -54,6 +54,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a10b-multiply-polynomials": {
     lesson_path: "/a10b-multiply-polynomials.json"
+  },
+  "alg1-a10c-divide-polynomials": {
+    lesson_path: "/a10c-divide-polynomials.json"
   }
 };
 
