@@ -48,6 +48,24 @@ test("A.8A factoring grading accepts either root order and complete work", () =>
   ]);
 });
 
+test("A.8A quadratic-formula help shows the formula and both branches", () => {
+  const item = module.items.find(item => item.id === "A8A-G03");
+  assert.match(item.hint_steps[0], /x=\(-b±√\(b\^2-4ac\)\)\/\(2a\)/);
+  assert.match(item.hint_steps[1], /a=2, b=1, and c=-3|\(2\)\(-3\)/);
+  assert.match(item.hint_steps.at(-1), /x=1 or x=-3\/2/);
+  assert.deepEqual(
+    item.alternate_solution_steps.map(step => step.equation),
+    [
+      "x=(-b±√(b^2-4ac))/(2a)",
+      "a=2, b=1, c=-3",
+      "x=(-(1)±√((1)^2-4(2)(-3)))/(2(2))",
+      "x=(-1±√25)/4=(-1±5)/4",
+      "x=(-1+5)/4=1 or x=(-1-5)/4=-3/2",
+      "x=1 or x=-3/2"
+    ]
+  );
+});
+
 test("A.8A square-root help teaches both roots step by step", () => {
   const item = module.items.find(item => item.id === "A8A-G01");
   assert.match(item.hint_steps[0], /x=±√81/);
