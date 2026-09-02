@@ -38,7 +38,9 @@ test("Tutor Mode is a lesson library and keeps readiness diagnostic separate", (
 test("Tutor lessons skip the optional diagnostic while diagnostic links begin there", () => {
   assert.match(app, /new URLSearchParams\(\{ module, start \}\)/);
   assert.match(app, /openTutorRoute\("alg1-a5a-linear-equations", "diagnostic"\)/);
-  assert.match(app, /coachPanel\.style\.display = shouldShowLesson \|\| shouldShowPractice/);
+  assert.match(app, /const coachOnlyElements = \[/);
+  assert.match(app, /document\.querySelector\("#composer"\)/);
+  assert.match(app, /element\.style\.display = shouldShowLesson \|\| shouldShowPractice/);
 });
 
 test("Practice launcher is catalog-driven and navigates with explicit settings", () => {
