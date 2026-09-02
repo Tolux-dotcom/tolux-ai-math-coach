@@ -43,6 +43,19 @@ test("A.8A square-root help teaches both roots step by step", () => {
   );
 });
 
+test("A.8A recognizes correct factoring as an intermediate step", () => {
+  const item = module.items.find(item => item.id === "A8A-G02");
+  const progress = item.progress_answers[0];
+  assert.equal(answersEquivalent("(x+4)(x-3)", item), false);
+  assert.equal(answersEquivalent("(x+4)(x-3)", progress), true);
+  assert.match(progress.feedback_title, /factorization is correct/i);
+  assert.deepEqual(
+    progress.next_steps.map(step => step.equation),
+    ["x+4=0 or x-3=0", "x=-4 or x=3"]
+  );
+  assert.equal(item.alternate_solution_steps.at(-1).equation, "x=-4 or x=3");
+});
+
 test("A.8A answer keys are mathematically correct", () => {
   const expected = {"A8A-L03": "x = -1 or x = -5", "A8A-P03": "x = 2 or x = -6", "A8A-P04": "x = 2 or x = -1/3", "A8A-X11": "t = 0 or t = 4"};
   for (const [id, answer] of Object.entries(expected)) assert.equal(module.items.find(item => item.id === id).answer_key, answer, id);
