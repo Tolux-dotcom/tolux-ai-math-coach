@@ -12,6 +12,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a6a-quadratic-domain-range": {
     lesson_path: "/a6a-quadratic-domain-range.json"
+  },
+  "alg1-a6b-write-quadratics-from-vertex": {
+    lesson_path: "/a6b-write-quadratics-from-vertex.json"
   }
 };
 
