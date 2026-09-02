@@ -688,6 +688,14 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
   const lessonPanel = document.querySelector("#tutorModePanel");
   const practicePanel = document.querySelector("#practiceModePanel");
   const coachPanel = document.querySelector("#coachPanel");
+  const coachOnlyElements = [
+    coachPanel,
+    document.querySelector(".quick"),
+    document.querySelector("#graphPanel"),
+    document.querySelector("#previewWrap"),
+    document.querySelector("#composer"),
+    document.querySelector(".fine")
+  ].filter(Boolean);
   if (!lessonPanel) return;
 
   const shouldShowLesson =
@@ -703,10 +711,10 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
   if (practicePanel) {
     practicePanel.style.display = shouldShowPractice ? "block" : "none";
   }
-  if (coachPanel) {
-    coachPanel.style.display = shouldShowLesson || shouldShowPractice
+  for (const element of coachOnlyElements) {
+    element.style.display = shouldShowLesson || shouldShowPractice
       ? "none"
-      : "block";
+      : "";
   }
 }
 
