@@ -48,6 +48,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a9e-exponential-regression": {
     lesson_path: "/a9e-exponential-regression.json"
+  },
+  "alg1-a10a-add-subtract-polynomials": {
+    lesson_path: "/a10a-add-subtract-polynomials.json"
   }
 };
 
