@@ -38,6 +38,19 @@ test("Practice loads structured lesson banks for completed skills", () => {
   assert.match(practice, /generateStructuredPracticeSession/);
 });
 
+test("Explain Another Way renders worked teaching and links to Tutor Mode", () => {
+  assert.match(practice, /function teachingExplanationMarkup\(item\)/);
+  assert.match(practice, /teaching\.steps/);
+  assert.match(practice, /Check the answer/);
+  assert.match(practice, /Words to know/);
+  assert.match(practice, /Open the full.*Tutor lesson/);
+  assert.match(practice, /lesson\.html\?module=/);
+  assert.doesNotMatch(
+    practice,
+    /<strong>Another way to think about it<\/strong>[\s\S]*?<p>\$\{escapeHtml\(item\.alternate_explanation\)\}<\/p>/
+  );
+});
+
 test("Practice launcher and session collapse to one column on small screens", () => {
   assert.match(
     styles,
