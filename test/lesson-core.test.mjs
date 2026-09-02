@@ -30,6 +30,19 @@ test("accepts equivalent equation, fraction, unit, and special-case answers", ()
   assert.equal(answersEquivalent("x = 4", { answer_key: "x = 5" }), false);
 });
 
+test("accepts labeled solution sets in either order and with correct work", () => {
+  const item = { answer_key: "x = 3 or x = -4" };
+
+  assert.equal(answersEquivalent("x=-4 or x=3", item), true);
+  assert.equal(
+    answersEquivalent("(x+4)(x-3)=0, so x=-4 or x=3", item),
+    true
+  );
+  assert.equal(answersEquivalent("x=-4", item), false);
+  assert.equal(answersEquivalent("x=-4 or x=2", item), false);
+  assert.equal(answersEquivalent("x=-4 or x=3 or x=5", item), false);
+});
+
 test("grades explanation-style responses by grouped mathematical ideas", () => {
   const remediationItem = {
     answer_key: "The 3 must multiply both terms.",
