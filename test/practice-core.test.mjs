@@ -1,10 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {
   PRACTICE_DIFFICULTIES,
   PRACTICE_SKILLS,
   calculatePracticeSummary,
   generatePracticeSession,
+  generateStructuredPracticeSession,
   gradePracticeAnswer,
   validatePracticeOptions
 } from "../public/practice-core.mjs";
@@ -36,10 +38,12 @@ test("practice options reject unsupported skills, difficulties, and lengths", ()
   );
 });
 
-test("every live skill generates valid answerable sessions at every difficulty", () => {
+test("every generated skill creates valid answerable sessions at every difficulty", () => {
   let seed = 100;
 
-  for (const skill of Object.keys(PRACTICE_SKILLS)) {
+  for (const skill of Object.keys(PRACTICE_SKILLS).filter(
+    key => PRACTICE_SKILLS[key].generator
+  )) {
     for (const difficulty of PRACTICE_DIFFICULTIES) {
       const session = generatePracticeSession(
         { skill, difficulty, count: 20 },
@@ -54,6 +58,36 @@ test("every live skill generates valid answerable sessions at every difficulty",
       assert.ok(
         session.items.every(item => gradePracticeAnswer(item.answer_key, item)),
         `${skill} ${difficulty} should accept every generated answer key`
+      );
+    }
+  }
+});
+
+test("every structured lesson bank creates 20 unique answerable practice items", () => {
+  let seed = 900;
+  const structuredSkills = Object.entries(PRACTICE_SKILLS).filter(
+    ([, config]) => config.lessonPath
+  );
+
+  assert.equal(structuredSkills.length, 17);
+  for (const [skill, config] of structuredSkills) {
+    const lessonModule = JSON.parse(fs.readFileSync(
+      new URL(`../public${config.lessonPath}`, import.meta.url),
+      "utf8"
+    ));
+    for (const difficulty of PRACTICE_DIFFICULTIES) {
+      const session = generateStructuredPracticeSession(
+        { skill, difficulty, count: 20 },
+        lessonModule,
+        seededRandom(seed++)
+      );
+      assert.equal(session.items.length, 20, `${skill} ${difficulty}`);
+      assert.equal(new Set(session.items.map(item => item.id)).size, 20);
+      assert.ok(session.items.every(item => item.solution_steps.length >= 2));
+      assert.ok(session.items.every(item => item.hint.length > 0));
+      assert.ok(
+        session.items.every(item => gradePracticeAnswer(item.answer_key, item)),
+        `${skill} ${difficulty} should accept every answer key`
       );
     }
   }
