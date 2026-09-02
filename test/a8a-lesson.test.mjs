@@ -33,6 +33,21 @@ test("A.8A accepts common multi-root notation", () => {
   }
 });
 
+test("A.8A factoring grading accepts either root order and complete work", () => {
+  const item = module.items.find(item => item.id === "A8A-G02");
+  assert.equal(answersEquivalent("x=-4 or x=3", item), true);
+  assert.equal(
+    answersEquivalent("(x+4)(x-3)=0, so x=-4 or x=3", item),
+    true
+  );
+  assert.equal(answersEquivalent("x=-4", item), false);
+  assert.deepEqual(item.hint_steps, [
+    "Find two numbers whose product is -12 and whose sum is 1.",
+    "The numbers are 4 and -3, so write (x+4)(x-3)=0.",
+    "Apply the zero-product property: x+4=0 or x-3=0. Solve both equations to get x=-4 or x=3."
+  ]);
+});
+
 test("A.8A square-root help teaches both roots step by step", () => {
   const item = module.items.find(item => item.id === "A8A-G01");
   assert.match(item.hint_steps[0], /x=±√81/);
