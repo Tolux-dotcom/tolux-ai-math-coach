@@ -872,6 +872,32 @@ body:has(.practice-page) {
   margin-bottom: 6px;
 }
 
+.teaching-explanation h3 {
+  margin: 0 0 8px;
+}
+
+.teaching-steps {
+  margin-top: 18px;
+}
+
+.teaching-check,
+.teaching-vocabulary,
+.teaching-lesson-link {
+  margin-top: 18px;
+  border-top: 1px solid #cfe3d8;
+  padding-top: 16px;
+}
+
+.teaching-lesson-link a {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #155bd7;
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+}
+
 .practice-next-button {
   min-height: 46px;
   margin-top: 18px;
