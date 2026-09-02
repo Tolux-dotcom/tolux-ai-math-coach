@@ -29,6 +29,13 @@ test("A.5C accepts equivalent ordered-pair formats", () => {
   assert.equal(answersEquivalent("x = 4  y = 6", item), true);
 });
 
+test("A.5C accepts natural comma-free modeling answers", () => {
+  const item = module.items.find(candidate => candidate.id === "A5C-M04");
+  assert.equal(answersEquivalent("adult=10 student=10", item), true);
+  assert.equal(answersEquivalent("adult = 10 student = 10", item), true);
+  assert.equal(answersEquivalent("adult=9 student=11", item), false);
+});
+
 test("A.5C rejects incorrect or incomplete ordered pairs", () => {
   const item = module.items.find(candidate => candidate.id === "A5C-M01");
   assert.equal(answersEquivalent("x=6 y=4", item), false);
