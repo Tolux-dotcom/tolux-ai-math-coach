@@ -10,6 +10,13 @@ const [html, app, styles, practice, practiceHtml] = await Promise.all([
   readFile(new URL("../public/practice.html", import.meta.url), "utf8")
 ]);
 
+const a8aLesson = JSON.parse(
+  await readFile(
+    new URL("../public/a8a-solve-quadratic-equations.json", import.meta.url),
+    "utf8"
+  )
+);
+
 test("dashboard exposes a real Practice launcher and does not imply Test Prep is live", () => {
   assert.match(html, /id="practiceModePanel"/);
   assert.match(html, /id="practiceSkillSelect"/);
@@ -69,6 +76,15 @@ test("Explain Another Way renders worked teaching and links to Tutor Mode", () =
     practice,
     /<strong>Another way to think about it<\/strong>[\s\S]*?<p>\$\{escapeHtml\(item\.alternate_explanation\)\}<\/p>/
   );
+});
+
+test("A.8A factoring help explains both roots and verifies them", () => {
+  const item = a8aLesson.items.find(({ id }) => id === "A8A-G02");
+  assert.ok(item);
+  assert.ok(item.alternate_solution_steps.length >= 5);
+  assert.match(JSON.stringify(item.alternate_solution_steps), /zero-product property/i);
+  assert.match(JSON.stringify(item.alternate_solution_steps), /x=-4 or x=3/);
+  assert.match(JSON.stringify(item.alternate_solution_steps), /verify/i);
 });
 
 test("Practice launcher and session collapse to one column on small screens", () => {
