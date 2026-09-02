@@ -30,6 +30,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a8a-solve-quadratic-equations": {
     lesson_path: "/a8a-solve-quadratic-equations.json"
+  },
+  "alg1-a8b-quadratic-regression": {
+    lesson_path: "/a8b-quadratic-regression.json"
   }
 };
 
