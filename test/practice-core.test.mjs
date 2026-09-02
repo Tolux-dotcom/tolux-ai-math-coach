@@ -86,6 +86,19 @@ test("every structured lesson bank creates 20 unique answerable practice items",
       assert.ok(session.items.every(item => item.solution_steps.length >= 2));
       assert.ok(session.items.every(item => item.hint.length > 0));
       assert.ok(
+        session.items.every(item => !/\^-?\d+/.test([
+          item.prompt,
+          item.answer_key,
+          item.hint,
+          item.alternate_explanation,
+          item.explanation_prompt,
+          item.explanation_guidance,
+          item.tutor_behavior,
+          ...item.solution_steps.flatMap(step => [step.equation, step.explanation])
+        ].filter(Boolean).join(" "))),
+        `${skill} ${difficulty} should format every student-facing exponent`
+      );
+      assert.ok(
         session.items.every(item => gradePracticeAnswer(item.answer_key, item)),
         `${skill} ${difficulty} should accept every answer key`
       );
