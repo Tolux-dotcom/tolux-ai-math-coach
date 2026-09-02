@@ -33,6 +33,24 @@ test("A.7C covers all core transformation diagnostics", () => {
   }
 });
 
+test("A.7C worked examples teach vertex form before identifying transformations", () => {
+  const workedExamples = module.items.filter(item => item.type === "worked_example");
+  assert.equal(workedExamples.length, 3);
+
+  for (const example of workedExamples) {
+    assert.equal(example.solution_steps[0].equation, "y=a(x-h)^2+k");
+    assert.match(example.solution_steps[0].explanation, /vertex form/i);
+    assert.ok(example.solution_steps.some(step => /a=/.test(step.equation)));
+    assert.ok(example.solution_steps.some(step => /h=/.test(step.equation)));
+    assert.ok(example.solution_steps.some(step => /k=/.test(step.equation)));
+  }
+
+  const firstExample = workedExamples.find(item => item.id === "A7C-L01");
+  assert.match(firstExample.solution_steps[1].equation, /x-\(-2\)/);
+  assert.match(firstExample.solution_steps[2].explanation, /Compare the two equations/);
+  assert.match(firstExample.solution_steps.at(-1).equation, /vertex=\(h,k\)=\(-2,-5\)/);
+});
+
 test("A.7C accepts common equation and transformation notation", () => {
   for (const [id, answer] of [
     ["A7C-L03", "y=0.5(x+4)^2+2"],
