@@ -42,6 +42,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a9c-write-exponential-models": {
     lesson_path: "/a9c-write-exponential-models.json"
+  },
+  "alg1-a9d-graph-exponential-functions": {
+    lesson_path: "/a9d-graph-exponential-functions.json"
   }
 };
 
