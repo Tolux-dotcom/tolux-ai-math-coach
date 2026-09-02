@@ -39,6 +39,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a9b-interpret-exponential-parameters": {
     lesson_path: "/a9b-interpret-exponential-parameters.json"
+  },
+  "alg1-a9c-write-exponential-models": {
+    lesson_path: "/a9c-write-exponential-models.json"
   }
 };
 
