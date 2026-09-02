@@ -42,3 +42,21 @@ test("A.5C rejects incorrect or incomplete ordered pairs", () => {
   assert.equal(answersEquivalent("x=4", item), false);
   assert.equal(answersEquivalent("(4, 5)", item), false);
 });
+
+test("A.5C depth bank has 30 unique items and method-specific diagnostics", () => {
+  assert.ok(module.items.length >= 30);
+  assert.equal(new Set(module.items.map(item => item.id)).size, module.items.length);
+  assert.ok(module.items.filter(item => item.diagnostic_tag?.includes("method_selection")).length >= 2);
+  assert.deepEqual(module.lesson_settings.diagnostic_item_ids.slice(-2), ["A5C-X01", "A5C-X02"]);
+  assert.ok(module.misconception_routes.method_selection_substitution);
+  assert.ok(module.misconception_routes.method_selection_elimination);
+  assert.ok(module.misconception_routes.elimination_scaling);
+  assert.ok(module.misconception_routes.verify_both_equations);
+});
+
+test("A.5C depth ordered pairs accept comma-free x/y notation", () => {
+  for (const [id, answer] of [["A5C-X03", "x=3 y=5"], ["A5C-X04", "x=5 y=2"], ["A5C-X08", "x=-2 y=5"]]) {
+    const item = module.items.find(candidate => candidate.id === id);
+    assert.equal(answersEquivalent(answer, item), true, id);
+  }
+});

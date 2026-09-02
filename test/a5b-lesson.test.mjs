@@ -45,3 +45,28 @@ test("A.5B core answer keys are mathematically correct", () => {
     assert.equal(module.items.find(item => item.id === id)?.answer_key, answer, id);
   }
 });
+
+test("A.5B depth bank has 30 unique items and targeted graph diagnostics", () => {
+  assert.ok(module.items.length >= 30);
+  assert.equal(new Set(module.items.map(item => item.id)).size, module.items.length);
+  assert.ok(module.items.filter(item => item.critical_misconception).length >= 8);
+  assert.ok(module.items.filter(item => item.diagnostic_tag?.includes("graph")).length >= 4);
+  assert.deepEqual(module.lesson_settings.independent_item_ids.slice(-2), ["A5B-X09", "A5B-X10"]);
+  assert.ok(module.misconception_routes.graph_endpoint_direction);
+  assert.ok(module.misconception_routes.graph_to_inequality);
+  assert.ok(module.misconception_routes.boundary_inclusion);
+});
+
+test("A.5B depth answer keys cover reversal and graph direction correctly", () => {
+  const expected = {
+    "A5B-X03": "x > 5",
+    "A5B-X06": "x ≥ -2",
+    "A5B-X09": "open right",
+    "A5B-X10": "closed left",
+    "A5B-X11": "x < 6",
+    "A5B-X12": "x ≥ -1"
+  };
+  for (const [id, answer] of Object.entries(expected)) {
+    assert.equal(module.items.find(item => item.id === id)?.answer_key, answer, id);
+  }
+});
