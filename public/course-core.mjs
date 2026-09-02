@@ -6,6 +6,9 @@ const TEKS_PATTERN = /^A\.(?:[1-9]|1[0-2])[A-Z]$/;
 const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a5b-linear-inequalities": {
     lesson_path: "/a5b-linear-inequalities.json"
+  },
+  "alg1-a5c-linear-systems": {
+    lesson_path: "/a5c-linear-systems.json"
   }
 };
 
