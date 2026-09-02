@@ -27,6 +27,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a7c-quadratic-transformations": {
     lesson_path: "/a7c-quadratic-transformations.json"
+  },
+  "alg1-a8a-solve-quadratic-equations": {
+    lesson_path: "/a8a-solve-quadratic-equations.json"
   }
 };
 
