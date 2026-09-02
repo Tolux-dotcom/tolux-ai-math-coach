@@ -34,6 +34,54 @@ function renderAlgebra1Coverage() {
   `;
 }
 
+function availableLessonModules() {
+  return algebra1Modules
+    .filter(module => module.available_modes?.includes("lesson"))
+    .sort((left, right) => left.teks[0].localeCompare(
+      right.teks[0],
+      undefined,
+      { numeric: true }
+    ));
+}
+
+function renderTutorControls() {
+  const skillSelect = document.querySelector("#tutorSkillSelect");
+  const summary = document.querySelector("#tutorLessonSummary");
+  const availability = document.querySelector("#tutorAvailability");
+  const lessonButton = document.querySelector("#startTutorLessonBtn");
+  const diagnosticButton = document.querySelector("#startReadinessDiagnosticBtn");
+  if (!skillSelect || !algebra1Catalog) return;
+
+  const modules = availableLessonModules();
+  skillSelect.replaceChildren();
+  for (const module of modules) {
+    const option = document.createElement("option");
+    option.value = module.module_id;
+    option.textContent = `${module.teks[0]} • ${module.title}`;
+    skillSelect.append(option);
+  }
+
+  const renderSelection = () => {
+    const selected = modules.find(module => module.module_id === skillSelect.value);
+    if (summary) {
+      summary.innerHTML = selected ? `
+        <strong>${selected.teks[0]} • ${selected.title}</strong>
+        <p>${selected.summary}</p>
+        <small>Lesson path: Learn → Watch Tolux solve → Guided practice → Independent practice → Mastery check</small>
+      ` : "";
+    }
+  };
+  skillSelect.addEventListener("change", renderSelection);
+  renderSelection();
+
+  if (availability) {
+    availability.textContent = `${modules.length} completed Algebra 1 lessons available in Tutor Mode.`;
+  }
+  const disabled = modules.length === 0;
+  if (lessonButton) lessonButton.disabled = disabled;
+  if (diagnosticButton) diagnosticButton.disabled = disabled;
+}
+
 function renderPracticeControls() {
   const skillSelect = document.querySelector("#practiceSkillSelect");
   const difficultySelect = document.querySelector("#practiceDifficultySelect");
@@ -111,6 +159,7 @@ async function loadAlgebra1Foundation() {
       `${algebra1Modules.length} standards modules`
     );
     renderAlgebra1Coverage();
+    renderTutorControls();
     renderPracticeControls();
     refreshA5ALessonPanel();
     renderDashboardProgress(
@@ -128,18 +177,27 @@ async function loadAlgebra1Foundation() {
 }
 
 loadAlgebra1Foundation();
-const startA5ALessonBtn = document.querySelector("#startA5ALessonBtn");
+const startTutorLessonBtn = document.querySelector("#startTutorLessonBtn");
+const startReadinessDiagnosticBtn = document.querySelector("#startReadinessDiagnosticBtn");
 const startPracticeBtn = document.querySelector("#startPracticeBtn");
 
-function startA5ALesson() {
-  window.location.href = "/lesson.html?module=alg1-a5a-linear-equations";
+function selectedTutorModule() {
+  return document.querySelector("#tutorSkillSelect")?.value;
 }
 
- 
-
-if (startA5ALessonBtn) {
-  startA5ALessonBtn.addEventListener("click", startA5ALesson);
+function openTutorRoute(module, start) {
+  if (!module) return;
+  const params = new URLSearchParams({ module, start });
+  window.location.href = `/lesson.html?${params.toString()}`;
 }
+
+startTutorLessonBtn?.addEventListener("click", () => {
+  openTutorRoute(selectedTutorModule(), "lesson");
+});
+
+startReadinessDiagnosticBtn?.addEventListener("click", () => {
+  openTutorRoute(selectedTutorModule(), "diagnostic");
+});
 
 startPracticeBtn?.addEventListener("click", () => {
   const skill = document.querySelector("#practiceSkillSelect")?.value;
@@ -573,7 +631,9 @@ familyPlanBtn?.addEventListener("click", () => {
   startCheckout("family");
 });
 
-document.querySelector("#freeDiagnosticBtn")?.addEventListener("click", startA5ALesson);
+document.querySelector("#freeDiagnosticBtn")?.addEventListener("click", () => {
+  openTutorRoute("alg1-a5a-linear-equations", "diagnostic");
+});
 document.querySelector("#viewPlansBtn")?.addEventListener("click", () => {
   document.querySelector("#pricingSection")?.scrollIntoView({ behavior: "smooth" });
 });
@@ -625,7 +685,7 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
   refreshA5ALessonPanel();
   }));
   function refreshA5ALessonPanel() {
-  const lessonPanel = document.querySelector("#a5aLessonPanel");
+  const lessonPanel = document.querySelector("#tutorModePanel");
   const practicePanel = document.querySelector("#practiceModePanel");
   const coachPanel = document.querySelector("#coachPanel");
   if (!lessonPanel) return;
@@ -644,7 +704,9 @@ document.querySelectorAll(".mode").forEach(btn => btn.addEventListener("click", 
     practicePanel.style.display = shouldShowPractice ? "block" : "none";
   }
   if (coachPanel) {
-    coachPanel.style.display = shouldShowPractice ? "none" : "block";
+    coachPanel.style.display = shouldShowLesson || shouldShowPractice
+      ? "none"
+      : "block";
   }
 }
 
