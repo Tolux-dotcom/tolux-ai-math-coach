@@ -1,38 +1,66 @@
 // Free Algebra Diagnostic Test must never be blocked by sign-in or trial state.
-// The lesson module grades diagnostic answers locally; this only bypasses the
-// legacy lesson-access request for diagnostic item IDs.
+// lesson.js still routes lesson-access checks through the authenticated-session
+// helper. This small bridge allows the two authored diagnostic items to reach
+// the server's anonymous diagnostic-access path without creating or persisting
+// a real user session. It is scoped only to the visible diagnostic item IDs.
 (() => {
   const FREE_DIAGNOSTIC_ITEM_IDS = new Set(["A5A-D01", "A5A-D02"]);
-  const nativeFetch = window.fetch.bind(window);
+  const DIAGNOSTIC_ACCESS_TOKEN = "tolux-free-diagnostic";
+  const supabase = window.supabase;
 
-  window.fetch = async (input, init = {}) => {
-    const url = typeof input === "string" ? input : input?.url || "";
-    const method = String(init.method || "GET").toUpperCase();
+  if (!supabase?.createClient) return;
 
-    if (url === "/api/lesson-usage" && method === "POST") {
-      try {
-        const body = typeof init.body === "string" ? JSON.parse(init.body) : {};
-        if (FREE_DIAGNOSTIC_ITEM_IDS.has(String(body?.itemId || ""))) {
-          return new Response(
-            JSON.stringify({
-              allowed: true,
-              isSubscriber: false,
-              isFreeDiagnostic: true,
-              trialSecondsUsed: 0,
-              trialSecondsRemaining: 600,
-              trialSecondsLimit: 600
-            }),
-            {
-              status: 200,
-              headers: { "Content-Type": "application/json" }
-            }
-          );
-        }
-      } catch (error) {
-        console.warn("Diagnostic access check could not parse request:", error);
-      }
+  function visibleFreeDiagnosticItemId() {
+    const content = document.querySelector("#lessonContent")?.textContent || "";
+
+    for (const itemId of FREE_DIAGNOSTIC_ITEM_IDS) {
+      if (content.includes(itemId)) return itemId;
     }
 
-    return nativeFetch(input, init);
+    return null;
+  }
+
+  function anonymousDiagnosticSession() {
+    return {
+      access_token: DIAGNOSTIC_ACCESS_TOKEN,
+      token_type: "bearer",
+      user: null
+    };
+  }
+
+  const nativeCreateClient = supabase.createClient.bind(supabase);
+
+  supabase.createClient = (...args) => {
+    const client = nativeCreateClient(...args);
+    const nativeGetSession = client.auth.getSession.bind(client.auth);
+    const nativeRefreshSession = client.auth.refreshSession.bind(client.auth);
+
+    client.auth.getSession = async (...sessionArgs) => {
+      const result = await nativeGetSession(...sessionArgs);
+
+      if (result?.data?.session || !visibleFreeDiagnosticItemId()) {
+        return result;
+      }
+
+      return {
+        data: { session: anonymousDiagnosticSession() },
+        error: null
+      };
+    };
+
+    client.auth.refreshSession = async (...sessionArgs) => {
+      const result = await nativeRefreshSession(...sessionArgs);
+
+      if (result?.data?.session || !visibleFreeDiagnosticItemId()) {
+        return result;
+      }
+
+      return {
+        data: { session: anonymousDiagnosticSession() },
+        error: null
+      };
+    };
+
+    return client;
   };
 })();
