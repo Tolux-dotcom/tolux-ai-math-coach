@@ -1,0 +1,242 @@
+{
+  "module_id": "alg1-a10f-difference-of-squares",
+  "version": "1.0.0-depth-qa",
+  "course": "Algebra 1",
+  "teks": ["A.10F"],
+  "title": "Difference of Two Squares",
+  "student_objective": "I can recognize a difference of two squares, factor it completely, and explain why the conjugate factors work.",
+  "teacher_objective": "Diagnose pattern-recognition, perfect-square, sign, GCF-first, repeated-factorization, sum-of-squares, verification, and contextual-model errors.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": true,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_settings": {
+    "diagnostic_item_ids": ["A10F-D01", "A10F-D02", "A10F-D03"],
+    "guided_item_ids": ["A10F-G01", "A10F-G02", "A10F-G03"],
+    "independent_item_ids": ["A10F-P01", "A10F-P02", "A10F-P03", "A10F-P04"],
+    "mastery_item_ids": ["A10F-M01", "A10F-M02", "A10F-M03", "A10F-M04", "A10F-M05"],
+    "assessed_items_in_core_lesson": 15
+  },
+  "lesson_flow": [
+    {"step": 1, "type": "prerequisite_diagnostic", "label": "Square and factoring readiness"},
+    {"step": 2, "type": "concept", "label": "Recognize difference-of-squares structure"},
+    {"step": 3, "type": "worked_examples", "label": "Watch Tolux factor differences of squares"},
+    {"step": 4, "type": "guided_practice", "label": "Factor with Tolux"},
+    {"step": 5, "type": "independent_practice", "label": "Your turn"},
+    {"step": 6, "type": "mastery_check", "label": "Check mastery"},
+    {"step": 7, "type": "remediation_or_complete", "label": "Next best step"}
+  ],
+  "concept_cards": [
+    {"id": "A10F-C01", "title": "Know the pattern", "content": "A difference of two squares has the form p²-q² and factors as (p-q)(p+q). The two factors are conjugates: same terms, opposite signs."},
+    {"id": "A10F-C02", "title": "Check all three conditions", "content": "There must be exactly two terms, subtraction between them, and both terms must be perfect squares. If any condition fails, do not use the difference-of-squares pattern."},
+    {"id": "A10F-C03", "title": "Factor out a GCF first", "content": "If the terms share a greatest common factor, remove it before checking the remaining binomial for difference-of-squares structure."},
+    {"id": "A10F-C04", "title": "Factor completely", "content": "After using p²-q²=(p-q)(p+q), inspect every factor again. A new factor may itself be another difference of squares."},
+    {"id": "A10F-C05", "title": "Do not confuse a sum with a difference", "content": "Over the real numbers, p²+q² is not a difference of squares. Verify a factorization by multiplying the conjugates: the middle terms cancel and p²-q² remains."}
+  ],
+  "items": [
+    {
+      "id": "A10F-D01", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Factor x²-25.", "answer_key": "(x-5)(x+5)",
+      "accepted_answers": ["(x-5)(x+5)", "(x+5)(x-5)"],
+      "diagnostic_tag": "difference_pattern", "critical_misconception": true,
+      "tutor_behavior": "Recognize x²-5², then use (p-q)(p+q)."
+    },
+    {
+      "id": "A10F-D02", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Is x²+25 a difference of two squares that factors into real linear factors? Answer yes or no.",
+      "answer_key": "no", "accepted_answers": ["no", "no, it is a sum of squares", "no sum of squares"],
+      "diagnostic_tag": "sum_vs_difference", "critical_misconception": true,
+      "tutor_behavior": "The terms are squares, but the operation is addition, not subtraction."
+    },
+    {
+      "id": "A10F-D03", "type": "diagnostic", "difficulty": "Grade-level",
+      "prompt": "Factor completely: 3x²-75.", "answer_key": "3(x-5)(x+5)",
+      "accepted_answers": ["3(x-5)(x+5)", "3(x+5)(x-5)"],
+      "diagnostic_tag": "gcf_first", "critical_misconception": true,
+      "tutor_behavior": "Factor out 3 first, then factor x²-25 as a difference of squares."
+    },
+
+    {
+      "id": "A10F-L01", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Factor 9x²-16.", "answer_key": "(3x-4)(3x+4)",
+      "accepted_answers": ["(3x-4)(3x+4)", "(3x+4)(3x-4)"],
+      "diagnostic_tag": "difference_pattern",
+      "solution_steps": [
+        {"equation": "9x²=(3x)² and 16=4²", "explanation": "Both terms are perfect squares and they are being subtracted."},
+        {"equation": "p=3x, q=4", "explanation": "Identify the square roots of the two terms."},
+        {"equation": "(3x-4)(3x+4)", "explanation": "Use p²-q²=(p-q)(p+q)."},
+        {"equation": "9x²+12x-12x-16=9x²-16", "explanation": "Multiply to verify that the middle terms cancel."}
+      ],
+      "tutor_behavior": "Check square roots first, then write conjugate factors with opposite signs."
+    },
+    {
+      "id": "A10F-L02", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Factor 25x²-49.", "answer_key": "(5x-7)(5x+7)",
+      "accepted_answers": ["(5x-7)(5x+7)", "(5x+7)(5x-7)"],
+      "diagnostic_tag": "perfect_square_terms",
+      "solution_steps": [
+        {"equation": "25x²=(5x)²", "explanation": "The first term is a perfect square."},
+        {"equation": "49=7²", "explanation": "The second term is also a perfect square."},
+        {"equation": "(5x-7)(5x+7)", "explanation": "Use one minus factor and one plus factor."}
+      ],
+      "tutor_behavior": "Take the square root of each term and use conjugate binomials."
+    },
+    {
+      "id": "A10F-L03", "type": "worked_example", "difficulty": "Challenging",
+      "prompt": "Factor completely over the real numbers: x⁴-81.",
+      "answer_key": "(x-3)(x+3)(x²+9)",
+      "accepted_answers": ["(x-3)(x+3)(x²+9)", "(x+3)(x-3)(x²+9)", "(x²+9)(x-3)(x+3)", "(x²+9)(x+3)(x-3)"],
+      "diagnostic_tag": "factor_completely",
+      "solution_steps": [
+        {"equation": "x⁴-81=(x²)²-9²", "explanation": "Treat x² as the first square root and 9 as the second."},
+        {"equation": "(x²-9)(x²+9)", "explanation": "Apply the difference-of-squares pattern once."},
+        {"equation": "x²-9=(x-3)(x+3)", "explanation": "The first factor is itself another difference of squares."},
+        {"equation": "(x-3)(x+3)(x²+9)", "explanation": "Over the real numbers, x²+9 is a sum of squares and does not factor further."}
+      ],
+      "tutor_behavior": "After the first factorization, inspect every factor again before stopping."
+    },
+
+    {
+      "id": "A10F-G01", "type": "guided_practice", "difficulty": "Foundational",
+      "prompt": "Factor x²-64.", "answer_key": "(x-8)(x+8)",
+      "accepted_answers": ["(x-8)(x+8)", "(x+8)(x-8)"],
+      "diagnostic_tag": "difference_pattern",
+      "hint_steps": ["Ask: are both terms perfect squares with subtraction between them?", "Write x²-64=x²-8².", "Use (p-q)(p+q) with p=x and q=8."],
+      "alternate_solution_steps": [
+        {"equation": "x²-64=x²-8²", "explanation": "Rewrite each term as a square."},
+        {"equation": "(x-8)(x+8)", "explanation": "The conjugate factors differ only in the sign between the terms."},
+        {"equation": "x²+8x-8x-64=x²-64", "explanation": "Multiplication verifies that the middle terms cancel."}
+      ],
+      "tutor_behavior": "Rewrite 64 as 8², then use the conjugate pattern."
+    },
+    {
+      "id": "A10F-G02", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "Factor 36x²-121.", "answer_key": "(6x-11)(6x+11)",
+      "accepted_answers": ["(6x-11)(6x+11)", "(6x+11)(6x-11)"],
+      "diagnostic_tag": "perfect_square_terms", "critical_misconception": true,
+      "hint_steps": ["Find the square root of each term before writing any factors.", "36x²=(6x)² and 121=11².", "Use one factor with subtraction and one with addition."],
+      "alternate_solution_steps": [
+        {"equation": "√(36x²)=6x, √121=11", "explanation": "The square roots become the two terms in each factor."},
+        {"equation": "(6x-11)(6x+11)", "explanation": "Use conjugates so the middle products cancel."}
+      ],
+      "tutor_behavior": "Do not use 36 and 121 inside the factors; use their square roots 6x and 11."
+    },
+    {
+      "id": "A10F-G03", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "Factor completely: 8x²-72.", "answer_key": "8(x-3)(x+3)",
+      "accepted_answers": ["8(x-3)(x+3)", "8(x+3)(x-3)"],
+      "diagnostic_tag": "gcf_first", "critical_misconception": true,
+      "hint_steps": ["Before using the square pattern, check for a greatest common factor.", "Factor out 8: 8(x²-9).", "Now factor x²-9=x²-3² using conjugates."],
+      "alternate_solution_steps": [
+        {"equation": "8x²-72=8(x²-9)", "explanation": "Remove the GCF first."},
+        {"equation": "x²-9=x²-3²", "explanation": "The remaining binomial is a difference of squares."},
+        {"equation": "8(x-3)(x+3)", "explanation": "Keep the GCF outside and factor the binomial completely."}
+      ],
+      "tutor_behavior": "Extract 8 first; then use the difference-of-squares pattern on x²-9."
+    },
+
+    {
+      "id": "A10F-P01", "type": "independent_practice", "difficulty": "Foundational",
+      "prompt": "Factor 4x²-25.", "answer_key": "(2x-5)(2x+5)",
+      "accepted_answers": ["(2x-5)(2x+5)", "(2x+5)(2x-5)"],
+      "diagnostic_tag": "difference_pattern",
+      "hint_steps": ["Rewrite both terms as squares.", "4x²=(2x)² and 25=5².", "Use (p-q)(p+q)."],
+      "alternate_solution_steps": [{"equation": "(2x)²-5²", "explanation": "Expose the square structure."}, {"equation": "(2x-5)(2x+5)", "explanation": "Write the conjugate factors."}],
+      "tutor_behavior": "Use square roots 2x and 5, not coefficients 4 and 25."
+    },
+    {
+      "id": "A10F-P02", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Factor 49x²-100.", "answer_key": "(7x-10)(7x+10)",
+      "accepted_answers": ["(7x-10)(7x+10)", "(7x+10)(7x-10)"],
+      "diagnostic_tag": "perfect_square_terms",
+      "hint_steps": ["Both coefficients are perfect squares.", "49x²=(7x)² and 100=10².", "Use conjugate binomials."],
+      "alternate_solution_steps": [{"equation": "(7x)²-10²", "explanation": "Identify p and q."}, {"equation": "(7x-10)(7x+10)", "explanation": "Apply p²-q²=(p-q)(p+q)."}],
+      "tutor_behavior": "Take square roots before forming factors."
+    },
+    {
+      "id": "A10F-P03", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Factor completely: 12x²-75.", "answer_key": "3(2x-5)(2x+5)",
+      "accepted_answers": ["3(2x-5)(2x+5)", "3(2x+5)(2x-5)"],
+      "diagnostic_tag": "gcf_first",
+      "hint_steps": ["Find the GCF before using a special product pattern.", "12x²-75=3(4x²-25).", "Then factor 4x²-25=(2x-5)(2x+5)."],
+      "alternate_solution_steps": [{"equation": "3(4x²-25)", "explanation": "Factor out 3."}, {"equation": "3[(2x)²-5²]", "explanation": "Expose the difference of squares."}, {"equation": "3(2x-5)(2x+5)", "explanation": "Factor completely."}],
+      "tutor_behavior": "Factor the GCF first; otherwise the final answer is not completely factored."
+    },
+    {
+      "id": "A10F-P04", "type": "independent_practice", "difficulty": "Challenging",
+      "prompt": "Factor completely over the real numbers: x⁴-16.", "answer_key": "(x-2)(x+2)(x²+4)",
+      "accepted_answers": ["(x-2)(x+2)(x²+4)", "(x+2)(x-2)(x²+4)", "(x²+4)(x-2)(x+2)", "(x²+4)(x+2)(x-2)"],
+      "diagnostic_tag": "factor_completely",
+      "hint_steps": ["Treat x² as one square root: x⁴=(x²)².", "First write (x²-4)(x²+4).", "Factor x²-4 again, but stop at x²+4 over the real numbers."],
+      "alternate_solution_steps": [{"equation": "(x²-4)(x²+4)", "explanation": "Apply difference of squares once."}, {"equation": "(x-2)(x+2)(x²+4)", "explanation": "Factor the remaining difference x²-4."}],
+      "tutor_behavior": "Keep checking factors after the first step; x²-4 factors again."
+    },
+
+    {
+      "id": "A10F-M01", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Factor 81x²-1.", "answer_key": "(9x-1)(9x+1)",
+      "accepted_answers": ["(9x-1)(9x+1)", "(9x+1)(9x-1)"],
+      "diagnostic_tag": "difference_pattern", "critical_misconception": true,
+      "tutor_behavior": "Use square roots 9x and 1."
+    },
+    {
+      "id": "A10F-M02", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Factor completely: 18x²-50.", "answer_key": "2(3x-5)(3x+5)",
+      "accepted_answers": ["2(3x-5)(3x+5)", "2(3x+5)(3x-5)"],
+      "diagnostic_tag": "gcf_first", "critical_misconception": true,
+      "tutor_behavior": "Factor out 2 before using 9x²-25=(3x-5)(3x+5)."
+    },
+    {
+      "id": "A10F-M03", "type": "mastery_check", "difficulty": "Challenging",
+      "prompt": "Factor completely over the real numbers: 16x⁴-81.",
+      "answer_key": "(2x-3)(2x+3)(4x²+9)",
+      "accepted_answers": ["(2x-3)(2x+3)(4x²+9)", "(2x+3)(2x-3)(4x²+9)", "(4x²+9)(2x-3)(2x+3)", "(4x²+9)(2x+3)(2x-3)"],
+      "diagnostic_tag": "factor_completely", "critical_misconception": true,
+      "tutor_behavior": "First factor (4x²)²-9², then factor 4x²-9 again."
+    },
+    {
+      "id": "A10F-M04", "type": "mastery_check", "difficulty": "Reasoning",
+      "prompt": "A student says x²+49=(x-7)(x+7). Is the student correct? Answer yes or no.",
+      "answer_key": "no", "accepted_answers": ["no", "incorrect"],
+      "diagnostic_tag": "sum_vs_difference", "critical_misconception": true,
+      "explanation_prompt": "Explain why the proposed factors do not match x²+49 and state what (x-7)(x+7) actually equals.",
+      "explanation_keywords": [["addition", "sum of squares", "+49"], ["subtraction", "difference"], ["x²-49", "x^2-49"]],
+      "minimum_explanation_keyword_groups": 2,
+      "explanation_guidance": "The conjugate product (x-7)(x+7) equals x²-49, not x²+49. The original expression is a sum of squares and does not factor into real linear factors.",
+      "tutor_behavior": "Require the student to distinguish a sum from a difference and verify the conjugate product."
+    },
+    {
+      "id": "A10F-M05", "type": "mastery_check", "difficulty": "Context",
+      "prompt": "A square design has area x² square units, and a 6-by-6 square is removed. Factor the remaining area x²-36 to show the two conjugate dimensions used in a rearrangement.",
+      "answer_key": "(x-6)(x+6)",
+      "accepted_answers": ["(x-6)(x+6)", "(x+6)(x-6)", "x-6 and x+6", "x+6 and x-6"],
+      "diagnostic_tag": "context_factorization", "critical_misconception": true,
+      "tutor_behavior": "Recognize x²-6² and interpret the conjugate factors as the resulting dimensions."
+    },
+
+    {"id": "A10F-X01", "type": "depth_practice", "difficulty": "Foundational", "prompt": "Factor x²-100.", "answer_key": "(x-10)(x+10)", "accepted_answers": ["(x-10)(x+10)", "(x+10)(x-10)"], "diagnostic_tag": "difference_pattern", "tutor_behavior": "Rewrite 100 as 10²."},
+    {"id": "A10F-X02", "type": "depth_practice", "difficulty": "Foundational", "prompt": "Factor 64x²-9.", "answer_key": "(8x-3)(8x+3)", "accepted_answers": ["(8x-3)(8x+3)", "(8x+3)(8x-3)"], "diagnostic_tag": "perfect_square_terms", "tutor_behavior": "Use square roots 8x and 3."},
+    {"id": "A10F-X03", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Factor 25x²-1.", "answer_key": "(5x-1)(5x+1)", "accepted_answers": ["(5x-1)(5x+1)", "(5x+1)(5x-1)"], "diagnostic_tag": "difference_pattern", "tutor_behavior": "Recognize (5x)²-1²."},
+    {"id": "A10F-X04", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Factor completely: 2x²-50.", "answer_key": "2(x-5)(x+5)", "accepted_answers": ["2(x-5)(x+5)", "2(x+5)(x-5)"], "diagnostic_tag": "gcf_first", "tutor_behavior": "Extract 2 before factoring x²-25."},
+    {"id": "A10F-X05", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Factor completely: 5x²-45.", "answer_key": "5(x-3)(x+3)", "accepted_answers": ["5(x-3)(x+3)", "5(x+3)(x-3)"], "diagnostic_tag": "gcf_first", "tutor_behavior": "Extract 5 before factoring x²-9."},
+    {"id": "A10F-X06", "type": "depth_practice", "difficulty": "Challenging", "prompt": "Factor completely over the real numbers: x⁴-625.", "answer_key": "(x-5)(x+5)(x²+25)", "accepted_answers": ["(x-5)(x+5)(x²+25)", "(x+5)(x-5)(x²+25)", "(x²+25)(x-5)(x+5)"], "diagnostic_tag": "factor_completely", "tutor_behavior": "First factor x⁴-625=(x²-25)(x²+25), then factor x²-25 again."},
+    {"id": "A10F-X07", "type": "depth_practice", "difficulty": "Reasoning", "prompt": "Does 9x²+16 factor by the difference-of-squares pattern over the real numbers? Answer yes or no.", "answer_key": "no", "accepted_answers": ["no", "no sum of squares", "no, it is a sum of squares"], "diagnostic_tag": "sum_vs_difference", "tutor_behavior": "Both terms are squares, but the operation is addition."},
+    {"id": "A10F-X08", "type": "depth_practice", "difficulty": "Reasoning", "prompt": "Multiply (5x-2)(5x+2) to verify the difference-of-squares identity.", "answer_key": "25x²-4", "accepted_answers": ["25x²-4", "25x^2-4"], "diagnostic_tag": "verification", "tutor_behavior": "The +10x and -10x middle terms cancel."},
+    {"id": "A10F-X09", "type": "depth_practice", "difficulty": "Context", "prompt": "A large square has side length 2x and a smaller square of side 3 is removed. Factor the remaining area 4x²-9.", "answer_key": "(2x-3)(2x+3)", "accepted_answers": ["(2x-3)(2x+3)", "(2x+3)(2x-3)"], "diagnostic_tag": "context_factorization", "tutor_behavior": "Use (2x)²-3²."},
+    {"id": "A10F-X10", "type": "depth_practice", "difficulty": "Reasoning", "prompt": "Rewrite 49x²-121 explicitly as p²-q² before factoring.", "answer_key": "(7x)²-11²", "accepted_answers": ["(7x)²-11²", "(7x)^2-11^2", "49x²-121=(7x)²-11²"], "diagnostic_tag": "perfect_square_terms", "tutor_behavior": "Take the square root of each term: 7x and 11."},
+    {"id": "A10F-X11", "type": "depth_practice", "difficulty": "Challenging", "prompt": "Factor completely: 27x²-3.", "answer_key": "3(3x-1)(3x+1)", "accepted_answers": ["3(3x-1)(3x+1)", "3(3x+1)(3x-1)"], "diagnostic_tag": "gcf_first", "tutor_behavior": "Extract 3 to get 9x²-1, then use difference of squares."},
+    {"id": "A10F-X12", "type": "depth_practice", "difficulty": "Challenging", "prompt": "Factor completely over the real numbers: 100x²-225.", "answer_key": "25(2x-3)(2x+3)", "accepted_answers": ["25(2x-3)(2x+3)", "25(2x+3)(2x-3)"], "diagnostic_tag": "gcf_first", "tutor_behavior": "Extract 25, then factor 4x²-9."}
+  ],
+  "misconception_routes": {
+    "difference_pattern": {"error_code": "A10F-E01", "teacher_signal": "Does not recognize p²-q² or writes nonconjugate factors", "route": "difference-pattern-remediation"},
+    "perfect_square_terms": {"error_code": "A10F-E02", "teacher_signal": "Uses coefficients instead of their square roots when building factors", "route": "perfect-square-terms-remediation"},
+    "sum_vs_difference": {"error_code": "A10F-E03", "teacher_signal": "Applies difference-of-squares factoring to a sum of squares", "route": "sum-vs-difference-remediation"},
+    "gcf_first": {"error_code": "A10F-E04", "teacher_signal": "Skips the greatest common factor or stops before factoring completely", "route": "gcf-first-remediation"},
+    "factor_completely": {"error_code": "A10F-E05", "teacher_signal": "Stops after the first difference-of-squares factorization when another factor can be reduced", "route": "factor-completely-remediation"},
+    "verification": {"error_code": "A10F-E06", "teacher_signal": "Cannot verify that conjugate middle terms cancel", "route": "verification-remediation"},
+    "context_factorization": {"error_code": "A10F-E07", "teacher_signal": "Factors symbolically but does not connect the conjugate factors to the context", "route": "context-remediation"}
+  }
+}
