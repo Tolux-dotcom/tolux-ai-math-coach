@@ -16,6 +16,12 @@ test("A.10F is exposed on the dashboard without changing older lesson routing", 
   assert.match(dashboardBridge, /Difference of Two Squares/);
 });
 
+test("A.10F dashboard bridge cannot create a self-triggering mutation loop", () => {
+  assert.doesNotMatch(dashboardBridge, /new MutationObserver/);
+  assert.match(dashboardBridge, /attempts >= 100/);
+  assert.match(dashboardBridge, /setTextIfChanged/);
+});
+
 test("A.10F practice uses the dedicated verified runtime while other skills keep practice.js", () => {
   assert.match(practiceHtml, /skill === "A\.10F"/);
   assert.match(practiceHtml, /import\("\/a10f-practice\.js"\)/);
