@@ -459,9 +459,7 @@ function systemItem(difficulty, index, random) {
     const difference = x - y;
     return {
       variant: "add-subtract-system",
-      prompt: `Solve the system:\
-x + y = ${sum}\
-x - y = ${difference}`,
+      prompt: `Solve the system:\nx + y = ${sum}\nx - y = ${difference}`,
       answer_key: `x = ${x}, y = ${y}`,
       answer_type: "ordered-pair",
       expected: { x, y },
@@ -498,9 +496,7 @@ x - y = ${difference}`,
 
     return {
       variant: "general-linear-system",
-      prompt: `Solve the system:\
-${linearExpression(a, 0).replaceAll("x", "x")} ${b >= 0 ? "+" : "-"} ${Math.abs(b)}y = ${firstResult}\
-${linearExpression(c, 0).replaceAll("x", "x")} ${d >= 0 ? "+" : "-"} ${Math.abs(d)}y = ${secondResult}`,
+      prompt: `Solve the system:\n${linearExpression(a, 0).replaceAll("x", "x")} ${b >= 0 ? "+" : "-"} ${Math.abs(b)}y = ${firstResult}\n${linearExpression(c, 0).replaceAll("x", "x")} ${d >= 0 ? "+" : "-"} ${Math.abs(d)}y = ${secondResult}`,
       answer_key: `x = ${x}, y = ${y}`,
       answer_type: "ordered-pair",
       expected: { x, y },
