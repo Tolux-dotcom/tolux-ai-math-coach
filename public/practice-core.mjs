@@ -100,6 +100,11 @@ export const PRACTICE_SKILLS = Object.freeze({
     moduleId: "alg1-a10d-equivalent-polynomial-forms",
     title: "Equivalent Polynomial Forms",
     lessonPath: "/a10d-equivalent-polynomial-forms.json"
+  },
+  "A.10E": {
+    moduleId: "alg1-a10e-factor-trinomials",
+    title: "Factor Trinomials",
+    lessonPath: "/a10e-factor-trinomials.json"
   }
 });
 
@@ -454,7 +459,9 @@ function systemItem(difficulty, index, random) {
     const difference = x - y;
     return {
       variant: "add-subtract-system",
-      prompt: `Solve the system:\nx + y = ${sum}\nx - y = ${difference}`,
+      prompt: `Solve the system:\
+x + y = ${sum}\
+x - y = ${difference}`,
       answer_key: `x = ${x}, y = ${y}`,
       answer_type: "ordered-pair",
       expected: { x, y },
@@ -491,7 +498,9 @@ function systemItem(difficulty, index, random) {
 
     return {
       variant: "general-linear-system",
-      prompt: `Solve the system:\n${linearExpression(a, 0).replaceAll("x", "x")} ${b >= 0 ? "+" : "-"} ${Math.abs(b)}y = ${firstResult}\n${linearExpression(c, 0).replaceAll("x", "x")} ${d >= 0 ? "+" : "-"} ${Math.abs(d)}y = ${secondResult}`,
+      prompt: `Solve the system:\
+${linearExpression(a, 0).replaceAll("x", "x")} ${b >= 0 ? "+" : "-"} ${Math.abs(b)}y = ${firstResult}\
+${linearExpression(c, 0).replaceAll("x", "x")} ${d >= 0 ? "+" : "-"} ${Math.abs(d)}y = ${secondResult}`,
       answer_key: `x = ${x}, y = ${y}`,
       answer_type: "ordered-pair",
       expected: { x, y },
