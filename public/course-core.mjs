@@ -60,6 +60,9 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a10d-equivalent-polynomial-forms": {
     lesson_path: "/a10d-equivalent-polynomial-forms.json"
+  },
+  "alg1-a10e-factor-trinomials": {
+    lesson_path: "/a10e-factor-trinomials.json"
   }
 };
 
