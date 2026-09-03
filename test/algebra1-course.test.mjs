@@ -62,7 +62,7 @@ test("all completed structured lessons route to lesson and practice modes", () =
   assert.deepEqual(
     practiceModules(catalog).map(module => module.teks[0]),
     [
-      "A.10A", "A.10B", "A.10C", "A.10D",
+      "A.10A", "A.10B", "A.10C", "A.10D", "A.10E",
       "A.5A", "A.5B", "A.5C",
       "A.6A", "A.6B", "A.6C",
       "A.7A", "A.7B", "A.7C",

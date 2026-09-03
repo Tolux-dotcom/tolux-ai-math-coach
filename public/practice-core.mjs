@@ -100,6 +100,11 @@ export const PRACTICE_SKILLS = Object.freeze({
     moduleId: "alg1-a10d-equivalent-polynomial-forms",
     title: "Equivalent Polynomial Forms",
     lessonPath: "/a10d-equivalent-polynomial-forms.json"
+  },
+  "A.10E": {
+    moduleId: "alg1-a10e-factor-trinomials",
+    title: "Factor Trinomials",
+    lessonPath: "/a10e-factor-trinomials.json"
   }
 });
 
