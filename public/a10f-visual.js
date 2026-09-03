@@ -15,6 +15,11 @@
     return spans.length ? spans[spans.length - 1].textContent.trim() : null;
   }
 
+  function squareLabel(base) {
+    const value = String(base);
+    return /^[a-zA-Z0-9]$/.test(value) ? `${value}²` : `(${value})²`;
+  }
+
   function installStyles() {
     if (document.querySelector("#a10fVisualStyles")) return;
     const style = document.createElement("style");
@@ -42,9 +47,9 @@
         <h3>${title}</h3>
         <p>Both terms are perfect squares and the operation between them is subtraction.</p>
         <div class="dos-pattern">
-          <div class="dos-square">${example.p}²</div>
+          <div class="dos-square">${squareLabel(example.p)}</div>
           <div class="dos-symbol">−</div>
-          <div class="dos-square secondary">${example.q}²</div>
+          <div class="dos-square secondary">${squareLabel(example.q)}</div>
           <div class="dos-symbol">→</div>
           <div class="dos-factors">(${example.p} − ${example.q})(${example.p} + ${example.q})</div>
         </div>
