@@ -63,6 +63,10 @@ const STRUCTURED_LESSON_OVERRIDES = {
   },
   "alg1-a10e-factor-trinomials": {
     lesson_path: "/a10e-factor-trinomials.json"
+  },
+  "alg1-a10f-difference-of-squares": {
+    lesson_path: "/a10f-difference-of-squares.json",
+    available_modes: ["lesson", "practice"]
   }
 };
 
@@ -79,15 +83,14 @@ export function flattenCourseModules(catalog) {
   );
 }
 
-export function findCourseModule(catalog, moduleId) {
-  const module = flattenCourseModules(catalog).find(
-    candidate => candidate.module_id === moduleId
-  ) || null;
-
+function applyStructuredOverride(module) {
   if (!module) return null;
-
-  const override = STRUCTURED_LESSON_OVERRIDES[moduleId];
+  const override = STRUCTURED_LESSON_OVERRIDES[module.module_id];
   if (!override) return module;
+
+  const overrideModes = Array.isArray(override.available_modes)
+    ? override.available_modes
+    : ["lesson"];
 
   return {
     ...module,
@@ -95,16 +98,26 @@ export function findCourseModule(catalog, moduleId) {
     status: "available",
     available_modes: Array.from(new Set([
       ...(module.available_modes || []),
-      "lesson"
+      ...overrideModes
     ]))
   };
 }
 
+export function findCourseModule(catalog, moduleId) {
+  const module = flattenCourseModules(catalog).find(
+    candidate => candidate.module_id === moduleId
+  ) || null;
+
+  return applyStructuredOverride(module);
+}
+
 export function practiceModules(catalog) {
-  return flattenCourseModules(catalog).filter(module =>
-    Array.isArray(module.available_modes) &&
-    module.available_modes.includes("practice")
-  );
+  return flattenCourseModules(catalog)
+    .map(applyStructuredOverride)
+    .filter(module =>
+      Array.isArray(module.available_modes) &&
+      module.available_modes.includes("practice")
+    );
 }
 
 export function validateCourseCatalog(catalog) {
