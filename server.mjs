@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
+import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
 import {
   buildLessonProgressRow,
@@ -217,7 +218,6 @@ async function getStudentLessonProgress(userId) {
 }
 
 const FREE_QUESTION_LIMIT = 10;
-const FREE_DIAGNOSTIC_ITEM_IDS = new Set(["A5A-D01", "A5A-D02"]);
 const STRIPE_PLAN_PRICE_IDS = {
   student: process.env.STRIPE_STUDENT_PRICE_ID || "price_1U7IAuDF1jioApSQbIgJxCnl",
   family: process.env.STRIPE_FAMILY_PRICE_ID || "price_1U7IAuDF1jioApSQbhKRA280"
@@ -753,6 +753,12 @@ if (!qaSession && trialStatus.trialExpired) {
 if (req.method === "POST" && req.url === "/api/lesson-usage") {
   try {
     const body = await readJson(req);
+    const freeDiagnosticAccess = getFreeDiagnosticAccess(body?.itemId);
+
+    if (freeDiagnosticAccess) {
+      return send(res, 200, freeDiagnosticAccess);
+    }
+
     const user = await getAuthenticatedUser(req);
 
     if (!user) {
@@ -774,12 +780,11 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
       });
     }
 
-    const isFreeDiagnostic = FREE_DIAGNOSTIC_ITEM_IDS.has(String(body?.itemId || ""));
-    const trial = usage.is_subscriber || isFreeDiagnostic
+    const trial = usage.is_subscriber
       ? null
       : await getStudentTrialAccess(user.id);
 
-    if (!usage.is_subscriber && !isFreeDiagnostic && !trial) {
+    if (!usage.is_subscriber && !trial) {
       return send(res, 500, {
         error: "Unable to verify your free learning time right now."
       });
@@ -790,7 +795,7 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
       usage.is_subscriber
     );
 
-    if (!isFreeDiagnostic && trialStatus.trialExpired) {
+    if (trialStatus.trialExpired) {
       return send(res, 403, {
         error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
         limitReached: true,
@@ -810,7 +815,7 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
           allowed: true,
           isSubscriber: false,
           qaMode: true,
-          isFreeDiagnostic,
+          isFreeDiagnostic: false,
           trialSecondsRemaining: TRIAL_SECONDS
         },
         "application/json",
@@ -822,7 +827,7 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
       allowed: true,
       isSubscriber: usage.is_subscriber,
       qaMode: false,
-      isFreeDiagnostic,
+      isFreeDiagnostic: false,
       trialSecondsUsed: trialStatus.trialSecondsUsed,
       trialSecondsRemaining: trialStatus.trialSecondsRemaining,
       trialSecondsLimit: TRIAL_SECONDS
