@@ -4,6 +4,11 @@ import fs from "node:fs";
 import { getFreeDiagnosticAccess } from "../diagnostic-access.mjs";
 
 const serverSource = fs.readFileSync(new URL("../server.mjs", import.meta.url), "utf8");
+const lessonSource = fs.readFileSync(new URL("../public/lesson.js", import.meta.url), "utf8");
+const bridgeSource = fs.readFileSync(
+  new URL("../public/diagnostic-free-access.js", import.meta.url),
+  "utf8"
+);
 
 test("only the authored readiness diagnostic items receive free access", () => {
   for (const itemId of ["A5A-D01", "A5A-D02"]) {
@@ -45,4 +50,24 @@ test("lesson usage grants free diagnostic access before authentication or databa
   assert.ok(accessIndex >= 0, "diagnostic access check must exist");
   assert.ok(authIndex > accessIndex, "diagnostic access must not depend on authentication");
   assert.ok(usageIndex > accessIndex, "diagnostic access must not depend on usage storage");
+});
+
+test("lesson client sends the item id through the access boundary", () => {
+  assert.match(lessonSource, /itemId:\s*item\.id/);
+  assert.match(lessonSource, /fetchWithLessonSession\(/);
+});
+
+test("signed-out diagnostic bridge is loaded before lesson.js", () => {
+  const lessonHtml = fs.readFileSync(
+    new URL("../public/lesson.html", import.meta.url),
+    "utf8"
+  );
+  const bridgeIndex = lessonHtml.indexOf('/diagnostic-free-access.js');
+  const lessonIndex = lessonHtml.indexOf('/lesson.js');
+
+  assert.ok(bridgeIndex >= 0, "diagnostic bridge must be loaded");
+  assert.ok(lessonIndex > bridgeIndex, "diagnostic bridge must load before lesson.js");
+  assert.match(bridgeSource, /A5A-D01/);
+  assert.match(bridgeSource, /A5A-D02/);
+  assert.match(bridgeSource, /tolux-free-diagnostic/);
 });
