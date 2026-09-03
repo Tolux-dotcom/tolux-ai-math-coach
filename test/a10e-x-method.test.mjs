@@ -36,17 +36,24 @@ test("worked examples include the approved perfect-square and general X-method c
 test("guided practice gets an incomplete X scaffold before the side numbers are revealed", () => {
   assert.match(source, /id !== "A10E-G02"/);
   assert.match(source, /reveal: "scaffold"/);
-  assert.match(source, /Your X: fill the two side numbers/);
+  assert.match(source, /Your X: find the side numbers, then divide BOTH by a/);
 });
 
 test("X-method help is connected to I'm Stuck and Explain Another Way", () => {
   assert.match(source, /#lessonExplainBtn, #lessonStuckBtn/);
   assert.match(source, /Hint: set up the X/);
-  assert.match(source, /Another way: draw the X/);
+  assert.match(source, /Another way: draw the X, then divide BOTH sides by a/);
+});
+
+test("X method explicitly teaches that both side numbers are divided by a", () => {
+  assert.match(source, /divide <strong>BOTH side numbers<\/strong> by <strong>a = \$\{example\.a\}<\/strong>/);
+  assert.match(source, /Step 4: Divide BOTH side numbers by a = \$\{example\.a\}/);
+  assert.match(source, /Both side numbers are divided by a/);
+  assert.match(source, /divide BOTH side numbers by a<\/span>/);
 });
 
 test("divide-by-a step uses the reduced fraction bottoms-up rule instead of a false binomial equality", () => {
-  assert.match(source, /Bottoms up:/);
+  assert.match(source, /Reduced result:/);
   assert.match(source, /use the denominator as the coefficient of x and the numerator as the constant/i);
   assert.doesNotMatch(source, /\(x\s*[+−-].*\/.*\)\s*=\s*\(\d*x/);
 });
