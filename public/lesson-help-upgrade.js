@@ -58,6 +58,38 @@
         { equation: "domain: [0, ∞)", explanation: "Bracket at 0 because 0 is included; parenthesis at infinity." }
       ],
       answer: "t ≥ 0 or [0, ∞)"
+    },
+    "A9A-P02": {
+      hints: [
+        "Start with the vertical shift. The −2 moves the horizontal asymptote from y = 0 down to y = −2.",
+        "Because 3ˣ is always positive and the coefficient 6 is positive, 6(3ˣ) is always greater than 0. Subtracting 2 keeps the graph above y = −2.",
+        "The graph approaches y = −2 but never reaches it, so −2 is not included. The range is y > −2, or (−2, ∞). Use a parenthesis at −2, not a bracket."
+      ],
+      intro: "The −2 shifts the horizontal asymptote to y = −2. A positive coefficient keeps the graph above that asymptote.",
+      alternateIntro: "Think from the graph: start at the asymptote y = −2, then notice that a positive exponential curve lives above the asymptote and never touches it.",
+      steps: [
+        { equation: "3ˣ > 0", explanation: "The exponential part is positive for every real x." },
+        { equation: "6(3ˣ) > 0", explanation: "Multiplying by positive 6 keeps the exponential output positive." },
+        { equation: "6(3ˣ) − 2 > −2", explanation: "Subtracting 2 shifts every output down 2 units, but the graph remains above −2." },
+        { equation: "horizontal asymptote: y = −2", explanation: "The graph approaches −2 but never reaches it." },
+        { equation: "range: y > −2 = (−2, ∞)", explanation: "Use a parenthesis at −2 because the endpoint is excluded." }
+      ],
+      answer: "y > −2 or (−2, ∞)"
+    },
+    "A9A-P03": {
+      hints: [
+        "The inequality y < 5 means every value below 5 is included, but 5 itself is not included.",
+        "An excluded endpoint uses a parenthesis. Infinity also always uses a parenthesis.",
+        "Therefore y < 5 is written (−∞, 5)."
+      ],
+      intro: "Interval notation uses parentheses for endpoints that are not included.",
+      alternateIntro: "Picture the number line: shade everything to the left of 5, place an open circle at 5, and use parentheses in interval notation.",
+      steps: [
+        { equation: "y < 5", explanation: "All values less than 5 are included." },
+        { equation: "5 is excluded", explanation: "The inequality is strict, so 5 is not part of the set." },
+        { equation: "range: (−∞, 5)", explanation: "Use parentheses at both ends; infinity never uses a bracket." }
+      ],
+      answer: "(−∞, 5)"
     }
   };
 
