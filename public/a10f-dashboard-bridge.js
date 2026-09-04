@@ -110,3 +110,13 @@ if (!document.querySelector('script[data-tolux-a11a-bridge]')) {
   script.dataset.toluxA11aBridge = "true";
   document.head.append(script);
 }
+
+// Algebra 2 is not part of this product plan. Reuse its dashboard space as
+// Algebra 1B while preserving all original Algebra 1 module IDs and progress.
+if (!document.querySelector('script[data-tolux-algebra1-split]')) {
+  const splitScript = document.createElement("script");
+  splitScript.src = "/algebra1-split-ui.js";
+  splitScript.defer = true;
+  splitScript.dataset.toluxAlgebra1Split = "true";
+  document.head.append(splitScript);
+}
