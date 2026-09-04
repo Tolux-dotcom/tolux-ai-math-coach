@@ -1,0 +1,8 @@
+(() => {
+  const TUTOR_VALUE='alg1-a12b-evaluate-functions'; const PRACTICE_VALUE='A.12B'; const LABEL='A.12B • Evaluate Function Notation';
+  function ensure(select,value,label){if(!select)return false; const existing=[...select.options].find(o=>o.value===value); if(existing){existing.disabled=false; delete existing.dataset.toluxPlaceholder; existing.textContent=label; return true;} const o=document.createElement('option'); o.value=value;o.textContent=label;select.append(o);return true;}
+  function summary(){const select=document.querySelector('#tutorSkillSelect');if(!select||select.value!==TUTOR_VALUE)return;const s=document.querySelector('#tutorLessonSummary');if(!s||s.dataset.a12bSummary==='true')return;s.innerHTML='<strong>A.12B • Evaluate Function Notation</strong><p>Evaluate functions for one or more inputs using substitution, negative-input parentheses, tables, and correct order of operations.</p><small>Lesson path: Learn visually → Watch Tolux substitute → Guided practice → Independent practice → Mastery check</small>';s.dataset.a12bSummary='true';}
+  function sync(){const t=document.querySelector('#tutorSkillSelect'),p=document.querySelector('#practiceSkillSelect');if(!t||!p||!t.options.length||!p.options.length)return false;ensure(t,TUTOR_VALUE,LABEL);ensure(p,PRACTICE_VALUE,LABEL);summary();return true;}
+  function start(){document.querySelector('#tutorSkillSelect')?.addEventListener('change',()=>{const s=document.querySelector('#tutorLessonSummary');if(s)delete s.dataset.a12bSummary;summary();});let n=0;const timer=setInterval(()=>{n++;if(sync()||n>=100)clearInterval(timer);},100);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
