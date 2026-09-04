@@ -11,13 +11,11 @@
   const superscriptMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 
   function asciiMath(value) {
-    // Convert superscripts before compatibility normalization so x² becomes x^2,
-    // not x2. This preserves the student's mathematical meaning.
     let text = String(value ?? '').replace(/([a-zA-Z])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (_, base, supers) =>
       `${base}^${Array.from(supers, ch => superscriptMap[ch] || ch).join('')}`
     );
     text = text.normalize('NFKC').replace(/[−–—]/g,'-');
-    return text.replace(/[×·*]/g,'').replace(/\s+/g,'');
+    return text.replace(/[×·*]/g,'').replace(/[,;:]/g,'').replace(/\s+/g,'');
   }
 
   function parsePolynomial(raw) {
@@ -36,12 +34,14 @@
     const terms = text.split('+').filter(Boolean);
     if (!terms.length) return null;
     const coefficients = new Map();
+    let sawVariableTerm = false;
 
     for (const term of terms) {
       const match = term.match(/^([+-]?)(\d*(?:\.\d+)?)?([a-zA-Z])?(?:\^(\d+))?$/);
       if (!match) return null;
       const sign = match[1] === '-' ? -1 : 1;
       const hasVariable = Boolean(match[3]);
+      sawVariableTerm ||= hasVariable;
       if (hasVariable && match[3].toLowerCase() !== variable) return null;
       const coefficientText = match[2] || '';
       const coefficient = sign * (coefficientText === '' ? 1 : Number(coefficientText));
@@ -50,7 +50,7 @@
       coefficients.set(exponent, (coefficients.get(exponent) || 0) + coefficient);
     }
 
-    return { variable, coefficients, remainder };
+    return { variable, coefficients, remainder, sawVariableTerm };
   }
 
   function formatNumber(number) {
@@ -76,6 +76,9 @@
       }
       output += sign + term;
     }
+    // Preserve explicit zero-variable placeholders such as 0x². In those
+    // questions the representation itself is what the student is identifying.
+    if (!output && parsed.sawVariableTerm) return String(value ?? '');
     if (!output) output = '0';
     if (parsed.remainder !== null) output += ` remainder ${formatNumber(parsed.remainder)}`;
     return output;
