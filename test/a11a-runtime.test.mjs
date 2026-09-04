@@ -52,7 +52,7 @@ test("A.11A lesson loads visual perfect-square-factor teaching", () => {
 test("lesson and practice expose a reusable student math-symbol keyboard", () => {
   assert.match(lessonHtml, /math-symbol-toolbar\.js/);
   assert.match(practiceHtml, /math-symbol-toolbar\.js/);
-  for (const token of ["√", "∛", "x²", "x³", "^", "+", "−", "×", "÷", "≤", "≥", "∞", "π", "±"]) {
+  for (const token of ["√", "∛", "x²", "x³", "^", "+", "−", "×", "÷", "(", ")", "[", "]", "≤", "≥", "∞", "π", "±"]) {
     assert.match(mathToolbar, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
   assert.match(mathToolbar, /selectionStart/);
@@ -87,4 +87,20 @@ test("A.9A shifted-range guided help reaches the answer and explains the asympto
   assert.match(lessonHelpUpgrade, /range: y < 4 = \(−∞, 4\)/);
   assert.match(lessonHelpUpgrade, /y < 4 or \(−∞, 4\)/);
   assert.match(lessonHelpUpgrade, /Why this is the answer/);
+});
+
+test("A.9A positive shifted-range help explains endpoint exclusion", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P02/);
+  assert.match(lessonHelpUpgrade, /horizontal asymptote: y = −2/);
+  assert.match(lessonHelpUpgrade, /6\(3ˣ\) − 2 > −2/);
+  assert.match(lessonHelpUpgrade, /Use a parenthesis at −2, not a bracket/);
+  assert.match(lessonHelpUpgrade, /range: y > −2 = \(−2, ∞\)/);
+  assert.match(lessonHelpUpgrade, /y > −2 or \(−2, ∞\)/);
+});
+
+test("A.9A interval notation help explains parentheses and infinity", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P03/);
+  assert.match(lessonHelpUpgrade, /5 is excluded/);
+  assert.match(lessonHelpUpgrade, /infinity never uses a bracket/);
+  assert.match(lessonHelpUpgrade, /\(−∞, 5\)/);
 });
