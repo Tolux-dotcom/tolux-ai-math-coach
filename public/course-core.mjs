@@ -25,7 +25,12 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a11a-radical-expressions": { lesson_path: "/a11a-radical-expressions.json", available_modes: ["lesson", "practice"] },
   "alg1-a11b-laws-of-exponents": { lesson_path: "/a11b-laws-of-exponents.json", available_modes: ["lesson", "practice"] },
   "alg1-a12a-identify-functions": { lesson_path: "/a12a-identify-functions.json", available_modes: ["lesson", "practice"] },
-  "alg1-a12b-evaluate-functions": { lesson_path: "/a12b-evaluate-functions.json", available_modes: ["lesson", "practice"] }
+  "alg1-a12b-evaluate-functions": { lesson_path: "/a12b-evaluate-functions.json", available_modes: ["lesson", "practice"] },
+  "alg1-a12c-sequence-terms": { lesson_path: "/a12c-sequence-terms.json", available_modes: ["lesson", "practice"] },
+  "alg1-a12d-sequence-formulas": { lesson_path: "/a12d-sequence-formulas.json", available_modes: ["lesson", "practice"] },
+  "alg1-a12e-literal-equations": { lesson_path: "/a12e-literal-equations.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2a-linear-domain-range": { lesson_path: "/a2a-linear-domain-range.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2b-equations-from-points": { lesson_path: "/a2b-equations-from-points.json", available_modes: ["lesson", "practice"] }
 };
 
 export function flattenCourseModules(catalog) {
