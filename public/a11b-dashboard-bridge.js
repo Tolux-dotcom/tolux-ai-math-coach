@@ -5,7 +5,13 @@
 
   function ensureOption(select, value, label) {
     if (!select) return false;
-    if ([...select.options].some(option => option.value === value)) return true;
+    const existing = [...select.options].find(option => option.value === value);
+    if (existing) {
+      existing.disabled = false;
+      delete existing.dataset.toluxPlaceholder;
+      existing.textContent = label;
+      return true;
+    }
     const option = document.createElement("option");
     option.value = value;
     option.textContent = label;
