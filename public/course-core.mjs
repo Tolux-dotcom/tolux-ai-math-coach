@@ -30,7 +30,12 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a12d-sequence-formulas": { lesson_path: "/a12d-sequence-formulas.json", available_modes: ["lesson", "practice"] },
   "alg1-a12e-literal-equations": { lesson_path: "/a12e-literal-equations.json", available_modes: ["lesson", "practice"] },
   "alg1-a2a-linear-domain-range": { lesson_path: "/a2a-linear-domain-range.json", available_modes: ["lesson", "practice"] },
-  "alg1-a2b-equations-from-points": { lesson_path: "/a2b-equations-from-points.json", available_modes: ["lesson", "practice"] }
+  "alg1-a2b-equations-from-points": { lesson_path: "/a2b-equations-from-points.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2c-equations-from-representations": { lesson_path: "/a2c-lines-from-representations.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2d-direct-variation": { lesson_path: "/a2d-direct-variation.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2e-parallel-lines": { lesson_path: "/a2e-parallel-lines.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2f-perpendicular-lines": { lesson_path: "/a2f-perpendicular-lines.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2g-horizontal-vertical-lines": { lesson_path: "/a2g-horizontal-vertical-lines.json", available_modes: ["lesson", "practice"] }
 };
 
 export function flattenCourseModules(catalog) {
