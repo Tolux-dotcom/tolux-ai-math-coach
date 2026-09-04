@@ -33,13 +33,10 @@
   function syncControls() {
     const tutorSelect = document.querySelector("#tutorSkillSelect");
     const practiceSelect = document.querySelector("#practiceSkillSelect");
-    if (!tutorSelect || !practiceSelect || tutorSelect.options.length === 0 || practiceSelect.options.length === 0) {
-      return false;
-    }
+    if (!tutorSelect || !practiceSelect || tutorSelect.options.length === 0 || practiceSelect.options.length === 0) return false;
 
     ensureOption(tutorSelect, TUTOR_VALUE, LABEL);
     ensureOption(practiceSelect, PRACTICE_VALUE, LABEL);
-
     setTextIfChanged(document.querySelector("#tutorAvailability"), `${tutorSelect.options.length} completed Algebra 1 lessons available in Tutor Mode.`);
     setTextIfChanged(document.querySelector("#practiceAvailability"), `${practiceSelect.options.length} completed Algebra 1 skills available for focused practice.`);
     setTextIfChanged(document.querySelector("#algebra1Coverage strong"), `${tutorSelect.options.length} live skill modules`);
@@ -65,3 +62,11 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
 })();
+
+if (!document.querySelector('script[data-tolux-a11b-bridge]')) {
+  const script = document.createElement("script");
+  script.src = "/a11b-dashboard-bridge.js";
+  script.defer = true;
+  script.dataset.toluxA11bBridge = "true";
+  document.head.append(script);
+}
