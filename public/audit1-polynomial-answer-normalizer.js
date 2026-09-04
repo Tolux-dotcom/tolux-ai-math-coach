@@ -9,6 +9,7 @@
   if (!lessonModules.has(params.get('module')) && !practiceSkills.has(params.get('skill'))) return;
 
   const superscriptMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
+  const toSuperscriptMap = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
 
   function asciiMath(value) {
     let text = String(value ?? '').replace(/([a-zA-Z])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (_, base, supers) =>
@@ -25,7 +26,6 @@
     const remainder = remainderMatch ? Number(remainderMatch[1]) : null;
     if (remainderMatch) text = text.slice(0, remainderMatch.index);
     if (!text || text.includes('/')) return null;
-
     const variables = [...new Set((text.match(/[a-zA-Z]/g) || []).map(v => v.toLowerCase()))];
     if (variables.length > 1) return null;
     const variable = variables[0] || 'x';
@@ -35,7 +35,6 @@
     if (!terms.length) return null;
     const coefficients = new Map();
     let sawVariableTerm = false;
-
     for (const term of terms) {
       const match = term.match(/^([+-]?)(\d*(?:\.\d+)?)?([a-zA-Z])?(?:\^(\d+))?$/);
       if (!match) return null;
@@ -49,12 +48,14 @@
       if (!Number.isFinite(coefficient) || !Number.isInteger(exponent)) return null;
       coefficients.set(exponent, (coefficients.get(exponent) || 0) + coefficient);
     }
-
     return { variable, coefficients, remainder, sawVariableTerm };
   }
 
   function formatNumber(number) {
     return Number.isInteger(number) ? String(number) : String(Number(number.toFixed(8)));
+  }
+  function superscript(number) {
+    return Array.from(String(number), digit => toSuperscriptMap[digit] || digit).join('');
   }
 
   function canonicalPolynomial(value) {
@@ -72,12 +73,10 @@
       if (exponent === 0) term = formatNumber(abs);
       else {
         const coefficientPart = Math.abs(abs - 1) < 1e-10 ? '' : formatNumber(abs);
-        term = `${coefficientPart}${parsed.variable}${exponent === 1 ? '' : `^${exponent}`}`;
+        term = `${coefficientPart}${parsed.variable}${exponent === 1 ? '' : superscript(exponent)}`;
       }
       output += sign + term;
     }
-    // Preserve explicit zero-variable placeholders such as 0x². In those
-    // questions the representation itself is what the student is identifying.
     if (!output && parsed.sawVariableTerm) return String(value ?? '');
     if (!output) output = '0';
     if (parsed.remainder !== null) output += ` remainder ${formatNumber(parsed.remainder)}`;
@@ -98,10 +97,8 @@
     if (event.target.closest('#submitLessonAnswer')) normalizeInput(document.querySelector('#lessonAnswer'));
     if (event.target.closest('#checkPracticeAnswer')) normalizeInput(document.querySelector('#practiceAnswer'));
   }, true);
-
   document.addEventListener('keydown', event => {
     if (event.key === 'Enter' && event.target.matches?.('#lessonAnswer, #practiceAnswer')) normalizeInput(event.target);
   }, true);
-
   window.__toluxCanonicalPolynomial = canonicalPolynomial;
 })();
