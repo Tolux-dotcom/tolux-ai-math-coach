@@ -1,7 +1,8 @@
 const TEKS_PATTERN = /^A\.(?:[1-9]|1[0-2])[A-Z]$/;
 
 const STRUCTURED_LESSON_OVERRIDES = {
-  "alg1-a5b-linear-inequalities": { lesson_path: "/a5b-linear-inequalities.json" },
+  "alg1-a5a-linear-equations": { lesson_path: "/a5a-linear-equations.json", available_modes: ["lesson", "practice"] },
+  "alg1-a5b-linear-inequalities": { lesson_path: "/a5b-linear-inequalities.json", available_modes: ["lesson", "practice"] },
   "alg1-a5c-linear-systems": { lesson_path: "/a5c-linear-systems.json" },
   "alg1-a6a-quadratic-domain-range": { lesson_path: "/a6a-quadratic-domain-range.json" },
   "alg1-a6b-write-quadratics-from-vertex": { lesson_path: "/a6b-write-quadratics-from-vertex.json" },
@@ -45,7 +46,10 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a3e-linear-transformations": { lesson_path: "/a3e-linear-transformations.json", available_modes: ["lesson", "practice"] },
   "alg1-a3f-graph-linear-systems": { lesson_path: "/a3f-graph-linear-systems.json", available_modes: ["lesson", "practice"] },
   "alg1-a3g-estimate-system-solutions": { lesson_path: "/a3g-estimate-system-solutions.json", available_modes: ["lesson", "practice"] },
-  "alg1-a3h-graph-systems-of-inequalities": { lesson_path: "/a3h-graph-systems-of-inequalities.json", available_modes: ["lesson", "practice"] }
+  "alg1-a3h-graph-systems-of-inequalities": { lesson_path: "/a3h-graph-systems-of-inequalities.json", available_modes: ["lesson", "practice"] },
+  "alg1-a4a-correlation-coefficient": { lesson_path: "/a4a-correlation-coefficient.json", available_modes: ["lesson", "practice"] },
+  "alg1-a4b-association-causation": { lesson_path: "/a4b-association-causation.json", available_modes: ["lesson", "practice"] },
+  "alg1-a4c-linear-regression": { lesson_path: "/a4c-linear-regression.json", available_modes: ["lesson", "practice"] }
 };
 
 export function flattenCourseModules(catalog) {
