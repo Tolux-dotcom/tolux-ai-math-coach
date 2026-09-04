@@ -1,0 +1,180 @@
+{
+  "module_id": "alg1-a12b-evaluate-functions",
+  "version": "1.0.0-private-qa",
+  "course": "Algebra 1",
+  "teks": ["A.12B"],
+  "title": "Evaluate Function Notation",
+  "student_objective": "I can evaluate a function written in function notation for one or more inputs in its domain.",
+  "teacher_objective": "Diagnose confusion between f(x) and multiplication, substitution errors, sign errors with negative inputs, and mistakes evaluating several inputs.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": false,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_settings": {
+    "diagnostic_item_ids": ["A12B-D01", "A12B-D02", "A12B-D03"],
+    "guided_item_ids": ["A12B-G01", "A12B-G02", "A12B-G03"],
+    "independent_item_ids": ["A12B-P01", "A12B-P02", "A12B-P03", "A12B-P04", "A12B-P05"],
+    "mastery_item_ids": ["A12B-M01", "A12B-M02", "A12B-M03", "A12B-M04", "A12B-M05"],
+    "assessed_items_in_core_lesson": 16
+  },
+  "lesson_flow": [
+    {"step": 1, "type": "prerequisite_diagnostic", "label": "Function notation readiness"},
+    {"step": 2, "type": "concept", "label": "Input → substitute → output"},
+    {"step": 3, "type": "worked_examples", "label": "Watch Tolux evaluate functions"},
+    {"step": 4, "type": "guided_practice", "label": "Evaluate with Tolux"},
+    {"step": 5, "type": "independent_practice", "label": "Your turn"},
+    {"step": 6, "type": "mastery_check", "label": "Check mastery"},
+    {"step": 7, "type": "remediation_or_complete", "label": "Next best step"}
+  ],
+  "concept_cards": [
+    {"id": "A12B-C01", "title": "What f(3) means", "content": "f(3) means evaluate the function when the input x is 3. It does not mean f times 3."},
+    {"id": "A12B-C02", "title": "Substitute everywhere", "content": "Replace every x in the rule with the given input before simplifying."},
+    {"id": "A12B-C03", "title": "Negative inputs need parentheses", "content": "If the input is -2, write (-2) everywhere x appears. Parentheses protect the sign."},
+    {"id": "A12B-C04", "title": "Order of operations still applies", "content": "After substitution, simplify exponents first, then multiplication or division, then addition or subtraction."},
+    {"id": "A12B-C05", "title": "Several inputs", "content": "When asked for f(a), f(b), and f(c), evaluate each input separately and report the outputs in the same order."},
+    {"id": "A12B-C06", "title": "Read values from a table", "content": "If a function is given by a table, f(2) is the output in the row where the input is 2."}
+  ],
+  "misconception_routes": {
+    "notation_meaning": {"error_code": "FN-NOTATION", "teacher_signal": "Treats f(x) like multiplication", "route": "function_notation"},
+    "substitution": {"error_code": "FN-SUB", "teacher_signal": "Does not substitute the input everywhere", "route": "substitution"},
+    "negative_input": {"error_code": "FN-NEG", "teacher_signal": "Loses a sign or omits parentheses", "route": "negative_input"},
+    "order_operations": {"error_code": "FN-ORDER", "teacher_signal": "Simplifies in the wrong order", "route": "order_operations"},
+    "multiple_inputs": {"error_code": "FN-MULTI", "teacher_signal": "Mixes outputs or input order", "route": "multiple_inputs"},
+    "table_lookup": {"error_code": "FN-TABLE", "teacher_signal": "Reads the wrong table row or column", "route": "table_lookup"}
+  },
+  "items": [
+    {
+      "id": "A12B-D01", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "If f(x)=2x+3, find f(4).",
+      "answer_key": "11", "accepted_answers": ["11", "f(4)=11"], "diagnostic_tag": "notation_meaning",
+      "hint_steps": ["f(4) tells you the input x is 4.", "Replace x with 4: f(4)=2(4)+3.", "2(4)+3=8+3=11, so the answer is 11."],
+      "solution_steps": [{"equation":"f(4)=2(4)+3","explanation":"Substitute 4 for x."},{"equation":"f(4)=8+3","explanation":"Multiply first."},{"equation":"f(4)=11","explanation":"Add to get the output."}],
+      "alternate_solution_steps": [{"equation":"input 4 → rule 2x+3 → output 11","explanation":"Think of the function as a machine: put in 4, double it, then add 3."}],
+      "tutor_behavior": "Identify the input inside the parentheses, substitute it for x, then simplify."
+    },
+    {
+      "id": "A12B-D02", "type": "diagnostic", "difficulty": "Grade-level",
+      "prompt": "If g(t)=t²-5, find g(-3).",
+      "answer_key": "4", "accepted_answers": ["4", "g(-3)=4"], "diagnostic_tag": "negative_input", "critical_misconception": true,
+      "hint_steps": ["The input is -3, so place it in parentheses everywhere t appears.", "Write g(-3)=(-3)²-5.", "(-3)²=9, and 9-5=4. The answer is 4."],
+      "solution_steps": [{"equation":"g(-3)=(-3)²-5","explanation":"Substitute -3 using parentheses."},{"equation":"g(-3)=9-5","explanation":"Square the entire negative input."},{"equation":"g(-3)=4","explanation":"Subtract."}],
+      "tutor_behavior": "Use parentheses around a negative input before applying an exponent."
+    },
+    {
+      "id": "A12B-D03", "type": "diagnostic", "difficulty": "Grade-level",
+      "prompt": "If h(x)=5-2x, find h(3).",
+      "answer_key": "-1", "accepted_answers": ["-1", "h(3)=-1"], "diagnostic_tag": "order_operations",
+      "hint_steps": ["Replace x with 3.", "Write h(3)=5-2(3). Multiply before subtracting.", "5-6=-1, so the answer is -1."],
+      "solution_steps": [{"equation":"h(3)=5-2(3)","explanation":"Substitute 3 for x."},{"equation":"h(3)=5-6","explanation":"Multiply 2·3 first."},{"equation":"h(3)=-1","explanation":"Subtract."}],
+      "tutor_behavior": "After substitution, follow the order of operations."
+    },
+    {
+      "id": "A12B-L01", "type": "worked_example", "difficulty": "Foundational",
+      "prompt": "For f(x)=3x-4, evaluate f(5).", "answer_key": "11", "diagnostic_tag": "substitution",
+      "solution_steps": [{"equation":"f(5)=3(5)-4","explanation":"Replace x with 5."},{"equation":"f(5)=15-4","explanation":"Multiply."},{"equation":"f(5)=11","explanation":"Subtract."}]
+    },
+    {
+      "id": "A12B-L02", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "For p(x)=x²+2x-1, evaluate p(-2).", "answer_key": "-1", "diagnostic_tag": "negative_input",
+      "solution_steps": [{"equation":"p(-2)=(-2)²+2(-2)-1","explanation":"Use parentheses for every substitution."},{"equation":"p(-2)=4-4-1","explanation":"Evaluate the exponent and multiplication."},{"equation":"p(-2)=-1","explanation":"Combine the values."}]
+    },
+    {
+      "id": "A12B-L03", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "For q(x)=x²+x, evaluate q(-1), q(0), and q(2), in that order.", "answer_key": "0, 0, 6", "accepted_answers": ["0,0,6", "0, 0, 6"], "diagnostic_tag": "multiple_inputs",
+      "solution_steps": [{"equation":"q(-1)=(-1)²+(-1)=0","explanation":"Evaluate the first input."},{"equation":"q(0)=0²+0=0","explanation":"Evaluate the second input."},{"equation":"q(2)=2²+2=6","explanation":"Evaluate the third input and keep the outputs in order."}]
+    },
+    {
+      "id": "A12B-L04", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "A table for r has (x,r(x)) values (-2,7), (0,3), (2,-1), (4,-5). Find r(2).", "answer_key": "-1", "diagnostic_tag": "table_lookup",
+      "solution_steps": [{"equation":"input x=2","explanation":"Find the row whose input is 2."},{"equation":"r(2)=-1","explanation":"Read the output paired with 2."}]
+    },
+    {
+      "id": "A12B-G01", "type": "guided_practice", "difficulty": "Foundational",
+      "prompt": "If f(x)=4x+1, find f(6).", "answer_key": "25", "accepted_answers": ["25", "f(6)=25"], "diagnostic_tag": "substitution",
+      "hint_steps": ["The input is 6.", "Substitute: f(6)=4(6)+1.", "4(6)+1=24+1=25. The answer is 25."],
+      "solution_steps": [{"equation":"f(6)=4(6)+1","explanation":"Substitute 6."},{"equation":"f(6)=24+1","explanation":"Multiply."},{"equation":"f(6)=25","explanation":"Add."}], "tutor_behavior":"Substitute the input everywhere x appears."
+    },
+    {
+      "id": "A12B-G02", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "If g(x)=x²-3x+2, find g(-1).", "answer_key": "6", "accepted_answers": ["6", "g(-1)=6"], "diagnostic_tag": "negative_input", "critical_misconception": true,
+      "hint_steps": ["Put -1 in parentheses for both x-values.", "g(-1)=(-1)²-3(-1)+2.", "1+3+2=6. The answer is 6."],
+      "solution_steps": [{"equation":"g(-1)=(-1)²-3(-1)+2","explanation":"Substitute with parentheses."},{"equation":"g(-1)=1+3+2","explanation":"Square and multiply carefully."},{"equation":"g(-1)=6","explanation":"Add."}], "tutor_behavior":"Protect a negative input with parentheses in every term."
+    },
+    {
+      "id": "A12B-G03", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "If h(x)=2x-5, find h(-2), h(1), and h(4), in that order.", "answer_key": "-9, -3, 3", "accepted_answers": ["-9,-3,3", "-9, -3, 3"], "diagnostic_tag": "multiple_inputs",
+      "hint_steps": ["Evaluate each input separately.", "h(-2)=2(-2)-5, h(1)=2(1)-5, h(4)=2(4)-5.", "The outputs are -9, -3, 3 in that order."],
+      "solution_steps": [{"equation":"h(-2)=-4-5=-9","explanation":"First input."},{"equation":"h(1)=2-5=-3","explanation":"Second input."},{"equation":"h(4)=8-5=3","explanation":"Third input."}], "tutor_behavior":"Keep the inputs and outputs in the same requested order."
+    },
+    {
+      "id": "A12B-P01", "type": "independent_practice", "difficulty": "Foundational",
+      "prompt": "If m(x)=7-x, find m(2).", "answer_key": "5", "accepted_answers": ["5", "m(2)=5"], "diagnostic_tag": "substitution",
+      "hint_steps": ["Replace x with 2.", "m(2)=7-2.", "7-2=5, so the answer is 5."],
+      "solution_steps": [{"equation":"m(2)=7-2","explanation":"Substitute 2."},{"equation":"m(2)=5","explanation":"Subtract."}], "tutor_behavior":"Replace x with the input shown inside the parentheses."
+    },
+    {
+      "id": "A12B-P02", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "If n(x)=2x²+1, find n(-3).", "answer_key": "19", "accepted_answers": ["19", "n(-3)=19"], "diagnostic_tag": "negative_input", "critical_misconception": true,
+      "hint_steps": ["Use (-3) in parentheses.", "n(-3)=2(-3)²+1.", "2(9)+1=19. The answer is 19."],
+      "solution_steps": [{"equation":"n(-3)=2(-3)²+1","explanation":"Substitute -3 with parentheses."},{"equation":"n(-3)=18+1","explanation":"Square first, then multiply."},{"equation":"n(-3)=19","explanation":"Add."}], "tutor_behavior":"Square the entire negative input before multiplying by 2."
+    },
+    {
+      "id": "A12B-P03", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "If v(t)=3t²-2t, find v(2).", "answer_key": "8", "accepted_answers": ["8", "v(2)=8"], "diagnostic_tag": "order_operations",
+      "hint_steps": ["Substitute 2 for every t.", "v(2)=3(2)²-2(2).", "3(4)-4=12-4=8. The answer is 8."],
+      "solution_steps": [{"equation":"v(2)=3(2)²-2(2)","explanation":"Substitute 2."},{"equation":"v(2)=12-4","explanation":"Exponent before multiplication and subtraction."},{"equation":"v(2)=8","explanation":"Subtract."}], "tutor_behavior":"After substitution, follow exponent → multiplication → subtraction."
+    },
+    {
+      "id": "A12B-P04", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "A table for k has (x,k(x)) values (-1,6), (1,2), (3,-2), (5,-6). Find k(3).", "answer_key": "-2", "diagnostic_tag": "table_lookup",
+      "hint_steps": ["Find the row with input 3.", "The pair is (3,-2).", "Therefore k(3)=-2."],
+      "solution_steps": [{"equation":"(3,-2)","explanation":"Locate input 3 in the table."},{"equation":"k(3)=-2","explanation":"Read its output."}], "tutor_behavior":"Function notation asks for the output paired with the stated input."
+    },
+    {
+      "id": "A12B-P05", "type": "independent_practice", "difficulty": "Challenging",
+      "prompt": "If w(x)=x²-4x+1, find w(-2) and w(3), in that order.", "answer_key": "13, -2", "accepted_answers": ["13,-2", "13, -2"], "diagnostic_tag": "multiple_inputs",
+      "hint_steps": ["Evaluate -2 and 3 separately.", "w(-2)=(-2)²-4(-2)+1 and w(3)=3²-4(3)+1.", "The outputs are 13 and -2, so the answer is 13, -2."],
+      "solution_steps": [{"equation":"w(-2)=4+8+1=13","explanation":"Evaluate the first input."},{"equation":"w(3)=9-12+1=-2","explanation":"Evaluate the second input."}], "tutor_behavior":"Use a fresh substitution line for each input."
+    },
+    {
+      "id": "A12B-M01", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "If f(x)=5x-7, find f(4).", "answer_key": "13", "accepted_answers": ["13", "f(4)=13"], "diagnostic_tag": "substitution",
+      "solution_steps": [{"equation":"f(4)=5(4)-7","explanation":"Substitute 4."},{"equation":"f(4)=20-7=13","explanation":"Simplify."}]
+    },
+    {
+      "id": "A12B-M02", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "If g(x)=x²+4x-2, find g(-2).", "answer_key": "-6", "accepted_answers": ["-6", "g(-2)=-6"], "diagnostic_tag": "negative_input", "critical_misconception": true,
+      "solution_steps": [{"equation":"g(-2)=(-2)²+4(-2)-2","explanation":"Substitute with parentheses."},{"equation":"g(-2)=4-8-2=-6","explanation":"Simplify."}]
+    },
+    {
+      "id": "A12B-M03", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "If h(t)=10-3t, find h(-1).", "answer_key": "13", "accepted_answers": ["13", "h(-1)=13"], "diagnostic_tag": "order_operations",
+      "solution_steps": [{"equation":"h(-1)=10-3(-1)","explanation":"Substitute -1."},{"equation":"h(-1)=10+3=13","explanation":"Multiply, then combine."}]
+    },
+    {
+      "id": "A12B-M04", "type": "mastery_check", "difficulty": "Challenging",
+      "prompt": "If p(x)=2x²-x+3, find p(-1) and p(2), in that order.", "answer_key": "6, 9", "accepted_answers": ["6,9", "6, 9"], "diagnostic_tag": "multiple_inputs",
+      "solution_steps": [{"equation":"p(-1)=2(-1)²-(-1)+3=6","explanation":"Evaluate the first input."},{"equation":"p(2)=2(2)²-2+3=9","explanation":"Evaluate the second input."}]
+    },
+    {
+      "id": "A12B-M05", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "A table for s has (x,s(x)) values (0,8), (2,5), (4,2), (6,-1). Find s(6).", "answer_key": "-1", "diagnostic_tag": "table_lookup",
+      "solution_steps": [{"equation":"(6,-1)","explanation":"Locate the row whose input is 6."},{"equation":"s(6)=-1","explanation":"Read the paired output."}]
+    }
+  ],
+  "practice_bank": [
+    {"id":"A12B-X01","type":"practice","difficulty":"Foundational","prompt":"If a(x)=2x+9, find a(5).","answer_key":"19","accepted_answers":["19","a(5)=19"],"diagnostic_tag":"substitution","hint_steps":["Substitute 5 for x.","a(5)=2(5)+9.","10+9=19."],"solution_steps":[{"equation":"a(5)=2(5)+9=19","explanation":"Substitute and simplify."}]},
+    {"id":"A12B-X02","type":"practice","difficulty":"Foundational","prompt":"If b(x)=12-x, find b(7).","answer_key":"5","diagnostic_tag":"substitution","hint_steps":["Replace x with 7.","b(7)=12-7.","The answer is 5."],"solution_steps":[{"equation":"b(7)=12-7=5","explanation":"Substitute and subtract."}]},
+    {"id":"A12B-X03","type":"practice","difficulty":"Grade-level","prompt":"If c(x)=x²+5, find c(-4).","answer_key":"21","diagnostic_tag":"negative_input","hint_steps":["Use (-4) in parentheses.","c(-4)=(-4)²+5.","16+5=21."],"solution_steps":[{"equation":"c(-4)=(-4)²+5=21","explanation":"Square the whole negative input."}]},
+    {"id":"A12B-X04","type":"practice","difficulty":"Grade-level","prompt":"If d(x)=3x²-1, find d(2).","answer_key":"11","diagnostic_tag":"order_operations","hint_steps":["Substitute 2.","d(2)=3(2)²-1.","3(4)-1=11."],"solution_steps":[{"equation":"d(2)=3(2)²-1=11","explanation":"Exponent first, then multiply and subtract."}]},
+    {"id":"A12B-X05","type":"practice","difficulty":"Grade-level","prompt":"If e(x)=x²-2x, find e(-3).","answer_key":"15","diagnostic_tag":"negative_input","hint_steps":["Use parentheses around -3.","e(-3)=(-3)²-2(-3).","9+6=15."],"solution_steps":[{"equation":"e(-3)=(-3)²-2(-3)=15","explanation":"Substitute carefully and simplify."}]},
+    {"id":"A12B-X06","type":"practice","difficulty":"Grade-level","prompt":"If j(x)=4-x, find j(-2), j(0), j(3), in that order.","answer_key":"6, 4, 1","accepted_answers":["6,4,1","6, 4, 1"],"diagnostic_tag":"multiple_inputs","hint_steps":["Evaluate each input separately.","j(-2)=6, j(0)=4, j(3)=1.","Report 6, 4, 1 in order."],"solution_steps":[{"equation":"j(-2)=6, j(0)=4, j(3)=1","explanation":"Evaluate each input independently."}]},
+    {"id":"A12B-X07","type":"practice","difficulty":"Challenging","prompt":"If r(x)=2x²+3x-4, find r(-2).","answer_key":"-2","diagnostic_tag":"negative_input","hint_steps":["Substitute (-2) everywhere.","r(-2)=2(-2)²+3(-2)-4.","8-6-4=-2."],"solution_steps":[{"equation":"r(-2)=2(-2)²+3(-2)-4=-2","explanation":"Use parentheses and order of operations."}]},
+    {"id":"A12B-X08","type":"practice","difficulty":"Challenging","prompt":"If u(x)=x²-5x+6, find u(1) and u(4), in that order.","answer_key":"2, 2","accepted_answers":["2,2","2, 2"],"diagnostic_tag":"multiple_inputs","hint_steps":["Evaluate each input separately.","u(1)=1-5+6 and u(4)=16-20+6.","Both outputs are 2."],"solution_steps":[{"equation":"u(1)=2","explanation":"First input."},{"equation":"u(4)=2","explanation":"Second input."}]},
+    {"id":"A12B-X09","type":"practice","difficulty":"Grade-level","prompt":"A table for z has (x,z(x)) values (-3,10), (-1,6), (1,2), (3,-2). Find z(-1).","answer_key":"6","diagnostic_tag":"table_lookup","hint_steps":["Find input -1.","The row is (-1,6).","So z(-1)=6."],"solution_steps":[{"equation":"z(-1)=6","explanation":"Read the output paired with -1."}]},
+    {"id":"A12B-X10","type":"practice","difficulty":"Grade-level","prompt":"If y(x)=6-2x, find y(-3).","answer_key":"12","diagnostic_tag":"order_operations","hint_steps":["Substitute -3.","y(-3)=6-2(-3).","6+6=12."],"solution_steps":[{"equation":"y(-3)=6-2(-3)=12","explanation":"Multiply before combining."}]}
+  ]
+}
