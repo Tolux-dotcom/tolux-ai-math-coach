@@ -105,3 +105,10 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
 })();
+
+if (new URLSearchParams(window.location.search).get("module") === "alg1-a11a-radical-expressions") {
+  const script = document.createElement("script");
+  script.src = "/a11a-visual.js";
+  script.defer = true;
+  document.head.append(script);
+}

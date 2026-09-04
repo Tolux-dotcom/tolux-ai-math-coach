@@ -48,8 +48,18 @@ export function formatMathNotation(value) {
   );
 }
 
-export function normalizeAnswer(value) {
+function normalizeRootNotation(value) {
   return String(value ?? "")
+    .replace(/\bsqrt\s*\(\s*([a-z0-9.]+)\s*\)/gi, "√$1")
+    .replace(/\bsqrt\s*([a-z0-9.]+)/gi, "√$1")
+    .replace(/\bcbrt\s*\(\s*([a-z0-9.]+)\s*\)/gi, "∛$1")
+    .replace(/\bcbrt\s*([a-z0-9.]+)/gi, "∛$1")
+    .replace(/√\(\s*([a-z0-9.]+)\s*\)/gi, "√$1")
+    .replace(/∛\(\s*([a-z0-9.]+)\s*\)/gi, "∛$1");
+}
+
+export function normalizeAnswer(value) {
+  return normalizeRootNotation(value)
     .normalize("NFKC")
     .toLowerCase()
     .trim()

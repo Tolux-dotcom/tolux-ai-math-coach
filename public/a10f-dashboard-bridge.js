@@ -99,3 +99,14 @@
     start();
   }
 })();
+
+// The dashboard already loads this completion bridge. Chain later completed
+// modules from here so each new TEKS module does not require another edit to
+// the large dashboard HTML file.
+if (!document.querySelector('script[data-tolux-a11a-bridge]')) {
+  const script = document.createElement("script");
+  script.src = "/a11a-dashboard-bridge.js";
+  script.defer = true;
+  script.dataset.toluxA11aBridge = "true";
+  document.head.append(script);
+}

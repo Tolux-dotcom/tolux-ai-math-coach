@@ -1,0 +1,122 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+
+const lessonHtml = fs.readFileSync(new URL("../public/lesson.html", import.meta.url), "utf8");
+const practiceHtml = fs.readFileSync(new URL("../public/practice.html", import.meta.url), "utf8");
+const dashboardBridge = fs.readFileSync(new URL("../public/a11a-dashboard-bridge.js", import.meta.url), "utf8");
+const completionBridge = fs.readFileSync(new URL("../public/a10f-dashboard-bridge.js", import.meta.url), "utf8");
+const visualLoader = fs.readFileSync(new URL("../public/a10f-visual.js", import.meta.url), "utf8");
+const visualRuntime = fs.readFileSync(new URL("../public/a11a-visual.js", import.meta.url), "utf8");
+const practiceRuntime = fs.readFileSync(new URL("../public/a11a-practice.js", import.meta.url), "utf8");
+const courseCore = fs.readFileSync(new URL("../public/course-core.mjs", import.meta.url), "utf8");
+const mathToolbar = fs.readFileSync(new URL("../public/math-symbol-toolbar.js", import.meta.url), "utf8");
+const mathNormalizer = fs.readFileSync(new URL("../public/math-input-normalizer.js", import.meta.url), "utf8");
+const masteryAudit = fs.readFileSync(new URL("../public/mastery-answer-audit.js", import.meta.url), "utf8");
+const lessonHelpUpgrade = fs.readFileSync(new URL("../public/lesson-help-upgrade.js", import.meta.url), "utf8");
+
+test("A.11A is exposed in Tutor and Practice controls without a broad DOM observer", () => {
+  assert.match(completionBridge, /a11a-dashboard-bridge\.js/);
+  assert.match(dashboardBridge, /alg1-a11a-radical-expressions/);
+  assert.match(dashboardBridge, /A\.11A/);
+  assert.match(dashboardBridge, /Simplify Numerical Radicals/);
+  assert.doesNotMatch(dashboardBridge, /MutationObserver/);
+  assert.match(dashboardBridge, /attempts >= 100/);
+});
+
+test("A.11A is available to the lesson router", () => {
+  assert.match(courseCore, /alg1-a11a-radical-expressions/);
+  assert.match(courseCore, /\/a11a-radical-expressions\.json/);
+  assert.match(courseCore, /available_modes: \["lesson", "practice"\]/);
+});
+
+test("A.11A practice uses its dedicated verified runtime", () => {
+  assert.match(practiceHtml, /skill === "A\.11A"/);
+  assert.match(practiceHtml, /import\("\/a11a-practice\.js"\)/);
+  assert.match(practiceRuntime, /\/a11a-radical-expressions\.json/);
+  assert.match(practiceRuntime, /\[5, 10, 20\]/);
+  assert.match(practiceRuntime, /lesson-usage/);
+  assert.match(practiceRuntime, /trial-heartbeat/);
+  assert.match(practiceRuntime, /lesson-progress/);
+});
+
+test("A.11A lesson loads visual perfect-square-factor teaching", () => {
+  assert.match(visualLoader, /a11a-visual\.js/);
+  assert.match(visualRuntime, /hunt for a perfect square/i);
+  assert.match(visualRuntime, /√72/);
+  assert.match(visualRuntime, /√\(36 · 2\)/);
+  assert.match(visualRuntime, /6√2/);
+  assert.match(visualRuntime, /perfect-square-strip/);
+});
+
+test("lesson and practice expose a reusable student math-symbol keyboard", () => {
+  assert.match(lessonHtml, /math-symbol-toolbar\.js/);
+  assert.match(practiceHtml, /math-symbol-toolbar\.js/);
+  for (const token of ["√", "∛", "x²", "x³", "^", "+", "−", "×", "÷", "(", ")", "[", "]", "≤", "≥", "∞", "π", "±"]) {
+    assert.match(mathToolbar, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(mathToolbar, /selectionStart/);
+  assert.match(mathToolbar, /setSelectionRange/);
+  assert.match(mathToolbar, /Math symbols — tap to insert/);
+  assert.match(mathNormalizer, /infinity\|inf/);
+  assert.match(mathNormalizer, /"∞"/);
+});
+
+test("mastery remediation shows the student's submitted answer for grading audit", () => {
+  assert.match(lessonHtml, /mastery-answer-audit\.js/);
+  assert.match(masteryAudit, /Your answer/);
+  assert.match(masteryAudit, /Your explanation/);
+  assert.match(masteryAudit, /QA grading flag/);
+  assert.match(masteryAudit, /Your final answer matches the displayed correct answer/);
+  assert.match(masteryAudit, /sessionStorage/);
+});
+
+test("lesson help offers full worked solutions after a wrong guided or independent attempt", () => {
+  assert.match(lessonHtml, /lesson-help-upgrade\.js/);
+  assert.match(lessonHelpUpgrade, /Show Answer & Full Solution/);
+  assert.match(lessonHelpUpgrade, /Solve with Tolux\|Your Turn\|Similar Problem/);
+  assert.match(lessonHelpUpgrade, /Final answer:/);
+  assert.match(lessonHelpUpgrade, /A9A-G01/);
+  assert.match(lessonHelpUpgrade, /range: y > 0 = \(0, ∞\)/);
+});
+
+test("A.9A shifted-range guided help reaches the answer and explains the asymptote", () => {
+  assert.match(lessonHelpUpgrade, /A9A-G02/);
+  assert.match(lessonHelpUpgrade, /horizontal asymptote: y = 4/);
+  assert.match(lessonHelpUpgrade, /−3\(2ˣ\) \+ 4 < 4/);
+  assert.match(lessonHelpUpgrade, /range: y < 4 = \(−∞, 4\)/);
+  assert.match(lessonHelpUpgrade, /y < 4 or \(−∞, 4\)/);
+  assert.match(lessonHelpUpgrade, /Why this is the answer/);
+});
+
+test("A.9A domain help explains that reflection does not restrict inputs", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P01/);
+  assert.match(lessonHelpUpgrade, /4ˣ is defined for every real x/);
+  assert.match(lessonHelpUpgrade, /−5 changes outputs only/);
+  assert.match(lessonHelpUpgrade, /domain: all real numbers/);
+  assert.match(lessonHelpUpgrade, /domain: \(−∞, ∞\)/);
+  assert.match(lessonHelpUpgrade, /Correct — here is why/);
+});
+
+test("A.9A positive shifted-range help explains endpoint exclusion", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P02/);
+  assert.match(lessonHelpUpgrade, /horizontal asymptote: y = −2/);
+  assert.match(lessonHelpUpgrade, /6\(3ˣ\) − 2 > −2/);
+  assert.match(lessonHelpUpgrade, /Use a parenthesis at −2, not a bracket/);
+  assert.match(lessonHelpUpgrade, /range: y > −2 = \(−2, ∞\)/);
+  assert.match(lessonHelpUpgrade, /y > −2 or \(−2, ∞\)/);
+});
+
+test("A.9A interval notation help explains parentheses and infinity", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P03/);
+  assert.match(lessonHelpUpgrade, /5 is excluded/);
+  assert.match(lessonHelpUpgrade, /infinity never uses a bracket/);
+  assert.match(lessonHelpUpgrade, /\(−∞, 5\)/);
+});
+
+test("A.9A discrete contextual-domain help lists only allowed whole-hour inputs", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P04/);
+  assert.match(lessonHelpUpgrade, /t is a whole number/);
+  assert.match(lessonHelpUpgrade, /domain: \{0,1,2,…,12\}/);
+  assert.match(lessonHelpUpgrade, /whole numbers 0 through 12/);
+});
