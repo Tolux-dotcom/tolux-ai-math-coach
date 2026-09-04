@@ -46,23 +46,25 @@
     return true;
   }
 
+  function bindModeButtons() {
+    document.querySelectorAll(".mode").forEach(button => {
+      if (button.dataset.algebraSplitModeBound === "true") return;
+      button.dataset.algebraSplitModeBound = "true";
+      button.addEventListener("click", () => {
+        window.setTimeout(applyPartSelection, 0);
+      });
+    });
+  }
+
   function updateStaticAlgebraCopy() {
     const tutorMeta = document.querySelector("#tutorModePanel .tutor-launch-card small");
     const practiceMeta = document.querySelector("#practiceModePanel .practice-launch-card small");
     if (tutorMeta) tutorMeta.textContent = `Algebra 1${activePart} • Tutor Mode`;
     if (practiceMeta) practiceMeta.textContent = `Algebra 1${activePart} • Working Practice Mode`;
 
+    const selectedMode = document.querySelector(".mode.selected")?.dataset.mode || "Tutor Mode";
     const modeLabel = document.querySelector("#modeLabel");
-    if (modeLabel) {
-      const mode = modeLabel.textContent.includes("Practice Mode")
-        ? "Practice Mode"
-        : modeLabel.textContent.includes("Homework Help")
-          ? "Homework Help"
-          : modeLabel.textContent.includes("Check My Work")
-            ? "Check My Work"
-            : "Tutor Mode";
-      modeLabel.textContent = `Algebra 1${activePart} • ${mode}`;
-    }
+    if (modeLabel) modeLabel.textContent = `Algebra 1${activePart} • ${selectedMode}`;
 
     const seoHeading = document.querySelector(".seo-section h2");
     if (seoHeading) seoHeading.textContent = "AI Algebra Tutor for Complete Algebra 1";
@@ -158,6 +160,7 @@
 
   async function start() {
     if (!renameCourseButtons()) return;
+    bindModeButtons();
     await loadModuleNumbers();
     applyPartSelection();
 
@@ -168,6 +171,7 @@
     const timer = window.setInterval(() => {
       attempts += 1;
       renameCourseButtons();
+      bindModeButtons();
       applyPartSelection();
       if (attempts >= 50) window.clearInterval(timer);
     }, 100);
