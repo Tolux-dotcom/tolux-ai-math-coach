@@ -2,6 +2,8 @@ import { answersEquivalent, escapeHtml, formatMathNotation } from "./lesson-core
 
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
+const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   : null;
@@ -24,6 +26,7 @@ let session = null;
 let currentIndex = 0;
 let locked = false;
 let isSubscriber = false;
+let completionReport = null;
 let trialTimer = null;
 const records = new Map();
 const counted = new Set();
@@ -62,7 +65,14 @@ function solutionMarkup(item, heading="Correct answer and full explanation") {
 }
 
 async function getAuthSession(){if(!supabaseClient)return null;let{data:{session:s}}=await supabaseClient.auth.getSession();if(!s){const{data}=await supabaseClient.auth.refreshSession();s=data?.session||null;}return s;}
-async function fetchWithSession(url,options={}){const s=await getAuthSession();if(!s)return{response:null,session:null};return{response:await fetch(url,{...options,headers:{...(options.headers||{}),Authorization:`Bearer ${s.access_token}`}}),session:s};}
+async function fetchWithSession(url,options={}){
+  let s=await getAuthSession();
+  if(!s)return{response:null,session:null};
+  const request=active=>fetch(url,{...options,headers:{...(options.headers||{}),Authorization:`Bearer ${active.access_token}`}});
+  let response=await request(s);
+  if(response.status===401){const{data,error}=await supabaseClient.auth.refreshSession();const refreshed=error?null:data?.session;if(refreshed){s=refreshed;response=await request(s);}}
+  return{response,session:s};
+}
 async function ensureAccess(item){
   if(!item||locked)return false;if(counted.has(item.id))return true;
   try{
@@ -71,7 +81,8 @@ async function ensureAccess(item){
     const data=await response.json();
     if(response.ok&&data.allowed){counted.add(item.id);isSubscriber=Boolean(data.isSubscriber);return true;}
     if(data.limitReached){locked=true;setDisabled(true);setFeedback(`<div class="lesson-state lesson-state-warning"><strong>Upgrade to continue</strong><p>${escapeHtml(data.error||"Your free learning trial is complete.")}</p><a class="lesson-link-button" href="/#pricingSection">View Tolux Plans</a></div>`);return false;}
-  }catch(error){console.error("A.12A access check failed",error);}
+    setFeedback(`<div class="lesson-state lesson-state-error"><strong>Unable to continue</strong><p>${escapeHtml(data.error||"Please try again.")}</p></div>`);
+  }catch(error){console.error("A.12A access check failed",error);setFeedback('<div class="lesson-state lesson-state-error"><strong>Connection problem</strong><p>Please check your connection and try again.</p></div>');}
   return false;
 }
 async function heartbeat(){if(locked||isSubscriber||document.visibilityState!=="visible"||!session)return;try{const{response}=await fetchWithSession("/api/trial-heartbeat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({activeSeconds:15})});if(!response)return;const data=await response.json();if(data.limitReached){locked=true;setDisabled(true);setFeedback(`<div class="lesson-state lesson-state-warning"><strong>Upgrade to continue</strong><p>${escapeHtml(data.error||"Your free learning trial is complete.")}</p></div>`);}}catch(error){console.warn(error);}}
@@ -95,15 +106,39 @@ async function checkAnswer(){
 
 function showHint(){
   const item=currentItem();if(!item)return;const record=recordFor(item);record.hint_count+=1;const hints=item.hint_steps||[item.hint||"Check how many outputs each input has."];
-  const level=Math.min(record.hint_count,hints.length)-1;const hint=hints[level];const answer=level===hints.length-1?`<p><strong>Answer:</strong> ${escapeHtml(item.answer_key)}</p>${solutionMarkup(item,"Hint 3: complete reasoning")}`:"";
+  const level=Math.min(record.hint_count,hints.length)-1;const hint=hints[level];const answer=level===hints.length-1?`<p><strong>Answer:</strong> ${escapeHtml(formatMathNotation(item.answer_key))}</p>${solutionMarkup(item,"Hint 3: complete reasoning")}`:"";
   setFeedback(`<div class="lesson-state lesson-state-warning"><strong>Hint ${level+1}</strong><p>${escapeHtml(formatMathNotation(hint))}</p></div>${answer}`);
 }
 function explainAnotherWay(){const item=currentItem();if(!item)return;setFeedback(`<div class="lesson-state lesson-state-success"><strong>Another way to think about it</strong><p>Translate the representation into input → output pairs. Then ask one question: does any single input point to two different outputs?</p></div>${solutionMarkup(item,"Step-by-step alternative explanation")}`);}
 
-function finish(){
-  const done=[...records.values()].filter(r=>r.first_attempt_correct!==null);const correct=done.filter(r=>r.first_attempt_correct).length;const percent=done.length?Math.round(correct/done.length*100):0;
+function calculateSummary(){
+  const values=[...records.values()].filter(r=>r.first_attempt_correct!==null);
+  const correct=values.filter(r=>r.first_attempt_correct===true).length;
+  const total=session.items.length;
+  const scorePercent=total?Math.round(correct/total*100):0;
+  return{correct,total,scorePercent,label:scorePercent>=80?"Mastered":scorePercent>=60?"Developing":"Intervention Needed",missed:session.items.filter(item=>records.get(item.id)?.first_attempt_correct!==true)};
+}
+function completionId(){return window.crypto?.randomUUID?.()||`a12a-${Date.now()}-${Math.random().toString(16).slice(2)}`;}
+async function saveCompletion(summary){
+  if(!completionReport){completionReport={completion_id:completionId(),module_id:"practice-alg1-a12a-identify-functions",completed_at:new Date().toISOString(),mastery_label:summary.label,mastery_score:summary.scorePercent,is_subscriber:isSubscriber,time_on_skill_seconds:Math.round((Date.now()-startedAt)/1000),item_records:[...records.values()]};}
+  const moduleKey=`${LESSON_PROGRESS_PREFIX}${completionReport.module_id}`;const pendingKey=`${PENDING_PROGRESS_PREFIX}${completionReport.completion_id}`;
+  try{localStorage.setItem(moduleKey,JSON.stringify(completionReport));localStorage.setItem(pendingKey,JSON.stringify(completionReport));}catch(error){console.warn("A.12A local progress save failed",error);}
+  const{response,session:auth}=await fetchWithSession("/api/lesson-progress",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(completionReport)});
+  if(!auth||!response)throw new Error("Sign in is required to sync practice progress.");
+  const data=await response.json();if(!response.ok||!data.activity)throw new Error(data.error||"Unable to save practice progress.");
+  try{localStorage.setItem(moduleKey,JSON.stringify(data.activity));localStorage.removeItem(pendingKey);}catch(error){console.warn("A.12A synced progress reconciliation failed",error);}
+  return data.activity;
+}
+function missedReviewMarkup(summary){
+  if(!summary.missed.length)return "<p>You answered every question correctly on the first attempt.</p>";
+  return `<h3>Review these questions</h3><div class="practice-review-list">${summary.missed.map(item=>`<article><strong>${escapeHtml(formatMathNotation(item.prompt))}</strong>${solutionMarkup(item,"Review the correct reasoning")}</article>`).join("")}</div>`;
+}
+async function finish(){
+  const summary=calculateSummary();
   els.questionView.hidden=true;els.summary.hidden=false;els.progressBar.style.width="100%";els.progressBar.setAttribute("aria-valuenow","100");els.progressLabel.textContent="Practice session complete";
-  els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${percent>=80?"Strong function-identification practice":"Keep practicing function identification"}</h2><p class="mastery-score">${percent}%</p><p>${correct} of ${done.length} correct on the first attempt.</p><div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
+  els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.label}</h2><p class="mastery-score">${summary.scorePercent}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><p id="a12aSaveStatus" class="completion-save-status">Saving your practice progress…</p>${missedReviewMarkup(summary)}<div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
+  const status=document.querySelector("#a12aSaveStatus");
+  try{await saveCompletion(summary);if(status)status.textContent="Saved to your Tolux progress dashboard.";}catch(error){console.error("A.12A practice completion sync failed",error);if(status)status.textContent="Saved on this device. Tolux will retry account sync from the dashboard.";}
 }
 function next(){if(currentIndex>=session.count-1){finish();return;}currentIndex+=1;renderQuestion();}
 
