@@ -35,7 +35,12 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a2d-direct-variation": { lesson_path: "/a2d-direct-variation.json", available_modes: ["lesson", "practice"] },
   "alg1-a2e-parallel-lines": { lesson_path: "/a2e-parallel-lines.json", available_modes: ["lesson", "practice"] },
   "alg1-a2f-perpendicular-lines": { lesson_path: "/a2f-perpendicular-lines.json", available_modes: ["lesson", "practice"] },
-  "alg1-a2g-horizontal-vertical-lines": { lesson_path: "/a2g-horizontal-vertical-lines.json", available_modes: ["lesson", "practice"] }
+  "alg1-a2g-horizontal-vertical-lines": { lesson_path: "/a2g-horizontal-vertical-lines.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2h-write-linear-inequalities": { lesson_path: "/a2h-write-linear-inequalities.json", available_modes: ["lesson", "practice"] },
+  "alg1-a2i-write-linear-systems": { lesson_path: "/a2i-write-linear-systems.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3a-determine-slope": { lesson_path: "/a3a-determine-slope.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3b-rate-of-change": { lesson_path: "/a3b-rate-of-change.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3c-graph-linear-functions": { lesson_path: "/a3c-graph-linear-functions.json", available_modes: ["lesson", "practice"] }
 };
 
 export function flattenCourseModules(catalog) {
