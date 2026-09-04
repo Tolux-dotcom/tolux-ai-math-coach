@@ -1,0 +1,275 @@
+{
+  "module_id": "alg1-a11a-radical-expressions",
+  "version": "1.0.0-depth-qa",
+  "course": "Algebra 1",
+  "teks": ["A.11A"],
+  "title": "Simplify Numerical Radicals",
+  "student_objective": "I can simplify numerical radical expressions involving square roots and explain how perfect-square factors make the simplification work.",
+  "teacher_objective": "Diagnose perfect-square recognition, factor selection, product-property, quotient-property, coefficient, like-radical, and simplified-form errors.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": true,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_settings": {
+    "diagnostic_item_ids": ["A11A-D01", "A11A-D02", "A11A-D03"],
+    "guided_item_ids": ["A11A-G01", "A11A-G02", "A11A-G03"],
+    "independent_item_ids": ["A11A-P01", "A11A-P02", "A11A-P03", "A11A-P04"],
+    "mastery_item_ids": ["A11A-M01", "A11A-M02", "A11A-M03", "A11A-M04", "A11A-M05"],
+    "assessed_items_in_core_lesson": 15
+  },
+  "lesson_flow": [
+    {"step": 1, "type": "prerequisite_diagnostic", "label": "Perfect-square readiness"},
+    {"step": 2, "type": "concept", "label": "Find perfect-square factors"},
+    {"step": 3, "type": "worked_examples", "label": "Watch Tolux simplify radicals"},
+    {"step": 4, "type": "guided_practice", "label": "Simplify with Tolux"},
+    {"step": 5, "type": "independent_practice", "label": "Your turn"},
+    {"step": 6, "type": "mastery_check", "label": "Check mastery"},
+    {"step": 7, "type": "remediation_or_complete", "label": "Next best step"}
+  ],
+  "concept_cards": [
+    {"id": "A11A-C01", "title": "Know the perfect squares", "content": "Useful perfect squares include 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, and 144. A perfect-square factor can move out of a square root."},
+    {"id": "A11A-C02", "title": "Use the largest perfect-square factor", "content": "For √72, use 72=36·2. Then √72=√36·√2=6√2. Choosing the largest perfect-square factor usually reaches simplified form in one step."},
+    {"id": "A11A-C03", "title": "Multiply and divide square roots carefully", "content": "For nonnegative numbers, √a·√b=√(ab). For b>0, √a/√b=√(a/b). Simplify the resulting radical whenever possible."},
+    {"id": "A11A-C04", "title": "Combine only like radicals", "content": "Simplify each radical first. Radicals can be combined only when their simplified radicands match, such as 2√3+5√3=7√3."},
+    {"id": "A11A-C05", "title": "Know when a radical is simplified", "content": "A simplified square-root expression has no perfect-square factor greater than 1 left inside the radical, and all like radicals have been combined."}
+  ],
+  "items": [
+    {
+      "id": "A11A-D01", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Evaluate √36.", "answer_key": "6",
+      "accepted_answers": ["6"],
+      "diagnostic_tag": "perfect_square_value", "critical_misconception": true,
+      "tutor_behavior": "Ask which positive number multiplied by itself equals 36.",
+      "solution_steps": [
+        {"equation": "6·6=36", "explanation": "36 is a perfect square."},
+        {"equation": "√36=6", "explanation": "The principal square root is the nonnegative value 6."}
+      ]
+    },
+    {
+      "id": "A11A-D02", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "What is the largest perfect-square factor of 72?", "answer_key": "36",
+      "accepted_answers": ["36"],
+      "diagnostic_tag": "perfect_square_factor", "critical_misconception": true,
+      "tutor_behavior": "Check perfect squares that divide 72: 4, 9, and 36. Choose the largest one.",
+      "solution_steps": [
+        {"equation": "72=36·2", "explanation": "36 divides 72 exactly."},
+        {"equation": "36=6²", "explanation": "36 is the largest perfect-square factor of 72."}
+      ]
+    },
+    {
+      "id": "A11A-D03", "type": "diagnostic", "difficulty": "Grade-level",
+      "prompt": "Simplify √12.", "answer_key": "2√3",
+      "accepted_answers": ["2√3", "2sqrt(3)", "2sqrt3"],
+      "diagnostic_tag": "extract_square", "critical_misconception": true,
+      "tutor_behavior": "Rewrite 12 as 4·3, then take √4 out of the radical.",
+      "solution_steps": [
+        {"equation": "√12=√(4·3)", "explanation": "Use the perfect-square factor 4."},
+        {"equation": "√12=√4·√3=2√3", "explanation": "Take the square root of 4 and leave √3 inside."}
+      ]
+    },
+
+    {
+      "id": "A11A-L01", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Simplify √72.", "answer_key": "6√2",
+      "accepted_answers": ["6√2", "6sqrt(2)", "6sqrt2"],
+      "diagnostic_tag": "extract_square",
+      "solution_steps": [
+        {"equation": "72=36·2", "explanation": "Choose 36 because it is the largest perfect-square factor of 72."},
+        {"equation": "√72=√(36·2)", "explanation": "Rewrite the radicand using the perfect-square factor."},
+        {"equation": "√72=√36·√2", "explanation": "Use the product property of square roots."},
+        {"equation": "√72=6√2", "explanation": "Since √36=6 and 2 has no perfect-square factor greater than 1, the radical is simplified."}
+      ],
+      "tutor_behavior": "Find the largest perfect-square factor first: 72=36·2."
+    },
+    {
+      "id": "A11A-L02", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Simplify 2√18+√8.", "answer_key": "8√2",
+      "accepted_answers": ["8√2", "8sqrt(2)", "8sqrt2"],
+      "diagnostic_tag": "like_radicals",
+      "solution_steps": [
+        {"equation": "√18=√(9·2)=3√2", "explanation": "Simplify √18 using the perfect-square factor 9."},
+        {"equation": "√8=√(4·2)=2√2", "explanation": "Simplify √8 using the perfect-square factor 4."},
+        {"equation": "2√18+√8=2(3√2)+2√2", "explanation": "Substitute the simplified radicals."},
+        {"equation": "6√2+2√2=8√2", "explanation": "The radicals are now like radicals, so add their coefficients."}
+      ],
+      "tutor_behavior": "Simplify each radical first; only then combine the matching √2 terms."
+    },
+    {
+      "id": "A11A-L03", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Simplify √6·√24.", "answer_key": "12",
+      "accepted_answers": ["12"],
+      "diagnostic_tag": "product_property",
+      "solution_steps": [
+        {"equation": "√6·√24=√(6·24)", "explanation": "Use the product property for nonnegative radicands."},
+        {"equation": "√(6·24)=√144", "explanation": "Multiply inside the radical."},
+        {"equation": "√144=12", "explanation": "144 is a perfect square because 12²=144."}
+      ],
+      "tutor_behavior": "Combine the radicals first: √6·√24=√144."
+    },
+
+    {
+      "id": "A11A-G01", "type": "guided_practice", "difficulty": "Foundational",
+      "prompt": "Simplify √48.", "answer_key": "4√3",
+      "accepted_answers": ["4√3", "4sqrt(3)", "4sqrt3"],
+      "diagnostic_tag": "extract_square",
+      "hint_steps": ["Look for the largest perfect-square factor of 48.", "48=16·3.", "Take √16 outside the radical and leave √3 inside."],
+      "alternate_solution_steps": [
+        {"equation": "√48=√(16·3)", "explanation": "16 is the largest perfect-square factor."},
+        {"equation": "√48=4√3", "explanation": "√16=4, and √3 cannot be simplified further."}
+      ],
+      "solution_steps": [
+        {"equation": "48=16·3", "explanation": "Use the perfect-square factor 16."},
+        {"equation": "√48=√16·√3", "explanation": "Split the radical using the product property."},
+        {"equation": "√48=4√3", "explanation": "Take √16=4 outside the radical."}
+      ],
+      "tutor_behavior": "Start with 48=16·3, then take √16 outside."
+    },
+    {
+      "id": "A11A-G02", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "Simplify √27+√12.", "answer_key": "5√3",
+      "accepted_answers": ["5√3", "5sqrt(3)", "5sqrt3"],
+      "diagnostic_tag": "like_radicals", "critical_misconception": true,
+      "hint_steps": ["Do not add the radicands. Simplify each radical separately first.", "√27=3√3 and √12=2√3.", "Now the radicals match, so add the coefficients 3 and 2."],
+      "alternate_solution_steps": [
+        {"equation": "√27+√12=√(9·3)+√(4·3)", "explanation": "Expose a perfect-square factor in each radicand."},
+        {"equation": "3√3+2√3=5√3", "explanation": "Combine like radicals after simplifying."}
+      ],
+      "solution_steps": [
+        {"equation": "√27=3√3", "explanation": "27=9·3."},
+        {"equation": "√12=2√3", "explanation": "12=4·3."},
+        {"equation": "3√3+2√3=5√3", "explanation": "Add the coefficients because the radicands are the same."}
+      ],
+      "tutor_behavior": "Simplify √27 and √12 separately; never turn √27+√12 into √39."
+    },
+    {
+      "id": "A11A-G03", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "Simplify √50/√2.", "answer_key": "5",
+      "accepted_answers": ["5"],
+      "diagnostic_tag": "quotient_property", "critical_misconception": true,
+      "hint_steps": ["Use the quotient property because both radicands are nonnegative and the denominator is not zero.", "√50/√2=√(50/2).", "50/2=25, and √25 is a perfect square."],
+      "alternate_solution_steps": [
+        {"equation": "√50/√2=√25", "explanation": "Divide the radicands: 50÷2=25."},
+        {"equation": "√25=5", "explanation": "5²=25."}
+      ],
+      "solution_steps": [
+        {"equation": "√50/√2=√(50/2)", "explanation": "Apply the quotient property."},
+        {"equation": "√(50/2)=√25", "explanation": "Simplify the quotient inside the radical."},
+        {"equation": "√25=5", "explanation": "Take the principal square root."}
+      ],
+      "tutor_behavior": "Combine the quotient under one square root: √(50/2)=√25."
+    },
+
+    {
+      "id": "A11A-P01", "type": "independent_practice", "difficulty": "Foundational",
+      "prompt": "Simplify √75.", "answer_key": "5√3",
+      "accepted_answers": ["5√3", "5sqrt(3)", "5sqrt3"],
+      "diagnostic_tag": "extract_square",
+      "hint_steps": ["Find a perfect square that divides 75.", "75=25·3.", "Take √25 outside."],
+      "alternate_solution_steps": [{"equation": "√75=√(25·3)", "explanation": "Use 25 as the perfect-square factor."}, {"equation": "√75=5√3", "explanation": "√25=5."}],
+      "solution_steps": [{"equation": "75=25·3", "explanation": "25 is the largest perfect-square factor."}, {"equation": "√75=5√3", "explanation": "Take √25 outside the radical."}],
+      "tutor_behavior": "Use 75=25·3, not 75=5·15, because 25 is a perfect square."
+    },
+    {
+      "id": "A11A-P02", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Simplify 3√8-√18.", "answer_key": "3√2",
+      "accepted_answers": ["3√2", "3sqrt(2)", "3sqrt2"],
+      "diagnostic_tag": "like_radicals",
+      "hint_steps": ["Simplify √8 and √18 first.", "√8=2√2 and √18=3√2.", "Compute 3(2√2)-3√2."],
+      "alternate_solution_steps": [{"equation": "3√8-√18=6√2-3√2", "explanation": "Simplify both radicals."}, {"equation": "6√2-3√2=3√2", "explanation": "Subtract the coefficients of like radicals."}],
+      "solution_steps": [{"equation": "3√8=3(2√2)=6√2", "explanation": "Simplify √8 first."}, {"equation": "√18=3√2", "explanation": "Simplify √18."}, {"equation": "6√2-3√2=3√2", "explanation": "Combine like radicals."}],
+      "tutor_behavior": "Simplify to like radicals before subtracting."
+    },
+    {
+      "id": "A11A-P03", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Simplify √15·√5.", "answer_key": "5√3",
+      "accepted_answers": ["5√3", "5sqrt(3)", "5sqrt3"],
+      "diagnostic_tag": "product_property",
+      "hint_steps": ["Combine the two radicals into one radical.", "√15·√5=√75.", "Now simplify √75 using 75=25·3."],
+      "alternate_solution_steps": [{"equation": "√15·√5=√75", "explanation": "Use the product property."}, {"equation": "√75=5√3", "explanation": "Extract the perfect-square factor 25."}],
+      "solution_steps": [{"equation": "√15·√5=√75", "explanation": "Multiply the radicands."}, {"equation": "√75=√(25·3)", "explanation": "Find the perfect-square factor 25."}, {"equation": "√75=5√3", "explanation": "Simplify completely."}],
+      "tutor_behavior": "First multiply under one radical, then simplify √75."
+    },
+    {
+      "id": "A11A-P04", "type": "independent_practice", "difficulty": "Challenging",
+      "prompt": "Simplify √32-√8.", "answer_key": "2√2",
+      "accepted_answers": ["2√2", "2sqrt(2)", "2sqrt2"],
+      "diagnostic_tag": "like_radicals",
+      "hint_steps": ["Simplify each radical separately.", "√32=4√2 and √8=2√2.", "Subtract the coefficients."],
+      "alternate_solution_steps": [{"equation": "√32-√8=4√2-2√2", "explanation": "Both radicals simplify to √2 terms."}, {"equation": "4√2-2√2=2√2", "explanation": "Subtract like radicals."}],
+      "solution_steps": [{"equation": "√32=4√2", "explanation": "32=16·2."}, {"equation": "√8=2√2", "explanation": "8=4·2."}, {"equation": "4√2-2√2=2√2", "explanation": "Combine like radicals."}],
+      "tutor_behavior": "Use 32=16·2 and 8=4·2 so both terms become like radicals."
+    },
+
+    {
+      "id": "A11A-M01", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Simplify √98.", "answer_key": "7√2",
+      "accepted_answers": ["7√2", "7sqrt(2)", "7sqrt2"],
+      "diagnostic_tag": "extract_square", "critical_misconception": true,
+      "tutor_behavior": "Use 98=49·2, then take √49 outside.",
+      "solution_steps": [{"equation": "√98=√(49·2)", "explanation": "49 is the largest perfect-square factor."}, {"equation": "√98=7√2", "explanation": "√49=7."}]
+    },
+    {
+      "id": "A11A-M02", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Simplify √45+2√20.", "answer_key": "7√5",
+      "accepted_answers": ["7√5", "7sqrt(5)", "7sqrt5"],
+      "diagnostic_tag": "like_radicals", "critical_misconception": true,
+      "tutor_behavior": "Simplify √45=3√5 and √20=2√5 before combining coefficients.",
+      "solution_steps": [{"equation": "√45=3√5", "explanation": "45=9·5."}, {"equation": "2√20=2(2√5)=4√5", "explanation": "20=4·5."}, {"equation": "3√5+4√5=7√5", "explanation": "Combine like radicals."}]
+    },
+    {
+      "id": "A11A-M03", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Simplify √12·√3.", "answer_key": "6",
+      "accepted_answers": ["6"],
+      "diagnostic_tag": "product_property", "critical_misconception": true,
+      "tutor_behavior": "Use √12·√3=√36, then evaluate √36.",
+      "solution_steps": [{"equation": "√12·√3=√36", "explanation": "Multiply the radicands."}, {"equation": "√36=6", "explanation": "36 is a perfect square."}]
+    },
+    {
+      "id": "A11A-M04", "type": "mastery_check", "difficulty": "Reasoning",
+      "prompt": "A student says √18=9√2. Is the student correct? Answer yes or no.",
+      "answer_key": "no", "accepted_answers": ["no", "incorrect"],
+      "diagnostic_tag": "coefficient_error", "critical_misconception": true,
+      "explanation_prompt": "Explain the error and give the correct simplified form of √18.",
+      "explanation_keywords": [["9", "perfect square"], ["3√2", "3sqrt(2)", "3sqrt2"], ["√9=3", "sqrt(9)=3"]],
+      "minimum_explanation_keyword_groups": 2,
+      "explanation_guidance": "Use 18=9·2. Because √9=3, not 9, the correct simplified form is 3√2.",
+      "tutor_behavior": "The number that comes out is the square root of the perfect-square factor, not the factor itself.",
+      "solution_steps": [{"equation": "√18=√(9·2)", "explanation": "Use 9 as the perfect-square factor."}, {"equation": "√18=3√2", "explanation": "√9=3, so 9 does not come outside unchanged."}]
+    },
+    {
+      "id": "A11A-M05", "type": "mastery_check", "difficulty": "Context",
+      "prompt": "A square has area 72 square feet. Write its exact side length in simplified radical form.",
+      "answer_key": "6√2 feet",
+      "accepted_answers": ["6√2 feet", "6√2 ft", "6√2", "6sqrt(2) feet", "6sqrt(2) ft", "6sqrt(2)"],
+      "diagnostic_tag": "context_radical", "critical_misconception": true,
+      "tutor_behavior": "The side length is √72 feet; simplify √72 using 72=36·2.",
+      "solution_steps": [{"equation": "s=√72", "explanation": "A square with side s has area s², so the side is the positive square root of 72."}, {"equation": "s=6√2 feet", "explanation": "Simplify √72 using 36·2."}]
+    },
+
+    {"id": "A11A-X01", "type": "depth_practice", "difficulty": "Foundational", "prompt": "Simplify √8.", "answer_key": "2√2", "accepted_answers": ["2√2", "2sqrt(2)", "2sqrt2"], "diagnostic_tag": "extract_square", "tutor_behavior": "Use 8=4·2.", "solution_steps": [{"equation": "√8=√(4·2)", "explanation": "Use perfect-square factor 4."}, {"equation": "√8=2√2", "explanation": "√4=2."}]},
+    {"id": "A11A-X02", "type": "depth_practice", "difficulty": "Foundational", "prompt": "Simplify √24.", "answer_key": "2√6", "accepted_answers": ["2√6", "2sqrt(6)", "2sqrt6"], "diagnostic_tag": "extract_square", "tutor_behavior": "Use 24=4·6.", "solution_steps": [{"equation": "√24=√(4·6)", "explanation": "Use perfect-square factor 4."}, {"equation": "√24=2√6", "explanation": "√4=2."}]},
+    {"id": "A11A-X03", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Simplify √108.", "answer_key": "6√3", "accepted_answers": ["6√3", "6sqrt(3)", "6sqrt3"], "diagnostic_tag": "extract_square", "tutor_behavior": "Use 108=36·3.", "solution_steps": [{"equation": "√108=√(36·3)", "explanation": "36 is a perfect-square factor."}, {"equation": "√108=6√3", "explanation": "√36=6."}]},
+    {"id": "A11A-X04", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Simplify √200.", "answer_key": "10√2", "accepted_answers": ["10√2", "10sqrt(2)", "10sqrt2"], "diagnostic_tag": "extract_square", "tutor_behavior": "Use 200=100·2.", "solution_steps": [{"equation": "√200=√(100·2)", "explanation": "100 is the largest perfect-square factor."}, {"equation": "√200=10√2", "explanation": "√100=10."}]},
+    {"id": "A11A-X05", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Simplify 2√12+3√27.", "answer_key": "13√3", "accepted_answers": ["13√3", "13sqrt(3)", "13sqrt3"], "diagnostic_tag": "like_radicals", "tutor_behavior": "Simplify √12=2√3 and √27=3√3, then combine coefficients.", "solution_steps": [{"equation": "2√12=4√3", "explanation": "√12=2√3."}, {"equation": "3√27=9√3", "explanation": "√27=3√3."}, {"equation": "4√3+9√3=13√3", "explanation": "Combine like radicals."}]},
+    {"id": "A11A-X06", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Simplify 4√18-√8.", "answer_key": "10√2", "accepted_answers": ["10√2", "10sqrt(2)", "10sqrt2"], "diagnostic_tag": "like_radicals", "tutor_behavior": "Simplify both radicals to √2 terms before subtracting.", "solution_steps": [{"equation": "4√18=12√2", "explanation": "√18=3√2."}, {"equation": "√8=2√2", "explanation": "8=4·2."}, {"equation": "12√2-2√2=10√2", "explanation": "Subtract coefficients."}]},
+    {"id": "A11A-X07", "type": "depth_practice", "difficulty": "Challenging", "prompt": "Simplify √10·√40.", "answer_key": "20", "accepted_answers": ["20"], "diagnostic_tag": "product_property", "tutor_behavior": "Combine the radicals: √(10·40)=√400.", "solution_steps": [{"equation": "√10·√40=√400", "explanation": "Use the product property."}, {"equation": "√400=20", "explanation": "20²=400."}]},
+    {"id": "A11A-X08", "type": "depth_practice", "difficulty": "Challenging", "prompt": "Simplify √54/√6.", "answer_key": "3", "accepted_answers": ["3"], "diagnostic_tag": "quotient_property", "tutor_behavior": "Use √54/√6=√9.", "solution_steps": [{"equation": "√54/√6=√(54/6)", "explanation": "Apply the quotient property."}, {"equation": "√9=3", "explanation": "54÷6=9."}]},
+    {"id": "A11A-X09", "type": "depth_practice", "difficulty": "Grade-level", "prompt": "Simplify √32+√50.", "answer_key": "9√2", "accepted_answers": ["9√2", "9sqrt(2)", "9sqrt2"], "diagnostic_tag": "like_radicals", "tutor_behavior": "Simplify √32=4√2 and √50=5√2, then add.", "solution_steps": [{"equation": "√32=4√2", "explanation": "32=16·2."}, {"equation": "√50=5√2", "explanation": "50=25·2."}, {"equation": "4√2+5√2=9√2", "explanation": "Combine like radicals."}]},
+    {"id": "A11A-X10", "type": "depth_practice", "difficulty": "Reasoning", "prompt": "Simplify √12+√3.", "answer_key": "3√3", "accepted_answers": ["3√3", "3sqrt(3)", "3sqrt3"], "diagnostic_tag": "like_radicals", "tutor_behavior": "Simplify √12 first, then combine 2√3+√3.", "solution_steps": [{"equation": "√12+√3=2√3+√3", "explanation": "√12=2√3."}, {"equation": "2√3+√3=3√3", "explanation": "The radicals are like terms."}]},
+    {"id": "A11A-X11", "type": "depth_practice", "difficulty": "Challenging", "prompt": "Simplify √48·√3.", "answer_key": "12", "accepted_answers": ["12"], "diagnostic_tag": "product_property", "tutor_behavior": "Combine the radicals to get √144.", "solution_steps": [{"equation": "√48·√3=√144", "explanation": "48·3=144."}, {"equation": "√144=12", "explanation": "12²=144."}]},
+    {"id": "A11A-X12", "type": "depth_practice", "difficulty": "Context", "prompt": "A square tile has area 147 square centimeters. Write its exact side length in simplified radical form.", "answer_key": "7√3 cm", "accepted_answers": ["7√3 cm", "7√3", "7sqrt(3) cm", "7sqrt(3)"], "diagnostic_tag": "context_radical", "tutor_behavior": "The side is √147 cm; use 147=49·3.", "solution_steps": [{"equation": "s=√147", "explanation": "Take the positive square root of the area."}, {"equation": "s=7√3 cm", "explanation": "147=49·3 and √49=7."}]}
+  ],
+  "misconception_routes": {
+    "perfect_square_value": {"error_code": "A11A-E01", "teacher_signal": "Does not recognize common perfect-square values", "route": "perfect-square-fluency"},
+    "perfect_square_factor": {"error_code": "A11A-E02", "teacher_signal": "Cannot identify a useful perfect-square factor", "route": "perfect-square-factor-remediation"},
+    "extract_square": {"error_code": "A11A-E03", "teacher_signal": "Leaves a perfect-square factor inside the radical or moves the factor out without taking its square root", "route": "extract-square-remediation"},
+    "product_property": {"error_code": "A11A-E04", "teacher_signal": "Misuses the product property or fails to simplify the product", "route": "radical-product-remediation"},
+    "quotient_property": {"error_code": "A11A-E05", "teacher_signal": "Misuses the quotient property or does not simplify the quotient radicand", "route": "radical-quotient-remediation"},
+    "like_radicals": {"error_code": "A11A-E06", "teacher_signal": "Adds or subtracts unlike radicals before simplifying or combines radicands instead of coefficients", "route": "like-radical-remediation"},
+    "coefficient_error": {"error_code": "A11A-E07", "teacher_signal": "Moves a perfect-square factor outside unchanged instead of taking its square root", "route": "coefficient-remediation"},
+    "context_radical": {"error_code": "A11A-E08", "teacher_signal": "Finds a radical but does not simplify or connect it to the requested measurement", "route": "context-radical-remediation"}
+  }
+}
