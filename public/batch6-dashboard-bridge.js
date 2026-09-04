@@ -1,10 +1,10 @@
 (() => {
   const modules=[
-    {id:'alg1-a12c-sequence-terms',skill:'A.12C',label:'A.12C • Terms of Arithmetic and Geometric Sequences',summary:'Determine sequence terms by recognizing constant differences, constant ratios, and recursive patterns.'},
-    {id:'alg1-a12d-sequence-formulas',skill:'A.12D',label:'A.12D • Write Sequence Formulas',summary:'Write nth-term formulas for arithmetic and geometric sequences and understand why n-1 counts the jumps.'},
-    {id:'alg1-a12e-literal-equations',skill:'A.12E',label:'A.12E • Solve Literal Equations',summary:'Rearrange mathematical and scientific formulas to isolate a specified variable.'},
-    {id:'alg1-a2a-linear-domain-range',skill:'A.2A',label:'A.2A • Linear Domain and Range',summary:'Determine domain and range from linear rules, graphs, intervals, discrete situations, and real-world restrictions.'},
-    {id:'alg1-a2b-equations-from-points',skill:'A.2B',label:'A.2B • Write Lines from Points and Slope',summary:'Write linear equations from slope, one point, or two points using slope-intercept, point-slope, and standard forms.'}
+    {id:'alg1-a2c-equations-from-representations',skill:'A.2C',label:'A.2C • Write Lines from Tables, Graphs, and Descriptions',summary:'Translate tables, graphs, and verbal descriptions into slope, intercept, and a linear equation.'},
+    {id:'alg1-a2d-direct-variation',skill:'A.2D',label:'A.2D • Direct Variation',summary:'Recognize y=kx, find the constant of variation, and model proportional relationships.'},
+    {id:'alg1-a2e-parallel-lines',skill:'A.2E',label:'A.2E • Equations of Parallel Lines',summary:'Keep the same slope and use a required point to write a parallel line.'},
+    {id:'alg1-a2f-perpendicular-lines',skill:'A.2F',label:'A.2F • Equations of Perpendicular Lines',summary:'Use negative reciprocal slopes and a required point to write perpendicular lines.'},
+    {id:'alg1-a2g-horizontal-vertical-lines',skill:'A.2G',label:'A.2G • Horizontal and Vertical Lines',summary:'Write y=c and x=c lines, classify zero and undefined slope, and relate them to the coordinate axes.'}
   ];
   function ensure(select,value,label){if(!select)return;let option=[...select.options].find(o=>o.value===value);if(!option){option=document.createElement('option');option.value=value;select.append(option);}option.disabled=false;delete option.dataset.toluxPlaceholder;option.textContent=label;}
   function renderSummary(){const select=document.querySelector('#tutorSkillSelect');const summary=document.querySelector('#tutorLessonSummary');if(!select||!summary)return;const m=modules.find(x=>x.id===select.value);if(!m)return;summary.innerHTML=`<strong>${m.label}</strong><p>${m.summary}</p><small>Lesson path: Learn visually → Watch Tolux solve → Guided practice → Independent practice → Mastery check</small>`;}
@@ -12,11 +12,3 @@
   function start(){document.querySelector('#tutorSkillSelect')?.addEventListener('change',renderSummary);let n=0;const timer=setInterval(()=>{n++;if(sync()||n>=100)clearInterval(timer);},100);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
-
-if (!document.querySelector('script[data-tolux-batch6-bridge]')) {
-  const script=document.createElement('script');
-  script.src='/batch6-dashboard-bridge.js';
-  script.defer=true;
-  script.dataset.toluxBatch6Bridge='true';
-  document.head.append(script);
-}
