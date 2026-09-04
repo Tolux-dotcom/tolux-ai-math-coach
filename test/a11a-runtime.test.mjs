@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 
+const lessonHtml = fs.readFileSync(new URL("../public/lesson.html", import.meta.url), "utf8");
 const practiceHtml = fs.readFileSync(new URL("../public/practice.html", import.meta.url), "utf8");
 const dashboardBridge = fs.readFileSync(new URL("../public/a11a-dashboard-bridge.js", import.meta.url), "utf8");
 const completionBridge = fs.readFileSync(new URL("../public/a10f-dashboard-bridge.js", import.meta.url), "utf8");
@@ -9,6 +10,7 @@ const visualLoader = fs.readFileSync(new URL("../public/a10f-visual.js", import.
 const visualRuntime = fs.readFileSync(new URL("../public/a11a-visual.js", import.meta.url), "utf8");
 const practiceRuntime = fs.readFileSync(new URL("../public/a11a-practice.js", import.meta.url), "utf8");
 const courseCore = fs.readFileSync(new URL("../public/course-core.mjs", import.meta.url), "utf8");
+const mathToolbar = fs.readFileSync(new URL("../public/math-symbol-toolbar.js", import.meta.url), "utf8");
 
 test("A.11A is exposed in Tutor and Practice controls without a broad DOM observer", () => {
   assert.match(completionBridge, /a11a-dashboard-bridge\.js/);
@@ -42,4 +44,15 @@ test("A.11A lesson loads visual perfect-square-factor teaching", () => {
   assert.match(visualRuntime, /√\(36 · 2\)/);
   assert.match(visualRuntime, /6√2/);
   assert.match(visualRuntime, /perfect-square-strip/);
+});
+
+test("lesson and practice expose a reusable student math-symbol keyboard", () => {
+  assert.match(lessonHtml, /math-symbol-toolbar\.js/);
+  assert.match(practiceHtml, /math-symbol-toolbar\.js/);
+  for (const token of ["√", "∛", "x²", "x³", "^", "+", "−", "×", "÷", "≤", "≥", "π", "±"]) {
+    assert.match(mathToolbar, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(mathToolbar, /selectionStart/);
+  assert.match(mathToolbar, /setSelectionRange/);
+  assert.match(mathToolbar, /Math symbols — tap to insert/);
 });
