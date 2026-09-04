@@ -1,0 +1,234 @@
+{
+  "module_id": "alg1-a12a-identify-functions",
+  "version": "1.0.0-private-qa",
+  "course": "Algebra 1",
+  "teks": ["A.12A"],
+  "title": "Identify Functions",
+  "student_objective": "I can decide whether a relation shown verbally, in a table, on a graph, with ordered pairs, in a mapping, or symbolically defines a function.",
+  "teacher_objective": "Diagnose confusion between repeated inputs and repeated outputs, misuse of the vertical line test, and symbolic relations that give one input more than one output.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": true,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_settings": {
+    "diagnostic_item_ids": ["A12A-D01", "A12A-D02", "A12A-D03"],
+    "guided_item_ids": ["A12A-G01", "A12A-G02", "A12A-G03"],
+    "independent_item_ids": ["A12A-P01", "A12A-P02", "A12A-P03", "A12A-P04", "A12A-P05"],
+    "mastery_item_ids": ["A12A-M01", "A12A-M02", "A12A-M03", "A12A-M04", "A12A-M05"],
+    "assessed_items_in_core_lesson": 16
+  },
+  "lesson_flow": [
+    {"step": 1, "type": "prerequisite_diagnostic", "label": "Function readiness"},
+    {"step": 2, "type": "concept", "label": "One input, one output"},
+    {"step": 3, "type": "worked_examples", "label": "Watch Tolux test relations"},
+    {"step": 4, "type": "guided_practice", "label": "Decide with Tolux"},
+    {"step": 5, "type": "independent_practice", "label": "Your turn"},
+    {"step": 6, "type": "mastery_check", "label": "Check mastery"},
+    {"step": 7, "type": "remediation_or_complete", "label": "Next best step"}
+  ],
+  "concept_cards": [
+    {"id": "A12A-C01", "title": "Function rule", "content": "A relation is a function when every input is paired with exactly one output."},
+    {"id": "A12A-C02", "title": "Repeated outputs are allowed", "content": "Different inputs may share the same output. That does not break the function rule."},
+    {"id": "A12A-C03", "title": "Repeated inputs can be a problem", "content": "If the same input is paired with two different outputs, the relation is not a function."},
+    {"id": "A12A-C04", "title": "Tables and ordered pairs", "content": "Check the x-values or first coordinates. If one input has two different outputs, the relation is not a function."},
+    {"id": "A12A-C05", "title": "Graphs: vertical line test", "content": "A graph represents y as a function of x when every vertical line hits the graph at most once."},
+    {"id": "A12A-C06", "title": "Equations and rules", "content": "Ask whether each x-value determines exactly one y-value. For example, y=2x+3 is a function, while x=y² is not because one x can give two y-values."}
+  ],
+  "items": [
+    {
+      "id": "A12A-D01", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Does the relation {(1,4),(2,5),(3,6)} define a function? Answer function or not a function.",
+      "answer_key": "function", "accepted_answers": ["function", "yes", "yes, function"],
+      "diagnostic_tag": "ordered_pairs",
+      "hint_steps": ["Look only at the first coordinate in each ordered pair.", "Ask whether any input is paired with two different outputs.", "The inputs 1, 2, and 3 each have exactly one output, so the answer is function."],
+      "solution_steps": [
+        {"equation": "inputs: 1, 2, 3", "explanation": "List the first coordinates."},
+        {"equation": "each input appears once", "explanation": "No input is paired with two different outputs."},
+        {"equation": "function", "explanation": "Every input has exactly one output."}
+      ],
+      "alternate_solution_steps": [
+        {"equation": "1→4, 2→5, 3→6", "explanation": "Trace one output from each input."},
+        {"equation": "one arrow from every input", "explanation": "That is exactly the definition of a function."}
+      ],
+      "teaching_explanation": {"title": "Use the input test", "overview": "A function assigns exactly one output to each input.", "vocabulary": "Input = x-value or first coordinate. Output = y-value or second coordinate."}
+    },
+    {
+      "id": "A12A-D02", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Does the relation {(2,1),(2,5),(4,7)} define a function? Answer function or not a function.",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "not function", "no"],
+      "diagnostic_tag": "repeated_input", "critical_misconception": true,
+      "hint_steps": ["Find repeated first coordinates.", "The input 2 is paired with both 1 and 5.", "One input has two different outputs, so the answer is not a function."],
+      "solution_steps": [
+        {"equation": "2→1 and 2→5", "explanation": "The same input has two outputs."},
+        {"equation": "one input → two outputs", "explanation": "That violates the definition of a function."},
+        {"equation": "not a function", "explanation": "A function cannot assign two outputs to one input."}
+      ],
+      "teaching_explanation": {"title": "Find the repeated input", "overview": "One repeated input with different outputs is enough to make the relation not a function.", "vocabulary": "Repeated outputs are allowed; repeated inputs with different outputs are not."}
+    },
+    {
+      "id": "A12A-D03", "type": "diagnostic", "difficulty": "Grade-level",
+      "prompt": "A table has x-values 0,1,2,3 and y-values 5,5,7,7. Does the table define a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"],
+      "diagnostic_tag": "repeated_output", "critical_misconception": true,
+      "hint_steps": ["Check the inputs, not the outputs.", "Different inputs are allowed to share the same output.", "Every x-value has exactly one y-value, so the answer is function."],
+      "solution_steps": [
+        {"equation": "0→5, 1→5, 2→7, 3→7", "explanation": "Read each row as one input-output pair."},
+        {"equation": "outputs repeat; inputs do not", "explanation": "Repeated outputs are allowed."},
+        {"equation": "function", "explanation": "Every input has exactly one output."}
+      ],
+      "teaching_explanation": {"title": "Repeated outputs are okay", "overview": "A function may send several different inputs to the same output.", "vocabulary": "The restriction is on inputs, not on outputs."}
+    },
+    {
+      "id": "A12A-L01", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "A mapping shows -2→4, 0→4, and 3→9. Is the relation a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "mapping",
+      "solution_steps": [
+        {"equation": "-2→4, 0→4, 3→9", "explanation": "Trace the arrows from the inputs."},
+        {"equation": "one arrow from each input", "explanation": "No input points to two outputs."},
+        {"equation": "function", "explanation": "Sharing output 4 is allowed."}
+      ]
+    },
+    {
+      "id": "A12A-L02", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "A mapping shows 1→3 and 1→6, while 2→8. Is the relation a function?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "mapping", "critical_misconception": true,
+      "solution_steps": [
+        {"equation": "1→3 and 1→6", "explanation": "Input 1 has two arrows."},
+        {"equation": "one input → two outputs", "explanation": "That fails the function rule."},
+        {"equation": "not a function", "explanation": "Every input must have exactly one output."}
+      ]
+    },
+    {
+      "id": "A12A-L03", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Does the equation y=2x-5 define y as a function of x?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "symbolic",
+      "solution_steps": [
+        {"equation": "y=2x-5", "explanation": "For any chosen x, the rule calculates one value of y."},
+        {"equation": "one x → one y", "explanation": "There is no second output choice."},
+        {"equation": "function", "explanation": "Each input determines exactly one output."}
+      ]
+    },
+    {
+      "id": "A12A-L04", "type": "worked_example", "difficulty": "Challenging",
+      "prompt": "Does the equation x=y² define y as a function of x over the real numbers?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "symbolic", "critical_misconception": true,
+      "solution_steps": [
+        {"equation": "x=y²", "explanation": "Test whether one x-value can give more than one y-value."},
+        {"equation": "x=4 gives y=2 or y=-2", "explanation": "One input has two outputs."},
+        {"equation": "not a function", "explanation": "The relation fails the function rule."}
+      ]
+    },
+    {
+      "id": "A12A-G01", "type": "guided_practice", "difficulty": "Foundational",
+      "prompt": "Does {(0,2),(1,2),(2,2)} define a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "ordered_pairs",
+      "hint_steps": ["Circle the x-values.", "Repeated y-values are allowed.", "0, 1, and 2 each have exactly one output, so the answer is function."],
+      "solution_steps": [
+        {"equation": "inputs: 0,1,2", "explanation": "The first coordinates are all different."},
+        {"equation": "all outputs are 2", "explanation": "Repeated outputs do not break a function."},
+        {"equation": "function", "explanation": "Each input has exactly one output."}
+      ]
+    },
+    {
+      "id": "A12A-G02", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "The table has rows (-1,3), (0,4), (1,5), and (1,8). Is it a function?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "table", "critical_misconception": true,
+      "hint_steps": ["Scan the x-column for repeats.", "A repeated x-value matters when it has different y-values.", "x=1 has outputs 5 and 8, so the answer is not a function."],
+      "solution_steps": [
+        {"equation": "x=1→5 and x=1→8", "explanation": "The same input has two outputs."},
+        {"equation": "one input → two outputs", "explanation": "That violates the definition."},
+        {"equation": "not a function", "explanation": "The table does not define a function."}
+      ]
+    },
+    {
+      "id": "A12A-G03", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "A graph consists of the points (-2,1), (0,3), (2,1), and (4,3). Does it define a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "graph",
+      "hint_steps": ["Imagine a vertical line through each plotted x-value.", "Check whether two points are stacked above the same x-value.", "No two points share an x-coordinate, so the graph passes the vertical line test and is a function."],
+      "solution_steps": [
+        {"equation": "x-values: -2,0,2,4", "explanation": "Each plotted point has a different x-coordinate."},
+        {"equation": "vertical line hits at most once", "explanation": "No x-value has two y-values."},
+        {"equation": "function", "explanation": "The graph passes the vertical line test."}
+      ]
+    },
+    {
+      "id": "A12A-P01", "type": "independent_practice", "difficulty": "Foundational",
+      "prompt": "Does {(5,1),(6,1),(7,2),(8,2)} define a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "ordered_pairs",
+      "hint_steps": ["Check the first coordinates.", "Repeated outputs are allowed.", "Every input has exactly one output, so the answer is function."],
+      "solution_steps": [{"equation": "5→1, 6→1, 7→2, 8→2", "explanation": "Each input has one output."}, {"equation": "function", "explanation": "The relation meets the function rule."}]
+    },
+    {
+      "id": "A12A-P02", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "A table has x-values -2,-1,0,0 and y-values 3,4,5,6. Is it a function?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "table", "critical_misconception": true,
+      "hint_steps": ["Look for a repeated x-value.", "The input 0 has two different y-values.", "Because x=0 has outputs 5 and 6, the answer is not a function."],
+      "solution_steps": [{"equation": "0→5 and 0→6", "explanation": "One input has two outputs."}, {"equation": "not a function", "explanation": "That violates the definition."}]
+    },
+    {
+      "id": "A12A-P03", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "A vertical line at x=2 intersects a graph at y=-1 and y=4. Does the graph define y as a function of x?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "vertical_line", "critical_misconception": true,
+      "hint_steps": ["Use the vertical line test.", "The same vertical line hits the graph twice.", "One x-value has two y-values, so the graph is not a function."],
+      "solution_steps": [{"equation": "x=2→-1 and 4", "explanation": "The same input has two outputs."}, {"equation": "not a function", "explanation": "The graph fails the vertical line test."}]
+    },
+    {
+      "id": "A12A-P04", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Does y=x²+1 define y as a function of x?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "symbolic",
+      "hint_steps": ["Choose any x-value and evaluate x²+1.", "Each x produces one numerical result.", "Each input has one output, so the relation is a function."],
+      "solution_steps": [{"equation": "y=x²+1", "explanation": "The rule produces one y-value for each x-value."}, {"equation": "function", "explanation": "Each input determines exactly one output."}]
+    },
+    {
+      "id": "A12A-P05", "type": "independent_practice", "difficulty": "Challenging",
+      "prompt": "Does x²+y²=25 define y as a function of x over the real numbers?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "symbolic", "critical_misconception": true,
+      "hint_steps": ["Try x=0.", "When x=0, y²=25, so y can be 5 or -5.", "One input gives two outputs, so the relation is not a function."],
+      "solution_steps": [{"equation": "x=0 ⇒ y²=25", "explanation": "Test one convenient input."}, {"equation": "y=5 or y=-5", "explanation": "The same input has two outputs."}, {"equation": "not a function", "explanation": "One counterexample is enough."}]
+    },
+    {
+      "id": "A12A-M01", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Does {(1,9),(2,9),(3,10),(4,10)} define a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "ordered_pairs",
+      "solution_steps": [{"equation": "inputs: 1,2,3,4", "explanation": "No input repeats with a different output."}, {"equation": "function", "explanation": "Repeated outputs are allowed."}]
+    },
+    {
+      "id": "A12A-M02", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "A graph has points (0,1), (0,-1), and (2,3). Does it define a function?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "graph", "critical_misconception": true,
+      "solution_steps": [{"equation": "x=0→1 and -1", "explanation": "Two points share the same x-value."}, {"equation": "not a function", "explanation": "A vertical line at x=0 hits twice."}]
+    },
+    {
+      "id": "A12A-M03", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Does y=-3x+7 define y as a function of x?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "symbolic",
+      "solution_steps": [{"equation": "y=-3x+7", "explanation": "Each x-value produces one y-value."}, {"equation": "function", "explanation": "The function rule is satisfied."}]
+    },
+    {
+      "id": "A12A-M04", "type": "mastery_check", "difficulty": "Challenging",
+      "prompt": "Does x=y²+1 define y as a function of x over the real numbers?",
+      "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "symbolic", "critical_misconception": true,
+      "solution_steps": [{"equation": "x=5 ⇒ y²=4", "explanation": "Choose an input that creates two possible y-values."}, {"equation": "y=2 or y=-2", "explanation": "One input has two outputs."}, {"equation": "not a function", "explanation": "The relation fails the function rule."}]
+    },
+    {
+      "id": "A12A-M05", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "A table repeats the output 6 for three different input values, but no input repeats. Does it define a function?",
+      "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "repeated_output",
+      "explanation_prompt": "Why is this still a function even though the output 6 repeats?",
+      "explanation_guidance": "Explain the rule using inputs and outputs.",
+      "answer_keywords": [["input", "inputs"], ["one output", "exactly one", "one y"], ["repeat", "repeated", "same output"]],
+      "minimum_keyword_groups": 2,
+      "solution_steps": [{"equation": "different inputs → same output 6", "explanation": "Sharing an output is allowed."}, {"equation": "one output per input", "explanation": "No input has two different outputs."}, {"equation": "function", "explanation": "The relation satisfies the definition."}]
+    }
+  ],
+  "practice_bank": [
+    {"id": "A12A-X01", "difficulty": "Foundational", "prompt": "Does {(2,4),(3,5),(4,6)} define a function?", "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "ordered_pairs", "hint": "Check whether any first coordinate has two outputs.", "solution_steps": [{"equation": "2→4, 3→5, 4→6", "explanation": "Every input has one output."}]},
+    {"id": "A12A-X02", "difficulty": "Foundational", "prompt": "Does {(2,4),(2,4),(3,5)} define a function?", "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "duplicate_pair", "hint": "The repeated pair gives the same output, not a different output.", "solution_steps": [{"equation": "2 always maps to 4", "explanation": "Duplicating the same pair does not create a second output."}]},
+    {"id": "A12A-X03", "difficulty": "Grade-level", "prompt": "A graph passes the vertical line test. Does it define y as a function of x?", "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "vertical_line", "hint": "Passing the vertical line test means each x has at most one y.", "solution_steps": [{"equation": "every vertical line hits at most once", "explanation": "That is the graph test for a function."}]},
+    {"id": "A12A-X04", "difficulty": "Grade-level", "prompt": "A graph fails the vertical line test. Does it define y as a function of x?", "answer_key": "not a function", "accepted_answers": ["not a function", "no"], "diagnostic_tag": "vertical_line", "hint": "A vertical line hitting twice means one x has two y-values.", "solution_steps": [{"equation": "one vertical line hits more than once", "explanation": "One input has multiple outputs."}]},
+    {"id": "A12A-X05", "difficulty": "Grade-level", "prompt": "Every book ISBN is paired with exactly one publication title. Is title a function of ISBN?", "answer_key": "function", "accepted_answers": ["function", "yes"], "diagnostic_tag": "verbal", "hint": "Ask how many titles each ISBN is assigned.", "solution_steps": [{"equation": "one ISBN → one title", "explanation": "Each input has exactly one output."}]}
+  ]
+}
