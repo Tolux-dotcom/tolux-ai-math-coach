@@ -4,6 +4,43 @@
   const isA3DPractice = params.get("skill") === "A.3D";
   if (!isA3DLesson && !isA3DPractice) return;
 
+  function canonicalizeYForm(equation) {
+    const compact = String(equation ?? "")
+      .replace(/\s+/g, "")
+      .replace(/>=/g, "≥")
+      .replace(/<=/g, "≤");
+
+    const match = compact.match(/^y(≥|≤|>|<)(.+)$/i);
+    if (!match) return compact;
+
+    const [, relation, rhs] = match;
+
+    // Already written with the x-term first, which is the answer-bank form.
+    if (/^[+-]?(?:(?:\(\d+(?:\.\d+)?\/\d+(?:\.\d+)?\))|(?:\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?))?x(?:[+-]\d+(?:\.\d+)?)?$/.test(rhs)) {
+      return `y${relation}${rhs}`;
+    }
+
+    // Mathematically equivalent linear y-forms may place the constant first:
+    //   y > 6 - 2x  is the same as  y > -2x + 6
+    //   y ≥ -4 - 2x is the same as  y ≥ -2x - 4
+    // Reorder ONLY simple linear RHS expressions; do not change the relation.
+    const constantFirst = rhs.match(
+      /^([+-]?\d+(?:\.\d+)?)([+-])((?:(?:\(\d+(?:\.\d+)?\/\d+(?:\.\d+)?\))|(?:\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?))?)x$/
+    );
+
+    if (!constantFirst) return `y${relation}${rhs}`;
+
+    const [, constant, operator, coefficient] = constantFirst;
+    const xTerm = operator === "-"
+      ? `-${coefficient || ""}x`
+      : `${coefficient || ""}x`;
+    const constantTerm = Number(constant) >= 0 && !constant.startsWith("+")
+      ? `+${constant}`
+      : constant;
+
+    return `y${relation}${xTerm}${constantTerm}`;
+  }
+
   function canonicalizeBoundaryDescription(value) {
     const original = String(value ?? "");
     const normalized = original
@@ -33,19 +70,14 @@
     // Combined A.3D responses often contain BOTH the rewritten inequality
     // and a natural-language graph description, for example:
     //   y≥-2x-4, solid line, shade above
-    // Canonicalize that to the exact compact form used by the answer bank:
-    //   y≥-2x-4; solid; above
-    // This preserves the mathematics while ignoring harmless words such as
-    // "line" and "shade" and punctuation differences.
+    // Canonicalize that to the compact answer-bank form while preserving
+    // mathematically equivalent y-forms such as y>6-2x.
     const equationMatch = normalized.match(
       /\by\s*(?:>=|<=|>|<|≥|≤)\s*[^,;]+?(?=\s+(?:solid|dashed|dash|shade|shading)\b|[,;]|$)/i
     );
 
     if (equationMatch) {
-      const equation = equationMatch[0]
-        .replace(/\s+/g, "")
-        .replace(/>=/g, "≥")
-        .replace(/<=/g, "≤");
+      const equation = canonicalizeYForm(equationMatch[0]);
       return `${equation}; ${style}; ${direction}`;
     }
 
@@ -79,6 +111,6 @@
     }
   }, true);
 
-  // Expose the pure normalizer for lightweight regression checks in preview QA.
   window.__toluxA3DCanonicalizeBoundaryDescription = canonicalizeBoundaryDescription;
+  window.__toluxA3DCanonicalizeYForm = canonicalizeYForm;
 })();
