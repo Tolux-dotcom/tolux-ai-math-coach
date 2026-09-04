@@ -6,22 +6,22 @@
 
   function canonicalizeBoundaryDescription(value) {
     const original = String(value ?? "");
-    const text = original
+    const normalized = original
       .normalize("NFKC")
       .toLowerCase()
       .replace(/[−–—]/g, "-")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const prose = normalized
       .replace(/[.,;:!?()[\]{}]/g, " ")
       .replace(/\s+/g, " ")
       .trim();
 
-    // If the student also wrote an equation/inequality, preserve it. Those
-    // items need the algebraic expression as well as the graph description.
-    if (/[=<>≤≥]/.test(text)) return original;
-
-    const hasSolid = /\bsolid\b/.test(text);
-    const hasDashed = /\b(?:dashed|dash)\b/.test(text);
-    const hasAbove = /\babove\b/.test(text);
-    const hasBelow = /\bbelow\b/.test(text);
+    const hasSolid = /\bsolid\b/.test(prose);
+    const hasDashed = /\b(?:dashed|dash)\b/.test(prose);
+    const hasAbove = /\babove\b/.test(prose);
+    const hasBelow = /\bbelow\b/.test(prose);
 
     const exactlyOneStyle = Number(hasSolid) + Number(hasDashed) === 1;
     const exactlyOneDirection = Number(hasAbove) + Number(hasBelow) === 1;
@@ -29,6 +29,28 @@
 
     const style = hasSolid ? "solid" : "dashed";
     const direction = hasAbove ? "above" : "below";
+
+    // Combined A.3D responses often contain BOTH the rewritten inequality
+    // and a natural-language graph description, for example:
+    //   y≥-2x-4, solid line, shade above
+    // Canonicalize that to the exact compact form used by the answer bank:
+    //   y≥-2x-4; solid; above
+    // This preserves the mathematics while ignoring harmless words such as
+    // "line" and "shade" and punctuation differences.
+    const equationMatch = normalized.match(
+      /\by\s*(?:>=|<=|>|<|≥|≤)\s*[^,;]+?(?=\s+(?:solid|dashed|dash|shade|shading)\b|[,;]|$)/i
+    );
+
+    if (equationMatch) {
+      const equation = equationMatch[0]
+        .replace(/\s+/g, "")
+        .replace(/>=/g, "≥")
+        .replace(/<=/g, "≤");
+      return `${equation}; ${style}; ${direction}`;
+    }
+
+    // Pure graph-description answers such as "solid line shade above line"
+    // are reduced to the compact answer-bank form.
     return `${style}; ${direction}`;
   }
 
