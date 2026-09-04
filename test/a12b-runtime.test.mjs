@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
+const practice=fs.readFileSync(new URL('../public/a12b-practice.js',import.meta.url),'utf8');
+const practiceHtml=fs.readFileSync(new URL('../public/practice.html',import.meta.url),'utf8');
+const bridge=fs.readFileSync(new URL('../public/a12b-dashboard-bridge.js',import.meta.url),'utf8');
+const prev=fs.readFileSync(new URL('../public/a12a-dashboard-bridge.js',import.meta.url),'utf8');
+const course=fs.readFileSync(new URL('../public/course-core.mjs',import.meta.url),'utf8');
+test('A.12B practice reveals answer after a checked attempt',()=>{assert.match(practice,/Not correct/);assert.match(practice,/correct answer and full explanation/i);assert.match(practice,/Final answer:/);assert.match(practice,/Hint 3: complete reasoning/);assert.match(practice,/Step-by-step alternative explanation/);});
+test('A.12B has 5 10 20 question practice routing',()=>{assert.match(practice,/\[5,10,20\]/);assert.match(practiceHtml,/skill===\"A\.12B\"/);assert.match(practiceHtml,/a12b-practice\.js/);});
+test('A.12B is live in Tutor and Practice controls',()=>{assert.match(bridge,/alg1-a12b-evaluate-functions/);assert.match(bridge,/existing\.disabled=false/);assert.match(prev,/a12b-dashboard-bridge\.js/);assert.match(course,/alg1-a12b-evaluate-functions/);assert.match(course,/a12b-evaluate-functions\.json/);});
+test('A.12B practice saves progress',()=>{assert.match(practice,/practice-alg1-a12b-evaluate-functions/);assert.match(practice,/\/api\/lesson-progress/);assert.match(practice,/toluxLessonProgress/);});
