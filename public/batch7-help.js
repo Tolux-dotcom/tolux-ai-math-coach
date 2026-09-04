@@ -6,26 +6,26 @@
     'alg1-a3b-rate-of-change':{path:'/a3b-rate-of-change.json',rule:'Rate of change is change in output divided by change in input. Include units and interpret the sign in the real situation.'},
     'alg1-a3c-graph-linear-functions':{path:'/a3c-graph-linear-functions.json',rule:'For y=mx+b, plot (0,b), use m=rise/run for another point, draw the line, and read the zero where the graph crosses the x-axis.'}
   };
-  const params=new URLSearchParams(location.search);const moduleId=params.get('module');const config=CONFIG[moduleId];if(!config)return;
-  let itemMap=new Map();
+  const moduleId=new URLSearchParams(location.search).get('module');const config=CONFIG[moduleId];if(!config)return;
+  const feedback=document.querySelector('#lessonFeedback'),stage=document.querySelector('#lessonStage'),answer=document.querySelector('#lessonAnswer'),check=document.querySelector('#submitLessonAnswer'),next=document.querySelector('#nextLessonStep');
+  if(!feedback||!stage||!answer||!check||!next)return;
+  let itemMap=new Map(),observer;
   const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
   const currentId=()=>{const spans=document.querySelectorAll('#lessonContent .question-header span');return spans.length?spans[spans.length-1].textContent.trim():'';};
+  const isMastery=()=>/Mastery Check/i.test(stage.textContent||'');
+  function stepsFor(item){const steps=item?.solution_steps?.length?item.solution_steps:item?.alternate_solution_steps;return steps?.length?steps:[{equation:item?.prompt||'',explanation:item?.tutor_behavior||'Translate the graph or context into the core linear relationship.'},{equation:item?.answer_key||'',explanation:'Check the sign, units, boundary, or intercepts against the original representation.'}];}
   function solution(item,heading='Correct answer and full explanation'){
-    if(!item)return'';
-    const steps=(item.solution_steps||item.alternate_solution_steps||[]).map((s,i)=>`<li><span class="solution-step-number">${i+1}</span><div><div class="math-line">${esc(s.equation)}</div><p>${esc(s.explanation)}</p></div></li>`).join('');
+    if(!item)return'';const steps=stepsFor(item).map((s,i)=>`<li><span class="solution-step-number">${i+1}</span><div><div class="math-line">${esc(s.equation)}</div><p>${esc(s.explanation)}</p></div></li>`).join('');
     return `<div class="solution-panel batch7-reveal" data-batch7-reveal="true"><h3>${esc(heading)}</h3><p><strong>Final answer:</strong> ${esc(item.answer_key)}</p><ol class="solution-steps">${steps}</ol><div class="lesson-state lesson-state-success"><strong>Rule to remember</strong><p>${esc(config.rule)}</p></div></div>`;
   }
+  function paused(fn){observer?.disconnect();fn();setTimeout(()=>observer?.observe(feedback,{childList:true,subtree:true}),0);}
   function strengthen(){
-    const feedback=document.querySelector('#lessonFeedback');if(!feedback||feedback.querySelector('[data-batch7-reveal="true"]'))return;
-    const text=feedback.textContent||'';const item=itemMap.get(currentId());if(!item)return;
-    const wrong=/not quite|not correct|try again|review this|needs revision|incorrect/i.test(text);
-    const third=/hint\s*3/i.test(text);const alt=/another way/i.test(text);
-    if(wrong||third||alt)feedback.insertAdjacentHTML('beforeend',solution(item,wrong?'Check your work: answer and full solution':'Full explanation and answer'));
+    if(isMastery()||feedback.querySelector('[data-batch7-reveal="true"]'))return;
+    const text=feedback.textContent||'',item=itemMap.get(currentId());if(!item)return;
+    const wrong=/not quite|not correct|try again|review this|needs revision|incorrect/i.test(text),third=/hint\s*3/i.test(text),alt=/another way/i.test(text);
+    if(wrong){paused(()=>{feedback.innerHTML=`<div class="lesson-state lesson-state-warning"><strong>Review your attempt.</strong><p>Your attempt is recorded. Study the correct answer and full solution, then continue.</p></div>${solution(item,'Check your work: answer and full solution')}`;answer.disabled=true;check.disabled=true;next.textContent='Review Solution & Continue →';next.style.display='inline-block';});return;}
+    if(third||alt)paused(()=>feedback.insertAdjacentHTML('beforeend',solution(item,third?'Hint 3: answer and complete reasoning':'Another way: complete reasoning')));
   }
-  async function start(){
-    try{const response=await fetch(config.path);if(response.ok){const module=await response.json();itemMap=new Map((module.items||[]).map(i=>[i.id,i]));}}catch(error){console.warn('Batch 7 help bank unavailable',error);}
-    const feedback=document.querySelector('#lessonFeedback');if(!feedback)return;
-    const observer=new MutationObserver(strengthen);observer.observe(feedback,{childList:true,subtree:true});
-  }
+  async function start(){try{const r=await fetch(config.path);if(r.ok){const m=await r.json();itemMap=new Map((m.items||[]).map(i=>[i.id,i]));}}catch(e){console.warn('Batch 7 help bank unavailable',e);}observer=new MutationObserver(strengthen);observer.observe(feedback,{childList:true,subtree:true});strengthen();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
