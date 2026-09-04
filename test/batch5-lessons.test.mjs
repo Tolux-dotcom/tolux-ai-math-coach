@@ -40,3 +40,14 @@ test('five-module batch loads visuals, comprehensive help, dashboard exposure, a
   for(const teks of ['A.12C','A.12D','A.12E','A.2A','A.2B']){assert.match(bridge,new RegExp(teks.replace('.','\\.')));assert.match(runtime,new RegExp(teks.replace('.','\\.')));}
   assert.match(practice,/batch5-practice\.js/); assert.match(runtime,/\[5,10,20\]/); assert.match(runtime,/lesson-progress/); assert.match(runtime,/Correct answer and full explanation/);
 });
+
+test('sequence formula students can enter true subscript notation from the math toolbar',()=>{
+  const toolbar=fs.readFileSync(new URL('../public/math-symbol-toolbar.js',import.meta.url),'utf8');
+  const sequence=JSON.parse(fs.readFileSync(new URL('../public/a12d-sequence-formulas.json',import.meta.url),'utf8'));
+  assert.match(toolbar,/label: "aₙ"/);
+  assert.match(toolbar,/label: "a₁"/);
+  const formulaItems=sequence.items.filter(item=>String(item.answer_key).includes('aₙ'));
+  assert.ok(formulaItems.length>0);
+  assert.ok(formulaItems.every(item=>item.accepted_answers.some(answer=>String(answer).includes('aₙ'))));
+  assert.ok(formulaItems.every(item=>item.accepted_answers.some(answer=>String(answer).includes('a_n')||String(answer).startsWith('an='))));
+});
