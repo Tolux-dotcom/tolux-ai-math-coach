@@ -89,6 +89,15 @@ test("A.9A shifted-range guided help reaches the answer and explains the asympto
   assert.match(lessonHelpUpgrade, /Why this is the answer/);
 });
 
+test("A.9A domain help explains that reflection does not restrict inputs", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P01/);
+  assert.match(lessonHelpUpgrade, /4ˣ is defined for every real x/);
+  assert.match(lessonHelpUpgrade, /−5 changes outputs only/);
+  assert.match(lessonHelpUpgrade, /domain: all real numbers/);
+  assert.match(lessonHelpUpgrade, /domain: \(−∞, ∞\)/);
+  assert.match(lessonHelpUpgrade, /Correct — here is why/);
+});
+
 test("A.9A positive shifted-range help explains endpoint exclusion", () => {
   assert.match(lessonHelpUpgrade, /A9A-P02/);
   assert.match(lessonHelpUpgrade, /horizontal asymptote: y = −2/);
@@ -103,4 +112,11 @@ test("A.9A interval notation help explains parentheses and infinity", () => {
   assert.match(lessonHelpUpgrade, /5 is excluded/);
   assert.match(lessonHelpUpgrade, /infinity never uses a bracket/);
   assert.match(lessonHelpUpgrade, /\(−∞, 5\)/);
+});
+
+test("A.9A discrete contextual-domain help lists only allowed whole-hour inputs", () => {
+  assert.match(lessonHelpUpgrade, /A9A-P04/);
+  assert.match(lessonHelpUpgrade, /t is a whole number/);
+  assert.match(lessonHelpUpgrade, /domain: \{0,1,2,…,12\}/);
+  assert.match(lessonHelpUpgrade, /whole numbers 0 through 12/);
 });
