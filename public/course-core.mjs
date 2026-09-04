@@ -71,6 +71,10 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a11a-radical-expressions": {
     lesson_path: "/a11a-radical-expressions.json",
     available_modes: ["lesson", "practice"]
+  },
+  "alg1-a11b-laws-of-exponents": {
+    lesson_path: "/a11b-laws-of-exponents.json",
+    available_modes: ["lesson", "practice"]
   }
 };
 
