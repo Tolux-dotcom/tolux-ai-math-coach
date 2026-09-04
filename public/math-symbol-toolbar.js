@@ -1,8 +1,8 @@
 (() => {
   const TARGETS = ["#lessonAnswer", "#practiceAnswer"];
   const SYMBOLS = [
-    { label: "√", insert: "√()", caretBack: 1, title: "Square root" },
-    { label: "∛", insert: "∛()", caretBack: 1, title: "Cube root" },
+    { label: "√", insert: "√", title: "Square root" },
+    { label: "∛", insert: "∛", title: "Cube root" },
     { label: "x²", insert: "x²", title: "x squared" },
     { label: "x³", insert: "x³", title: "x cubed" },
     { label: "^", insert: "^", title: "Raise to a power" },
@@ -43,7 +43,7 @@
     const after = input.value.slice(end);
     input.value = `${before}${symbol.insert}${after}`;
 
-    const caret = start + symbol.insert.length - (symbol.caretBack || 0);
+    const caret = start + symbol.insert.length;
     input.focus();
     input.setSelectionRange(caret, caret);
     input.dispatchEvent(new Event("input", { bubbles: true }));
