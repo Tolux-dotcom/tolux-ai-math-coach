@@ -67,6 +67,10 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a10f-difference-of-squares": {
     lesson_path: "/a10f-difference-of-squares.json",
     available_modes: ["lesson", "practice"]
+  },
+  "alg1-a11a-radical-expressions": {
+    lesson_path: "/a11a-radical-expressions.json",
+    available_modes: ["lesson", "practice"]
   }
 };
 
