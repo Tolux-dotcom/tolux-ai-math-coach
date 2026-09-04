@@ -3,9 +3,10 @@
   const lessonModules = new Set([
     'alg1-a10a-add-subtract-polynomials',
     'alg1-a10b-multiply-polynomials',
-    'alg1-a10c-divide-polynomials'
+    'alg1-a10c-divide-polynomials',
+    'alg1-a10d-equivalent-polynomial-forms'
   ]);
-  const practiceSkills = new Set(['A.10A','A.10B','A.10C']);
+  const practiceSkills = new Set(['A.10A','A.10B','A.10C','A.10D']);
   if (!lessonModules.has(params.get('module')) && !practiceSkills.has(params.get('skill'))) return;
 
   const superscriptMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
