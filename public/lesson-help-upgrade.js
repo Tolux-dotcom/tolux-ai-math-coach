@@ -59,6 +59,22 @@
       ],
       answer: "t ≥ 0 or [0, ∞)"
     },
+    "A9A-P01": {
+      hints: [
+        "Focus on the input x. In f(x)=−5(4ˣ), the exponent x can be any real number: negative, zero, or positive.",
+        "The factor −5 changes the outputs by reflecting them below the x-axis, but it does not restrict which x-values are allowed.",
+        "Therefore the domain is all real numbers, written (−∞, ∞)."
+      ],
+      intro: "The negative coefficient changes the range, not the domain. Exponential expressions such as 4ˣ are defined for every real exponent x.",
+      alternateIntro: "Think horizontally across the graph. The curve extends forever to the left and right, so every real x-value is allowed even though the graph is reflected below the x-axis.",
+      steps: [
+        { equation: "x can be any real number", explanation: "The exponential expression 4ˣ is defined for every real x." },
+        { equation: "−5 changes outputs only", explanation: "Multiplying by −5 reflects and stretches the graph vertically; it does not remove any x-values." },
+        { equation: "domain: all real numbers", explanation: "There is no restriction on the input x." },
+        { equation: "domain: (−∞, ∞)", explanation: "Infinity always uses parentheses because it is not an endpoint that can be included." }
+      ],
+      answer: "all real numbers or (−∞, ∞)"
+    },
     "A9A-P02": {
       hints: [
         "Start with the vertical shift. The −2 moves the horizontal asymptote from y = 0 down to y = −2.",
@@ -90,6 +106,21 @@
         { equation: "range: (−∞, 5)", explanation: "Use parentheses at both ends; infinity never uses a bracket." }
       ],
       answer: "(−∞, 5)"
+    },
+    "A9A-P04": {
+      hints: [
+        "Read the context carefully: the bacteria count is measured only at whole hours from 0 through 12.",
+        "That means the domain is not every real number between 0 and 12. Only the discrete whole-number times are allowed.",
+        "So the contextual domain is {0,1,2,…,12}, or 'whole numbers 0 through 12.'"
+      ],
+      intro: "Real-world context can make an exponential domain discrete even though the parent exponential function has all-real domain.",
+      alternateIntro: "Think of the measurement schedule: there is a reading at hour 0, hour 1, hour 2, and so on through hour 12, but not at every decimal time in between.",
+      steps: [
+        { equation: "0 ≤ t ≤ 12", explanation: "The time interval starts at 0 and ends at 12." },
+        { equation: "t is a whole number", explanation: "Measurements are taken only at whole hours." },
+        { equation: "domain: {0,1,2,…,12}", explanation: "List the allowed discrete input values." }
+      ],
+      answer: "whole numbers 0 through 12 or {0,1,2,…,12}"
     }
   };
 
@@ -198,6 +229,11 @@
         ${stepMarkup(config.steps, "Follow the graph logic")}
         <p class="tolux-final-answer"><strong>Final answer:</strong> ${escapeHtml(config.answer)}</p>
       `;
+      return true;
+    }
+
+    if (/^Correct\./i.test(text.trim()) || /Correct\./i.test(text)) {
+      feedback.innerHTML = richA9aSolution(config, "Correct — here is why");
       return true;
     }
 
