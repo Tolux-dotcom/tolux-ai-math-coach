@@ -16,10 +16,17 @@ test('A.3D accepts natural-language boundary style and shading descriptions', ()
 
 test('A.3D preserves and canonicalizes a rewritten y-form inequality with graph wording', () => {
   assert.match(normalizer, /const equationMatch = normalized\.match/);
-  assert.match(normalizer, /\by\\s\*\(\?:>=\|<=\|>\|<\|≥\|≤\)/);
+  assert.match(normalizer, /canonicalizeYForm\(equationMatch\[0\]\)/);
   assert.match(normalizer, /return `\$\{equation\}; \$\{style\}; \$\{direction\}`/);
   assert.match(normalizer, /replace\(\/>=\/g, "≥"\)/);
   assert.match(normalizer, /replace\(\/<=\/g, "≤"\)/);
+});
+
+test('A.3D accepts equivalent y-form term order such as y>6-2x', () => {
+  assert.match(normalizer, /function canonicalizeYForm/);
+  assert.match(normalizer, /constantFirst/);
+  assert.match(normalizer, /Mathematically equivalent linear y-forms may place the constant first/);
+  assert.match(normalizer, /return `y\$\{relation\}\$\{xTerm\}\$\{constantTerm\}`/);
 });
 
 test('A.3D normalizer runs before lesson and practice grading', () => {
