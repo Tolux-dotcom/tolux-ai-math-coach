@@ -11,10 +11,12 @@
   const superscriptMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 
   function asciiMath(value) {
-    let text = String(value ?? '').normalize('NFKC').replace(/[−–—]/g,'-');
-    text = text.replace(/([a-zA-Z])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (_, base, supers) =>
+    // Convert superscripts before compatibility normalization so x² becomes x^2,
+    // not x2. This preserves the student's mathematical meaning.
+    let text = String(value ?? '').replace(/([a-zA-Z])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (_, base, supers) =>
       `${base}^${Array.from(supers, ch => superscriptMap[ch] || ch).join('')}`
     );
+    text = text.normalize('NFKC').replace(/[−–—]/g,'-');
     return text.replace(/[×·*]/g,'').replace(/\s+/g,'');
   }
 
