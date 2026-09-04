@@ -13,13 +13,18 @@ import {
 test("normalizes common student answer notation", () => {
   assert.equal(normalizeAnswer(" Answer is x = −5. "), "x=-5");
   assert.equal(normalizeAnswer("3 * x + 12"), "3x+12");
+  assert.equal(normalizeAnswer("4√(3)"), "4√3");
+  assert.equal(normalizeAnswer("4sqrt(3)"), "4√3");
+  assert.equal(normalizeAnswer("4sqrt3"), "4√3");
 });
 
-test("accepts equivalent equation, fraction, unit, and special-case answers", () => {
+test("accepts equivalent equation, fraction, unit, radical, and special-case answers", () => {
   assert.equal(answersEquivalent("5", { answer_key: "x = 5" }), true);
   assert.equal(answersEquivalent("x = 5.0", { answer_key: "x = 5" }), true);
   assert.equal(answersEquivalent("8.333333333333333", { answer_key: "x = 25/3" }), true);
   assert.equal(answersEquivalent("6", { answer_key: "6 GB" }), true);
+  assert.equal(answersEquivalent("4√(3)", { answer_key: "4√3" }), true);
+  assert.equal(answersEquivalent("4sqrt(3)", { answer_key: "4√3" }), true);
   assert.equal(
     answersEquivalent("all real numbers", {
       answer_key: "Infinitely many solutions"

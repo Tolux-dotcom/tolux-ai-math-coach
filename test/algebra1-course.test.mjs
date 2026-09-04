@@ -64,9 +64,15 @@ test("all completed structured lessons route to lesson and practice modes", () =
   assert.equal(a10f.lesson_path, "/a10f-difference-of-squares.json");
   assert.deepEqual(a10f.available_modes, ["lesson", "practice"]);
 
+  const a11a = findCourseModule(catalog, "alg1-a11a-radical-expressions");
+  assert.equal(a11a.status, "available");
+  assert.equal(a11a.lesson_path, "/a11a-radical-expressions.json");
+  assert.deepEqual(a11a.available_modes, ["lesson", "practice"]);
+
   assert.deepEqual(
     practiceModules(catalog).map(module => module.teks[0]),
     [
+      "A.11A",
       "A.10A", "A.10B", "A.10C", "A.10D", "A.10E", "A.10F",
       "A.5A", "A.5B", "A.5C",
       "A.6A", "A.6B", "A.6C",

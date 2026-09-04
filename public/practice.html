@@ -89,9 +89,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/math-input-normalizer.js"></script>
+  <script src="/math-symbol-toolbar.js"></script>
   <script type="module">
     const skill = new URLSearchParams(window.location.search).get("skill");
     if (skill === "A.10F") import("/a10f-practice.js");
+    else if (skill === "A.11A") import("/a11a-practice.js");
     else import("/practice.js");
   </script>
 </body>
