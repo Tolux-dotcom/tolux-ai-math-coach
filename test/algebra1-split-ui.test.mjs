@@ -8,20 +8,28 @@ const dashboardBridge = fs.readFileSync(new URL("../public/a10f-dashboard-bridge
 test("dashboard reuses the second course slot as Algebra 1B", () => {
   assert.match(splitUi, /Algebra 1A/);
   assert.match(splitUi, /Algebra 1B/);
-  assert.match(splitUi, /Modules 1–26/);
-  assert.match(splitUi, /Modules 27–49/);
-  assert.match(splitUi, /PART_A_LIMIT = 26/);
+  assert.match(splitUi, /Modules 1–27/);
+  assert.match(splitUi, /Modules 28–49/);
+  assert.match(splitUi, /PART_A_LIMIT = 27/);
+  assert.match(splitUi, /PART_B_START = 28/);
   assert.match(splitUi, /TOTAL_MODULES = 49/);
   assert.doesNotMatch(splitUi, /Algebra 2/);
 });
 
-test("split preserves original module ids and derives section membership from catalog order", () => {
+test("split preserves original module ids and derives stable module numbers from catalog order", () => {
   assert.match(splitUi, /fetch\("\/algebra1-course\.json"\)/);
   assert.match(splitUi, /moduleNumbersById/);
   assert.match(splitUi, /moduleNumbersByTeks/);
-  assert.match(splitUi, /index \+ 1/);
-  assert.match(splitUi, /option\.hidden = !show/);
-  assert.match(splitUi, /option\.disabled = !show/);
+  assert.match(splitUi, /moduleNumber: index \+ 1/);
+  assert.match(splitUi, /activeModules\(\)/);
+});
+
+test("Tutor and Practice lists render every module in numerical order and mark unfinished work", () => {
+  assert.match(splitUi, /select\.replaceChildren\(\.\.\.options\)/);
+  assert.match(splitUi, /Module \$\{module\.moduleNumber\}/);
+  assert.match(splitUi, /Coming soon/);
+  assert.match(splitUi, /option\.disabled = !live/);
+  assert.match(splitUi, /toluxPlaceholder/);
 });
 
 test("split keeps one Algebra 1 course identity and overall 49-module progress", () => {
