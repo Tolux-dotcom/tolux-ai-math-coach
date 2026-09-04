@@ -40,7 +40,12 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a2i-write-linear-systems": { lesson_path: "/a2i-write-linear-systems.json", available_modes: ["lesson", "practice"] },
   "alg1-a3a-determine-slope": { lesson_path: "/a3a-determine-slope.json", available_modes: ["lesson", "practice"] },
   "alg1-a3b-rate-of-change": { lesson_path: "/a3b-rate-of-change.json", available_modes: ["lesson", "practice"] },
-  "alg1-a3c-graph-linear-functions": { lesson_path: "/a3c-graph-linear-functions.json", available_modes: ["lesson", "practice"] }
+  "alg1-a3c-graph-linear-functions": { lesson_path: "/a3c-graph-linear-functions.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3d-graph-linear-inequalities": { lesson_path: "/a3d-graph-linear-inequalities.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3e-linear-transformations": { lesson_path: "/a3e-linear-transformations.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3f-graph-linear-systems": { lesson_path: "/a3f-graph-linear-systems.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3g-estimate-system-solutions": { lesson_path: "/a3g-estimate-system-solutions.json", available_modes: ["lesson", "practice"] },
+  "alg1-a3h-graph-systems-of-inequalities": { lesson_path: "/a3h-graph-systems-of-inequalities.json", available_modes: ["lesson", "practice"] }
 };
 
 export function flattenCourseModules(catalog) {

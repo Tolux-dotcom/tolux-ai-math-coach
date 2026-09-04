@@ -12,3 +12,11 @@
   function start(){document.querySelector('#tutorSkillSelect')?.addEventListener('change',renderSummary);let n=0;const timer=setInterval(()=>{n++;if(sync()||n>=100)clearInterval(timer);},100);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
+
+if(!document.querySelector('script[data-tolux-batch8-bridge]')){
+  const script=document.createElement('script');
+  script.src='/batch8-dashboard-bridge.js';
+  script.defer=true;
+  script.dataset.toluxBatch8Bridge='true';
+  document.head.append(script);
+}
