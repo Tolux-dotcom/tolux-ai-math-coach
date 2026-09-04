@@ -27,6 +27,15 @@ test("A.12A has dedicated 5, 10, and 20 question Practice Mode routing", () => {
   assert.match(practiceHtml, /a12a-practice\.js/);
 });
 
+test("A.12A Practice Mode records progress locally and to the account", () => {
+  assert.match(practice, /LESSON_PROGRESS_PREFIX/);
+  assert.match(practice, /PENDING_PROGRESS_PREFIX/);
+  assert.match(practice, /practice-alg1-a12a-identify-functions/);
+  assert.match(practice, /\/api\/lesson-progress/);
+  assert.match(practice, /Saved to your Tolux progress dashboard/);
+  assert.match(practice, /Review these questions/);
+});
+
 test("A.12A is promoted from Coming soon to a live Algebra 1A option", () => {
   assert.match(bridge, /alg1-a12a-identify-functions/);
   assert.match(bridge, /existing\.disabled = false/);
