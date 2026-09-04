@@ -19,9 +19,16 @@
     );
   }
 
+  function normalizeCommonMathWords(value) {
+    return String(value ?? "")
+      .replace(/\b(?:infinity|inf)\b/gi, "∞");
+  }
+
   function normalizeInput(input) {
     if (!input) return;
-    const normalized = caretPowersToSuperscript(input.value);
+    const normalized = normalizeCommonMathWords(
+      caretPowersToSuperscript(input.value)
+    );
     if (normalized !== input.value) input.value = normalized;
   }
 
