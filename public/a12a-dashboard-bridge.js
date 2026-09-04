@@ -58,3 +58,11 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
 })();
+
+if (!document.querySelector('script[data-tolux-a12b-bridge]')) {
+  const script = document.createElement("script");
+  script.src = "/a12b-dashboard-bridge.js";
+  script.defer = true;
+  script.dataset.toluxA12bBridge = "true";
+  document.head.append(script);
+}

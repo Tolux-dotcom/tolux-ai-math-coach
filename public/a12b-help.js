@@ -1,0 +1,13 @@
+(() => {
+  const params=new URLSearchParams(location.search); if(params.get('module')!=='alg1-a12b-evaluate-functions') return;
+  let itemMap=new Map();
+  const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+  function currentId(){const spans=document.querySelectorAll('#lessonContent .question-header span'); return spans.length?spans[spans.length-1].textContent.trim():'';}
+  function solution(item,heading='Correct answer and full explanation'){
+    if(!item)return ''; const steps=(item.solution_steps||item.alternate_solution_steps||[]).map((s,i)=>`<li><span class="solution-step-number">${i+1}</span><div><div class="math-line">${esc(s.equation)}</div><p>${esc(s.explanation)}</p></div></li>`).join('');
+    return `<div class="solution-panel a12b-reveal" data-a12b-reveal="true"><h3>${esc(heading)}</h3><p><strong>Final answer:</strong> ${esc(item.answer_key)}</p><ol class="solution-steps">${steps}</ol><div class="lesson-state lesson-state-success"><strong>Function-notation rule</strong><p>Read the value inside the parentheses as the input. Substitute it everywhere the variable appears, use parentheses for negative inputs, then simplify with the order of operations.</p></div></div>`;
+  }
+  function strengthen(){const feedback=document.querySelector('#lessonFeedback'); if(!feedback||feedback.querySelector('[data-a12b-reveal="true"]'))return; const text=feedback.textContent||''; const item=itemMap.get(currentId()); if(!item)return; const wrong=/not quite|not correct|try again|review this|needs revision|incorrect/i.test(text); const third=/hint\s*3/i.test(text); const alternate=/another way/i.test(text); if(wrong||third||alternate) feedback.insertAdjacentHTML('beforeend',solution(item,wrong?'Check your work: answer and full solution':'Full explanation and answer'));}
+  async function start(){try{const r=await fetch('/a12b-evaluate-functions.json'); if(r.ok){const m=await r.json(); itemMap=new Map([...(m.items||[]),...(m.practice_bank||[])].map(x=>[x.id,x]));}}catch(e){console.warn('A.12B help bank unavailable',e);} const feedback=document.querySelector('#lessonFeedback'); if(!feedback)return; new MutationObserver(strengthen).observe(feedback,{childList:true,subtree:true});}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true}); else start();
+})();
