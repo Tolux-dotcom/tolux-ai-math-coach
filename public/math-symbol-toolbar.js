@@ -13,6 +13,8 @@
     { label: "/", insert: "/", title: "Fraction slash" },
     { label: "(", insert: "(", title: "Left parenthesis" },
     { label: ")", insert: ")", title: "Right parenthesis" },
+    { label: "[", insert: "[", title: "Left square bracket" },
+    { label: "]", insert: "]", title: "Right square bracket" },
     { label: "=", insert: "=", title: "Equals" },
     { label: "≤", insert: "≤", title: "Less than or equal to" },
     { label: "≥", insert: "≥", title: "Greater than or equal to" },
