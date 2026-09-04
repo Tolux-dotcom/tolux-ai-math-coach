@@ -5,6 +5,8 @@
     { label: "∛", insert: "∛", title: "Cube root" },
     { label: "x²", insert: "x²", title: "x squared" },
     { label: "x³", insert: "x³", title: "x cubed" },
+    { label: "aₙ", insert: "aₙ", title: "Sequence term a subscript n" },
+    { label: "a₁", insert: "a₁", title: "First sequence term a subscript 1" },
     { label: "^", insert: "^", title: "Raise to a power" },
     { label: "+", insert: "+", title: "Addition" },
     { label: "−", insert: "−", title: "Subtraction" },
