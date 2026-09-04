@@ -75,6 +75,10 @@ const STRUCTURED_LESSON_OVERRIDES = {
   "alg1-a11b-laws-of-exponents": {
     lesson_path: "/a11b-laws-of-exponents.json",
     available_modes: ["lesson", "practice"]
+  },
+  "alg1-a12a-identify-functions": {
+    lesson_path: "/a12a-identify-functions.json",
+    available_modes: ["lesson", "practice"]
   }
 };
 
