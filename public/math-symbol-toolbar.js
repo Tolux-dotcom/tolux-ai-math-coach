@@ -16,6 +16,7 @@
     { label: "=", insert: "=", title: "Equals" },
     { label: "≤", insert: "≤", title: "Less than or equal to" },
     { label: "≥", insert: "≥", title: "Greater than or equal to" },
+    { label: "∞", insert: "∞", title: "Infinity" },
     { label: "π", insert: "π", title: "Pi" },
     { label: "±", insert: "±", title: "Plus or minus" }
   ];
