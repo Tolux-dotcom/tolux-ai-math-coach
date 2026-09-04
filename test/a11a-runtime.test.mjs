@@ -78,5 +78,13 @@ test("lesson help offers full worked solutions after a wrong guided or independe
   assert.match(lessonHelpUpgrade, /Final answer:/);
   assert.match(lessonHelpUpgrade, /A9A-G01/);
   assert.match(lessonHelpUpgrade, /range: y > 0 = \(0, ∞\)/);
-  assert.match(lessonHelpUpgrade, /Hint 3/);
+});
+
+test("A.9A shifted-range guided help reaches the answer and explains the asymptote", () => {
+  assert.match(lessonHelpUpgrade, /A9A-G02/);
+  assert.match(lessonHelpUpgrade, /horizontal asymptote: y = 4/);
+  assert.match(lessonHelpUpgrade, /−3\(2ˣ\) \+ 4 < 4/);
+  assert.match(lessonHelpUpgrade, /range: y < 4 = \(−∞, 4\)/);
+  assert.match(lessonHelpUpgrade, /y < 4 or \(−∞, 4\)/);
+  assert.match(lessonHelpUpgrade, /Why this is the answer/);
 });
