@@ -44,9 +44,9 @@ test('polynomial answer normalizer accepts equivalent term order and notation', 
   vm.runInNewContext(normalizerSource, { window, document, URLSearchParams, Event: class Event {} });
   const canonical = window.__toluxCanonicalPolynomial;
   assert.equal(typeof canonical, 'function');
-  assert.equal(canonical('5 + 2x + 7x²'), '7x^2+2x+5');
-  assert.equal(canonical('3x + x^2 - 1 + 2x'), 'x^2+5x-1');
-  assert.equal(canonical('2x² + x - 3, remainder -2'), '2x^2+x-3 remainder -2');
+  assert.equal(canonical('5 + 2x + 7x²'), '7x²+2x+5');
+  assert.equal(canonical('3x + x^2 - 1 + 2x'), 'x²+5x-1');
+  assert.equal(canonical('2x² + x - 3, remainder -2'), '2x²+x-3 remainder -2');
   assert.equal(canonical('0x²'), '0x²');
 });
 
