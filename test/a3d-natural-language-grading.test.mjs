@@ -12,7 +12,14 @@ test('A.3D accepts natural-language boundary style and shading descriptions', ()
   assert.match(normalizer, /\babove\b/);
   assert.match(normalizer, /\bbelow\b/);
   assert.match(normalizer, /return `\$\{style\}; \$\{direction\}`/);
-  assert.match(normalizer, /\[=<>≤≥\]/);
+});
+
+test('A.3D preserves and canonicalizes a rewritten y-form inequality with graph wording', () => {
+  assert.match(normalizer, /const equationMatch = normalized\.match/);
+  assert.match(normalizer, /\by\\s\*\(\?:>=\|<=\|>\|<\|≥\|≤\)/);
+  assert.match(normalizer, /return `\$\{equation\}; \$\{style\}; \$\{direction\}`/);
+  assert.match(normalizer, /replace\(\/>=\/g, "≥"\)/);
+  assert.match(normalizer, /replace\(\/<=\/g, "≤"\)/);
 });
 
 test('A.3D normalizer runs before lesson and practice grading', () => {
