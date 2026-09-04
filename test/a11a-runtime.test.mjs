@@ -11,6 +11,7 @@ const visualRuntime = fs.readFileSync(new URL("../public/a11a-visual.js", import
 const practiceRuntime = fs.readFileSync(new URL("../public/a11a-practice.js", import.meta.url), "utf8");
 const courseCore = fs.readFileSync(new URL("../public/course-core.mjs", import.meta.url), "utf8");
 const mathToolbar = fs.readFileSync(new URL("../public/math-symbol-toolbar.js", import.meta.url), "utf8");
+const masteryAudit = fs.readFileSync(new URL("../public/mastery-answer-audit.js", import.meta.url), "utf8");
 
 test("A.11A is exposed in Tutor and Practice controls without a broad DOM observer", () => {
   assert.match(completionBridge, /a11a-dashboard-bridge\.js/);
@@ -55,4 +56,13 @@ test("lesson and practice expose a reusable student math-symbol keyboard", () =>
   assert.match(mathToolbar, /selectionStart/);
   assert.match(mathToolbar, /setSelectionRange/);
   assert.match(mathToolbar, /Math symbols — tap to insert/);
+});
+
+test("mastery remediation shows the student's submitted answer for grading audit", () => {
+  assert.match(lessonHtml, /mastery-answer-audit\.js/);
+  assert.match(masteryAudit, /Your answer/);
+  assert.match(masteryAudit, /Your explanation/);
+  assert.match(masteryAudit, /QA grading flag/);
+  assert.match(masteryAudit, /Your final answer matches the displayed correct answer/);
+  assert.match(masteryAudit, /sessionStorage/);
 });
