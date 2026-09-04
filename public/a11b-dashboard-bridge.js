@@ -1,7 +1,7 @@
 (() => {
-  const TUTOR_VALUE = "alg1-a11a-radical-expressions";
-  const PRACTICE_VALUE = "A.11A";
-  const LABEL = "A.11A • Simplify Numerical Radicals";
+  const TUTOR_VALUE = "alg1-a11b-laws-of-exponents";
+  const PRACTICE_VALUE = "A.11B";
+  const LABEL = "A.11B • Laws of Exponents";
 
   function ensureOption(select, value, label) {
     if (!select) return false;
@@ -27,13 +27,13 @@
     const select = document.querySelector("#tutorSkillSelect");
     if (!select || select.value !== TUTOR_VALUE) return;
     const summary = document.querySelector("#tutorLessonSummary");
-    if (!summary || summary.dataset.a11aSummary === "true") return;
+    if (!summary || summary.dataset.a11bSummary === "true") return;
     summary.innerHTML = `
-      <strong>A.11A • Simplify Numerical Radicals</strong>
-      <p>Simplify numerical square-root expressions using perfect-square factors, product and quotient properties, and like-radical reasoning.</p>
-      <small>Lesson path: Learn → Watch Tolux solve → Guided practice → Independent practice → Mastery check</small>
+      <strong>A.11B • Laws of Exponents</strong>
+      <p>Simplify numeric and algebraic expressions using product, quotient, power, zero, negative, integral, and rational exponent laws.</p>
+      <small>Lesson path: Learn visually → Watch Tolux solve → Guided practice → Independent practice → Mastery check</small>
     `;
-    summary.dataset.a11aSummary = "true";
+    summary.dataset.a11bSummary = "true";
   }
 
   function syncControls() {
@@ -51,10 +51,9 @@
   }
 
   function start() {
-    const tutorSelect = document.querySelector("#tutorSkillSelect");
-    tutorSelect?.addEventListener("change", () => {
+    document.querySelector("#tutorSkillSelect")?.addEventListener("change", () => {
       const summary = document.querySelector("#tutorLessonSummary");
-      if (summary) delete summary.dataset.a11aSummary;
+      if (summary) delete summary.dataset.a11bSummary;
       updateTutorSummary();
     });
 
@@ -68,11 +67,3 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
 })();
-
-if (!document.querySelector('script[data-tolux-a11b-bridge]')) {
-  const script = document.createElement("script");
-  script.src = "/a11b-dashboard-bridge.js";
-  script.defer = true;
-  script.dataset.toluxA11bBridge = "true";
-  document.head.append(script);
-}

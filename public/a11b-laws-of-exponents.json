@@ -1,0 +1,334 @@
+{
+  "module_id": "alg1-a11b-laws-of-exponents",
+  "version": "1.0.0-private-qa",
+  "course": "Algebra 1",
+  "teks": ["A.11B"],
+  "title": "Laws of Exponents",
+  "student_objective": "I can simplify numeric and algebraic expressions using the laws of integral and rational exponents and explain which exponent law I used.",
+  "teacher_objective": "Diagnose product, quotient, power-of-a-power, zero-exponent, negative-exponent, coefficient-distribution, and rational-exponent misconceptions.",
+  "mastery_policy": {
+    "threshold_percent": 80,
+    "minimum_mastery_items": 5,
+    "critical_misconceptions_allowed": 0,
+    "requires_explanation_item": true,
+    "recheck_after_remediation_items": 2
+  },
+  "lesson_settings": {
+    "diagnostic_item_ids": ["A11B-D01", "A11B-D02", "A11B-D03"],
+    "guided_item_ids": ["A11B-G01", "A11B-G02", "A11B-G03"],
+    "independent_item_ids": ["A11B-P01", "A11B-P02", "A11B-P03", "A11B-P04"],
+    "mastery_item_ids": ["A11B-M01", "A11B-M02", "A11B-M03", "A11B-M04", "A11B-M05"],
+    "assessed_items_in_core_lesson": 15
+  },
+  "lesson_flow": [
+    {"step": 1, "type": "prerequisite_diagnostic", "label": "Exponent readiness"},
+    {"step": 2, "type": "concept", "label": "Choose the exponent law"},
+    {"step": 3, "type": "worked_examples", "label": "Watch Tolux simplify exponents"},
+    {"step": 4, "type": "guided_practice", "label": "Simplify with Tolux"},
+    {"step": 5, "type": "independent_practice", "label": "Your turn"},
+    {"step": 6, "type": "mastery_check", "label": "Check mastery"},
+    {"step": 7, "type": "remediation_or_complete", "label": "Next best step"}
+  ],
+  "concept_cards": [
+    {"id": "A11B-C01", "title": "Same base multiplied: add exponents", "content": "For a nonzero base, a^m·a^n=a^(m+n). Keep the base and add the exponents; do not multiply the exponents."},
+    {"id": "A11B-C02", "title": "Same base divided: subtract exponents", "content": "For a≠0, a^m/a^n=a^(m−n). Keep the base and subtract denominator exponent from numerator exponent."},
+    {"id": "A11B-C03", "title": "Power of a power: multiply exponents", "content": "(a^m)^n=a^(mn). A power raised to another power means multiply the exponents."},
+    {"id": "A11B-C04", "title": "Zero and negative exponents", "content": "For a≠0, a^0=1 and a^(−n)=1/a^n. A negative exponent tells you to take the reciprocal; it does not make the value negative."},
+    {"id": "A11B-C05", "title": "Rational exponents connect powers and roots", "content": "For real values where the expression is defined, a^(m/n)=(ⁿ√a)^m. The denominator names the root and the numerator names the power."},
+    {"id": "A11B-C06", "title": "Apply powers to every factor", "content": "For (ab)^n=a^n b^n and (a/b)^n=a^n/b^n. When a product is inside parentheses, the outside exponent applies to each factor."}
+  ],
+  "items": [
+    {
+      "id": "A11B-D01", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Simplify x^3·x^4.", "answer_key": "x^7",
+      "accepted_answers": ["x^7", "x⁷"],
+      "diagnostic_tag": "product_rule", "critical_misconception": true,
+      "tutor_behavior": "The bases match, so keep x and add 3+4.",
+      "solution_steps": [
+        {"equation": "x^3·x^4=x^(3+4)", "explanation": "Use the product rule for equal bases."},
+        {"equation": "x^(3+4)=x^7", "explanation": "Add the exponents."}
+      ]
+    },
+    {
+      "id": "A11B-D02", "type": "diagnostic", "difficulty": "Foundational",
+      "prompt": "Simplify a^9/a^4.", "answer_key": "a^5",
+      "accepted_answers": ["a^5", "a⁵"],
+      "diagnostic_tag": "quotient_rule", "critical_misconception": true,
+      "tutor_behavior": "The bases match, so subtract 9−4.",
+      "solution_steps": [
+        {"equation": "a^9/a^4=a^(9−4)", "explanation": "Use the quotient rule."},
+        {"equation": "a^(9−4)=a^5", "explanation": "Subtract the denominator exponent."}
+      ]
+    },
+    {
+      "id": "A11B-D03", "type": "diagnostic", "difficulty": "Grade-level",
+      "prompt": "Evaluate 16^(1/2).", "answer_key": "4",
+      "accepted_answers": ["4"],
+      "diagnostic_tag": "rational_exponent", "critical_misconception": true,
+      "tutor_behavior": "An exponent of 1/2 means square root.",
+      "solution_steps": [
+        {"equation": "16^(1/2)=√16", "explanation": "The denominator 2 means square root."},
+        {"equation": "√16=4", "explanation": "4²=16."}
+      ]
+    },
+    {
+      "id": "A11B-L01", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Simplify (2x^3)^2.", "answer_key": "4x^6",
+      "accepted_answers": ["4x^6", "4x⁶"],
+      "diagnostic_tag": "power_of_product",
+      "tutor_behavior": "Apply the outside power to both 2 and x^3, then multiply exponents on the power of a power.",
+      "solution_steps": [
+        {"equation": "(2x^3)^2=2^2(x^3)^2", "explanation": "The outside exponent applies to every factor."},
+        {"equation": "2^2(x^3)^2=4x^(3·2)", "explanation": "Square 2 and use the power-of-a-power rule."},
+        {"equation": "4x^(3·2)=4x^6", "explanation": "Multiply 3·2."}
+      ]
+    },
+    {
+      "id": "A11B-L02", "type": "worked_example", "difficulty": "Grade-level",
+      "prompt": "Simplify x^2·x^(-5). Write the answer with positive exponents.", "answer_key": "1/x^3",
+      "accepted_answers": ["1/x^3", "1/x³", "x^(-3)", "x⁻³"],
+      "diagnostic_tag": "negative_exponent",
+      "tutor_behavior": "Add the exponents first, then rewrite a negative exponent as a reciprocal.",
+      "solution_steps": [
+        {"equation": "x^2·x^(−5)=x^(2−5)", "explanation": "Same-base product means add the signed exponents."},
+        {"equation": "x^(2−5)=x^(−3)", "explanation": "2−5=−3."},
+        {"equation": "x^(−3)=1/x^3", "explanation": "A negative exponent moves the factor to the denominator."}
+      ]
+    },
+    {
+      "id": "A11B-L03", "type": "worked_example", "difficulty": "Challenging",
+      "prompt": "Evaluate 27^(2/3).", "answer_key": "9",
+      "accepted_answers": ["9"],
+      "diagnostic_tag": "rational_exponent",
+      "tutor_behavior": "The denominator 3 means cube root; the numerator 2 means square.",
+      "solution_steps": [
+        {"equation": "27^(2/3)=(∛27)^2", "explanation": "Use the denominator as the root and numerator as the power."},
+        {"equation": "(∛27)^2=3^2", "explanation": "∛27=3."},
+        {"equation": "3^2=9", "explanation": "Square 3."}
+      ]
+    },
+    {
+      "id": "A11B-G01", "type": "guided_practice", "difficulty": "Foundational",
+      "prompt": "Simplify y^6·y^2.", "answer_key": "y^8",
+      "accepted_answers": ["y^8", "y⁸"],
+      "diagnostic_tag": "product_rule",
+      "hint_steps": ["The bases are the same, so use the product rule.", "Keep y and add the exponents 6+2.", "6+2=8, so the answer is y^8."],
+      "alternate_solution_steps": [
+        {"equation": "y^6·y^2=y^(6+2)", "explanation": "Same-base multiplication means add exponents."},
+        {"equation": "y^(6+2)=y^8", "explanation": "Add 6 and 2."}
+      ],
+      "solution_steps": [
+        {"equation": "y^6·y^2=y^(6+2)", "explanation": "Apply the product rule."},
+        {"equation": "y^(6+2)=y^8", "explanation": "Simplify the exponent."}
+      ],
+      "tutor_behavior": "Keep the common base y and add the exponents."
+    },
+    {
+      "id": "A11B-G02", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "Simplify (m^4)^3.", "answer_key": "m^12",
+      "accepted_answers": ["m^12", "m¹²"],
+      "diagnostic_tag": "power_of_power", "critical_misconception": true,
+      "hint_steps": ["This is a power raised to another power.", "Multiply the exponents 4·3; do not add them.", "4·3=12, so the answer is m^12."],
+      "alternate_solution_steps": [
+        {"equation": "(m^4)^3=m^(4·3)", "explanation": "Power of a power means multiply exponents."},
+        {"equation": "m^(4·3)=m^12", "explanation": "Multiply 4 by 3."}
+      ],
+      "solution_steps": [
+        {"equation": "(m^4)^3=m^(4·3)", "explanation": "Apply the power-of-a-power rule."},
+        {"equation": "m^(4·3)=m^12", "explanation": "Simplify the exponent."}
+      ],
+      "tutor_behavior": "Because one power is raised to another, multiply 4 and 3."
+    },
+    {
+      "id": "A11B-G03", "type": "guided_practice", "difficulty": "Grade-level",
+      "prompt": "Evaluate 81^(-1/2).", "answer_key": "1/9",
+      "accepted_answers": ["1/9"],
+      "diagnostic_tag": "negative_rational_exponent", "critical_misconception": true,
+      "hint_steps": ["Handle the negative exponent by taking a reciprocal.", "81^(-1/2)=1/81^(1/2).", "√81=9, so the answer is 1/9."],
+      "alternate_solution_steps": [
+        {"equation": "81^(−1/2)=1/81^(1/2)", "explanation": "The negative exponent creates a reciprocal."},
+        {"equation": "1/81^(1/2)=1/√81=1/9", "explanation": "An exponent of 1/2 means square root."}
+      ],
+      "solution_steps": [
+        {"equation": "81^(−1/2)=1/81^(1/2)", "explanation": "Rewrite with a positive exponent."},
+        {"equation": "1/81^(1/2)=1/9", "explanation": "√81=9."}
+      ],
+      "tutor_behavior": "Use both rules: negative exponent means reciprocal, and 1/2 means square root."
+    },
+    {
+      "id": "A11B-P01", "type": "independent_practice", "difficulty": "Foundational",
+      "prompt": "Simplify b^10/b^3.", "answer_key": "b^7",
+      "accepted_answers": ["b^7", "b⁷"],
+      "diagnostic_tag": "quotient_rule",
+      "hint_steps": ["The bases match, so use the quotient rule.", "Subtract denominator exponent from numerator exponent: 10−3.", "10−3=7, so the answer is b^7."],
+      "alternate_solution_steps": [{"equation": "b^10/b^3=b^(10−3)", "explanation": "Subtract the exponents for equal-base division."}, {"equation": "b^(10−3)=b^7", "explanation": "Simplify 10−3."}],
+      "solution_steps": [{"equation": "b^10/b^3=b^(10−3)", "explanation": "Apply the quotient rule."}, {"equation": "b^(10−3)=b^7", "explanation": "Subtract 3 from 10."}],
+      "tutor_behavior": "Keep b and subtract 10−3."
+    },
+    {
+      "id": "A11B-P02", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Simplify (3a^2)^3.", "answer_key": "27a^6",
+      "accepted_answers": ["27a^6", "27a⁶"],
+      "diagnostic_tag": "power_of_product",
+      "hint_steps": ["The outside exponent 3 applies to both factors inside the parentheses.", "Compute 3^3 and multiply the variable exponents 2·3.", "3^3=27 and 2·3=6, so the answer is 27a^6."],
+      "alternate_solution_steps": [{"equation": "(3a^2)^3=3^3(a^2)^3", "explanation": "Distribute the outside power."}, {"equation": "3^3(a^2)^3=27a^6", "explanation": "Evaluate 3³ and multiply 2·3."}],
+      "solution_steps": [{"equation": "(3a^2)^3=3^3(a^2)^3", "explanation": "Apply the power to every factor."}, {"equation": "3^3(a^2)^3=27a^6", "explanation": "Evaluate and simplify the exponents."}],
+      "tutor_behavior": "Do not cube only the variable; cube 3 as well."
+    },
+    {
+      "id": "A11B-P03", "type": "independent_practice", "difficulty": "Grade-level",
+      "prompt": "Assume x>0. Simplify x^(1/2)·x^(3/2).", "answer_key": "x^2",
+      "accepted_answers": ["x^2", "x²"],
+      "diagnostic_tag": "rational_product_rule",
+      "hint_steps": ["The bases are the same, so add the rational exponents.", "1/2+3/2=4/2.", "4/2=2, so the answer is x^2."],
+      "alternate_solution_steps": [{"equation": "x^(1/2)·x^(3/2)=x^(1/2+3/2)", "explanation": "Use the same-base product rule."}, {"equation": "x^(4/2)=x^2", "explanation": "Add and reduce the rational exponent."}],
+      "solution_steps": [{"equation": "x^(1/2)·x^(3/2)=x^(4/2)", "explanation": "Add the exponents."}, {"equation": "x^(4/2)=x^2", "explanation": "Reduce 4/2 to 2."}],
+      "tutor_behavior": "Rational exponents follow the same product rule: add them when the bases match."
+    },
+    {
+      "id": "A11B-P04", "type": "independent_practice", "difficulty": "Challenging",
+      "prompt": "Evaluate 32^(2/5).", "answer_key": "4",
+      "accepted_answers": ["4"],
+      "diagnostic_tag": "rational_exponent",
+      "hint_steps": ["The denominator 5 means fifth root.", "The fifth root of 32 is 2 because 2^5=32.", "Now square 2: 2^2=4."],
+      "alternate_solution_steps": [{"equation": "32^(2/5)=(⁵√32)^2", "explanation": "Denominator 5 gives the root; numerator 2 gives the power."}, {"equation": "(⁵√32)^2=2^2=4", "explanation": "⁵√32=2."}],
+      "solution_steps": [{"equation": "32^(2/5)=(⁵√32)^2", "explanation": "Translate the rational exponent."}, {"equation": "(⁵√32)^2=4", "explanation": "Evaluate the root, then the power."}],
+      "tutor_behavior": "Read 2/5 as fifth root first, then square."
+    },
+    {
+      "id": "A11B-M01", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Simplify x^7/x^2.", "answer_key": "x^5",
+      "accepted_answers": ["x^5", "x⁵"],
+      "diagnostic_tag": "quotient_rule", "critical_misconception": true,
+      "solution_steps": [{"equation": "x^7/x^2=x^(7−2)=x^5", "explanation": "Subtract exponents for same-base division."}],
+      "tutor_behavior": "Use the quotient rule: 7−2."
+    },
+    {
+      "id": "A11B-M02", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Simplify (p^5)^2.", "answer_key": "p^10",
+      "accepted_answers": ["p^10", "p¹⁰"],
+      "diagnostic_tag": "power_of_power", "critical_misconception": true,
+      "solution_steps": [{"equation": "(p^5)^2=p^(5·2)=p^10", "explanation": "Multiply exponents for a power of a power."}],
+      "tutor_behavior": "Multiply 5·2."
+    },
+    {
+      "id": "A11B-M03", "type": "mastery_check", "difficulty": "Challenging",
+      "prompt": "Evaluate 64^(1/3).", "answer_key": "4",
+      "accepted_answers": ["4"],
+      "diagnostic_tag": "rational_exponent", "critical_misconception": true,
+      "solution_steps": [{"equation": "64^(1/3)=∛64=4", "explanation": "An exponent of 1/3 means cube root."}],
+      "tutor_behavior": "Translate 1/3 as cube root."
+    },
+    {
+      "id": "A11B-M04", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "Simplify q^0 for q≠0.", "answer_key": "1",
+      "accepted_answers": ["1"],
+      "diagnostic_tag": "zero_exponent", "critical_misconception": true,
+      "solution_steps": [{"equation": "q^0=1", "explanation": "Every nonzero base raised to the zero power equals 1."}],
+      "tutor_behavior": "A zero exponent gives 1 when the base is nonzero."
+    },
+    {
+      "id": "A11B-M05", "type": "mastery_check", "difficulty": "Grade-level",
+      "prompt": "A student says x^3·x^4=x^12. Is the student correct? Answer yes or no.", "answer_key": "no",
+      "accepted_answers": ["no", "not correct", "incorrect"],
+      "diagnostic_tag": "product_rule", "critical_misconception": true,
+      "explanation_prompt": "Explain the exponent-law error and give the correct simplified expression.",
+      "explanation_keywords": [["add", "addition"], ["exponent", "powers"], ["x^7", "x⁷"]],
+      "minimum_explanation_keyword_groups": 2,
+      "explanation_guidance": "For equal bases being multiplied, add the exponents: 3+4=7, so x^3·x^4=x^7.",
+      "solution_steps": [{"equation": "x^3·x^4=x^(3+4)=x^7", "explanation": "The product rule adds exponents; it does not multiply them."}],
+      "tutor_behavior": "The product rule says add 3 and 4, not multiply them."
+    },
+    {
+      "id": "A11B-X01", "type": "practice_bank", "difficulty": "Foundational",
+      "prompt": "Simplify c^4·c^3.", "answer_key": "c^7", "accepted_answers": ["c^7", "c⁷"],
+      "diagnostic_tag": "product_rule", "tutor_behavior": "Add 4+3.",
+      "solution_steps": [{"equation": "c^4·c^3=c^(4+3)=c^7", "explanation": "Same-base product: add exponents."}]
+    },
+    {
+      "id": "A11B-X02", "type": "practice_bank", "difficulty": "Foundational",
+      "prompt": "Simplify d^8/d^5.", "answer_key": "d^3", "accepted_answers": ["d^3", "d³"],
+      "diagnostic_tag": "quotient_rule", "tutor_behavior": "Subtract 8−5.",
+      "solution_steps": [{"equation": "d^8/d^5=d^(8−5)=d^3", "explanation": "Same-base quotient: subtract exponents."}]
+    },
+    {
+      "id": "A11B-X03", "type": "practice_bank", "difficulty": "Foundational",
+      "prompt": "Simplify r^(-4). Write the answer with a positive exponent.", "answer_key": "1/r^4", "accepted_answers": ["1/r^4", "1/r⁴"],
+      "diagnostic_tag": "negative_exponent", "tutor_behavior": "A negative exponent creates a reciprocal.",
+      "solution_steps": [{"equation": "r^(−4)=1/r^4", "explanation": "Rewrite with a positive exponent."}]
+    },
+    {
+      "id": "A11B-X04", "type": "practice_bank", "difficulty": "Foundational",
+      "prompt": "Evaluate 25^(1/2).", "answer_key": "5", "accepted_answers": ["5"],
+      "diagnostic_tag": "rational_exponent", "tutor_behavior": "1/2 means square root.",
+      "solution_steps": [{"equation": "25^(1/2)=√25=5", "explanation": "Take the square root."}]
+    },
+    {
+      "id": "A11B-X05", "type": "practice_bank", "difficulty": "Grade-level",
+      "prompt": "Simplify (x^2y^3)^2.", "answer_key": "x^4y^6", "accepted_answers": ["x^4y^6", "x⁴y⁶", "y^6x^4", "y⁶x⁴"],
+      "diagnostic_tag": "power_of_product", "tutor_behavior": "Apply the outside power to each factor.",
+      "solution_steps": [{"equation": "(x^2y^3)^2=x^(2·2)y^(3·2)=x^4y^6", "explanation": "Multiply each inside exponent by 2."}]
+    },
+    {
+      "id": "A11B-X06", "type": "practice_bank", "difficulty": "Grade-level",
+      "prompt": "Simplify (x^6y^3)/(x^2y).", "answer_key": "x^4y^2", "accepted_answers": ["x^4y^2", "x⁴y²", "y^2x^4", "y²x⁴"],
+      "diagnostic_tag": "multi_variable_quotient", "tutor_behavior": "Subtract exponents separately for each common base.",
+      "solution_steps": [{"equation": "x^(6−2)y^(3−1)=x^4y^2", "explanation": "Apply the quotient rule to x and y separately."}]
+    },
+    {
+      "id": "A11B-X07", "type": "practice_bank", "difficulty": "Grade-level",
+      "prompt": "Evaluate 9^(3/2).", "answer_key": "27", "accepted_answers": ["27"],
+      "diagnostic_tag": "rational_exponent", "tutor_behavior": "Take the square root, then cube.",
+      "solution_steps": [{"equation": "9^(3/2)=(√9)^3=3^3=27", "explanation": "Denominator 2 gives the root; numerator 3 gives the power."}]
+    },
+    {
+      "id": "A11B-X08", "type": "practice_bank", "difficulty": "Grade-level",
+      "prompt": "Assume x>0. Simplify x^(5/3)/x^(2/3).", "answer_key": "x", "accepted_answers": ["x", "x^1", "x¹"],
+      "diagnostic_tag": "rational_quotient_rule", "tutor_behavior": "Subtract the rational exponents.",
+      "solution_steps": [{"equation": "x^(5/3)/x^(2/3)=x^(3/3)=x", "explanation": "5/3−2/3=1."}]
+    },
+    {
+      "id": "A11B-X09", "type": "practice_bank", "difficulty": "Challenging",
+      "prompt": "Evaluate 16^(3/4).", "answer_key": "8", "accepted_answers": ["8"],
+      "diagnostic_tag": "rational_exponent", "tutor_behavior": "Take the fourth root, then cube.",
+      "solution_steps": [{"equation": "16^(3/4)=(⁴√16)^3=2^3=8", "explanation": "Fourth root first, then third power."}]
+    },
+    {
+      "id": "A11B-X10", "type": "practice_bank", "difficulty": "Challenging",
+      "prompt": "Assume x>0. Simplify (x^(2/3))^3.", "answer_key": "x^2", "accepted_answers": ["x^2", "x²"],
+      "diagnostic_tag": "rational_power_of_power", "tutor_behavior": "Multiply 2/3 by 3.",
+      "solution_steps": [{"equation": "(x^(2/3))^3=x^((2/3)·3)=x^2", "explanation": "Power of a power: multiply exponents."}]
+    },
+    {
+      "id": "A11B-X11", "type": "practice_bank", "difficulty": "Challenging",
+      "prompt": "Simplify 2^3·2^(-5). Write the answer as a positive fraction.", "answer_key": "1/4", "accepted_answers": ["1/4", "0.25"],
+      "diagnostic_tag": "negative_exponent", "tutor_behavior": "Add 3+(−5), then rewrite the negative exponent.",
+      "solution_steps": [{"equation": "2^3·2^(−5)=2^(−2)=1/2^2=1/4", "explanation": "Add signed exponents, then use the reciprocal rule."}]
+    },
+    {
+      "id": "A11B-X12", "type": "practice_bank", "difficulty": "Challenging",
+      "prompt": "Simplify (2a^3b^2)^2/(4ab).", "answer_key": "a^5b^3", "accepted_answers": ["a^5b^3", "a⁵b³", "b^3a^5", "b³a⁵"],
+      "diagnostic_tag": "multi_step_exponents", "tutor_behavior": "Apply the outside square first, then divide coefficients and subtract variable exponents.",
+      "solution_steps": [
+        {"equation": "(2a^3b^2)^2=4a^6b^4", "explanation": "Square every factor inside the parentheses."},
+        {"equation": "4a^6b^4/(4ab)=a^(6−1)b^(4−1)", "explanation": "Cancel the coefficient and subtract same-base exponents."},
+        {"equation": "a^(6−1)b^(4−1)=a^5b^3", "explanation": "Simplify the exponents."}
+      ]
+    }
+  ],
+  "misconception_routes": {
+    "product_rule": {"error_code": "A11B-E01", "teacher_signal": "Multiplies exponents instead of adding them for same-base products", "route": "product_rule"},
+    "quotient_rule": {"error_code": "A11B-E02", "teacher_signal": "Uses the wrong subtraction order or divides exponents", "route": "quotient_rule"},
+    "power_of_power": {"error_code": "A11B-E03", "teacher_signal": "Adds exponents instead of multiplying them for a power of a power", "route": "power_of_power"},
+    "power_of_product": {"error_code": "A11B-E04", "teacher_signal": "Fails to apply an outside power to every factor", "route": "power_of_power"},
+    "zero_exponent": {"error_code": "A11B-E05", "teacher_signal": "Treats a zero exponent as zero instead of one", "route": "zero_negative"},
+    "negative_exponent": {"error_code": "A11B-E06", "teacher_signal": "Treats a negative exponent as a negative value instead of a reciprocal", "route": "zero_negative"},
+    "negative_rational_exponent": {"error_code": "A11B-E07", "teacher_signal": "Misses either the reciprocal rule or the root meaning of a rational exponent", "route": "rational_exponent"},
+    "rational_exponent": {"error_code": "A11B-E08", "teacher_signal": "Confuses the numerator and denominator roles in a rational exponent", "route": "rational_exponent"},
+    "rational_product_rule": {"error_code": "A11B-E09", "teacher_signal": "Does not add rational exponents for same-base products", "route": "rational_exponent"},
+    "rational_quotient_rule": {"error_code": "A11B-E10", "teacher_signal": "Does not subtract rational exponents for same-base quotients", "route": "rational_exponent"},
+    "rational_power_of_power": {"error_code": "A11B-E11", "teacher_signal": "Does not multiply rational exponents in a power of a power", "route": "rational_exponent"},
+    "multi_variable_quotient": {"error_code": "A11B-E12", "teacher_signal": "Does not apply the quotient rule separately to each variable base", "route": "quotient_rule"},
+    "multi_step_exponents": {"error_code": "A11B-E13", "teacher_signal": "Applies exponent laws in the wrong order in a multi-step expression", "route": "mixed_exponent_laws"}
+  }
+}

@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Algebra 1 Practice | Tolux AI Math Coach</title>
-  <meta name="description" content="Practice Algebra 1 equations, inequalities, and systems with first-attempt scoring, targeted hints, worked explanations, and mastery review." />
+  <meta name="description" content="Practice Algebra 1 equations, inequalities, systems, radicals, exponents, and other skills with first-attempt scoring, targeted hints, worked explanations, and mastery review." />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
@@ -20,14 +20,7 @@
     <section class="practice-progress" aria-labelledby="practiceProgressLabel">
       <p id="practiceProgressLabel">Loading questions…</p>
       <div class="progress-track">
-        <div
-          id="practiceProgressBar"
-          class="progress-fill"
-          role="progressbar"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-        ></div>
+        <div id="practiceProgressBar" class="progress-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
       </div>
     </section>
 
@@ -42,16 +35,8 @@
 
           <div id="practiceAnswerArea" class="practice-answer-area">
             <label for="practiceAnswer"><strong>Your answer</strong></label>
-            <input
-              id="practiceAnswer"
-              type="text"
-              autocomplete="off"
-              inputmode="text"
-              placeholder="Enter your answer"
-            />
-            <button id="checkPracticeAnswer" class="lesson-primary-button" type="button">
-              Check Answer
-            </button>
+            <input id="practiceAnswer" type="text" autocomplete="off" inputmode="text" placeholder="Enter your answer" />
+            <button id="checkPracticeAnswer" class="lesson-primary-button" type="button">Check Answer</button>
           </div>
 
           <div class="lesson-help practice-help">
@@ -60,9 +45,7 @@
           </div>
 
           <div id="practiceFeedback" class="practice-feedback"></div>
-          <button id="nextPracticeQuestion" class="practice-next-button" type="button" hidden>
-            Next Question →
-          </button>
+          <button id="nextPracticeQuestion" class="practice-next-button" type="button" hidden>Next Question →</button>
         </div>
 
         <div id="practiceSummary" class="practice-summary" hidden></div>
@@ -76,13 +59,8 @@
           <div><dt>Questions</dt><dd id="practiceSessionCount">—</dd></div>
           <div><dt>First-try score</dt><dd id="practiceLiveScore">0 / 0</dd></div>
         </dl>
-        <p>
-          Your free trial measures active learning time. Paid subscribers have
-          unlimited practice access.
-        </p>
-        <a class="practice-settings-link" href="/#practiceModePanel">
-          Change practice settings
-        </a>
+        <p>Your free trial measures active learning time. Paid subscribers have unlimited practice access.</p>
+        <a class="practice-settings-link" href="/#practiceModePanel">Change practice settings</a>
       </aside>
     </div>
   </main>
@@ -90,10 +68,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/math-input-normalizer.js"></script>
   <script src="/math-symbol-toolbar.js"></script>
+  <script src="/a11b-math-notation.js" defer></script>
   <script type="module">
     const skill = new URLSearchParams(window.location.search).get("skill");
     if (skill === "A.10F") import("/a10f-practice.js");
     else if (skill === "A.11A") import("/a11a-practice.js");
+    else if (skill === "A.11B") import("/a11b-practice.js");
     else import("/practice.js");
   </script>
 </body>
