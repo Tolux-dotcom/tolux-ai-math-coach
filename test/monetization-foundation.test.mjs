@@ -21,7 +21,7 @@ test("checkout uses authenticated server-controlled Tolux plans", () => {
   assert.match(app, /Authorization: `Bearer \$\{session\.access_token\}`/);
   assert.match(
     server,
-    /process\.env\.SUPABASE_SECRET_KEY \|\| process\.env\.SUPABASE_SERVICE_ROLE_KEY/
+    /process\.env\.SUPABASE_SERVICE_ROLE_KEY \|\| process\.env\.SUPABASE_SECRET_KEY/
   );
   assert.match(app, /startCheckout\("student"\)/);
   assert.match(app, /startCheckout\("family"\)/);
@@ -30,6 +30,18 @@ test("checkout uses authenticated server-controlled Tolux plans", () => {
   assert.match(server, /const user = await getAuthenticatedUser\(req\)/);
   assert.match(server, /client_reference_id: user\.id/);
   assert.match(server, /subscription_data:/);
+});
+
+test("server verifies browser tokens against the browser Supabase project", () => {
+  assert.match(
+    server,
+    /const SUPABASE_AUTH_URL = "https:\/\/xnadszfvjkyxltskywin\.supabase\.co"/
+  );
+  assert.match(server, /const supabaseAuth = createClient\(/);
+  assert.match(server, /supabaseAuth\.auth\.getUser\(token\)/);
+  assert.doesNotMatch(server, /supabaseAdmin\.auth\.getUser\(token\)/);
+  assert.match(server, /\[auth\] Supabase project mismatch/);
+  assert.match(server, /process\.env\.SUPABASE_URL \|\| SUPABASE_AUTH_URL/);
 });
 
 test("payment lifecycle updates access and protects session verification", () => {
