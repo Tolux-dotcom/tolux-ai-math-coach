@@ -19,6 +19,17 @@ test('Modules 26–35 protect mastery while revealing non-mastery solutions',()=
   }
 });
 
+test('A.3E transformation graph uses mathematically accurate reference lines',()=>{
+  assert.match(graphUpgrade,/alg1-a3e-linear-transformations/);
+  assert.match(graphUpgrade,/Parent: y=x/);
+  assert.match(graphUpgrade,/y=2x/);
+  assert.match(graphUpgrade,/y=-x/);
+  assert.match(graphUpgrade,/y=x\+2/);
+  assert.match(graphUpgrade,/\(0,0\)/);
+  assert.match(graphUpgrade,/y-intercept 0, so it must pass through the origin/);
+  assert.match(graphUpgrade,/parent line y=x passes exactly through \(0,0\)/);
+});
+
 test('A.3F and A.3G receive explicit coordinate-plane detail',()=>{
   assert.match(graphUpgrade,/Coordinate-plane check/);
   assert.match(graphUpgrade,/one solution/i);
