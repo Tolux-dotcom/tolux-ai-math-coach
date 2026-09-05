@@ -39,6 +39,7 @@
     if(equations.length===2)return equations;
     const point=statedPoint(text);
     if(point)return[lineThrough(point,1,'Line 1'),lineThrough(point,-1,'Line 2')];
+    if(/nonparallel|cross once|one solution/i.test(text))return[{m:1,b:1,label:'Line 1'},{m:-1,b:5,label:'Line 2'}];
     if(/parallel|no solution/i.test(text))return[{m:.75,b:3,label:'Line 1'},{m:.75,b:-3,label:'Line 2'}];
     if(/same line|infinitely many/i.test(text))return[{m:-1,b:4,label:'Equation 1'},{m:-1,b:4,label:'Equation 2'}];
     return[{m:1,b:1,label:'Line 1'},{m:-1,b:5,label:'Line 2'}];
