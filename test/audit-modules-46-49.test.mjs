@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
 const read=path=>fs.readFileSync(new URL(`../${path}`,import.meta.url),'utf8');
 const lessonHtml=read('public/lesson.html');
 const practiceHtml=read('public/practice.html');
@@ -51,11 +52,52 @@ test('A.3F displays real coordinate-plane graphs with each problem',()=>{
   assert.match(a3fGraphs,/Solve from the actual graph/);
   assert.match(a3fGraphs,/numbered axes use a consistent scale/i);
   assert.match(a3fGraphs,/parseLinear/);
-  assert.match(a3fGraphs,/2?y=/);
-  assert.match(a3fGraphs,/nonparallel/);
+  assert.match(a3fGraphs,/standard/);
   assert.match(a3fGraphs,/same line/);
   assert.match(a3fGraphs,/parallel/);
   assert.match(a3fGraphs,/intersection/i);
   assert.match(a3fGraphs,/MutationObserver/);
   assert.match(a3fGraphs,/observer\?\.disconnect/);
+});
+
+test('A.3F parses the actual equations instead of drawing fallback crossing lines',()=>{
+  const context={
+    location:{search:'?module=alg1-a3f-graph-linear-systems'},
+    URLSearchParams,
+    window:{},
+    document:{readyState:'loading',addEventListener(){}},
+    MutationObserver:class{},
+    setTimeout(){}
+  };
+  vm.runInNewContext(a3fGraphs,context);
+  const math=context.window.__toluxA3FGraphMath;
+  assert.ok(math);
+
+  const slope=line=>-line.A/line.B;
+  const intercept=line=>line.C/line.B;
+
+  let lines=math.systemFor('Classify the system y=2x+1 and y=2x-4.');
+  assert.equal(lines.length,2);
+  assert.equal(slope(lines[0]),2);
+  assert.equal(slope(lines[1]),2);
+  assert.equal(intercept(lines[0]),1);
+  assert.equal(intercept(lines[1]),-4);
+  assert.equal(math.intersection(lines[0],lines[1]),null);
+  assert.equal(math.sameSystemLine(lines[0],lines[1]),false);
+
+  lines=math.systemFor('Classify y=0.5x+3 and y=0.5x-6.');
+  assert.equal(slope(lines[0]),0.5);
+  assert.equal(slope(lines[1]),0.5);
+  assert.equal(intercept(lines[0]),3);
+  assert.equal(intercept(lines[1]),-6);
+  assert.equal(math.intersection(lines[0],lines[1]),null);
+
+  lines=math.systemFor('Classify y=4x-1 and 2y=8x-2.');
+  assert.equal(math.sameSystemLine(lines[0],lines[1]),true);
+
+  lines=math.systemFor('The graphs of y=x+1 and y=-x+5 intersect at (2,3).');
+  const hit=math.intersection(lines[0],lines[1]);
+  assert.ok(hit);
+  assert.equal(hit.x,2);
+  assert.equal(hit.y,3);
 });
