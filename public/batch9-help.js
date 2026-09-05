@@ -7,9 +7,10 @@
     'alg1-a5b-linear-inequalities':{path:'/a5b-linear-inequalities.json',rule:'Solve like an equation, but reverse the inequality whenever you multiply or divide both sides by a negative number. Then represent the solution correctly.'}
   };
   const moduleId=new URLSearchParams(location.search).get('module');const config=CONFIG[moduleId];if(!config)return;
-  let itemMap=new Map();
+  let itemMap=new Map(),observer;
   const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
   const currentId=()=>{const spans=document.querySelectorAll('#lessonContent .question-header span');return spans.length?spans[spans.length-1].textContent.trim():'';};
+  const isMastery=()=>/Mastery Check/i.test(document.querySelector('#lessonStage')?.textContent||'');
   function fallbackSteps(item){
     const tag=item?.diagnostic_tag||'';
     const bank={
@@ -30,16 +31,25 @@
     const steps=raw.map((s,i)=>`<li><span class="solution-step-number">${i+1}</span><div><div class="math-line">${esc(s.equation)}</div><p>${esc(s.explanation)}</p></div></li>`).join('');
     return `<div class="solution-panel batch9-reveal" data-batch9-reveal="true"><h3>${esc(heading)}</h3><p><strong>Final answer:</strong> ${esc(item.answer_key)}</p><ol class="solution-steps">${steps}</ol><div class="lesson-state lesson-state-success"><strong>Rule to remember</strong><p>${esc(config.rule)}</p></div></div>`;
   }
+  function paused(fn){observer?.disconnect();fn();setTimeout(()=>observer?.observe(document.querySelector('#lessonFeedback'),{childList:true,subtree:true}),0);}
   function strengthen(){
-    const feedback=document.querySelector('#lessonFeedback');if(!feedback)return;
+    if(isMastery())return;
+    const feedback=document.querySelector('#lessonFeedback');if(!feedback||feedback.querySelector('[data-batch9-reveal="true"]'))return;
     const text=feedback.textContent||'';const item=itemMap.get(currentId());if(!item)return;
     const wrong=/not quite|not correct|try again|needs revision|incorrect/i.test(text);const third=/hint\s*3/i.test(text);const alt=/another way/i.test(text);
-    if((wrong||third||alt)&&!feedback.querySelector('[data-batch9-reveal="true"]'))feedback.insertAdjacentHTML('beforeend',solution(item,wrong?'Check your work: answer and full solution':'Full explanation and answer'));
-    if(wrong){const next=document.querySelector('#nextLessonStep');if(next){next.textContent='Review Solution & Continue →';next.style.display='inline-block';}}
+    if(!(wrong||third||alt))return;
+    paused(()=>{
+      feedback.insertAdjacentHTML('beforeend',solution(item,wrong?'Check your work: answer and full solution':'Full explanation and answer'));
+      if(wrong){
+        const answer=document.querySelector('#lessonAnswer'),check=document.querySelector('#submitLessonAnswer'),next=document.querySelector('#nextLessonStep');
+        if(answer)answer.disabled=true;if(check)check.disabled=true;
+        if(next){next.textContent='Review Solution & Continue →';next.style.display='inline-block';}
+      }
+    });
   }
   async function start(){
     try{const response=await fetch(config.path);if(response.ok){const module=await response.json();itemMap=new Map((module.items||[]).map(i=>[i.id,i]));}}catch(error){console.warn('Batch 9 help bank unavailable',error);}
-    const feedback=document.querySelector('#lessonFeedback');if(!feedback)return;const observer=new MutationObserver(strengthen);observer.observe(feedback,{childList:true,subtree:true});
+    const feedback=document.querySelector('#lessonFeedback');if(!feedback)return;observer=new MutationObserver(strengthen);observer.observe(feedback,{childList:true,subtree:true});strengthen();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
