@@ -116,6 +116,8 @@
     return `<section class="a3f-problem-graph" data-a3f-graph="true" style="margin:14px 0 18px;padding:16px;border:1px solid #cbd5e1;border-radius:16px;background:#fff"><h3 style="margin-top:0">Solve from the actual graph</h3><svg viewBox="0 0 640 440" role="img" aria-label="Coordinate plane showing both lines in this system" style="width:100%;max-width:780px;display:block;margin:auto"><defs><clipPath id="a3f-problem-clip"><rect x="${LEFT}" y="${TOP}" width="${W}" height="${H}"/></clipPath></defs>${tickText()}<g clip-path="url(#a3f-problem-clip)">${drawn}${marker}</g></svg><div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center"><span><strong style="color:${colors[0]}">Blue:</strong> ${esc(a.label)}</span><span><strong style="color:${colors[1]}">Red:</strong> ${esc(b.label)}</span></div><p style="margin-bottom:0"><strong>Use the graph:</strong> ${esc(relation)} The numbered axes use a consistent scale so you can determine the solution graphically.</p></section>`;
   }
 
+  if(typeof window!=='undefined')window.__toluxA3FGraphMath=Object.freeze({parseLinear,extractEquations,systemFor,sameSystemLine,intersection,segment,graphMarkup});
+
   let observer=null;
   function promptNode(){return isLesson?document.querySelector('#lessonContent .math-prompt'):document.querySelector('#practicePrompt');}
   function render(){
