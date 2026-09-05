@@ -42,6 +42,15 @@ test("server verifies browser tokens against the browser Supabase project", () =
   assert.doesNotMatch(server, /supabaseAdmin\.auth\.getUser\(token\)/);
   assert.match(server, /\[auth\] Supabase project mismatch/);
   assert.match(server, /process\.env\.SUPABASE_URL \|\| SUPABASE_AUTH_URL/);
+  assert.match(server, /resolveSupabaseServerConfig/);
+  assert.match(server, /supabaseServerConfig\.ready/);
+  assert.match(server, /privileged access disabled/);
+});
+
+test("checkout and webhooks stop safely when entitlement storage is unavailable", () => {
+  assert.match(server, /Subscription storage is temporarily unavailable/);
+  assert.match(server, /Payments are temporarily unavailable/);
+  assert.match(server, /Subscription access is temporarily unavailable/);
 });
 
 test("payment lifecycle updates access and protects session verification", () => {
