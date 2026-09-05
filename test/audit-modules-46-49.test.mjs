@@ -1,0 +1,103 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const read=path=>fs.readFileSync(new URL(`../${path}`,import.meta.url),'utf8');
+const lessonHtml=read('public/lesson.html');
+const practiceHtml=read('public/practice.html');
+const visual=read('public/audit5-exponential-visual.js');
+const help=read('public/audit5-lesson-help.js');
+const practice=read('public/audit5-exponential-practice.js');
+const a3fGraphs=read('public/a3f-problem-graphs.js');
+
+test('final A.9B–A.9E audit is wired into lesson and practice',()=>{
+  assert.match(lessonHtml,/audit5-exponential-visual\.js/);
+  assert.match(lessonHtml,/audit5-lesson-help\.js/);
+  assert.match(practiceHtml,/\["A\.9B","A\.9C","A\.9D","A\.9E"\]\.includes\(skill\).*audit5-exponential-practice\.js/);
+});
+
+test('exponential visuals use mathematically defined growth decay and asymptotes',()=>{
+  assert.match(visual,/Math\.pow\(1\.5,x\)/);
+  assert.match(visual,/Math\.pow\(\.5,x\)/);
+  assert.match(visual,/Math\.pow\(1\.1,x\)/);
+  assert.match(visual,/Math\.pow\(\.9,x\)/);
+  assert.match(visual,/Math\.pow\(2,x\)\+25/);
+  assert.match(visual,/asymptote y=/i);
+  assert.match(visual,/Illustrative learning data/);
+  assert.match(visual,/Residuals observed − predicted/);
+});
+
+test('final exponential help preserves mastery and upgrades non-mastery feedback',()=>{
+  assert.match(help,/Mastery Check/);
+  assert.match(help,/Review Solution & Continue/);
+  assert.match(help,/Hint 3: answer revealed/);
+  assert.match(help,/Another complete approach/);
+  assert.match(help,/observer\?\.disconnect/);
+});
+
+test('A.9B–A.9E practice follows Tolux 5 10 20 learning standard',()=>{
+  for(const skill of ['A.9B','A.9C','A.9D','A.9E'])assert.match(practice,new RegExp(skill.replace('.','\\.')));
+  assert.match(practice,/validatePracticeOptions/);
+  assert.match(practice,/generateStructuredPracticeSession/);
+  assert.match(practice,/Review Solution & Continue/);
+  assert.match(practice,/Hint 3: answer and complete reasoning/);
+  assert.match(practice,/first_attempt_correct/);
+  assert.match(practice,/lesson-progress/);
+  assert.match(practice,/trial-heartbeat/);
+});
+
+test('A.3F displays real coordinate-plane graphs with each problem',()=>{
+  assert.match(lessonHtml,/a3f-problem-graphs\.js/);
+  assert.match(practiceHtml,/a3f-problem-graphs\.js/);
+  assert.match(a3fGraphs,/Solve from the actual graph/);
+  assert.match(a3fGraphs,/numbered axes use a consistent scale/i);
+  assert.match(a3fGraphs,/parseLinear/);
+  assert.match(a3fGraphs,/standard/);
+  assert.match(a3fGraphs,/same line/);
+  assert.match(a3fGraphs,/parallel/);
+  assert.match(a3fGraphs,/intersection/i);
+  assert.match(a3fGraphs,/MutationObserver/);
+  assert.match(a3fGraphs,/observer\?\.disconnect/);
+});
+
+test('A.3F parses the actual equations instead of drawing fallback crossing lines',()=>{
+  const context={
+    location:{search:'?module=alg1-a3f-graph-linear-systems'},
+    URLSearchParams,
+    window:{},
+    document:{readyState:'loading',addEventListener(){}},
+    MutationObserver:class{},
+    setTimeout(){}
+  };
+  vm.runInNewContext(a3fGraphs,context);
+  const math=context.window.__toluxA3FGraphMath;
+  assert.ok(math);
+
+  const slope=line=>-line.A/line.B;
+  const intercept=line=>line.C/line.B;
+
+  let lines=math.systemFor('Classify the system y=2x+1 and y=2x-4.');
+  assert.equal(lines.length,2);
+  assert.equal(slope(lines[0]),2);
+  assert.equal(slope(lines[1]),2);
+  assert.equal(intercept(lines[0]),1);
+  assert.equal(intercept(lines[1]),-4);
+  assert.equal(math.intersection(lines[0],lines[1]),null);
+  assert.equal(math.sameSystemLine(lines[0],lines[1]),false);
+
+  lines=math.systemFor('Classify y=0.5x+3 and y=0.5x-6.');
+  assert.equal(slope(lines[0]),0.5);
+  assert.equal(slope(lines[1]),0.5);
+  assert.equal(intercept(lines[0]),3);
+  assert.equal(intercept(lines[1]),-6);
+  assert.equal(math.intersection(lines[0],lines[1]),null);
+
+  lines=math.systemFor('Classify y=4x-1 and 2y=8x-2.');
+  assert.equal(math.sameSystemLine(lines[0],lines[1]),true);
+
+  lines=math.systemFor('The graphs of y=x+1 and y=-x+5 intersect at (2,3).');
+  const hit=math.intersection(lines[0],lines[1]);
+  assert.ok(hit);
+  assert.equal(hit.x,2);
+  assert.equal(hit.y,3);
+});
