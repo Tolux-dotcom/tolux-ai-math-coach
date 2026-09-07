@@ -120,3 +120,12 @@ if (!document.querySelector('script[data-tolux-algebra1-split]')) {
   splitScript.dataset.toluxAlgebra1Split = "true";
   document.head.append(splitScript);
 }
+
+// Test Prep is now available for owner QA on the private Phase 1 branch.
+if (!document.querySelector('script[data-tolux-test-prep]')) {
+  const testPrepScript = document.createElement("script");
+  testPrepScript.src = "/test-prep-dashboard.js";
+  testPrepScript.defer = true;
+  testPrepScript.dataset.toluxTestPrep = "true";
+  document.head.append(testPrepScript);
+}

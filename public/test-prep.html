@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Algebra 1 STAAR / EOC Test Prep | Tolux AI Math Coach</title>
+  <meta name="description" content="Prepare for the Texas Algebra I STAAR EOC with blueprint-shaped practice, TEKS diagnostics, full solutions, and targeted Tolux remediation." />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/test-prep.css" />
+</head>
+<body class="test-prep-body">
+  <main class="test-prep-shell">
+    <header class="test-prep-header">
+      <a href="/" class="back-dashboard">← Back to Dashboard</a>
+      <div>
+        <small>Texas Algebra I • STAAR / EOC</small>
+        <h1>Tolux Test Prep</h1>
+        <p>Practice the Algebra 1 TEKS in the shape of the current STAAR blueprint, then use your results to target the exact Tolux lessons you need.</p>
+      </div>
+    </header>
+
+    <section id="testPrepStart" class="test-prep-panel">
+      <div class="test-prep-notice">
+        <strong>Blueprint-based practice, not an official TEA test.</strong>
+        <p>Tolux uses original questions from the audited Tolux Algebra 1 lesson bank. The full simulation follows the current Algebra I reporting-category question distribution and 50-question / 59-point blueprint shape. Phase 1 two-point items use all-or-nothing Tolux auto-grading.</p>
+      </div>
+
+      <div class="test-prep-facts">
+        <article><strong>50</strong><span>questions on the current Algebra I blueprint</span></article>
+        <article><strong>59</strong><span>total blueprint points</span></article>
+        <article><strong>5</strong><span>reporting categories</span></article>
+        <article><strong>Graphing calculator</strong><span>available throughout Algebra I STAAR</span></article>
+      </div>
+
+      <div class="test-prep-mode-grid">
+        <article class="test-prep-mode-card">
+          <span class="mode-kicker">Fast diagnostic</span>
+          <h2>Quick Practice</h2>
+          <p>12 questions sampled across all five reporting categories. Best for a fast readiness check.</p>
+          <button id="startQuickPrep" type="button">Start 12 Questions</button>
+        </article>
+
+        <article class="test-prep-mode-card">
+          <span class="mode-kicker">Target one domain</span>
+          <h2>Domain Practice</h2>
+          <p>Choose one STAAR reporting category and complete a focused 10-question set.</p>
+          <label for="domainSelect">Reporting category</label>
+          <select id="domainSelect"></select>
+          <button id="startDomainPrep" type="button">Start Domain Practice</button>
+        </article>
+
+        <article class="test-prep-mode-card featured">
+          <span class="mode-kicker">Full simulation</span>
+          <h2>Algebra 1 EOC Simulation</h2>
+          <p>50 questions shaped to the official reporting-category ranges. Tolux reports your score by category and sends missed skills back to the exact lesson.</p>
+          <button id="startFullPrep" type="button">Start Full Simulation</button>
+        </article>
+      </div>
+
+      <section class="test-prep-blueprint" aria-labelledby="blueprintHeading">
+        <h2 id="blueprintHeading">Current Algebra I blueprint targets</h2>
+        <div id="blueprintTable"></div>
+        <p class="test-prep-source-note">The official test is administered by the Texas Education Agency. Tolux Test Prep is an independent learning product and is not affiliated with or endorsed by TEA.</p>
+      </section>
+    </section>
+
+    <section id="testPrepLoading" class="test-prep-panel" hidden aria-live="polite">
+      <h2>Building your test from the audited Tolux Algebra 1 bank…</h2>
+      <p>Loading TEKS-aligned questions and answer keys.</p>
+    </section>
+
+    <section id="testPrepRunner" class="test-prep-panel" hidden>
+      <div class="runner-topline">
+        <div>
+          <small id="sessionModeLabel">Test Prep</small>
+          <h2 id="sessionTitle">Algebra 1 Test Prep</h2>
+        </div>
+        <div class="runner-stats">
+          <span id="questionCounter">Question 1 of 12</span>
+          <span id="elapsedClock">00:00</span>
+        </div>
+      </div>
+      <div class="progress-track"><div id="testPrepProgress" class="progress-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+
+      <div class="test-prep-question-layout">
+        <section class="test-prep-question-card">
+          <div class="question-header">
+            <span id="questionCategory" class="difficulty-badge">Reporting Category</span>
+            <span id="questionTeks">A.5A</span>
+            <span id="questionPoints">1 point</span>
+          </div>
+          <h3 id="questionPrompt"></h3>
+          <div id="questionVisual"></div>
+          <label for="testPrepAnswer"><strong>Your answer</strong></label>
+          <input id="testPrepAnswer" type="text" autocomplete="off" placeholder="Enter your answer" />
+          <p class="answer-note">Answers are not revealed until you submit the test.</p>
+          <label class="review-toggle"><input id="markForReview" type="checkbox" /> Mark this question for review</label>
+          <div class="question-actions">
+            <button id="previousQuestion" type="button" class="secondary-action">← Previous</button>
+            <button id="nextQuestion" type="button">Next →</button>
+          </div>
+        </section>
+
+        <aside class="test-prep-sidebar">
+          <h3>Test Navigator</h3>
+          <div id="questionNavigator" class="question-navigator"></div>
+          <div class="calculator-note">
+            <strong>Calculator note</strong>
+            <p>STAAR Algebra I provides access to a graphing calculator throughout the assessment.</p>
+          </div>
+          <button id="submitTestPrep" type="button" class="submit-test-button">Submit Test</button>
+        </aside>
+      </div>
+    </section>
+
+    <section id="testPrepResults" class="test-prep-panel" hidden>
+      <div class="results-hero">
+        <div>
+          <small>Tolux Test Prep Result</small>
+          <h2 id="resultHeadline">Your results</h2>
+          <p id="resultSummary"></p>
+        </div>
+        <div class="result-score" id="resultScore">0%</div>
+      </div>
+      <div id="categoryResults" class="category-results"></div>
+      <section>
+        <h2>Targeted remediation</h2>
+        <p>Review every missed item, then open the exact Tolux lesson for that TEKS.</p>
+        <div id="missedResults" class="missed-results"></div>
+      </section>
+      <div class="results-actions">
+        <button id="retryTestPrep" type="button">Build Another Test</button>
+        <a href="/" class="lesson-link-button">Return to Dashboard</a>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/test-prep.js"></script>
+</body>
+</html>
