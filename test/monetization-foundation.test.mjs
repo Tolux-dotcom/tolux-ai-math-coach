@@ -48,5 +48,9 @@ test("payment lifecycle updates access and protects session verification", () =>
   assert.match(server, /setStudentSubscription\(userId, true\)/);
   assert.match(server, /setStudentSubscription\(userId, false\)/);
   assert.match(server, /session\.client_reference_id !== user\.id/);
+  assert.match(server, /session\.metadata\?\.tolux_user_id !== user\.id/);
+  assert.match(server, /reconcilePaidCheckoutEntitlement/);
+  assert.match(server, /setStudentSubscription\(authenticatedUserId, true\)/);
+  assert.match(server, /entitlementActivated: reconciliation\.activated/);
   assert.doesNotMatch(server, /customerEmail: session\.customer_details/);
 });
