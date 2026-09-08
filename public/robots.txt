@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://mathcoach.tolux.org/sitemap.xml
