@@ -198,3 +198,18 @@ if (!document.querySelector('script[data-tolux-algebra1-split]')) {
     installPortalChoice();
   }
 })();
+
+// The Joy and Victoria videos remain valuable marketing assets, but the app
+// dashboard now prioritizes learning and educator workflows. Remove the large
+// promotional showcase from the application surface to reclaim vertical space.
+(() => {
+  function removeVideoShowcase() {
+    document.querySelector(".video-showcase")?.remove();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", removeVideoShowcase, { once: true });
+  } else {
+    removeVideoShowcase();
+  }
+})();
