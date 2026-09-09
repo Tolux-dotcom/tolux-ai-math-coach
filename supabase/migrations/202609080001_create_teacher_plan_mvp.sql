@@ -41,6 +41,7 @@ create table if not exists public.teacher_assignments (
 create index if not exists teacher_classrooms_owner_created_idx on public.teacher_classrooms (teacher_user_id, created_at desc);
 create index if not exists teacher_assignments_owner_created_idx on public.teacher_assignments (teacher_user_id, created_at desc);
 create index if not exists teacher_assignments_classroom_created_idx on public.teacher_assignments (classroom_id, created_at desc);
+create index if not exists teacher_assignments_classroom_owner_idx on public.teacher_assignments (classroom_id, teacher_user_id);
 
 alter table public.teacher_profiles enable row level security;
 alter table public.teacher_classrooms enable row level security;
