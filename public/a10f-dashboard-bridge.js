@@ -137,8 +137,13 @@ if (!document.querySelector('script[data-tolux-algebra1-split]')) {
       .tolux-portal-card.teacher{background:#f0fdf4;border-color:#b7e4c4}.tolux-portal-card.teacher:hover{border-color:#16803c}
       .tolux-portal-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:#eef0ff;font-size:1.5rem;flex:0 0 auto}.teacher .tolux-portal-icon{background:#dcfce7}
       .tolux-portal-copy{display:grid;gap:2px}.tolux-portal-copy strong{font-size:1rem}.tolux-portal-copy span{font-size:.88rem;color:#667085}
-      .tolux-teacher-nav{display:flex!important;align-items:center;justify-content:flex-start;width:100%;padding:11px 12px;margin-top:8px;border-radius:10px;text-decoration:none!important;font-weight:800!important;background:#166534!important;color:#fff!important}
+      .tolux-teacher-nav{display:flex!important;align-items:center;justify-content:flex-start;width:100%;padding:11px 12px;margin-top:8px;border-radius:10px;text-decoration:none!important;font-weight:800!important;background:#166534!important;color:#fff!important;line-height:1.25}
       .tolux-teacher-nav:hover{background:#14532d!important}
+      @media(min-width:951px){
+        .sidebar{display:flex;flex-direction:column;overflow-y:auto}
+        .sidebar nav{flex:0 0 auto}
+        .sidebar .promise{position:static;left:auto;right:auto;bottom:auto;margin-top:auto;flex:0 0 auto}
+      }
       @media(max-width:760px){.tolux-portal-choice{grid-template-columns:1fr}}
     `;
     document.head.append(style);
