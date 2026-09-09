@@ -5,17 +5,20 @@ import fs from "node:fs";
 const phase2Schema = fs.readFileSync("supabase/migrations/202609080002_create_teacher_plan_phase2.sql", "utf8");
 const rpcRemoval = fs.readFileSync("supabase/migrations/202609080004_remove_teacher_plan_phase2_exposed_rpcs.sql", "utf8");
 const reportMigration = fs.readFileSync("supabase/migrations/202609080005_add_teacher_report_rls_and_invoker.sql", "utf8");
+const optimization = fs.readFileSync("supabase/migrations/202609080006_optimize_teacher_plan_phase2_rls.sql", "utf8");
 const edge = fs.readFileSync("supabase/functions/teacher-classroom/index.ts", "utf8");
 const assignment = fs.readFileSync("public/assignment.js", "utf8");
 const attribution = fs.readFileSync("public/assignment-attribution.js", "utf8");
 const teacher = fs.readFileSync("public/teacher.js", "utf8");
 
-test("class enrollment and assignment results use RLS", () => {
+test("class enrollment and assignment results use consolidated RLS", () => {
   assert.match(phase2Schema, /alter table public\.class_enrollments enable row level security/);
-  assert.match(phase2Schema, /Students can view their own class enrollments/);
-  assert.match(phase2Schema, /Students can view their own assignment results/);
-  assert.match(reportMigration, /Teachers can view enrollments in their own classrooms/);
-  assert.match(reportMigration, /Teachers can view assignment results in their own classrooms/);
+  assert.match(phase2Schema, /alter table public\.assignment_completions enable row level security/);
+  assert.match(optimization, /create policy "Class enrollment visibility"/);
+  assert.match(optimization, /create policy "Assignment result visibility"/);
+  assert.match(optimization, /student_user_id = \(select auth\.uid\(\)\)/);
+  assert.match(optimization, /teacher_user_id = \(select auth\.uid\(\)\)/);
+  assert.match(optimization, /assignment_completions_student_idx/);
 });
 
 test("sensitive student actions use a JWT-checked Edge Function", () => {
