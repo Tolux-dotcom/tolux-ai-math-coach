@@ -13,6 +13,42 @@ function json(body: unknown, status = 200) {
   });
 }
 
+function canonicalActivityPath(value: unknown) {
+  const raw = String(value || "").trim();
+  if (!raw || raw.length > 1000) return null;
+
+  let url: URL;
+  try {
+    url = new URL(raw, "https://mathcoach.tolux.org");
+  } catch {
+    return null;
+  }
+
+  const allowedKeys = url.pathname === "/lesson.html"
+    ? new Set(["module", "start", "assignment"])
+    : url.pathname === "/practice.html"
+      ? new Set(["skill", "difficulty", "count", "assignment"])
+      : null;
+
+  if (!allowedKeys) return null;
+  for (const key of url.searchParams.keys()) {
+    if (!allowedKeys.has(key)) return null;
+  }
+
+  url.searchParams.delete("assignment");
+  const entries = [...url.searchParams.entries()].sort(([a], [b]) => a.localeCompare(b));
+  const normalized = new URLSearchParams();
+  for (const [key, val] of entries) normalized.append(key, val);
+
+  return `${url.pathname}${normalized.size ? `?${normalized.toString()}` : ""}`;
+}
+
+function activityMatchesAssignment(launchUrl: unknown, activityPath: unknown) {
+  const expected = canonicalActivityPath(launchUrl);
+  const actual = canonicalActivityPath(activityPath);
+  return Boolean(expected && actual && expected === actual);
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -59,7 +95,7 @@ Deno.serve(async (req: Request) => {
       return json({ classroom });
     }
 
-    if (action === "assignment-preview" || action === "assignment-access") {
+    if (action === "assignment-preview" || action === "assignment-access" || action === "assignment-entitlement") {
       const assignmentId = String(body?.assignmentId || "");
       const { data: assignment, error } = await admin.from("teacher_assignments")
         .select("id, classroom_id, title, module_id, teks_code, assignment_type, question_count, due_at, launch_url, status")
@@ -91,7 +127,32 @@ Deno.serve(async (req: Request) => {
         .eq("student_user_id", user.id)
         .maybeSingle();
       if (enrollError) throw enrollError;
-      if (!enrollment) return json({ enrolled: false, assignment: null });
+      if (!enrollment) {
+        return action === "assignment-entitlement"
+          ? json({ entitled: false, reason: "not-enrolled" })
+          : json({ enrolled: false, assignment: null });
+      }
+
+      if (action === "assignment-entitlement") {
+        const entitled = activityMatchesAssignment(assignment.launch_url, body?.activityPath);
+        return json({
+          entitled,
+          classroomAccess: entitled,
+          assignment: entitled ? {
+            id: assignment.id,
+            title: assignment.title,
+            teks_code: assignment.teks_code,
+            assignment_type: assignment.assignment_type,
+            due_at: assignment.due_at
+          } : null,
+          classroom: entitled ? {
+            id: classroom.id,
+            name: classroom.name,
+            period: classroom.period
+          } : null
+        });
+      }
+
       return json({ enrolled: true, assignment });
     }
 
