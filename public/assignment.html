@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tolux Classroom Assignment | Tolux AI Math Coach</title>
+  <meta name="description" content="Join a Tolux Algebra 1 class and open your teacher-assigned lesson, diagnostic, or practice activity." />
+  <link rel="stylesheet" href="/teacher.css" />
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/">π <span>TOLUX AI MATH COACH</span></a><a href="/">Student Math Coach</a></header>
+  <main>
+    <section class="hero"><div><span class="eyebrow">CLASSROOM ASSIGNMENT</span><h1 id="assignmentHeading">Open your Tolux assignment.</h1><p id="assignmentMeta">Sign in to view the assignment your teacher shared.</p></div><aside class="hero-card"><strong>How this works</strong><ul><li>Sign in with your Tolux student account</li><li>Join the class with the teacher’s class code if needed</li><li>Complete the assigned Tolux activity</li><li>Your teacher sees the resulting mastery status for this assignment</li></ul></aside></section>
+
+    <section id="authSection" class="panel"><h2>Student sign in</h2><div id="authLoggedOut"><div class="form-grid"><label>Email<input id="email" type="email" autocomplete="email" /></label><label>Password<input id="password" type="password" autocomplete="current-password" /></label></div><div class="actions"><button id="signInBtn">Sign in</button><button id="signUpBtn" class="secondary">Create account</button></div><p id="authMessage" class="message"></p></div><div id="authLoggedIn" hidden><p>Signed in as <strong id="signedInEmail"></strong></p><button id="signOutBtn" class="secondary">Sign out</button></div></section>
+
+    <section id="joinSection" class="panel" hidden><span class="eyebrow">JOIN CLASS</span><h2>Enter your class code</h2><p>You only need to do this once for this class.</p><form id="joinForm" class="form-grid"><label>Your name<input id="studentName" required maxlength="120" placeholder="Name your teacher will recognize" /></label><label>Class code<input id="classCode" required maxlength="6" autocomplete="off" style="text-transform:uppercase" placeholder="ABC234" /></label><div class="full"><button type="submit">Join class</button></div></form><p id="joinMessage" class="message"></p></section>
+
+    <section id="readySection" class="panel" hidden><span class="eyebrow">READY</span><h2 id="readyTitle">Assignment ready</h2><p id="readyDetails"></p><button id="startAssignmentBtn">Start assignment</button></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assignment.js"></script>
+</body>
+</html>
