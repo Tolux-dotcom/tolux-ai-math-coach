@@ -33,11 +33,14 @@
     for (const report of candidateReports()) {
       if (attempted.has(report.completionId)) continue;
       attempted.add(report.completionId);
-      const { error } = await client.rpc("record_assignment_completion", {
-        p_assignment_id: assignmentId,
-        p_client_completion_id: report.completionId
+      const { data, error } = await client.functions.invoke("teacher-classroom", {
+        body: {
+          action: "record-completion",
+          assignmentId,
+          clientCompletionId: report.completionId
+        }
       });
-      if (!error) {
+      if (!error && !data?.error && data?.recorded) {
         window.clearInterval(timer);
         sessionStorage.setItem(`toluxAssignmentComplete:${assignmentId}`, report.completionId);
         return;
