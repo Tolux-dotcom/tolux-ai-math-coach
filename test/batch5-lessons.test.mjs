@@ -38,7 +38,7 @@ test('five-module batch loads visuals, comprehensive help, dashboard exposure, a
   assert.match(visuals,/DOMAIN: x-values/); assert.match(visuals,/rise/); assert.match(visuals,/aₙ = a₁/);
   assert.match(help,/Final answer:/); assert.match(help,/hint\s*3/i); assert.match(help,/not quite/i);
   for(const teks of ['A.12C','A.12D','A.12E','A.2A','A.2B']){assert.match(bridge,new RegExp(teks.replace('.','\\.')));assert.match(runtime,new RegExp(teks.replace('.','\\.')));}
-  assert.match(practice,/batch5-practice\.js/); assert.match(runtime,/\[5,10,20\]/); assert.match(runtime,/lesson-progress/); assert.match(runtime,/Correct answer and full explanation/);
+  assert.match(practice,/batch5-practice\.js/); assert.match(runtime,/\[5,10,20\]/); assert.match(runtime,/persistPracticeCompletion/); assert.match(runtime,/Correct answer and full explanation/);
 });
 
 test('sequence formula students can enter true subscript notation from the math toolbar',()=>{

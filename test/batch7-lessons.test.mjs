@@ -58,6 +58,6 @@ test('Modules 21 through 25 load comprehensive help, dashboard exposure, and 5/1
   }
   assert.match(practice,/batch7-practice\.js/);
   assert.match(runtime,/\[5,10,20\]/);
-  assert.match(runtime,/lesson-progress/);
+  assert.match(runtime,/persistPracticeCompletion/);
   assert.match(runtime,/Correct answer and full explanation/);
 });
