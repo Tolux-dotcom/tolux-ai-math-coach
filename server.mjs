@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { reconcilePaidCheckoutEntitlement } from "./subscription-entitlement.mjs";
 import {
   buildLessonProgressRow,
   dedupeLessonProgressActivities,
@@ -629,16 +630,29 @@ if (event.type === "invoice.payment_failed") {
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    if (session.client_reference_id !== user.id) {
+    if (
+      session.client_reference_id !== user.id ||
+      session.metadata?.tolux_user_id !== user.id
+    ) {
       return send(res, 403, { error: "This checkout does not belong to your account." });
     }
 
-    const paid =
-      session.status === "complete" &&
-      session.payment_status === "paid";
+    const reconciliation = await reconcilePaidCheckoutEntitlement({
+      session,
+      userId: user.id,
+      activateSubscription: authenticatedUserId =>
+        setStudentSubscription(authenticatedUserId, true)
+    });
+
+    if (reconciliation.verified && !reconciliation.activated) {
+      return send(res, 503, {
+        error: "Payment is confirmed, but subscription access could not be activated yet. Please retry shortly."
+      });
+    }
 
     return send(res, 200, {
-      verified: paid,
+      verified: reconciliation.verified,
+      entitlementActivated: reconciliation.activated,
       paymentStatus: session.payment_status,
       subscriptionId: session.subscription || null
     });
