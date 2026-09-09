@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Free Algebra 1 Teacher Plan | Tolux AI Math Coach</title>
-  <meta name="description" content="Create a free Tolux Algebra 1 teacher workspace, build TEKS-aligned classes and assignments, and review student assignment mastery." />
+  <meta name="description" content="Create a free Tolux Algebra 1 teacher workspace, build TEKS-aligned classes and assignments, review student mastery, create intervention groups, and generate parent progress summaries." />
   <link rel="stylesheet" href="/teacher.css" />
+  <link rel="stylesheet" href="/teacher-phase3.css" />
 </head>
 <body>
   <header class="topbar">
@@ -17,14 +18,14 @@
       <div>
         <span class="eyebrow">FREE TEACHER PLAN</span>
         <h1>Turn Tolux Algebra 1 lessons into classroom assignments.</h1>
-        <p>Create an Algebra 1 class, choose a TEKS skill, share a secure student assignment link, and review mastery after students complete the work.</p>
+        <p>Create an Algebra 1 class, choose a TEKS skill, share a secure student assignment link, review mastery, group students for intervention, and prepare parent-ready progress updates.</p>
         <div class="actions"><button id="heroStartBtn">Start Free Teacher Plan</button><a class="secondary" href="#how">See how it works</a></div>
         <small>No credit card required. Students explicitly join a teacher class before classroom progress is shared.</small>
       </div>
-      <aside class="hero-card"><strong>Teacher Plan includes</strong><ul><li>Teacher profile and Algebra 1 classes</li><li>TEKS-aligned assignment builder</li><li>Secure class-code student enrollment</li><li>Assignment-specific student launch links</li><li>Roster, mastery score, and intervention signals</li></ul></aside>
+      <aside class="hero-card"><strong>Teacher Plan includes</strong><ul><li>Teacher profile and Algebra 1 classes</li><li>TEKS-aligned assignment builder</li><li>Secure class-code student enrollment</li><li>Roster, mastery, and intervention signals</li><li>Parent-ready progress summaries</li><li>School and district pilot requests</li></ul></aside>
     </section>
 
-    <section id="how" class="panel"><h2>How it works</h2><div class="steps"><article><b>1</b><h3>Create your teacher profile</h3><p>Use your existing Tolux account or create one.</p></article><article><b>2</b><h3>Create a class</h3><p>Tolux generates a six-character class code.</p></article><article><b>3</b><h3>Create an assignment</h3><p>Choose a live Algebra 1 TEKS lesson, diagnostic, or practice session.</p></article><article><b>4</b><h3>Review mastery</h3><p>Students join your class, complete the work, and Tolux reports assignment mastery.</p></article></div></section>
+    <section id="how" class="panel"><h2>How it works</h2><div class="steps"><article><b>1</b><h3>Create your teacher profile</h3><p>Use your existing Tolux account or create one.</p></article><article><b>2</b><h3>Create a class</h3><p>Tolux generates a six-character class code.</p></article><article><b>3</b><h3>Create an assignment</h3><p>Choose a live Algebra 1 TEKS lesson, diagnostic, or practice session.</p></article><article><b>4</b><h3>Act on mastery</h3><p>Review results, intervention groups, and parent-ready summaries.</p></article></div></section>
 
     <section id="authSection" class="panel auth-panel"><h2>Teacher sign in</h2><div id="authLoggedOut"><div class="form-grid"><label>Email<input id="email" type="email" autocomplete="email" /></label><label>Password<input id="password" type="password" autocomplete="current-password" /></label></div><div class="actions"><button id="signInBtn">Sign in</button><button id="signUpBtn" class="secondary">Create account</button></div><p id="authMessage" class="message"></p></div><div id="authLoggedIn" hidden><p>Signed in as <strong id="signedInEmail"></strong></p><button id="signOutBtn" class="secondary">Sign out</button></div></section>
 
@@ -38,9 +39,14 @@
       <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 4</span><h2>Assignment history</h2></div></div><p>Share the classroom assignment link below. Students sign in and join the class before Tolux opens the learning activity.</p><div id="assignmentList" class="cards"></div></section>
 
       <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 5</span><h2>Roster & mastery</h2></div><button id="refreshReportBtn" type="button" class="secondary">Refresh</button></div><div class="form-grid"><label>Class<select id="reportClass"></select></label></div><p id="reportMessage" class="message"></p><div id="reportSummary" class="cards"></div><div id="rosterList" class="cards"></div><div id="assignmentProgressList" class="cards"></div></section>
+
+      <section id="phase3Tools" class="panel" hidden><div class="section-head"><div><span class="eyebrow">STEP 6</span><h2>Intervention groups & parent updates</h2></div><button id="phase3RefreshBtn" type="button" class="secondary">Refresh</button></div><div class="form-grid"><label>Class<select id="phase3ClassSelect"></select></label></div><p id="phase3Message" class="message"></p><div class="phase3-grid"><div><h3>TEKS intervention groups</h3><p class="phase3-note">Groups are generated only from verified Tolux classroom mastery results. They are not AI guesses.</p><div id="interventionGroups" class="phase3-stack"></div></div><div><h3>Parent-ready progress summary</h3><label>Student<select id="parentStudentSelect"></select></label><textarea id="parentSummary" class="phase3-summary" readonly aria-label="Parent progress summary"></textarea><div class="actions"><button id="copyParentSummaryBtn" type="button">Copy parent summary</button></div><p class="phase3-note">Tolux does not store parent or guardian contact information in this phase. Teachers decide how to share the summary through approved school channels.</p></div></div></section>
+
+      <section id="pilotSection" class="panel" hidden><div class="section-head"><div><span class="eyebrow">STEP 7</span><h2>Request a school or district pilot</h2></div></div><p>Use your authenticated Tolux educator account to request a structured Algebra 1 pilot. Your account email is used as the pilot contact and is not entered separately.</p><form id="pilotForm" class="form-grid"><label>School<input id="pilotSchool" required maxlength="180" /></label><label>District<input id="pilotDistrict" maxlength="180" /></label><label>Your role<select id="pilotRole"><option value="teacher">Teacher</option><option value="instructional_coach">Instructional coach</option><option value="department_chair">Department chair</option><option value="administrator">Administrator</option><option value="district_leader">District leader</option><option value="other">Other</option></select></label><label>Estimated students<input id="pilotStudents" type="number" min="1" max="100000" placeholder="Example: 120" /></label><label class="full">Primary goal<textarea id="pilotGoal" rows="4" maxlength="1500" placeholder="Example: Algebra 1 intervention, STAAR readiness, teacher pilot, or mastery tracking"></textarea></label><div class="full"><button type="submit">Request Tolux pilot</button></div></form><p id="pilotMessage" class="message"></p><h3>Your pilot requests</h3><div id="pilotRequestHistory" class="cards"></div></section>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/teacher.js"></script>
+  <script src="/teacher-phase3.js"></script>
 </body>
 </html>
