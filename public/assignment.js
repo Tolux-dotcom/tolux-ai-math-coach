@@ -11,6 +11,15 @@ function setMessage(el, text, kind = "") {
   el.className = `message${kind ? ` ${kind}` : ""}`;
 }
 
+async function classroomAction(action, payload = {}) {
+  const { data, error } = await supabaseClient.functions.invoke("teacher-classroom", {
+    body: { action, ...payload }
+  });
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+
 function appendAssignment(url) {
   const resolved = new URL(url, window.location.origin);
   resolved.searchParams.set("assignment", assignmentId);
@@ -24,18 +33,16 @@ async function verifyUser() {
 
 async function loadPreview() {
   if (!assignmentId) throw new Error("This assignment link is incomplete.");
-  const { data, error } = await supabaseClient.rpc("get_assignment_preview", { p_assignment_id: assignmentId });
-  if (error) throw error;
-  const preview = data?.[0];
+  const data = await classroomAction("assignment-preview", { assignmentId });
+  const preview = data?.assignment;
   if (!preview) throw new Error("This assignment is no longer available.");
   $("#assignmentHeading").textContent = preview.title;
   $("#assignmentMeta").textContent = `${preview.teks_code} • ${preview.class_name}${preview.class_period ? ` • ${preview.class_period}` : ""} • ${preview.assignment_type}`;
 }
 
 async function loadAssignmentAccess() {
-  const { data, error } = await supabaseClient.rpc("get_assignment_for_student", { p_assignment_id: assignmentId });
-  if (error) throw error;
-  assignment = data?.[0] || null;
+  const data = await classroomAction("assignment-access", { assignmentId });
+  assignment = data?.assignment || null;
   $("#joinSection").hidden = Boolean(assignment);
   $("#readySection").hidden = !assignment;
   if (!assignment) return;
@@ -76,13 +83,16 @@ $("#signOutBtn").addEventListener("click", async () => { await supabaseClient.au
 $("#joinForm").addEventListener("submit", async event => {
   event.preventDefault();
   setMessage($("#joinMessage"), "Joining class…");
-  const { error } = await supabaseClient.rpc("join_teacher_class", {
-    p_class_code: $("#classCode").value.trim().toUpperCase(),
-    p_display_name: $("#studentName").value.trim()
-  });
-  if (error) return setMessage($("#joinMessage"), error.message, "error");
-  setMessage($("#joinMessage"), "Class joined. Your assignment is ready.", "success");
-  await loadAssignmentAccess();
+  try {
+    await classroomAction("join-class", {
+      classCode: $("#classCode").value.trim().toUpperCase(),
+      displayName: $("#studentName").value.trim()
+    });
+    setMessage($("#joinMessage"), "Class joined. Your assignment is ready.", "success");
+    await loadAssignmentAccess();
+  } catch (error) {
+    setMessage($("#joinMessage"), error.message, "error");
+  }
 });
 
 $("#startAssignmentBtn").addEventListener("click", () => {
@@ -93,11 +103,6 @@ $("#startAssignmentBtn").addEventListener("click", () => {
 supabaseClient.auth.onAuthStateChange(() => setTimeout(() => void renderAuth(), 0));
 
 (async function start() {
-  try {
-    currentUser = await verifyUser();
-    if (currentUser) await loadPreview();
-    await renderAuth();
-  } catch (error) {
-    setMessage($("#authMessage"), error.message, "error");
-  }
+  try { await renderAuth(); }
+  catch (error) { setMessage($("#authMessage"), error.message, "error"); }
 })();
