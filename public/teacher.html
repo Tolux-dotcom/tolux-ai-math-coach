@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Free Algebra 1 Teacher Plan | Tolux AI Math Coach</title>
-  <meta name="description" content="Create a free Tolux Algebra 1 teacher workspace, build TEKS-aligned classes and assignments, and send students directly into lessons, diagnostics, and practice." />
+  <meta name="description" content="Create a free Tolux Algebra 1 teacher workspace, build TEKS-aligned classes and assignments, and review student assignment mastery." />
   <link rel="stylesheet" href="/teacher.css" />
 </head>
 <body>
@@ -17,14 +17,14 @@
       <div>
         <span class="eyebrow">FREE TEACHER PLAN</span>
         <h1>Turn Tolux Algebra 1 lessons into classroom assignments.</h1>
-        <p>Create a teacher profile, open an Algebra 1 class, choose a TEKS skill, and generate a student launch link for a lesson, readiness diagnostic, or focused practice.</p>
+        <p>Create an Algebra 1 class, choose a TEKS skill, share a secure student assignment link, and review mastery after students complete the work.</p>
         <div class="actions"><button id="heroStartBtn">Start Free Teacher Plan</button><a class="secondary" href="#how">See how it works</a></div>
-        <small>No credit card required. Student learning remains in the existing Tolux Math Coach.</small>
+        <small>No credit card required. Students explicitly join a teacher class before classroom progress is shared.</small>
       </div>
-      <aside class="hero-card"><strong>Teacher MVP includes</strong><ul><li>Teacher profile</li><li>Algebra 1 class workspace</li><li>TEKS-aligned assignment builder</li><li>Copy-ready student launch links</li><li>Assignment history</li></ul></aside>
+      <aside class="hero-card"><strong>Teacher Plan includes</strong><ul><li>Teacher profile and Algebra 1 classes</li><li>TEKS-aligned assignment builder</li><li>Secure class-code student enrollment</li><li>Assignment-specific student launch links</li><li>Roster, mastery score, and intervention signals</li></ul></aside>
     </section>
 
-    <section id="how" class="panel"><h2>How it works</h2><div class="steps"><article><b>1</b><h3>Create your teacher profile</h3><p>Use your existing Tolux account or create one.</p></article><article><b>2</b><h3>Create a class</h3><p>Name the class and optional period.</p></article><article><b>3</b><h3>Choose a TEKS skill</h3><p>Select from the live Algebra 1 curriculum catalog.</p></article><article><b>4</b><h3>Send the assignment</h3><p>Copy the generated Tolux link into your LMS, email, or class message.</p></article></div></section>
+    <section id="how" class="panel"><h2>How it works</h2><div class="steps"><article><b>1</b><h3>Create your teacher profile</h3><p>Use your existing Tolux account or create one.</p></article><article><b>2</b><h3>Create a class</h3><p>Tolux generates a six-character class code.</p></article><article><b>3</b><h3>Create an assignment</h3><p>Choose a live Algebra 1 TEKS lesson, diagnostic, or practice session.</p></article><article><b>4</b><h3>Review mastery</h3><p>Students join your class, complete the work, and Tolux reports assignment mastery.</p></article></div></section>
 
     <section id="authSection" class="panel auth-panel"><h2>Teacher sign in</h2><div id="authLoggedOut"><div class="form-grid"><label>Email<input id="email" type="email" autocomplete="email" /></label><label>Password<input id="password" type="password" autocomplete="current-password" /></label></div><div class="actions"><button id="signInBtn">Sign in</button><button id="signUpBtn" class="secondary">Create account</button></div><p id="authMessage" class="message"></p></div><div id="authLoggedIn" hidden><p>Signed in as <strong id="signedInEmail"></strong></p><button id="signOutBtn" class="secondary">Sign out</button></div></section>
 
@@ -33,9 +33,11 @@
 
       <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 2</span><h2>Your Algebra 1 classes</h2></div></div><form id="classForm" class="form-grid"><label>Class name<input id="className" placeholder="Example: Algebra 1 - 2nd Period" required maxlength="120" /></label><label>Period or section<input id="classPeriod" placeholder="Example: Period 2" maxlength="60" /></label><div class="full"><button type="submit">Create class</button></div></form><p id="classMessage" class="message"></p><div id="classList" class="cards"></div></section>
 
-      <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 3</span><h2>Create a TEKS-aligned assignment</h2></div></div><form id="assignmentForm" class="form-grid"><label>Class<select id="assignmentClass" required></select></label><label>TEKS skill<select id="assignmentModule" required></select></label><label>Assignment type<select id="assignmentType"><option value="lesson">Step-by-step lesson</option><option value="diagnostic">Readiness diagnostic</option><option value="practice">Focused practice</option></select></label><label id="questionCountWrap" hidden>Practice questions<select id="questionCount"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="20">20 questions</option></select></label><label>Assignment title<input id="assignmentTitle" required maxlength="160" /></label><label>Due date (optional)<input id="dueAt" type="datetime-local" /></label><div class="full"><button type="submit">Create student launch link</button></div></form><p id="assignmentMessage" class="message"></p></section>
+      <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 3</span><h2>Create a TEKS-aligned assignment</h2></div></div><form id="assignmentForm" class="form-grid"><label>Class<select id="assignmentClass" required></select></label><label>TEKS skill<select id="assignmentModule" required></select></label><label>Assignment type<select id="assignmentType"><option value="lesson">Step-by-step lesson</option><option value="diagnostic">Readiness diagnostic</option><option value="practice">Focused practice</option></select></label><label id="questionCountWrap" hidden>Practice questions<select id="questionCount"><option value="5">5 questions</option><option value="10" selected>10 questions</option><option value="20">20 questions</option></select></label><label>Assignment title<input id="assignmentTitle" required maxlength="160" /></label><label>Due date (optional)<input id="dueAt" type="datetime-local" /></label><div class="full"><button type="submit">Create student assignment link</button></div></form><p id="assignmentMessage" class="message"></p></section>
 
-      <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 4</span><h2>Assignment history</h2></div></div><div id="assignmentList" class="cards"></div></section>
+      <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 4</span><h2>Assignment history</h2></div></div><p>Share the classroom assignment link below. Students sign in and join the class before Tolux opens the learning activity.</p><div id="assignmentList" class="cards"></div></section>
+
+      <section class="panel"><div class="section-head"><div><span class="eyebrow">STEP 5</span><h2>Roster & mastery</h2></div><button id="refreshReportBtn" type="button" class="secondary">Refresh</button></div><div class="form-grid"><label>Class<select id="reportClass"></select></label></div><p id="reportMessage" class="message"></p><div id="reportSummary" class="cards"></div><div id="rosterList" class="cards"></div><div id="assignmentProgressList" class="cards"></div></section>
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
