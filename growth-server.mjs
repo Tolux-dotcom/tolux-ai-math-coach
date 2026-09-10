@@ -48,6 +48,14 @@ async function authenticatedUser(req) {
   return error ? null : data?.user || null;
 }
 
+function isGrowthAdmin(userId) {
+  if (!userId) return false;
+  if (adminUserIds.has(userId)) return true;
+  // Preview-only fallback: reuse the existing internal QA allowlist so the
+  // protected PR deployment can be smoke-tested without weakening production.
+  return process.env.VERCEL_ENV === 'preview' && internalQa.isAuthorized(userId);
+}
+
 async function handleGrowthRequest(req, res) {
   if (!adminClient) {
     sendJson(res, 503, { error: 'Growth analytics storage is not configured.' });
@@ -78,7 +86,7 @@ async function handleGrowthRequest(req, res) {
 
   if (req.method === 'GET' && req.url === '/api/admin/growth-metrics') {
     const user = await authenticatedUser(req);
-    if (!user || !adminUserIds.has(user.id)) {
+    if (!user || !isGrowthAdmin(user.id)) {
       sendJson(res, 404, { error: 'Not found.' });
       return true;
     }
