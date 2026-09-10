@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tolux Growth Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .growth-shell{max-width:1100px;margin:40px auto;padding:0 20px}.growth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}.growth-card{padding:18px;border:1px solid #ddd;border-radius:14px;background:#fff}.growth-card strong{display:block;font-size:2rem;margin-top:8px}.growth-status{margin:16px 0}.growth-table{width:100%;border-collapse:collapse;margin-top:20px}.growth-table th,.growth-table td{text-align:left;padding:10px;border-bottom:1px solid #ddd}.growth-note{font-size:.9rem;opacity:.75}
+  </style>
+</head>
+<body>
+  <main class="growth-shell">
+    <p><a href="/">← Back to Math Coach</a></p>
+    <h1>Tolux Growth Dashboard</h1>
+    <p class="growth-note">Admin-only acquisition and conversion metrics. Internal QA activity is excluded where supported.</p>
+    <p id="growthStatus" class="growth-status">Checking admin access…</p>
+    <section id="growthMetrics" hidden>
+      <div class="growth-grid" id="growthCards"></div>
+      <table class="growth-table">
+        <thead><tr><th>Funnel metric</th><th>Last 30 days</th></tr></thead>
+        <tbody id="growthFunnel"></tbody>
+      </table>
+      <p id="growthGenerated" class="growth-note"></p>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="/growth-dashboard.js"></script>
+</body>
+</html>
