@@ -61,7 +61,6 @@ async function handleGrowthRequest(req, res) {
       return true;
     }
 
-    // Internal preview QA must never inflate customer acquisition metrics.
     if (internalQa.readSession(req.headers.cookie, user.id)) {
       sendJson(res, 202, { recorded: false, qaMode: true });
       return true;
@@ -95,6 +94,27 @@ async function handleGrowthRequest(req, res) {
   return false;
 }
 
+function injectGrowthTracker(res) {
+  const originalEnd = res.end.bind(res);
+  res.end = function patchedEnd(chunk, encoding, callback) {
+    try {
+      const contentType = String(res.getHeader('Content-Type') || '');
+      if (contentType.includes('text/html') && chunk) {
+        const body = Buffer.isBuffer(chunk) ? chunk.toString('utf8') : String(chunk);
+        if (!body.includes('/growth-autowire.js')) {
+          chunk = body.replace(
+            /<\/body>/i,
+            '<script src="/growth-autowire.js" defer></script></body>'
+          );
+        }
+      }
+    } catch (error) {
+      console.error('[growth] HTML injection error:', error);
+    }
+    return originalEnd(chunk, encoding, callback);
+  };
+}
+
 const originalCreateServer = http.createServer.bind(http);
 http.createServer = function patchedCreateServer(listener) {
   return originalCreateServer(async (req, res) => {
@@ -104,6 +124,8 @@ http.createServer = function patchedCreateServer(listener) {
       console.error('[growth] request error:', error);
       if (!res.headersSent) return sendJson(res, 500, { error: 'Unexpected analytics error.' });
     }
+
+    injectGrowthTracker(res);
     return listener(req, res);
   });
 };
