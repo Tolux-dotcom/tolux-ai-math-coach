@@ -1,9 +1,11 @@
 import { answersEquivalent, escapeHtml } from "./lesson-core.mjs";
+import {
+  createPracticeCompletionId,
+  persistPracticeCompletion
+} from "./practice-progress.mjs";
 
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
-const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
-const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   : null;
@@ -161,6 +163,12 @@ async function getAuthSession() {
     session = data?.session || null;
   }
   return session;
+}
+
+async function refreshAuthSession() {
+  if (!supabaseClient) return null;
+  const { data, error } = await supabaseClient.auth.refreshSession();
+  return error ? null : data?.session || null;
 }
 
 async function fetchWithSession(url, options = {}) {
@@ -324,14 +332,10 @@ function calculateSummary() {
   };
 }
 
-function completionId() {
-  return window.crypto?.randomUUID?.() || `a11a-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
 async function saveCompletion(summary) {
   if (!completionReport) {
     completionReport = {
-      completion_id: completionId(),
+      completion_id: createPracticeCompletionId(),
       module_id: "practice-alg1-a11a-radical-expressions",
       completed_at: new Date().toISOString(),
       mastery_label: summary.label,
@@ -341,25 +345,11 @@ async function saveCompletion(summary) {
       item_records: [...records.values()]
     };
   }
-  const moduleKey = `${LESSON_PROGRESS_PREFIX}${completionReport.module_id}`;
-  const pendingKey = `${PENDING_PROGRESS_PREFIX}${completionReport.completion_id}`;
-  try {
-    localStorage.setItem(moduleKey, JSON.stringify(completionReport));
-    localStorage.setItem(pendingKey, JSON.stringify(completionReport));
-  } catch {}
-
-  const { response, session } = await fetchWithSession("/api/lesson-progress", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(completionReport)
+  return persistPracticeCompletion({
+    report: completionReport,
+    getSession: getAuthSession,
+    refreshSession: refreshAuthSession
   });
-  if (!session || !response) throw new Error("Sign in is required to sync practice progress.");
-  const data = await response.json();
-  if (!response.ok || !data.activity) throw new Error(data.error || "Unable to save practice progress.");
-  try {
-    localStorage.setItem(moduleKey, JSON.stringify(data.activity));
-    localStorage.removeItem(pendingKey);
-  } catch {}
 }
 
 async function finishSession() {
@@ -380,13 +370,10 @@ async function finishSession() {
     <div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>
   `;
   const status = document.querySelector("#practiceSaveStatus");
-  try {
-    await saveCompletion(summary);
-    status.textContent = "Saved to your Tolux progress dashboard.";
-  } catch (error) {
-    console.error("A.11A practice sync failed:", error);
-    status.textContent = "Saved on this device. Tolux will retry account sync from the dashboard.";
-  }
+  const sync = await saveCompletion(summary);
+  status.textContent = sync.synced
+    ? "Saved to your Tolux progress dashboard."
+    : "Saved on this device. Tolux will retry account sync from the dashboard.";
 }
 
 function advance() {

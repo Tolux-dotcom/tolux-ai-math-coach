@@ -28,11 +28,12 @@ test("A.12A has dedicated 5, 10, and 20 question Practice Mode routing", () => {
 });
 
 test("A.12A Practice Mode records progress locally and to the account", () => {
-  assert.match(practice, /LESSON_PROGRESS_PREFIX/);
-  assert.match(practice, /PENDING_PROGRESS_PREFIX/);
+  assert.match(practice, /persistPracticeCompletion/);
+  assert.match(practice, /createPracticeCompletionId/);
+  assert.match(practice, /refreshSession:refreshAuthSession/);
   assert.match(practice, /practice-alg1-a12a-identify-functions/);
-  assert.match(practice, /\/api\/lesson-progress/);
   assert.match(practice, /Saved to your Tolux progress dashboard/);
+  assert.match(practice, /Tolux will retry account sync from the dashboard/);
   assert.match(practice, /Review these questions/);
 });
 

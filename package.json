@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check server.mjs && node --check public/app.js && node --check public/lesson.js && node --check public/lesson-core.mjs && node --check public/course-core.mjs && node --check public/practice-core.mjs && node --check public/practice.js && node --check public/practice-progress.mjs && node --check public/batch5-practice.js && node --check public/batch6-practice.js && node --check public/batch7-practice.js && node --check public/batch8-practice.js && node --check public/batch9-practice.js",
+    "check": "node --check server.mjs && node --check public/app.js && node --check public/lesson.js && node --check public/lesson-core.mjs && node --check public/course-core.mjs && node --check public/practice-core.mjs && node --check public/practice.js && node --check public/practice-progress.mjs && node --check public/a10f-practice.js && node --check public/a11a-practice.js && node --check public/a11b-practice.js && node --check public/a12a-practice.js && node --check public/a12b-practice.js && node --check public/batch5-practice.js && node --check public/batch6-practice.js && node --check public/batch7-practice.js && node --check public/batch8-practice.js && node --check public/batch9-practice.js",
     "test": "node --test"
   },
   "dependencies": {

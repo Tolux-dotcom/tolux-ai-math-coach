@@ -135,3 +135,23 @@ test("every Batch 5–9 Practice runtime uses durable pending progress", async (
     assert.match(source, /Tolux will retry account sync from the dashboard/);
   }
 });
+
+test("specialized and generic Practice runtimes use durable pending progress", async () => {
+  for (const file of [
+    "practice.js",
+    "a10f-practice.js",
+    "a11a-practice.js",
+    "a11b-practice.js",
+    "a12a-practice.js",
+    "a12b-practice.js"
+  ]) {
+    const source = await readFile(
+      new URL(`../public/${file}`, import.meta.url),
+      "utf8"
+    );
+    assert.match(source, /persistPracticeCompletion/);
+    assert.match(source, /createPracticeCompletionId/);
+    assert.match(source, /refreshSession:/);
+    assert.match(source, /Tolux will retry account sync from the dashboard/);
+  }
+});
