@@ -1,0 +1,1 @@
+A clean branch from current `main` is required before wiring the analytics implementation because the original implementation branch diverged after PR #104 was merged.
