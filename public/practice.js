@@ -7,12 +7,14 @@ import {
   gradePracticeAnswer,
   validatePracticeOptions
 } from "./practice-core.mjs";
+import {
+  createPracticeCompletionId,
+  persistPracticeCompletion
+} from "./practice-progress.mjs";
 
 const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
-const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
-const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   : null;
@@ -179,6 +181,12 @@ async function getPracticeSession() {
   }
 
   return authSession;
+}
+
+async function refreshPracticeSession() {
+  if (!supabaseClient) return null;
+  const { data, error } = await supabaseClient.auth.refreshSession();
+  return error ? null : data?.session || null;
 }
 
 async function fetchWithPracticeSession(url, options = {}) {
@@ -408,33 +416,10 @@ async function checkAnswer() {
   `);
 }
 
-function generateCompletionId() {
-  if (window.crypto?.randomUUID) return window.crypto.randomUUID();
-
-  const bytes = new Uint8Array(16);
-  if (window.crypto?.getRandomValues) {
-    window.crypto.getRandomValues(bytes);
-  } else {
-    for (let index = 0; index < bytes.length; index += 1) {
-      bytes[index] = Math.floor(Math.random() * 256);
-    }
-  }
-  bytes[6] = (bytes[6] & 0x0f) | 0x40;
-  bytes[8] = (bytes[8] & 0x3f) | 0x80;
-  const hex = [...bytes].map(value => value.toString(16).padStart(2, "0"));
-  return [
-    hex.slice(0, 4).join(""),
-    hex.slice(4, 6).join(""),
-    hex.slice(6, 8).join(""),
-    hex.slice(8, 10).join(""),
-    hex.slice(10).join("")
-  ].join("-");
-}
-
 function buildCompletionReport(summary) {
   if (completionReport) return completionReport;
   completionReport = {
-    completion_id: generateCompletionId(),
+    completion_id: createPracticeCompletionId(),
     module_id: `practice-${session.module_id}`,
     completed_at: new Date().toISOString(),
     mastery_label: summary.label,
@@ -448,40 +433,11 @@ function buildCompletionReport(summary) {
 
 async function savePracticeCompletion(summary) {
   const report = buildCompletionReport(summary);
-  const moduleKey = `${LESSON_PROGRESS_PREFIX}${report.module_id}`;
-  const pendingKey = `${PENDING_PROGRESS_PREFIX}${report.completion_id}`;
-
-  try {
-    localStorage.setItem(moduleKey, JSON.stringify(report));
-    localStorage.setItem(pendingKey, JSON.stringify(report));
-  } catch (error) {
-    console.warn("Practice progress could not be saved locally:", error);
-  }
-
-  const authSession = await getPracticeSession();
-  if (!authSession) throw new Error("Sign in is required to sync practice progress.");
-
-  const response = await fetch("/api/lesson-progress", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authSession.access_token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(report)
+  return persistPracticeCompletion({
+    report,
+    getSession: getPracticeSession,
+    refreshSession: refreshPracticeSession
   });
-  const data = await response.json();
-  if (!response.ok || !data.activity) {
-    throw new Error(data.error || "Unable to save practice progress.");
-  }
-
-  try {
-    localStorage.setItem(moduleKey, JSON.stringify(data.activity));
-    localStorage.removeItem(pendingKey);
-  } catch (error) {
-    console.warn("Synced practice progress could not be reconciled:", error);
-  }
-
-  return data.activity;
 }
 
 function missedReviewMarkup(summary) {
@@ -532,14 +488,10 @@ async function finishSession() {
   `;
 
   const status = document.querySelector("#practiceSaveStatus");
-  try {
-    await savePracticeCompletion(summary);
-    status.textContent = "Saved to your Tolux progress dashboard.";
-  } catch (error) {
-    console.error("Practice completion sync failed:", error);
-    status.textContent =
-      "Saved on this device. Tolux will retry account sync from the dashboard.";
-  }
+  const sync = await savePracticeCompletion(summary);
+  status.textContent = sync.synced
+    ? "Saved to your Tolux progress dashboard."
+    : "Saved on this device. Tolux will retry account sync from the dashboard.";
 }
 
 function advanceQuestion() {

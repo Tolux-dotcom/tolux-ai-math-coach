@@ -101,6 +101,6 @@ test('Modules 11 through 15 use current help, Practice Mode, and safe observer b
   assert.match(batch5Help, /isMastery/);
   assert.match(batch5Practice, /\[5,10,20\]/);
   assert.match(batch5Practice, /Hint 3/);
-  assert.match(batch5Practice, /\/api\/lesson-progress/);
+  assert.match(batch5Practice, /persistPracticeCompletion/);
   for (const skill of ['A.12C','A.12D','A.12E','A.2A','A.2B']) assert.match(batch5Practice, new RegExp(skill.replace('.', '\\.')));
 });

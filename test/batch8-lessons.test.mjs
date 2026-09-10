@@ -64,6 +64,6 @@ test('Modules 26-30 are exposed in dashboard, course runtime, and Practice Mode'
   assert.match(previous,/batch8-dashboard-bridge\.js/);
   assert.match(practice,/batch8-practice\.js/);
   assert.match(runtime,/\[5,10,20\]/);
-  assert.match(runtime,/lesson-progress/);
+  assert.match(runtime,/persistPracticeCompletion/);
   assert.match(runtime,/Correct answer and full explanation/);
 });

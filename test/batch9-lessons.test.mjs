@@ -63,7 +63,7 @@ test('Batch 9 help reveals answers and allows students to continue after review'
 test('A.4A through A.4C have dedicated 5, 10, or 20-question Practice Mode with progress saving', () => {
   const practice=read('batch9-practice.js');
   assert.match(practice,/\[5,10,20\]/);
-  assert.match(practice,/lesson-progress/);
+  assert.match(practice,/persistPracticeCompletion/);
   assert.match(practice,/Hint 3: answer and complete reasoning/);
   const html=read('practice.html');
   assert.match(html,/\["A\.4A","A\.4B","A\.4C"\]/);

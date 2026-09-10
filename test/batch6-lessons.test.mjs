@@ -59,6 +59,6 @@ test('A.2C through A.2G load visuals, full help, dashboard exposure, and 5/10/20
   }
   assert.match(practice,/batch6-practice\.js/);
   assert.match(runtime,/\[5,10,20\]/);
-  assert.match(runtime,/lesson-progress/);
+  assert.match(runtime,/persistPracticeCompletion/);
   assert.match(runtime,/Correct answer and full explanation/);
 });
