@@ -1,0 +1,1 @@
+Branch note: this implementation branch is ahead of the merge base but one commit behind main because PR #104 was merged while implementation continued. Do not merge this branch directly until it is rebased or rebuilt from current main.
