@@ -1,0 +1,3 @@
+## Wiring status
+
+The reusable analytics module, migration, browser helper, and unit tests are implemented on this branch. Direct edits to `server.mjs` and the existing frontend files are intentionally not committed on this diverged branch. Rebuild the implementation on a fresh branch from current `main` before wiring endpoints and UI events, then run `npm test` and `npm run check` before merge. No production database migration has been applied from this branch.
