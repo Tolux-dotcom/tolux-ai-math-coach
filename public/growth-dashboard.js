@@ -34,14 +34,27 @@ async function load() {
     return;
   }
 
-  const response = await fetch('/api/admin/growth-metrics', {
-    headers: { Authorization: `Bearer ${session.access_token}` }
-  });
+  const headers = { Authorization: `Bearer ${session.access_token}` };
+  const response = await fetch('/api/admin/growth-metrics', { headers });
 
   if (!response.ok) {
-    status.textContent = response.status === 404
-      ? 'This account is not authorized for the growth dashboard.'
-      : 'Growth metrics are temporarily unavailable.';
+    if (response.status === 404) {
+      try {
+        const debugResponse = await fetch('/api/admin/growth-auth-debug', { headers });
+        const debug = await debugResponse.json();
+        if (debugResponse.ok) {
+          const checks = debug.adminStatus || {};
+          status.textContent = `Not authorized. Signed-in UID: ${debug.user?.id || 'unknown'} · email: ${debug.user?.email || 'unknown'} · DB match: ${checks.databaseMatch ? 'yes' : 'no'} · env match: ${checks.environmentMatch ? 'yes' : 'no'}${checks.lookupError ? ` · lookup error: ${checks.lookupError}` : ''}`;
+          return;
+        }
+      } catch (error) {
+        console.error('Growth auth diagnostic failed:', error);
+      }
+      status.textContent = 'This account is not authorized for the growth dashboard.';
+      return;
+    }
+
+    status.textContent = 'Growth metrics are temporarily unavailable.';
     return;
   }
 

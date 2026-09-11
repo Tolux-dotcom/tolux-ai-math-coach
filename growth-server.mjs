@@ -48,24 +48,34 @@ async function authenticatedUser(req) {
   return error ? null : data?.user || null;
 }
 
-async function isGrowthAdmin(userId) {
-  if (!userId) return false;
+async function growthAdminStatus(userId) {
+  if (!userId) {
+    return { authorized: false, databaseMatch: false, environmentMatch: false, previewQaMatch: false, lookupError: null };
+  }
 
-  // Primary authorization source: server-owned Supabase allowlist.
   const { data, error } = await adminClient
     .from('growth_admins')
     .select('user_id')
     .eq('user_id', userId)
     .maybeSingle();
 
-  if (!error && data?.user_id === userId) return true;
+  const databaseMatch = !error && data?.user_id === userId;
+  const environmentMatch = adminUserIds.has(userId);
+  const previewQaMatch = process.env.VERCEL_ENV === 'preview' && internalQa.isAuthorized(userId);
+
   if (error) console.error('[growth] admin lookup error:', error.message);
 
-  // Backward-compatible environment allowlist.
-  if (adminUserIds.has(userId)) return true;
+  return {
+    authorized: databaseMatch || environmentMatch || previewQaMatch,
+    databaseMatch,
+    environmentMatch,
+    previewQaMatch,
+    lookupError: error?.message || null
+  };
+}
 
-  // Preview-only fallback for internal QA smoke testing.
-  return process.env.VERCEL_ENV === 'preview' && internalQa.isAuthorized(userId);
+async function isGrowthAdmin(userId) {
+  return (await growthAdminStatus(userId)).authorized;
 }
 
 async function handleGrowthRequest(req, res) {
@@ -93,6 +103,26 @@ async function handleGrowthRequest(req, res) {
     } catch (error) {
       sendJson(res, 400, { error: error?.message || 'Unable to record event.' });
     }
+    return true;
+  }
+
+  if (req.method === 'GET' && req.url === '/api/admin/growth-auth-debug') {
+    const user = await authenticatedUser(req);
+    if (!user) {
+      sendJson(res, 401, { error: 'Please sign in.' });
+      return true;
+    }
+
+    const adminStatus = await growthAdminStatus(user.id);
+    sendJson(res, 200, {
+      user: {
+        id: user.id,
+        email: user.email || null
+      },
+      adminStatus,
+      serverProjectUrl: serverUrl,
+      authProjectUrl: SUPABASE_AUTH_URL
+    });
     return true;
   }
 
