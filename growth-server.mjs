@@ -80,9 +80,17 @@ async function isGrowthAdmin(userId) {
 }
 
 async function handleGrowthRequest(req, res) {
+  const isGrowthRoute =
+    req.url === '/api/growth-event' ||
+    req.url === GROWTH_ACCESS_PATH ||
+    req.url === '/api/admin/growth-metrics';
+
   if (!adminClient) {
-    sendJson(res, 503, { error: 'Growth analytics storage is not configured.' });
-    return true;
+    if (isGrowthRoute) {
+      sendJson(res, 503, { error: 'Growth analytics storage is not configured.' });
+      return true;
+    }
+    return false;
   }
 
   if (req.method === 'POST' && req.url === '/api/growth-event') {
