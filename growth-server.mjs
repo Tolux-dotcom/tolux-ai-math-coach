@@ -48,11 +48,23 @@ async function authenticatedUser(req) {
   return error ? null : data?.user || null;
 }
 
-function isGrowthAdmin(userId) {
+async function isGrowthAdmin(userId) {
   if (!userId) return false;
+
+  // Primary authorization source: server-owned Supabase allowlist.
+  const { data, error } = await adminClient
+    .from('growth_admins')
+    .select('user_id')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (!error && data?.user_id === userId) return true;
+  if (error) console.error('[growth] admin lookup error:', error.message);
+
+  // Backward-compatible environment allowlist.
   if (adminUserIds.has(userId)) return true;
-  // Preview-only fallback: reuse the existing internal QA allowlist so the
-  // protected PR deployment can be smoke-tested without weakening production.
+
+  // Preview-only fallback for internal QA smoke testing.
   return process.env.VERCEL_ENV === 'preview' && internalQa.isAuthorized(userId);
 }
 
@@ -86,7 +98,7 @@ async function handleGrowthRequest(req, res) {
 
   if (req.method === 'GET' && req.url === '/api/admin/growth-metrics') {
     const user = await authenticatedUser(req);
-    if (!user || !isGrowthAdmin(user.id)) {
+    if (!user || !(await isGrowthAdmin(user.id))) {
       sendJson(res, 404, { error: 'Not found.' });
       return true;
     }
