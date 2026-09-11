@@ -25,12 +25,12 @@
     const session = await getSession();
     if (!session?.access_token) return;
     try {
-      const response = await nativeFetch('/api/admin/growth-auth-debug', {
+      const response = await nativeFetch('/api/admin/growth-access', {
         headers: { Authorization: `Bearer ${session.access_token}` }
       });
       if (!response.ok) return;
       const data = await response.json();
-      if (!data?.adminStatus?.authorized) return;
+      if (data?.authorized !== true) return;
       const link = document.createElement('a');
       link.href = '/growth-dashboard.html';
       link.className = 'nav';
