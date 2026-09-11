@@ -1,3 +1,5 @@
+import "./growth-server-hooks.mjs";
+
 const FREE_DIAGNOSTIC_ITEM_IDS = new Set(["A5A-D01", "A5A-D02"]);
 
 export function getFreeDiagnosticAccess(itemId) {
