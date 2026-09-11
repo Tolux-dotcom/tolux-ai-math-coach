@@ -90,8 +90,13 @@ if (!globalThis[INSTALL_KEY]) {
   async function handleGrowthRequest(req, res) {
     const pathname = String(req.url || '').split('?')[0];
 
+    const isGrowthRoute =
+      pathname === '/api/growth-event' ||
+      pathname === GROWTH_ACCESS_PATH ||
+      pathname === '/api/admin/growth-metrics';
+
     if (!adminClient) {
-      if (pathname.startsWith('/api/growth') || pathname.startsWith('/api/admin/growth')) {
+      if (isGrowthRoute) {
         sendJson(res, 503, { error: 'Growth analytics storage is not configured.' });
         return true;
       }
