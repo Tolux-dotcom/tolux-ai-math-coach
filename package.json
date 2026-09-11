@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node growth-server.mjs",
-    "check": "node --check growth-server.mjs && node --check growth-analytics.mjs && node --check server.mjs && node --check public/growth-autowire.js && node --check public/app.js && node --check public/lesson.js && node --check public/lesson-core.mjs && node --check public/course-core.mjs && node --check public/practice-core.mjs && node --check public/practice.js",
+    "start": "node server.mjs",
+    "check": "node --check growth-server-hooks.mjs && node --check growth-analytics.mjs && node --check server.mjs && node --check public/growth-autowire.js && node --check public/app.js && node --check public/lesson.js && node --check public/lesson-core.mjs && node --check public/course-core.mjs && node --check public/practice-core.mjs && node --check public/practice.js",
     "test": "node --test"
   },
   "dependencies": {
