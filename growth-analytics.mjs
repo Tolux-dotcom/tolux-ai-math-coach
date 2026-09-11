@@ -63,22 +63,29 @@ export async function getGrowthMetrics(supabaseAdmin, { now = new Date() } = {})
   const since30 = since(30);
   const since90 = since(90);
 
-  const [usersResult, usageResult, lessonsResult, eventsResult] = await Promise.all([
+  const [usersResult, usageResult, lessonsResult, eventsResult, adminsResult] = await Promise.all([
     supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     supabaseAdmin.from('student_usage').select('user_id,is_subscriber'),
     supabaseAdmin.from('lesson_completions').select('user_id,completed_at,qa_mode').gte('completed_at', since90),
-    supabaseAdmin.from('growth_events').select('user_id,event_name,occurred_at,plan').gte('occurred_at', since90)
+    supabaseAdmin.from('growth_events').select('user_id,event_name,occurred_at,plan').gte('occurred_at', since90),
+    supabaseAdmin.from('growth_admins').select('user_id')
   ]);
 
   if (usersResult.error) throw usersResult.error;
   if (usageResult.error) throw usageResult.error;
   if (lessonsResult.error) throw lessonsResult.error;
   if (eventsResult.error) throw eventsResult.error;
+  if (adminsResult.error) throw adminsResult.error;
 
-  const users = usersResult.data?.users || [];
-  const usage = usageResult.data || [];
-  const lessons = (lessonsResult.data || []).filter(row => !row.qa_mode);
-  const events = eventsResult.data || [];
+  const internalUserIds = new Set((adminsResult.data || []).map(row => row.user_id).filter(Boolean));
+  const isExternalUserId = userId => !userId || !internalUserIds.has(userId);
+
+  const allUsers = usersResult.data?.users || [];
+  const users = allUsers.filter(user => !internalUserIds.has(user.id));
+  const allUsage = usageResult.data || [];
+  const usage = allUsage.filter(row => isExternalUserId(row.user_id));
+  const lessons = (lessonsResult.data || []).filter(row => !row.qa_mode && isExternalUserId(row.user_id));
+  const events = (eventsResult.data || []).filter(row => isExternalUserId(row.user_id));
   const paidUsage = usage.filter(row => row.is_subscriber);
   const userById = new Map(users.map(user => [user.id, user]));
 
@@ -117,7 +124,7 @@ export async function getGrowthMetrics(supabaseAdmin, { now = new Date() } = {})
     return sum + (PLAN_MONTHLY_PRICES[subscriber.plan] || 0);
   }, 0);
 
-  const trendFor = (cutoff) => ({
+  const trendFor = cutoff => ({
     registrations: newRegistrations(cutoff),
     activeLearners: activeLearners(cutoff),
     lessonCompletions: lessonsSince(cutoff).length,
@@ -137,6 +144,7 @@ export async function getGrowthMetrics(supabaseAdmin, { now = new Date() } = {})
 
   return {
     generatedAt: now.toISOString(),
+    internalAccountsExcluded: internalUserIds.size,
     registeredUsers,
     studentUsageRows: usage.length,
     paidSubscribers,
