@@ -6,21 +6,54 @@
   <title>Tolux Growth Dashboard</title>
   <link rel="stylesheet" href="/styles.css" />
   <style>
-    .growth-shell{max-width:1100px;margin:40px auto;padding:0 20px}.growth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}.growth-card{padding:18px;border:1px solid #ddd;border-radius:14px;background:#fff}.growth-card strong{display:block;font-size:2rem;margin-top:8px}.growth-status{margin:16px 0}.growth-table{width:100%;border-collapse:collapse;margin-top:20px}.growth-table th,.growth-table td{text-align:left;padding:10px;border-bottom:1px solid #ddd}.growth-note{font-size:.9rem;opacity:.75}
+    .growth-shell{max-width:1180px;margin:40px auto;padding:0 20px}.growth-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}.growth-card{padding:18px;border:1px solid #ddd;border-radius:14px;background:#fff}.growth-card strong{display:block;font-size:2rem;margin-top:8px}.growth-card small{display:block;margin-top:6px;opacity:.7}.growth-status{margin:16px 0}.growth-section{margin-top:28px}.growth-table{width:100%;border-collapse:collapse;margin-top:14px;background:#fff;border:1px solid #ddd;border-radius:14px;overflow:hidden}.growth-table th,.growth-table td{text-align:left;padding:10px;border-bottom:1px solid #e7e7e7;vertical-align:top}.growth-table th{font-size:.9rem;opacity:.75}.growth-note{font-size:.9rem;opacity:.75}.growth-callout{padding:14px 16px;border:1px solid #ddd;border-radius:12px;background:#fff;margin-top:12px}.growth-range{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.growth-range button{padding:8px 12px}.growth-range button.active{font-weight:700}.growth-split{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
   </style>
 </head>
 <body>
   <main class="growth-shell">
     <p><a href="/">← Back to Math Coach</a></p>
     <h1>Tolux Growth Dashboard</h1>
-    <p class="growth-note">Admin-only acquisition and conversion metrics. Internal QA activity is excluded where supported.</p>
+    <p class="growth-note">Admin-only business, acquisition, engagement, and conversion metrics. Internal QA activity is excluded where supported.</p>
     <p id="growthStatus" class="growth-status">Checking admin access…</p>
     <section id="growthMetrics" hidden>
       <div class="growth-grid" id="growthCards"></div>
-      <table class="growth-table">
-        <thead><tr><th>Funnel metric</th><th>Last 30 days</th></tr></thead>
-        <tbody id="growthFunnel"></tbody>
-      </table>
+
+      <section class="growth-section">
+        <h2>Business snapshot</h2>
+        <div class="growth-grid" id="businessCards"></div>
+        <p id="mrrNote" class="growth-callout"></p>
+      </section>
+
+      <section class="growth-section">
+        <h2>7 / 30 / 90 day trends</h2>
+        <div class="growth-range" id="growthRangeButtons">
+          <button type="button" data-range="days7">7 days</button>
+          <button type="button" data-range="days30" class="active">30 days</button>
+          <button type="button" data-range="days90">90 days</button>
+        </div>
+        <table class="growth-table"><thead><tr><th>Metric</th><th id="trendWindowLabel">Last 30 days</th></tr></thead><tbody id="growthTrends"></tbody></table>
+      </section>
+
+      <div class="growth-split">
+        <section class="growth-section">
+          <h2>Conversion funnel</h2>
+          <table class="growth-table"><thead><tr><th>Funnel metric</th><th>Last 30 days</th></tr></thead><tbody id="growthFunnel"></tbody></table>
+        </section>
+        <section class="growth-section">
+          <h2>Plan mix</h2>
+          <table class="growth-table"><thead><tr><th>Plan</th><th>Active subscribers</th></tr></thead><tbody id="planMix"></tbody></table>
+        </section>
+      </div>
+
+      <section class="growth-section">
+        <h2>Active subscribers</h2>
+        <p class="growth-note">Plan is shown when Tolux has a tracked plan event for that subscriber; older subscriptions can appear as unattributed.</p>
+        <table class="growth-table">
+          <thead><tr><th>Email</th><th>Plan</th><th>Status</th><th>Registered</th><th>Last sign-in</th></tr></thead>
+          <tbody id="subscriberRows"></tbody>
+        </table>
+      </section>
+
       <p id="growthGenerated" class="growth-note"></p>
     </section>
   </main>
