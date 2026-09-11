@@ -15,6 +15,7 @@ const ALLOWED_STRIPE_EVENTS = new Set([
 ]);
 
 const ALLOWED_PLANS = new Set(['student', 'family']);
+const PLAN_MONTHLY_PRICES = { student: 9.99, family: 19.99 };
 
 export function normalizeGrowthEvent(input = {}, { source = 'app' } = {}) {
   const allowed = source === 'stripe' ? ALLOWED_STRIPE_EVENTS : ALLOWED_APP_EVENTS;
@@ -56,37 +57,114 @@ export async function recordGrowthEvent(supabaseAdmin, userId, input, options = 
 
 export async function getGrowthMetrics(supabaseAdmin, { now = new Date() } = {}) {
   if (!supabaseAdmin) throw new Error('Growth analytics storage is not configured.');
-  const since30 = new Date(now.getTime() - 30 * 86400000).toISOString();
-  const since7 = new Date(now.getTime() - 7 * 86400000).toISOString();
+
+  const since = days => new Date(now.getTime() - days * 86400000).toISOString();
+  const since7 = since(7);
+  const since30 = since(30);
+  const since90 = since(90);
+
   const [usersResult, usageResult, lessonsResult, eventsResult] = await Promise.all([
     supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
     supabaseAdmin.from('student_usage').select('user_id,is_subscriber'),
-    supabaseAdmin.from('lesson_completions').select('user_id,completed_at,qa_mode').gte('completed_at', since30),
-    supabaseAdmin.from('growth_events').select('user_id,event_name,occurred_at').gte('occurred_at', since30)
+    supabaseAdmin.from('lesson_completions').select('user_id,completed_at,qa_mode').gte('completed_at', since90),
+    supabaseAdmin.from('growth_events').select('user_id,event_name,occurred_at,plan').gte('occurred_at', since90)
   ]);
+
   if (usersResult.error) throw usersResult.error;
   if (usageResult.error) throw usageResult.error;
   if (lessonsResult.error) throw lessonsResult.error;
   if (eventsResult.error) throw eventsResult.error;
+
   const users = usersResult.data?.users || [];
   const usage = usageResult.data || [];
   const lessons = (lessonsResult.data || []).filter(row => !row.qa_mode);
   const events = eventsResult.data || [];
-  const active7 = new Set(lessons.filter(row => row.completed_at >= since7).map(row => row.user_id).filter(Boolean));
-  const active30 = new Set(lessons.map(row => row.user_id).filter(Boolean));
-  const countEvent = name => events.filter(row => row.event_name === name).length;
-  const paidSubscribers = usage.filter(row => row.is_subscriber).length;
+  const paidUsage = usage.filter(row => row.is_subscriber);
+  const userById = new Map(users.map(user => [user.id, user]));
+
+  const eventsSince = cutoff => events.filter(row => row.occurred_at >= cutoff);
+  const lessonsSince = cutoff => lessons.filter(row => row.completed_at >= cutoff);
+  const countEvent = (name, cutoff) => eventsSince(cutoff).filter(row => row.event_name === name).length;
+  const activeLearners = cutoff => new Set(lessonsSince(cutoff).map(row => row.user_id).filter(Boolean)).size;
+  const newRegistrations = cutoff => users.filter(user => user.created_at && user.created_at >= cutoff).length;
+
+  const latestPlanByUser = new Map();
+  for (const event of [...events].sort((a, b) => String(a.occurred_at).localeCompare(String(b.occurred_at)))) {
+    if (event.user_id && ALLOWED_PLANS.has(event.plan)) latestPlanByUser.set(event.user_id, event.plan);
+  }
+
+  const subscribers = paidUsage.map(row => {
+    const user = userById.get(row.user_id);
+    const plan = latestPlanByUser.get(row.user_id) || null;
+    return {
+      userId: row.user_id,
+      email: user?.email || 'Unknown email',
+      plan,
+      planLabel: plan === 'student' ? 'Student' : plan === 'family' ? 'Family' : 'Unattributed',
+      status: 'Active',
+      registeredAt: user?.created_at || null,
+      lastSignInAt: user?.last_sign_in_at || null
+    };
+  }).sort((a, b) => String(b.registeredAt || '').localeCompare(String(a.registeredAt || '')));
+
+  const planMix = subscribers.reduce((mix, subscriber) => {
+    const key = subscriber.plan || 'unknown';
+    mix[key] += 1;
+    return mix;
+  }, { student: 0, family: 0, unknown: 0 });
+
+  const knownPlanMrr = subscribers.reduce((sum, subscriber) => {
+    return sum + (PLAN_MONTHLY_PRICES[subscriber.plan] || 0);
+  }, 0);
+
+  const trendFor = (cutoff) => ({
+    registrations: newRegistrations(cutoff),
+    activeLearners: activeLearners(cutoff),
+    lessonCompletions: lessonsSince(cutoff).length,
+    diagnosticStarts: countEvent('diagnostic_started', cutoff),
+    diagnosticCompletions: countEvent('diagnostic_completed', cutoff),
+    upgradeClicks: countEvent('upgrade_clicked', cutoff),
+    checkoutStarts: countEvent('checkout_started', cutoff),
+    subscriptionActivations: countEvent('subscription_activated', cutoff),
+    subscriptionCancellations: countEvent('subscription_cancelled', cutoff),
+    paymentFailures: countEvent('payment_failed', cutoff)
+  });
+
   const registeredUsers = users.length;
-  const upgradeClicks = countEvent('upgrade_clicked');
-  const activated = countEvent('subscription_activated');
+  const paidSubscribers = subscribers.length;
+  const upgradeClicks30d = countEvent('upgrade_clicked', since30);
+  const activations30d = countEvent('subscription_activated', since30);
+
   return {
-    generatedAt: now.toISOString(), registeredUsers, studentUsageRows: usage.length, paidSubscribers,
+    generatedAt: now.toISOString(),
+    registeredUsers,
+    studentUsageRows: usage.length,
+    paidSubscribers,
     registrationToPaidRate: registeredUsers ? paidSubscribers / registeredUsers : 0,
-    activeLearners7d: active7.size, activeLearners30d: active30.size, lessonCompletions30d: lessons.length,
-    diagnosticStarts30d: countEvent('diagnostic_started'), diagnosticCompletions30d: countEvent('diagnostic_completed'),
-    trialStarts30d: countEvent('trial_started'), trialExhausted30d: countEvent('trial_exhausted'),
-    upgradeClicks30d: upgradeClicks, checkoutStarts30d: countEvent('checkout_started'),
-    subscriptionActivations30d: activated, subscriptionCancellations30d: countEvent('subscription_cancelled'),
-    paymentFailures30d: countEvent('payment_failed'), upgradeToPaidRate: upgradeClicks ? activated / upgradeClicks : 0
+    activeLearners7d: activeLearners(since7),
+    activeLearners30d: activeLearners(since30),
+    lessonCompletions30d: lessonsSince(since30).length,
+    diagnosticStarts30d: countEvent('diagnostic_started', since30),
+    diagnosticCompletions30d: countEvent('diagnostic_completed', since30),
+    trialStarts30d: countEvent('trial_started', since30),
+    trialExhausted30d: countEvent('trial_exhausted', since30),
+    upgradeClicks30d,
+    checkoutStarts30d: countEvent('checkout_started', since30),
+    subscriptionActivations30d: activations30d,
+    subscriptionCancellations30d: countEvent('subscription_cancelled', since30),
+    paymentFailures30d: countEvent('payment_failed', since30),
+    upgradeToPaidRate: upgradeClicks30d ? activations30d / upgradeClicks30d : 0,
+    business: {
+      knownPlanMrr,
+      mrrCurrency: 'USD',
+      unattributedPaidSubscribers: planMix.unknown,
+      planMix,
+      subscribers
+    },
+    trends: {
+      days7: trendFor(since7),
+      days30: trendFor(since30),
+      days90: trendFor(since90)
+    }
   };
 }
