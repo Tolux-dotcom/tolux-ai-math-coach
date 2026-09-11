@@ -2,6 +2,7 @@ import http from 'node:http';
 import { createClient } from '@supabase/supabase-js';
 import { getGrowthMetrics, recordGrowthEvent } from './growth-analytics.mjs';
 import { createInternalQaController } from './internal-qa.mjs';
+import { GROWTH_ACCESS_PATH, resolveGrowthAccess } from './growth-admin-access.mjs';
 
 const SUPABASE_AUTH_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
@@ -106,23 +107,9 @@ async function handleGrowthRequest(req, res) {
     return true;
   }
 
-  if (req.method === 'GET' && req.url === '/api/admin/growth-auth-debug') {
-    const user = await authenticatedUser(req);
-    if (!user) {
-      sendJson(res, 401, { error: 'Please sign in.' });
-      return true;
-    }
-
-    const adminStatus = await growthAdminStatus(user.id);
-    sendJson(res, 200, {
-      user: {
-        id: user.id,
-        email: user.email || null
-      },
-      adminStatus,
-      serverProjectUrl: serverUrl,
-      authProjectUrl: SUPABASE_AUTH_URL
-    });
+  if (req.method === 'GET' && req.url === GROWTH_ACCESS_PATH) {
+    const access = await resolveGrowthAccess(await authenticatedUser(req), growthAdminStatus);
+    sendJson(res, access.status, access.body);
     return true;
   }
 
