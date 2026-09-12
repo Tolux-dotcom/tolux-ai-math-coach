@@ -92,8 +92,18 @@ if (!globalThis[INSTALL_KEY]) {
 
     const isGrowthRoute =
       pathname === '/api/growth-event' ||
-      pathname === GROWTH_ACCESS_PATH ||
       pathname === '/api/admin/growth-metrics';
+
+    if (pathname === GROWTH_ACCESS_PATH) {
+      if (req.method !== 'GET') {
+        sendJson(res, 405, { error: 'Method not allowed.' });
+        return true;
+      }
+
+      const access = await resolveGrowthAccess(await authenticatedUser(req), growthAdminStatus);
+      sendJson(res, access.status, access.body);
+      return true;
+    }
 
     if (!adminClient) {
       if (isGrowthRoute) {
@@ -122,12 +132,6 @@ if (!globalThis[INSTALL_KEY]) {
       } catch (error) {
         sendJson(res, 400, { error: error?.message || 'Unable to record event.' });
       }
-      return true;
-    }
-
-    if (req.method === 'GET' && pathname === GROWTH_ACCESS_PATH) {
-      const access = await resolveGrowthAccess(await authenticatedUser(req), growthAdminStatus);
-      sendJson(res, access.status, access.body);
       return true;
     }
 

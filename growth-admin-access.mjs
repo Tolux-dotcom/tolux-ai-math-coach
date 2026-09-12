@@ -5,10 +5,26 @@ export async function resolveGrowthAccess(user, getAdminStatus) {
     return { status: 401, body: { error: 'Please sign in.' } };
   }
 
-  const adminStatus = await getAdminStatus(user.id);
-  if (!adminStatus?.authorized) {
-    return { status: 404, body: { error: 'Not found.' } };
+  let adminStatus;
+  try {
+    adminStatus = await getAdminStatus(user.id);
+  } catch {
+    return {
+      status: 503,
+      body: { error: 'Authorization is temporarily unavailable.' }
+    };
   }
 
-  return { status: 200, body: { authorized: true } };
+  if (adminStatus?.authorized) {
+    return { status: 200, body: { authorized: true } };
+  }
+
+  if (adminStatus?.lookupError) {
+    return {
+      status: 503,
+      body: { error: 'Authorization is temporarily unavailable.' }
+    };
+  }
+
+  return { status: 404, body: { error: 'Not found.' } };
 }

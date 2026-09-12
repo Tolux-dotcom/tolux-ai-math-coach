@@ -26,12 +26,39 @@ test('hides authorization details from non-admin accounts', async () => {
       databaseMatch: false,
       environmentMatch: false,
       previewQaMatch: false,
-      lookupError: 'sensitive database detail'
+      lookupError: null
     })
   );
 
   assert.deepEqual(result, { status: 404, body: { error: 'Not found.' } });
   assert.equal(JSON.stringify(result).includes('sensitive database detail'), false);
+});
+
+test('fails closed with a generic response when the admin lookup reports an error', async () => {
+  const result = await resolveGrowthAccess(
+    { id: 'student-user' },
+    async () => ({ authorized: false, lookupError: 'sensitive database detail' })
+  );
+
+  assert.deepEqual(result, {
+    status: 503,
+    body: { error: 'Authorization is temporarily unavailable.' }
+  });
+  assert.doesNotMatch(JSON.stringify(result), /database|supabase|project|url|user/i);
+});
+
+test('fails closed with a generic response when the admin lookup throws', async () => {
+  const result = await resolveGrowthAccess(
+    { id: 'student-user' },
+    async () => {
+      throw new Error('sensitive database failure');
+    }
+  );
+
+  assert.deepEqual(result, {
+    status: 503,
+    body: { error: 'Authorization is temporarily unavailable.' }
+  });
 });
 
 test('returns only the minimum response for an authorized admin', async () => {
@@ -60,4 +87,11 @@ test('removes the temporary diagnostic endpoint from server and browser sources'
   }
   assert.match(sources[0], /GROWTH_ACCESS_PATH/);
   assert.match(sources[2], /\/api\/admin\/growth-access/);
+
+  for (const source of sources.slice(0, 2)) {
+    assert.ok(
+      source.indexOf('pathname === GROWTH_ACCESS_PATH') < source.indexOf('if (!adminClient)'),
+      'server must authenticate the access route before checking privileged storage'
+    );
+  }
 });
