@@ -168,7 +168,7 @@
       const card = document.createElement('article');
       card.className = 'pricing-card';
       const points = mode.points ? ` • ${mode.points} points` : '';
-      const live = mode.id === 'quick-check';
+      const live = mode.id === 'quick';
       card.innerHTML = `
         <h3>${mode.label}</h3>
         <h2>${mode.questions} <small>questions${points}</small></h2>
@@ -193,7 +193,7 @@
     document.addEventListener('click', event => {
       const button = event.target.closest('[data-test-prep-mode]');
       if (!button || button.disabled) return;
-      if (button.dataset.testPrepMode === 'quick-check') startQuickCheck();
+      if (button.dataset.testPrepMode === 'quick') startQuickCheck();
     });
 
     nextButton.addEventListener('click', () => {
