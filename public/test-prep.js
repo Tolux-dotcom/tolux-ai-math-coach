@@ -134,7 +134,8 @@
       const card = document.createElement('article');
       card.className = 'panel';
       const correctText = miss.question.answer.map(i => miss.question.choices[i]).join(' and ');
-      card.innerHTML = `<strong>${miss.question.teks}</strong><p>${miss.question.prompt}</p><p><strong>Correct answer:</strong> ${correctText}</p><p>${miss.question.rationale}</p><p><a href="/practice.html?skill=${encodeURIComponent(miss.question.teks)}&difficulty=grade-level&count=5">Practice this skill</a> • <a href="/lesson.html?module=${encodeURIComponent(miss.question.module_id)}&start=lesson">Review in Tutor Mode</a></p>`;
+      const selectedText = miss.selected.length ? miss.selected.map(i => miss.question.choices[i]).join(' and ') : 'No answer';
+      card.innerHTML = `<strong>${miss.question.teks}</strong><p>${miss.question.prompt}</p><p><strong>Your answer:</strong> ${selectedText}</p><p><strong>Correct answer:</strong> ${correctText}</p><p>${miss.question.rationale}</p><p><a href="/practice.html?skill=${encodeURIComponent(miss.question.teks)}&difficulty=grade-level&count=5">Practice this skill</a> • <a href="/lesson.html?module=${encodeURIComponent(miss.question.module_id)}&start=lesson">Review in Tutor Mode</a></p>`;
       missedReview.append(card);
     }
 
