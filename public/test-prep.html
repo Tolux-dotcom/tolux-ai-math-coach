@@ -26,6 +26,31 @@
       <div id="testPrepModes" class="pricing-grid" aria-live="polite"></div>
     </section>
 
+    <section id="testRunner" class="panel" hidden>
+      <div class="lesson-progress">
+        <p id="testProgressLabel">Question 1</p>
+        <div class="progress-track"><div id="testProgressBar" class="progress-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+      </div>
+      <div class="lesson-card">
+        <small id="questionMeta"></small>
+        <h2 id="questionPrompt"></h2>
+        <div id="questionChoices" class="test-prep-choices"></div>
+        <p id="questionMessage" aria-live="polite"></p>
+        <div class="practice-launch-actions">
+          <button id="nextTestQuestion" type="button">Next Question</button>
+          <button id="submitTest" type="button" hidden>Submit Test</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="testResults" class="panel" hidden>
+      <h2>Quick Check Results</h2>
+      <div id="scoreSummary"></div>
+      <div id="categoryResults" class="pricing-grid"></div>
+      <div id="missedReview"></div>
+      <div class="practice-launch-actions"><button id="retakeQuickCheck" type="button">Retake Quick Check</button></div>
+    </section>
+
     <section class="panel">
       <h2>Official Reporting-Category Blueprint</h2>
       <div id="blueprintCategories" class="pricing-grid" aria-live="polite"></div>
