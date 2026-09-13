@@ -26,8 +26,8 @@
   function renderAccessState() {
     if (accessNote) {
       accessNote.innerHTML = signedIn
-        ? '<strong>You are signed in.</strong> Your Quick Check result can be used with Tolux remediation and future saved-history features.'
-        : '<strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score and reporting-category summary immediately.';
+        ? '<strong>You are signed in.</strong> Quick Check and the 25-question Half Test are available, with detailed remediation after submission.'
+        : '<strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score immediately. The 25-question Half Test requires a free Tolux account.';
     }
 
     if (!resultGate) return;
@@ -43,7 +43,7 @@
       <div class="panel">
         <span class="eyebrow">Keep your progress</span>
         <h3>Create a free Tolux account for the detailed TEKS review</h3>
-        <p>Your Quick Check score and reporting-category summary are free. Sign in or create an account to view missed-question explanations, remediation links, and to support saved Test Prep history as it rolls out.</p>
+        <p>Your Quick Check score and reporting-category summary are free. Sign in or create an account to view missed-question explanations, remediation links, unlock the Half Test, and support saved Test Prep history as it rolls out.</p>
         <div class="practice-launch-actions">
           <a class="button-link" href="/#authPanel">Sign in or create free account</a>
           <a class="button-link" href="/#practiceModePanel">Open Practice Mode</a>
