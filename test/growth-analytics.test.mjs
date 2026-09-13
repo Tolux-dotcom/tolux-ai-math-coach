@@ -17,6 +17,21 @@ test('accepts allowed app events and strips unsafe properties', () => {
   assert.equal('bad key' in event.properties, false);
 });
 
+test('accepts NSF-relevant learning engagement events', () => {
+  for (const eventName of [
+    'lesson_completed',
+    'practice_started',
+    'help_requested',
+    'explain_another_way',
+    'similar_problem_requested',
+    'full_solution_requested'
+  ]) {
+    const event = normalizeGrowthEvent({ eventName, properties: { module: 'alg1-a5a', surface: 'test' } });
+    assert.equal(event.eventName, eventName);
+    assert.equal(event.source, 'app');
+  }
+});
+
 test('rejects unsupported browser events', () => {
   assert.throws(() => normalizeGrowthEvent({ eventName: 'subscription_activated' }), /Unsupported growth event/);
 });
