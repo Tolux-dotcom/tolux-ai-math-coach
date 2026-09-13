@@ -4,6 +4,7 @@ const ALLOWED_APP_EVENTS = new Set([
   'lesson_started',
   'lesson_completed',
   'practice_started',
+  'practice_completed',
   'help_requested',
   'explain_another_way',
   'similar_problem_requested',
