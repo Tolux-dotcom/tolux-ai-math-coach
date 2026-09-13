@@ -2,6 +2,7 @@ import http from 'node:http';
 import { createClient } from '@supabase/supabase-js';
 import { getGrowthMetrics, recordGrowthEvent } from './growth-analytics.mjs';
 import { createInternalQaController } from './internal-qa.mjs';
+import { GROWTH_ACCESS_PATH, resolveGrowthAccess } from './growth-admin-access.mjs';
 
 const SUPABASE_AUTH_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
@@ -79,12 +80,32 @@ async function isGrowthAdmin(userId) {
 }
 
 async function handleGrowthRequest(req, res) {
-  if (!adminClient) {
-    sendJson(res, 503, { error: 'Growth analytics storage is not configured.' });
+  const pathname = String(req.url || '').split('?')[0];
+
+  const isGrowthRoute =
+    pathname === '/api/growth-event' ||
+    pathname === '/api/admin/growth-metrics';
+
+  if (pathname === GROWTH_ACCESS_PATH) {
+    if (req.method !== 'GET') {
+      sendJson(res, 405, { error: 'Method not allowed.' });
+      return true;
+    }
+
+    const access = await resolveGrowthAccess(await authenticatedUser(req), growthAdminStatus);
+    sendJson(res, access.status, access.body);
     return true;
   }
 
-  if (req.method === 'POST' && req.url === '/api/growth-event') {
+  if (!adminClient) {
+    if (isGrowthRoute) {
+      sendJson(res, 503, { error: 'Growth analytics storage is not configured.' });
+      return true;
+    }
+    return false;
+  }
+
+  if (req.method === 'POST' && pathname === '/api/growth-event') {
     const user = await authenticatedUser(req);
     if (!user) {
       sendJson(res, 401, { error: 'Please sign in.' });
@@ -106,27 +127,7 @@ async function handleGrowthRequest(req, res) {
     return true;
   }
 
-  if (req.method === 'GET' && req.url === '/api/admin/growth-auth-debug') {
-    const user = await authenticatedUser(req);
-    if (!user) {
-      sendJson(res, 401, { error: 'Please sign in.' });
-      return true;
-    }
-
-    const adminStatus = await growthAdminStatus(user.id);
-    sendJson(res, 200, {
-      user: {
-        id: user.id,
-        email: user.email || null
-      },
-      adminStatus,
-      serverProjectUrl: serverUrl,
-      authProjectUrl: SUPABASE_AUTH_URL
-    });
-    return true;
-  }
-
-  if (req.method === 'GET' && req.url === '/api/admin/growth-metrics') {
+  if (req.method === 'GET' && pathname === '/api/admin/growth-metrics') {
     const user = await authenticatedUser(req);
     if (!user || !(await isGrowthAdmin(user.id))) {
       sendJson(res, 404, { error: 'Not found.' });
