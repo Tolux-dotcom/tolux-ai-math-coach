@@ -21,6 +21,7 @@ test('accepts NSF-relevant learning engagement events', () => {
   for (const eventName of [
     'lesson_completed',
     'practice_started',
+    'practice_completed',
     'help_requested',
     'explain_another_way',
     'similar_problem_requested',
