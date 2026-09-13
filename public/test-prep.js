@@ -30,7 +30,24 @@
   let responses = new Map();
 
   function shuffled(items) {
-    return [...items].sort(() => Math.random() - 0.5);
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function randomizeQuestionChoices(question) {
+    const indexedChoices = question.choices.map((choice, originalIndex) => ({ choice, originalIndex }));
+    const randomized = shuffled(indexedChoices);
+    const oldToNew = new Map(randomized.map((entry, newIndex) => [entry.originalIndex, newIndex]));
+
+    return {
+      ...question,
+      choices: randomized.map(entry => entry.choice),
+      answer: question.answer.map(originalIndex => oldToNew.get(originalIndex)).sort((a, b) => a - b)
+    };
   }
 
   function promptMarkup(question) {
@@ -47,7 +64,7 @@
     for (const [category, count] of Object.entries(target)) {
       selected.push(...shuffled(byCategory.get(Number(category)) || []).slice(0, count));
     }
-    return shuffled(selected);
+    return shuffled(selected).map(randomizeQuestionChoices);
   }
 
   function questionsForMode(modeId) {
