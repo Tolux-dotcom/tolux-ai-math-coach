@@ -26,6 +26,10 @@
     return [...items].sort(() => Math.random() - 0.5);
   }
 
+  function promptMarkup(question) {
+    return question.prompt_html || question.prompt || '';
+  }
+
   function assembleQuickCheck() {
     const byCategory = new Map();
     for (const question of bank.questions) {
@@ -69,7 +73,7 @@
     progressBar.style.width = `${pct}%`;
     progressBar.setAttribute('aria-valuenow', String(pct));
     questionMeta.textContent = `Reporting Category ${question.reporting_category} • ${question.teks} • ${question.points} point${question.points === 1 ? '' : 's'}`;
-    questionPrompt.textContent = question.prompt;
+    questionPrompt.innerHTML = promptMarkup(question);
     questionChoices.replaceChildren();
     const inputType = question.type === 'multi_select' ? 'checkbox' : 'radio';
     const saved = responses.get(question.id) || [];
@@ -135,7 +139,7 @@
       card.className = 'panel';
       const correctText = miss.question.answer.map(i => miss.question.choices[i]).join(' and ');
       const selectedText = miss.selected.length ? miss.selected.map(i => miss.question.choices[i]).join(' and ') : 'No answer';
-      card.innerHTML = `<strong>${miss.question.teks}</strong><p>${miss.question.prompt}</p><p><strong>Your answer:</strong> ${selectedText}</p><p><strong>Correct answer:</strong> ${correctText}</p><p>${miss.question.rationale}</p><p><a href="/practice.html?skill=${encodeURIComponent(miss.question.teks)}&difficulty=grade-level&count=5">Practice this skill</a> • <a href="/lesson.html?module=${encodeURIComponent(miss.question.module_id)}&start=lesson">Review in Tutor Mode</a></p>`;
+      card.innerHTML = `<strong>${miss.question.teks}</strong><p>${promptMarkup(miss.question)}</p><p><strong>Your answer:</strong> ${selectedText}</p><p><strong>Correct answer:</strong> ${correctText}</p><p>${miss.question.rationale}</p><p><a href="/practice.html?skill=${encodeURIComponent(miss.question.teks)}&difficulty=grade-level&count=5">Practice this skill</a> • <a href="/lesson.html?module=${encodeURIComponent(miss.question.module_id)}&start=lesson">Review in Tutor Mode</a></p>`;
       missedReview.append(card);
     }
 
