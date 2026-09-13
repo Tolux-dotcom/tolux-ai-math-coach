@@ -7,6 +7,7 @@ alter table public.growth_events add constraint growth_events_event_name_check c
     'lesson_started',
     'lesson_completed',
     'practice_started',
+    'practice_completed',
     'help_requested',
     'explain_another_way',
     'similar_problem_requested',
