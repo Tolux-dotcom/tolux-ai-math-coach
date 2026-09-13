@@ -19,6 +19,7 @@
       <p>Tolux assembles original practice questions to follow the Texas Algebra I reporting-category blueprint. Questions are not copied from secure STAAR assessments.</p>
       <p><strong>Full simulation target:</strong> 50 questions • 59 points • 41 one-point items • 9 two-point items.</p>
       <p><small>Tolux is not affiliated with or endorsed by the Texas Education Agency.</small></p>
+      <p id="testPrepAccessNote" aria-live="polite"><strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score and reporting-category summary immediately.</p>
     </section>
 
     <section class="panel">
@@ -48,6 +49,7 @@
       <div id="scoreSummary"></div>
       <div id="categoryResults" class="pricing-grid"></div>
       <div id="missedReview"></div>
+      <div id="testPrepResultGate" hidden></div>
       <div class="practice-launch-actions"><button id="retakeQuickCheck" type="button">Retake Quick Check</button></div>
     </section>
 
@@ -67,6 +69,8 @@
       </ul>
     </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/test-prep.js"></script>
+  <script src="/test-prep-access.js"></script>
 </body>
 </html>
