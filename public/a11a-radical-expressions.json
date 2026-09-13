@@ -234,7 +234,7 @@
       "diagnostic_tag": "coefficient_error", "critical_misconception": true,
       "explanation_prompt": "Explain the error and give the correct simplified form of √18.",
       "required_explanation_keyword_groups": [["3√2", "3sqrt(2)", "3sqrt2", "3 times the square root of 2", "three times the square root of two", "three root two"]],
-      "explanation_keywords": [["18=9·2", "18=9×2", "18 is 9 times 2", "perfect-square factor"], ["√9=3", "sqrt(9)=3", "the square root of 9 is 3", "square root of 9 equals 3", "9 comes out as 3", "nine comes out as three", "take the square root of the perfect-square factor", "take the square root of the perfect square"]],
+      "explanation_keywords": [["18=9·2", "18=9×2", "18 is 9 times 2", "perfect-square factor"], ["√9=3", "sqrt(9)=3", "the square root of 9 is 3", "square root of 9 equals 3", "9 comes out as 3", "nine comes out as three", "comes out of the radical as three", "take the square root of the perfect-square factor", "take the square root of the perfect square"]],
       "minimum_explanation_keyword_groups": 1,
       "explanation_guidance": "Use 18=9·2. Because √9=3, not 9, the correct simplified form is 3√2.",
       "tutor_behavior": "The number that comes out is the square root of the perfect-square factor, not the factor itself.",
