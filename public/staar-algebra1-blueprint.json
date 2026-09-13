@@ -17,9 +17,9 @@
     {"id":5,"name":"Exponential Functions and Equations","question_range":[5,7],"point_range":[5,9]}
   ],
   "tolux_modes": [
-    {"id":"quick","label":"Quick Check","questions":10,"description":"Short blueprint-weighted check across all five reporting categories."},
-    {"id":"half","label":"Half Test","questions":25,"description":"Longer blueprint-weighted practice with mixed item types."},
-    {"id":"full","label":"Full STAAR-Style Simulation","questions":50,"points":59,"description":"Mirrors the official question and point totals and reporting-category ranges."}
+    {"id":"quick","label":"Quick Check","questions":10,"points":11,"access":"anonymous","description":"Short blueprint-weighted check across all five reporting categories."},
+    {"id":"half","label":"Half Test","questions":25,"points":29,"access":"free_account","description":"Longer blueprint-weighted practice with mixed item types. Free Tolux account required."},
+    {"id":"full","label":"Full STAAR-Style Simulation","questions":50,"points":59,"access":"subscriber","description":"Mirrors the official question and point totals and reporting-category ranges."}
   ],
   "design_rules": {
     "copy_official_items": false,

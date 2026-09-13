@@ -1,10 +1,10 @@
-(async () => {
+(() => {
   const SUPABASE_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+  const targetMix = { 1: 10, 2: 11, 3: 13, 4: 10, 5: 6 };
 
   const modeWrap = document.querySelector('#testPrepModes');
   const modeMessage = document.querySelector('#testPrepModeMessage');
-  const categoryWrap = document.querySelector('#blueprintCategories');
   const runner = document.querySelector('#testRunner');
   const results = document.querySelector('#testResults');
   const resultTitle = document.querySelector('#testResultTitle');
@@ -22,9 +22,9 @@
   const retakeButton = document.querySelector('#retakeQuickCheck');
 
   let blueprint;
-  let quickBank;
   let halfBank;
-  let activeMode = null;
+  let extensionBank;
+  let fullActive = false;
   let activeQuestions = [];
   let currentIndex = 0;
   let responses = new Map();
@@ -42,7 +42,6 @@
     const indexedChoices = question.choices.map((choice, originalIndex) => ({ choice, originalIndex }));
     const randomized = shuffled(indexedChoices);
     const oldToNew = new Map(randomized.map((entry, newIndex) => [entry.originalIndex, newIndex]));
-
     return {
       ...question,
       choices: randomized.map(entry => entry.choice),
@@ -54,27 +53,18 @@
     return question.prompt_html || question.prompt || '';
   }
 
-  function assembleFromBank(bank, target) {
+  function assembleFullTest() {
+    const combined = [...halfBank.questions, ...extensionBank.questions];
     const byCategory = new Map();
-    for (const question of bank.questions) {
+    for (const question of combined) {
       if (!byCategory.has(question.reporting_category)) byCategory.set(question.reporting_category, []);
       byCategory.get(question.reporting_category).push(question);
     }
     const selected = [];
-    for (const [category, count] of Object.entries(target)) {
+    for (const [category, count] of Object.entries(targetMix)) {
       selected.push(...shuffled(byCategory.get(Number(category)) || []).slice(0, count));
     }
     return shuffled(selected).map(randomizeQuestionChoices);
-  }
-
-  function questionsForMode(modeId) {
-    if (modeId === 'quick') {
-      return assembleFromBank(quickBank, { 1: 2, 2: 2, 3: 3, 4: 2, 5: 1 });
-    }
-    if (modeId === 'half') {
-      return assembleFromBank(halfBank, { 1: 5, 2: 5, 3: 6, 4: 5, 5: 4 });
-    }
-    return [];
   }
 
   function getSupabaseClient() {
@@ -105,7 +95,9 @@
     if (!question) return false;
     const selected = selectedAnswers();
     if (!selected.length) {
-      questionMessage.textContent = question.type === 'multi_select' ? `Select ${question.answer.length} answers before continuing.` : 'Choose an answer before continuing.';
+      questionMessage.textContent = question.type === 'multi_select'
+        ? `Select ${question.answer.length} answers before continuing.`
+        : 'Choose an answer before continuing.';
       return false;
     }
     if (question.type === 'multi_select' && selected.length !== question.answer.length) {
@@ -151,7 +143,7 @@
     return a.length === b.length && a.every((value, index) => value === b[index]);
   }
 
-  function scoreTest() {
+  function scoreFullTest() {
     if (!saveCurrentResponse()) return;
     let earned = 0;
     let possible = 0;
@@ -163,7 +155,9 @@
       const correct = arraysEqual(selected, [...question.answer].sort((a, b) => a - b));
       possible += question.points;
       if (correct) earned += question.points;
-      if (!categoryTotals.has(question.reporting_category)) categoryTotals.set(question.reporting_category, { earned: 0, possible: 0 });
+      if (!categoryTotals.has(question.reporting_category)) {
+        categoryTotals.set(question.reporting_category, { earned: 0, possible: 0 });
+      }
       const total = categoryTotals.get(question.reporting_category);
       total.possible += question.points;
       if (correct) total.earned += question.points;
@@ -171,7 +165,7 @@
     }
 
     const percent = possible ? Math.round((earned / possible) * 100) : 0;
-    resultTitle.textContent = `${activeMode.label} Results`;
+    resultTitle.textContent = 'Full STAAR-Style Simulation Results';
     scoreSummary.innerHTML = `<p><strong>${earned} / ${possible} points • ${percent}%</strong></p><p>This is a Tolux practice result, not an official STAAR scale score.</p>`;
 
     categoryResults.replaceChildren(...blueprint.reporting_categories.map(category => {
@@ -196,16 +190,16 @@
       missedReview.append(card);
     }
 
-    retakeButton.textContent = `Retake ${activeMode.label}`;
+    retakeButton.textContent = 'Retake Full STAAR-Style Simulation';
     runner.hidden = true;
     results.hidden = false;
     progressBar.style.width = '100%';
     results.scrollIntoView({ behavior: 'smooth' });
   }
 
-  function startMode(modeId) {
-    activeMode = blueprint.tolux_modes.find(mode => mode.id === modeId);
-    activeQuestions = questionsForMode(modeId);
+  function startFullTest() {
+    fullActive = true;
+    activeQuestions = assembleFullTest();
     currentIndex = 0;
     responses = new Map();
     modeMessage.textContent = '';
@@ -215,74 +209,82 @@
     runner.scrollIntoView({ behavior: 'smooth' });
   }
 
-  async function handleModeStart(modeId) {
-    if (modeId === 'quick') {
-      startMode('quick');
+  async function handleFullStart() {
+    if (!(await isSignedIn())) {
+      modeMessage.innerHTML = '<strong>Free account required for the Full Simulation.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
+      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    if (modeId === 'half') {
-      if (!(await isSignedIn())) {
-        modeMessage.innerHTML = '<strong>Free account required for the Half Test.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
-        modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-      startMode('half');
+    startFullTest();
+  }
+
+  function enableFullButton() {
+    const button = modeWrap?.querySelector('[data-test-prep-mode="full"]');
+    if (!button) return false;
+    button.disabled = false;
+    button.textContent = 'Start Full Simulation';
+    return true;
+  }
+
+  const modeObserver = new MutationObserver(() => {
+    if (enableFullButton()) modeObserver.disconnect();
+  });
+  if (modeWrap) {
+    modeObserver.observe(modeWrap, { childList: true, subtree: true });
+    enableFullButton();
+  }
+
+  modeWrap?.addEventListener('click', async event => {
+    const button = event.target.closest('[data-test-prep-mode="full"]');
+    if (!button || button.disabled) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    await handleFullStart();
+  }, true);
+
+  nextButton?.addEventListener('click', event => {
+    if (!fullActive) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (!saveCurrentResponse()) return;
+    currentIndex += 1;
+    renderQuestion();
+  }, true);
+
+  submitButton?.addEventListener('click', event => {
+    if (!fullActive) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    scoreFullTest();
+  }, true);
+
+  retakeButton?.addEventListener('click', event => {
+    if (!fullActive) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    startFullTest();
+  }, true);
+
+  Promise.all([
+    fetch('/staar-algebra1-blueprint.json'),
+    fetch('/staar-algebra1-half-test.json'),
+    fetch('/staar-algebra1-full-extension.json')
+  ]).then(async ([blueprintResponse, halfResponse, extensionResponse]) => {
+    if (!blueprintResponse.ok || !halfResponse.ok || !extensionResponse.ok) {
+      throw new Error('Full simulation bank could not be loaded.');
     }
-  }
-
-  try {
-    const [blueprintResponse, quickResponse, halfResponse] = await Promise.all([
-      fetch('/staar-algebra1-blueprint.json'),
-      fetch('/staar-algebra1-quick-check.json'),
-      fetch('/staar-algebra1-half-test.json')
+    [blueprint, halfBank, extensionBank] = await Promise.all([
+      blueprintResponse.json(),
+      halfResponse.json(),
+      extensionResponse.json()
     ]);
-    if (!blueprintResponse.ok) throw new Error(`Blueprint load failed: ${blueprintResponse.status}`);
-    if (!quickResponse.ok) throw new Error(`Quick-check bank load failed: ${quickResponse.status}`);
-    if (!halfResponse.ok) throw new Error(`Half-test bank load failed: ${halfResponse.status}`);
-    [blueprint, quickBank, halfBank] = await Promise.all([blueprintResponse.json(), quickResponse.json(), halfResponse.json()]);
-
-    modeWrap.replaceChildren(...blueprint.tolux_modes.map(mode => {
-      const card = document.createElement('article');
-      card.className = 'pricing-card';
-      const points = mode.points ? ` • ${mode.points} points` : '';
-      const live = mode.id === 'quick' || mode.id === 'half';
-      const buttonLabel = mode.id === 'quick' ? 'Start Quick Check' : mode.id === 'half' ? 'Start Half Test' : 'Question bank in build';
-      card.innerHTML = `
-        <h3>${mode.label}</h3>
-        <h2>${mode.questions} <small>questions${points}</small></h2>
-        <p>${mode.description}</p>
-        <button type="button" data-test-prep-mode="${mode.id}" ${live ? '' : 'disabled'}>${buttonLabel}</button>
-      `;
-      return card;
-    }));
-
-    categoryWrap.replaceChildren(...blueprint.reporting_categories.map(category => {
-      const card = document.createElement('article');
-      card.className = 'pricing-card';
-      card.innerHTML = `
-        <small>Reporting Category ${category.id}</small>
-        <h3>${category.name}</h3>
-        <p><strong>${category.question_range[0]}–${category.question_range[1]}</strong> questions</p>
-        <p><strong>${category.point_range[0]}–${category.point_range[1]}</strong> points</p>
-      `;
-      return card;
-    }));
-
-    document.addEventListener('click', async event => {
-      const button = event.target.closest('[data-test-prep-mode]');
-      if (!button || button.disabled) return;
-      await handleModeStart(button.dataset.testPrepMode);
-    });
-
-    nextButton.addEventListener('click', () => {
-      if (!saveCurrentResponse()) return;
-      currentIndex += 1;
-      renderQuestion();
-    });
-    submitButton.addEventListener('click', scoreTest);
-    retakeButton.addEventListener('click', () => activeMode && startMode(activeMode.id));
-  } catch (error) {
+    enableFullButton();
+  }).catch(error => {
     console.error(error);
-    if (modeWrap) modeWrap.textContent = 'Test Prep could not be loaded.';
-  }
+    const button = modeWrap?.querySelector('[data-test-prep-mode="full"]');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Full simulation unavailable';
+    }
+  });
 })();
