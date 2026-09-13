@@ -118,7 +118,8 @@
       "module_id": "alg1-a9b-interpret-exponential-parameters",
       "points": 1,
       "type": "multiple_choice",
-      "prompt": "A savings account is modeled by A = 500(1.04)^t, where t is years. What does 1.04 represent?",
+      "prompt_html": "A savings account is modeled by A = 500(1.04)<sup>t</sup>, where t is years. What does 1.04 represent?",
+      "prompt": "A savings account is modeled by A = 500(1.04) raised to the power t, where t is years. What does 1.04 represent?",
       "choices": ["The account loses 4% each year", "The account grows by 4% each year", "The starting balance is $1.04", "The balance grows by $4 each year"],
       "answer": [1],
       "rationale": "A growth factor of 1.04 means 100% + 4%, so the quantity increases by 4% each year."
