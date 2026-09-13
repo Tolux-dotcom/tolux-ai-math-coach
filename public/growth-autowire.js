@@ -67,6 +67,24 @@
     void track(eventName, options);
   }
 
+  function currentLearningContext() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      module: params.get('module') || null,
+      skill: params.get('skill') || null,
+      start: params.get('start') || null
+    };
+  }
+
+  function learningProperties(surface) {
+    const context = currentLearningContext();
+    const properties = { surface };
+    if (context.module) properties.module = context.module;
+    if (context.skill) properties.skill = context.skill;
+    if (context.start) properties.start = context.start;
+    return properties;
+  }
+
   window.fetch = async function growthAwareFetch(input, init = {}) {
     const response = await nativeFetch(input, init);
     const url = typeof input === 'string' ? input : input?.url || '';
@@ -80,9 +98,11 @@
     }
     if (method === 'POST' && url.includes('/api/lesson-progress') && response.ok) {
       const params = new URLSearchParams(window.location.search);
+      const moduleId = params.get('module') || 'unknown';
       if (params.get('start') === 'diagnostic') {
-        const moduleId = params.get('module') || 'unknown';
         trackOnce('diagnostic_completed', `diagnostic-complete:${moduleId}`, { properties: { module: moduleId, surface: 'lesson_progress_saved' } });
+      } else {
+        trackOnce('lesson_completed', `lesson-complete:${moduleId}`, { properties: { module: moduleId, surface: 'lesson_progress_saved' } });
       }
     }
     if (method === 'POST' && url.includes('/api/coach')) {
@@ -101,6 +121,10 @@
     const id = target.id;
     if (id === 'freeDiagnosticBtn' || id === 'startReadinessDiagnosticBtn') void track('diagnostic_started', { properties: { surface: id } });
     if (id === 'startTutorLessonBtn') void track('lesson_started', { properties: { surface: 'dashboard' } });
+    if (id === 'lessonStuckBtn') void track('help_requested', { properties: learningProperties('lesson_stuck_button') });
+    if (id === 'lessonExplainBtn') void track('explain_another_way', { properties: learningProperties('lesson_explain_button') });
+    if (id === 'lessonSimilarBtn') void track('similar_problem_requested', { properties: learningProperties('lesson_similar_button') });
+    if (target.classList?.contains('tolux-show-solution')) void track('full_solution_requested', { properties: learningProperties('show_full_solution') });
     if (id === 'studentPlanBtn') void track('upgrade_clicked', { plan: 'student', properties: { surface: 'pricing' } });
     if (id === 'familyPlanBtn') void track('upgrade_clicked', { plan: 'family', properties: { surface: 'pricing' } });
   }, { capture: true });
@@ -114,7 +138,7 @@
   }
   if (window.location.pathname.endsWith('/practice.html')) {
     const skill = params.get('skill') || 'unknown';
-    trackOnce('lesson_started', `practice:${skill}`, { properties: { skill, surface: 'practice_page' } });
+    trackOnce('practice_started', `practice:${skill}`, { properties: { skill, surface: 'practice_page' } });
   }
 
   window.addEventListener('load', () => { void addAdminNavigation(); });
