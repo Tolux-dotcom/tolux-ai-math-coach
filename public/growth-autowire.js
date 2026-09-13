@@ -98,11 +98,16 @@
     }
     if (method === 'POST' && url.includes('/api/lesson-progress') && response.ok) {
       const params = new URLSearchParams(window.location.search);
-      const moduleId = params.get('module') || 'unknown';
-      if (params.get('start') === 'diagnostic') {
-        trackOnce('diagnostic_completed', `diagnostic-complete:${moduleId}`, { properties: { module: moduleId, surface: 'lesson_progress_saved' } });
+      if (window.location.pathname.endsWith('/practice.html')) {
+        const skill = params.get('skill') || 'unknown';
+        trackOnce('practice_completed', `practice-complete:${skill}`, { properties: { skill, surface: 'lesson_progress_saved' } });
       } else {
-        trackOnce('lesson_completed', `lesson-complete:${moduleId}`, { properties: { module: moduleId, surface: 'lesson_progress_saved' } });
+        const moduleId = params.get('module') || 'unknown';
+        if (params.get('start') === 'diagnostic') {
+          trackOnce('diagnostic_completed', `diagnostic-complete:${moduleId}`, { properties: { module: moduleId, surface: 'lesson_progress_saved' } });
+        } else {
+          trackOnce('lesson_completed', `lesson-complete:${moduleId}`, { properties: { module: moduleId, surface: 'lesson_progress_saved' } });
+        }
       }
     }
     if (method === 'POST' && url.includes('/api/coach')) {
