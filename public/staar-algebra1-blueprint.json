@@ -1,0 +1,32 @@
+{
+  "assessment": "STAAR Algebra I EOC style practice",
+  "source": "Texas Education Agency STAAR Algebra I Blueprint, effective as of academic year 2022-23 and still listed by TEA for Algebra I in 2026",
+  "official_test": {
+    "questions": 50,
+    "points": 59,
+    "one_point_items": 41,
+    "two_point_items": 9,
+    "readiness_point_share": "55-70%",
+    "supporting_point_share": "30-45%"
+  },
+  "reporting_categories": [
+    {"id":1,"name":"Number and Algebraic Methods","question_range":[9,11],"point_range":[9,14]},
+    {"id":2,"name":"Describing and Graphing Linear Functions, Equations and Inequalities","question_range":[10,12],"point_range":[10,16]},
+    {"id":3,"name":"Writing and Solving Linear Functions, Equations and Inequalities","question_range":[12,14],"point_range":[12,18]},
+    {"id":4,"name":"Quadratic Functions and Equations","question_range":[9,11],"point_range":[9,14]},
+    {"id":5,"name":"Exponential Functions and Equations","question_range":[5,7],"point_range":[5,9]}
+  ],
+  "tolux_modes": [
+    {"id":"quick","label":"Quick Check","questions":10,"description":"Short blueprint-weighted check across all five reporting categories."},
+    {"id":"half","label":"Half Test","questions":25,"description":"Longer blueprint-weighted practice with mixed item types."},
+    {"id":"full","label":"Full STAAR-Style Simulation","questions":50,"points":59,"description":"Mirrors the official question and point totals and reporting-category ranges."}
+  ],
+  "design_rules": {
+    "copy_official_items": false,
+    "use_original_staar_style_items": true,
+    "include_technology_enhanced_items": true,
+    "report_by_category_and_teks": true,
+    "route_missed_skills_to_tutor_or_practice": true,
+    "show_disclaimer": true
+  }
+}

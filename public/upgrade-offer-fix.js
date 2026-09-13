@@ -30,3 +30,21 @@ window.appendUpgradeOffer = function appendUpgradeOffer(message) {
   chat.appendChild(upgradeBtn);
   chat.scrollTop = chat.scrollHeight;
 };
+
+// Test Prep preview: replace the disabled Coming Soon state with a safe
+// branch-only route to the STAAR-style blueprint page. The actual test engine
+// remains separate until its question bank and scoring flow are QA'd.
+window.addEventListener("DOMContentLoaded", () => {
+  const testPrepButton = document.querySelector('.mode[data-mode="Test Prep"]');
+  if (!testPrepButton) return;
+  testPrepButton.disabled = false;
+  testPrepButton.removeAttribute("aria-disabled");
+  const status = testPrepButton.querySelector(".mode-status");
+  if (status) status.textContent = "Preview";
+  const detail = testPrepButton.querySelector("small");
+  if (detail) detail.textContent = "STAAR-style Algebra I blueprint";
+  testPrepButton.addEventListener("click", event => {
+    event.preventDefault();
+    window.location.href = "/test-prep.html";
+  }, { capture: true });
+});
