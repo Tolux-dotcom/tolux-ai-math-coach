@@ -1,8 +1,13 @@
 (async () => {
+  const SUPABASE_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+
   const modeWrap = document.querySelector('#testPrepModes');
+  const modeMessage = document.querySelector('#testPrepModeMessage');
   const categoryWrap = document.querySelector('#blueprintCategories');
   const runner = document.querySelector('#testRunner');
   const results = document.querySelector('#testResults');
+  const resultTitle = document.querySelector('#testResultTitle');
   const progressLabel = document.querySelector('#testProgressLabel');
   const progressBar = document.querySelector('#testProgressBar');
   const questionMeta = document.querySelector('#questionMeta');
@@ -17,7 +22,9 @@
   const retakeButton = document.querySelector('#retakeQuickCheck');
 
   let blueprint;
-  let bank;
+  let quickBank;
+  let halfBank;
+  let activeMode = null;
   let activeQuestions = [];
   let currentIndex = 0;
   let responses = new Map();
@@ -30,18 +37,46 @@
     return question.prompt_html || question.prompt || '';
   }
 
-  function assembleQuickCheck() {
+  function assembleFromBank(bank, target) {
     const byCategory = new Map();
     for (const question of bank.questions) {
       if (!byCategory.has(question.reporting_category)) byCategory.set(question.reporting_category, []);
       byCategory.get(question.reporting_category).push(question);
     }
-    const target = { 1: 2, 2: 2, 3: 3, 4: 2, 5: 1 };
     const selected = [];
     for (const [category, count] of Object.entries(target)) {
       selected.push(...shuffled(byCategory.get(Number(category)) || []).slice(0, count));
     }
-    return selected;
+    return shuffled(selected);
+  }
+
+  function questionsForMode(modeId) {
+    if (modeId === 'quick') {
+      return assembleFromBank(quickBank, { 1: 2, 2: 2, 3: 3, 4: 2, 5: 1 });
+    }
+    if (modeId === 'half') {
+      return assembleFromBank(halfBank, { 1: 5, 2: 5, 3: 6, 4: 5, 5: 4 });
+    }
+    return [];
+  }
+
+  function getSupabaseClient() {
+    if (!window.supabase?.createClient) return null;
+    return window.__toluxTestPrepSupabase || (window.__toluxTestPrepSupabase = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    ));
+  }
+
+  async function isSignedIn() {
+    try {
+      const client = getSupabaseClient();
+      if (!client) return false;
+      const { data } = await client.auth.getSession();
+      return Boolean(data?.session?.user);
+    } catch {
+      return false;
+    }
   }
 
   function selectedAnswers() {
@@ -53,7 +88,7 @@
     if (!question) return false;
     const selected = selectedAnswers();
     if (!selected.length) {
-      questionMessage.textContent = question.type === 'multi_select' ? 'Select two answers before continuing.' : 'Choose an answer before continuing.';
+      questionMessage.textContent = question.type === 'multi_select' ? `Select ${question.answer.length} answers before continuing.` : 'Choose an answer before continuing.';
       return false;
     }
     if (question.type === 'multi_select' && selected.length !== question.answer.length) {
@@ -119,6 +154,7 @@
     }
 
     const percent = possible ? Math.round((earned / possible) * 100) : 0;
+    resultTitle.textContent = `${activeMode.label} Results`;
     scoreSummary.innerHTML = `<p><strong>${earned} / ${possible} points • ${percent}%</strong></p><p>This is a Tolux practice result, not an official STAAR scale score.</p>`;
 
     categoryResults.replaceChildren(...blueprint.reporting_categories.map(category => {
@@ -143,41 +179,62 @@
       missedReview.append(card);
     }
 
+    retakeButton.textContent = `Retake ${activeMode.label}`;
     runner.hidden = true;
     results.hidden = false;
     progressBar.style.width = '100%';
     results.scrollIntoView({ behavior: 'smooth' });
   }
 
-  function startQuickCheck() {
-    activeQuestions = assembleQuickCheck();
+  function startMode(modeId) {
+    activeMode = blueprint.tolux_modes.find(mode => mode.id === modeId);
+    activeQuestions = questionsForMode(modeId);
     currentIndex = 0;
     responses = new Map();
+    modeMessage.textContent = '';
     results.hidden = true;
     runner.hidden = false;
     renderQuestion();
     runner.scrollIntoView({ behavior: 'smooth' });
   }
 
+  async function handleModeStart(modeId) {
+    if (modeId === 'quick') {
+      startMode('quick');
+      return;
+    }
+    if (modeId === 'half') {
+      if (!(await isSignedIn())) {
+        modeMessage.innerHTML = '<strong>Free account required for the Half Test.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
+        modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      startMode('half');
+    }
+  }
+
   try {
-    const [blueprintResponse, bankResponse] = await Promise.all([
+    const [blueprintResponse, quickResponse, halfResponse] = await Promise.all([
       fetch('/staar-algebra1-blueprint.json'),
-      fetch('/staar-algebra1-quick-check.json')
+      fetch('/staar-algebra1-quick-check.json'),
+      fetch('/staar-algebra1-half-test.json')
     ]);
     if (!blueprintResponse.ok) throw new Error(`Blueprint load failed: ${blueprintResponse.status}`);
-    if (!bankResponse.ok) throw new Error(`Quick-check bank load failed: ${bankResponse.status}`);
-    [blueprint, bank] = await Promise.all([blueprintResponse.json(), bankResponse.json()]);
+    if (!quickResponse.ok) throw new Error(`Quick-check bank load failed: ${quickResponse.status}`);
+    if (!halfResponse.ok) throw new Error(`Half-test bank load failed: ${halfResponse.status}`);
+    [blueprint, quickBank, halfBank] = await Promise.all([blueprintResponse.json(), quickResponse.json(), halfResponse.json()]);
 
     modeWrap.replaceChildren(...blueprint.tolux_modes.map(mode => {
       const card = document.createElement('article');
       card.className = 'pricing-card';
       const points = mode.points ? ` • ${mode.points} points` : '';
-      const live = mode.id === 'quick';
+      const live = mode.id === 'quick' || mode.id === 'half';
+      const buttonLabel = mode.id === 'quick' ? 'Start Quick Check' : mode.id === 'half' ? 'Start Half Test' : 'Question bank in build';
       card.innerHTML = `
         <h3>${mode.label}</h3>
         <h2>${mode.questions} <small>questions${points}</small></h2>
         <p>${mode.description}</p>
-        <button type="button" data-test-prep-mode="${mode.id}" ${live ? '' : 'disabled'}>${live ? 'Start Quick Check' : 'Question bank in build'}</button>
+        <button type="button" data-test-prep-mode="${mode.id}" ${live ? '' : 'disabled'}>${buttonLabel}</button>
       `;
       return card;
     }));
@@ -194,10 +251,10 @@
       return card;
     }));
 
-    document.addEventListener('click', event => {
+    document.addEventListener('click', async event => {
       const button = event.target.closest('[data-test-prep-mode]');
       if (!button || button.disabled) return;
-      if (button.dataset.testPrepMode === 'quick') startQuickCheck();
+      await handleModeStart(button.dataset.testPrepMode);
     });
 
     nextButton.addEventListener('click', () => {
@@ -206,7 +263,7 @@
       renderQuestion();
     });
     submitButton.addEventListener('click', scoreTest);
-    retakeButton.addEventListener('click', startQuickCheck);
+    retakeButton.addEventListener('click', () => activeMode && startMode(activeMode.id));
   } catch (error) {
     console.error(error);
     if (modeWrap) modeWrap.textContent = 'Test Prep could not be loaded.';
