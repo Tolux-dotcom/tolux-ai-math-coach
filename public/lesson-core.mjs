@@ -50,10 +50,10 @@ export function formatMathNotation(value) {
 
 function normalizeRootNotation(value) {
   return String(value ?? "")
-    .replace(/\bsqrt\s*\(\s*([a-z0-9.]+)\s*\)/gi, "√$1")
-    .replace(/\bsqrt\s*([a-z0-9.]+)/gi, "√$1")
-    .replace(/\bcbrt\s*\(\s*([a-z0-9.]+)\s*\)/gi, "∛$1")
-    .replace(/\bcbrt\s*([a-z0-9.]+)/gi, "∛$1")
+    .replace(/(^|[^a-z])sqrt\s*\(\s*([a-z0-9.]+)\s*\)/gi, "$1√$2")
+    .replace(/(^|[^a-z])sqrt\s*([a-z0-9.]+)/gi, "$1√$2")
+    .replace(/(^|[^a-z])cbrt\s*\(\s*([a-z0-9.]+)\s*\)/gi, "$1∛$2")
+    .replace(/(^|[^a-z])cbrt\s*([a-z0-9.]+)/gi, "$1∛$2")
     .replace(/√\(\s*([a-z0-9.]+)\s*\)/gi, "√$1")
     .replace(/∛\(\s*([a-z0-9.]+)\s*\)/gi, "∛$1");
 }
