@@ -75,15 +75,47 @@
     ));
   }
 
-  async function isSignedIn() {
+  async function getSession() {
     try {
       const client = getSupabaseClient();
-      if (!client) return false;
+      if (!client) return null;
       const { data } = await client.auth.getSession();
-      return Boolean(data?.session?.user);
+      return data?.session || null;
     } catch {
-      return false;
+      return null;
     }
+  }
+
+  async function verifyFullSimulationAccess() {
+    const client = getSupabaseClient();
+    let session = await getSession();
+
+    if (!client || !session?.access_token) {
+      return { status: 401, data: { allowed: false } };
+    }
+
+    const request = activeSession => fetch('/api/test-prep/full-access', {
+      headers: { Authorization: `Bearer ${activeSession.access_token}` }
+    });
+
+    let response = await request(session);
+    if (response.status === 401) {
+      const { data, error } = await client.auth.refreshSession();
+      session = error ? null : data?.session;
+      if (!session?.access_token) {
+        return { status: 401, data: { allowed: false } };
+      }
+      response = await request(session);
+    }
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
+
+    return { status: response.status, data };
   }
 
   function selectedAnswers() {
@@ -210,12 +242,37 @@
   }
 
   async function handleFullStart() {
-    if (!(await isSignedIn())) {
-      modeMessage.innerHTML = '<strong>Free account required for the Full Simulation.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
-      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const button = modeWrap?.querySelector('[data-test-prep-mode="full"]');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Checking access…';
+    }
+
+    let access;
+    try {
+      access = await verifyFullSimulationAccess();
+    } catch {
+      access = { status: 503, data: { allowed: false } };
+    }
+
+    if (access.status === 200 && access.data?.allowed === true && access.data?.isSubscriber === true) {
+      enableFullButton();
+      startFullTest();
       return;
     }
-    startFullTest();
+
+    enableFullButton();
+    if (access.status === 401) {
+      modeMessage.innerHTML = '<strong>Sign in required for the Full Simulation.</strong> <a href="/#authPanel">Sign in to your subscriber account</a>, then return to Test Prep.';
+    } else if (access.status === 403 && access.data?.upgradeRequired) {
+      modeMessage.innerHTML = '<strong>An active Tolux subscription is required for the Full Simulation.</strong> <a href="/#pricingSection">View membership options</a>.';
+    } else {
+      modeMessage.innerHTML = '<strong>Full Simulation access could not be verified.</strong> Please try again later. Your account was not changed.';
+    }
+
+    if (modeMessage) {
+      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   function enableFullButton() {
