@@ -75,47 +75,11 @@
     ));
   }
 
-  async function getSession() {
-    try {
-      const client = getSupabaseClient();
-      if (!client) return null;
-      const { data } = await client.auth.getSession();
-      return data?.session || null;
-    } catch {
-      return null;
-    }
-  }
-
   async function verifyFullSimulationAccess() {
     const client = getSupabaseClient();
-    let session = await getSession();
-
-    if (!client || !session?.access_token) {
-      return { status: 401, data: { allowed: false } };
-    }
-
-    const request = activeSession => fetch('/api/test-prep/full-access', {
-      headers: { Authorization: `Bearer ${activeSession.access_token}` }
-    });
-
-    let response = await request(session);
-    if (response.status === 401) {
-      const { data, error } = await client.auth.refreshSession();
-      session = error ? null : data?.session;
-      if (!session?.access_token) {
-        return { status: 401, data: { allowed: false } };
-      }
-      response = await request(session);
-    }
-
-    let data = {};
-    try {
-      data = await response.json();
-    } catch {
-      data = {};
-    }
-
-    return { status: response.status, data };
+    const verifier = window.toluxTestPrepAccess?.verifyFullSimulationAccess;
+    if (!verifier) return { status: 503, data: { allowed: false } };
+    return verifier({ client, fetchImpl: fetch });
   }
 
   function selectedAnswers() {
