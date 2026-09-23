@@ -157,14 +157,32 @@ function parseLabeledSolutionSet(value) {
   return [...new Set(values)].sort((a, b) => a - b);
 }
 
+function normalizeExplanationForKeywords(value) {
+  return normalizeAnswer(
+    String(value ?? "")
+      .replace(
+        /\b(?:the\s+)?square\s+root\s+(?:of\s+)?([a-z0-9.]+)/gi,
+        "√$1"
+      )
+      .replace(
+        /\b([a-z0-9.]+)\s+(?:times|multiplied\s+by)\s+(√[a-z0-9.]+)/gi,
+        "$1$2"
+      )
+      .replace(
+        /(√[a-z0-9.]+)\s+(?:is|equals)\s+([a-z0-9.]+)/gi,
+        "$1=$2"
+      )
+  );
+}
+
 export function keywordGroupsSatisfied(text, groups = [], minimumGroups) {
   if (!Array.isArray(groups) || groups.length === 0) return false;
 
-  const normalizedText = normalizeAnswer(text);
+  const normalizedText = normalizeExplanationForKeywords(text);
   const matches = groups.filter(group => {
     const alternatives = Array.isArray(group) ? group : [group];
     return alternatives.some(keyword =>
-      normalizedText.includes(normalizeAnswer(keyword))
+      normalizedText.includes(normalizeExplanationForKeywords(keyword))
     );
   }).length;
 
@@ -247,6 +265,15 @@ export function answersEquivalent(studentAnswer, itemOrExpected) {
 
 export function explanationSatisfies(explanation, item) {
   if (!item?.explanation_prompt) return true;
+
+  const requiredGroups = item.required_explanation_keyword_groups;
+  if (
+    Array.isArray(requiredGroups) &&
+    requiredGroups.length > 0 &&
+    !keywordGroupsSatisfied(explanation, requiredGroups, requiredGroups.length)
+  ) {
+    return false;
+  }
 
   return keywordGroupsSatisfied(
     explanation,
