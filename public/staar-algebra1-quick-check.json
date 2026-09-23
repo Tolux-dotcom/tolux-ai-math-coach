@@ -1,0 +1,128 @@
+{
+  "id": "algebra1-staar-style-quick-check-v1",
+  "label": "STAAR-Style Algebra I Quick Check",
+  "version": 1,
+  "questions": [
+    {
+      "id": "qc1",
+      "reporting_category": 1,
+      "teks": "A.10A",
+      "module_id": "alg1-a10a-add-subtract-polynomials",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "Simplify: (3x² - 5x + 2) + (2x² + x - 7).",
+      "choices": ["5x² - 4x - 5", "5x² - 6x + 9", "x² - 4x - 5", "5x⁴ - 4x - 5"],
+      "answer": [0],
+      "rationale": "Combine like terms: 3x² + 2x² = 5x², -5x + x = -4x, and 2 - 7 = -5."
+    },
+    {
+      "id": "qc2",
+      "reporting_category": 1,
+      "teks": "A.11A",
+      "module_id": "alg1-a11a-radical-expressions",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "Which expression is equivalent to √72?",
+      "choices": ["6√2", "8√2", "12√2", "36√2"],
+      "answer": [0],
+      "rationale": "72 = 36 × 2, so √72 = √36·√2 = 6√2."
+    },
+    {
+      "id": "qc3",
+      "reporting_category": 2,
+      "teks": "A.3A",
+      "module_id": "alg1-a3a-determine-slope",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "A line passes through (2, 5) and (6, 13). What is its slope?",
+      "choices": ["1/2", "2", "4", "8"],
+      "answer": [1],
+      "rationale": "Slope = (13 - 5)/(6 - 2) = 8/4 = 2."
+    },
+    {
+      "id": "qc4",
+      "reporting_category": 2,
+      "teks": "A.2A",
+      "module_id": "alg1-a2a-linear-domain-range",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "The table shows x-values -2, 0, 3 and corresponding y-values 7, 3, -3. Which equation represents the relationship?",
+      "choices": ["y = -2x + 3", "y = 2x + 3", "y = -x + 5", "y = -2x - 3"],
+      "answer": [0],
+      "rationale": "Using x = 0 gives the intercept 3. From x = 0 to x = 3, y changes by -6, so the slope is -2."
+    },
+    {
+      "id": "qc5",
+      "reporting_category": 3,
+      "teks": "A.5A",
+      "module_id": "alg1-a5a-linear-equations",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "Solve 4(2x - 3) + 5 = 3x + 18.",
+      "choices": ["x = 1", "x = 5", "x = 7", "x = 25/5"],
+      "answer": [1],
+      "rationale": "8x - 12 + 5 = 3x + 18, so 5x = 25 and x = 5."
+    },
+    {
+      "id": "qc6",
+      "reporting_category": 3,
+      "teks": "A.2H",
+      "module_id": "alg1-a2h-write-linear-inequalities",
+      "points": 2,
+      "type": "multi_select",
+      "prompt": "A school club can spend at most $180 on shirts. There is a $24 setup fee and each shirt costs $12. Select TWO statements that correctly model or interpret the situation.",
+      "choices": ["12s + 24 ≤ 180", "12s + 24 ≥ 180", "s ≤ 13", "s ≥ 13", "s ≤ 17"],
+      "answer": [0, 2],
+      "rationale": "At most means ≤. Solving 12s + 24 ≤ 180 gives 12s ≤ 156, so s ≤ 13."
+    },
+    {
+      "id": "qc7",
+      "reporting_category": 3,
+      "teks": "A.2I",
+      "module_id": "alg1-a2i-write-linear-systems",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "Adult tickets cost $9 and student tickets cost $6. A total of 120 tickets were sold for $900. Which system can be used to find the numbers of adult tickets a and student tickets s?",
+      "choices": ["a + s = 120 and 9a + 6s = 900", "a + s = 900 and 9a + 6s = 120", "9a + 6s = 120 and a - s = 900", "6a + 9s = 120 and a + s = 900"],
+      "answer": [0],
+      "rationale": "The ticket count gives a + s = 120, and the revenue gives 9a + 6s = 900."
+    },
+    {
+      "id": "qc8",
+      "reporting_category": 4,
+      "teks": "A.7C",
+      "module_id": "alg1-a7c-quadratic-transformations",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "Compared with y = x², what transformation produces y = (x - 4)² + 3?",
+      "choices": ["Left 4 and up 3", "Right 4 and up 3", "Right 3 and up 4", "Left 3 and down 4"],
+      "answer": [1],
+      "rationale": "In vertex form y = (x - h)² + k, h = 4 and k = 3, so the graph shifts right 4 and up 3."
+    },
+    {
+      "id": "qc9",
+      "reporting_category": 4,
+      "teks": "A.8A",
+      "module_id": "alg1-a8a-solve-quadratic-equations",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt": "What are the solutions to x² - 7x + 12 = 0?",
+      "choices": ["x = -3 and x = -4", "x = 3 and x = 4", "x = 2 and x = 6", "x = -2 and x = -6"],
+      "answer": [1],
+      "rationale": "x² - 7x + 12 factors as (x - 3)(x - 4), so the solutions are 3 and 4."
+    },
+    {
+      "id": "qc10",
+      "reporting_category": 5,
+      "teks": "A.9B",
+      "module_id": "alg1-a9b-interpret-exponential-parameters",
+      "points": 1,
+      "type": "multiple_choice",
+      "prompt_html": "A savings account is modeled by A = 500(1.04)<sup>t</sup>, where t is years. What does 1.04 represent?",
+      "prompt": "A savings account is modeled by A = 500(1.04) raised to the power t, where t is years. What does 1.04 represent?",
+      "choices": ["The account loses 4% each year", "The account grows by 4% each year", "The starting balance is $1.04", "The balance grows by $4 each year"],
+      "answer": [1],
+      "rationale": "A growth factor of 1.04 means 100% + 4%, so the quantity increases by 4% each year."
+    }
+  ]
+}

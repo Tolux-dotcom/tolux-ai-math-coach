@@ -7,7 +7,10 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
-import { reconcilePaidCheckoutEntitlement } from "./subscription-entitlement.mjs";
+import {
+  reconcilePaidCheckoutEntitlement,
+  reconcileSubscriptionEntitlement
+} from "./subscription-entitlement.mjs";
 import {
   buildLessonProgressRow,
   dedupeLessonProgressActivities,
@@ -542,12 +545,33 @@ try {
       console.log("Stripe checkout completed:", session.id);
     }
 
-    if (event.type === "customer.subscription.deleted") {
+    if (
+      event.type === "customer.subscription.updated" ||
+      event.type === "customer.subscription.deleted"
+    ) {
       const subscription = event.data.object;
-      const userId = subscription.metadata?.tolux_user_id;
+      const reconciliation = await reconcileSubscriptionEntitlement({
+        subscription,
+        updateSubscription: setStudentSubscription
+      });
 
-      if (userId) await setStudentSubscription(userId, false);
-      console.log("Stripe subscription cancelled:", subscription.id);
+      if (!reconciliation.handled) {
+        console.warn("Stripe subscription status was not reconciled:", {
+          id: subscription.id,
+          status: subscription.status || null,
+          hasToluxUserId: Boolean(subscription.metadata?.tolux_user_id)
+        });
+      } else if (!reconciliation.updated) {
+        return send(res, 503, {
+          error: "Subscription entitlement update failed. Please retry."
+        });
+      } else {
+        console.log("Stripe subscription entitlement updated:", {
+          id: subscription.id,
+          status: reconciliation.status,
+          isSubscriber: reconciliation.isSubscriber
+        });
+      }
     }
 
 if (event.type === "invoice.payment_failed") {

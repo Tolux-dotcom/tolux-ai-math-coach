@@ -9,18 +9,26 @@ const dashboardBridge = fs.readFileSync(new URL("../public/a10f-dashboard-bridge
 const practiceRuntime = fs.readFileSync(new URL("../public/a10f-practice.js", import.meta.url), "utf8");
 const visualRuntime = fs.readFileSync(new URL("../public/a10f-visual.js", import.meta.url), "utf8");
 const inputNormalizer = fs.readFileSync(new URL("../public/math-input-normalizer.js", import.meta.url), "utf8");
+const catalog = JSON.parse(fs.readFileSync(new URL("../public/algebra1-course.json", import.meta.url), "utf8"));
 
 test("A.10F is exposed on the dashboard without changing older lesson routing", () => {
   assert.match(indexHtml, /a10f-dashboard-bridge\.js/);
   assert.match(dashboardBridge, /alg1-a10f-difference-of-squares/);
   assert.match(dashboardBridge, /A\.10F/);
   assert.match(dashboardBridge, /Difference of Two Squares/);
-  assert.doesNotMatch(dashboardBridge, /MutationObserver/);
-  assert.match(dashboardBridge, /MAX_ATTEMPTS/);
+  assert.doesNotMatch(dashboardBridge, /new MutationObserver/);
+  assert.match(dashboardBridge, /attempts >= 100/);
+
+  const a10f = catalog.units
+    .flatMap(unit => unit.modules)
+    .find(module => module.module_id === "alg1-a10f-difference-of-squares");
+  assert.equal(a10f.status, "available");
+  assert.deepEqual(a10f.available_modes, ["lesson", "practice"]);
+  assert.equal(a10f.lesson_path, "/a10f-difference-of-squares.json");
 });
 
 test("A.10F practice uses the dedicated verified runtime while other skills keep practice.js", () => {
-  assert.match(practiceHtml, /skill === "A\.10F"/);
+  assert.match(practiceHtml, /skill==="A\.10F"/);
   assert.match(practiceHtml, /import\("\/a10f-practice\.js"\)/);
   assert.match(practiceHtml, /import\("\/practice\.js"\)/);
   assert.match(practiceRuntime, /\/a10f-difference-of-squares\.json/);

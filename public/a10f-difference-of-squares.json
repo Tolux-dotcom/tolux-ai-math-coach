@@ -34,7 +34,7 @@
     {"id": "A10F-C02", "title": "Check all three conditions", "content": "There must be exactly two terms, subtraction between them, and both terms must be perfect squares. If any condition fails, do not use the difference-of-squares pattern."},
     {"id": "A10F-C03", "title": "Factor out a GCF first", "content": "If the terms share a greatest common factor, remove it before checking the remaining binomial for difference-of-squares structure."},
     {"id": "A10F-C04", "title": "Factor completely", "content": "After using p²-q²=(p-q)(p+q), inspect every factor again. A new factor may itself be another difference of squares."},
-    {"id": "A10F-C05", "title": "Do not confuse a sum with a difference", "content": "Over the real numbers, p²+q² is not a difference of squares. Verify a factorization by multiplying the conjugates: the middle terms cancel and p²-q² remains."}
+    {"id": "A10F-C05", "title": "Do not confuse a sum with a difference", "content": "Over the real numbers, p²+q² is a sum of squares, not a difference of squares, so this pattern does not produce real linear factors. Verify a factorization by multiplying the conjugates: the middle terms cancel and p²-q² remains."}
   ],
   "items": [
     {
