@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
   buildLessonProgressRow,
   dedupeLessonProgressActivities,
@@ -47,10 +48,15 @@ const supabaseAuth = createClient(
 const supabaseServerKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 const supabaseServerUrl = process.env.SUPABASE_URL || SUPABASE_AUTH_URL;
+const supabaseServerConfig = resolveSupabaseServerConfig({
+  authUrl: SUPABASE_AUTH_URL,
+  configuredUrl: supabaseServerUrl,
+  hasServerKey: Boolean(supabaseServerKey)
+});
 const supabaseAdmin =
-  supabaseServerKey
+  supabaseServerConfig.ready
     ? createClient(
-        supabaseServerUrl,
+        supabaseServerConfig.clientUrl,
         supabaseServerKey,
         {
           auth: {
@@ -61,15 +67,20 @@ const supabaseAdmin =
       )
     : null;
 
-if (!supabaseAdmin) {
+if (supabaseServerConfig.reason === "missing-server-key") {
   console.error("[auth] Supabase server client is not configured", {
     hasUrl: Boolean(process.env.SUPABASE_URL),
     hasServerKey: Boolean(supabaseServerKey)
   });
-} else if (supabaseServerUrl !== SUPABASE_AUTH_URL) {
-  console.error("[auth] Supabase project mismatch", {
-    expectedProject: new URL(SUPABASE_AUTH_URL).hostname,
-    configuredProject: new URL(supabaseServerUrl).hostname
+} else if (!supabaseServerConfig.ready) {
+  console.error("[auth] Supabase project mismatch; privileged access disabled", {
+    reason: supabaseServerConfig.reason,
+    expectedProject: supabaseServerConfig.authProjectUrl
+      ? new URL(supabaseServerConfig.authProjectUrl).hostname
+      : null,
+    configuredProject: supabaseServerConfig.serverProjectUrl
+      ? new URL(supabaseServerConfig.serverProjectUrl).hostname
+      : null
   });
 }
 
@@ -480,6 +491,12 @@ if (req.method === "POST" && req.url === "/api/stripe-webhook") {
       return send(res, 503, { error: "Stripe is not configured." });
     }
 
+    if (!supabaseAdmin) {
+      return send(res, 503, {
+        error: "Subscription storage is temporarily unavailable."
+      });
+    }
+
     const signature = req.headers["stripe-signature"];
    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const cancellationWebhookSecret =
@@ -572,6 +589,12 @@ if (event.type === "invoice.payment_failed") {
       return send(res, 503, { error: "Stripe is not configured." });
     }
 
+    if (!supabaseAdmin) {
+      return send(res, 503, {
+        error: "Payments are temporarily unavailable. Please try again shortly."
+      });
+    }
+
     const user = await getAuthenticatedUser(req);
     if (!user) {
       return send(res, 401, { error: "Please sign in before choosing a plan." });
@@ -613,6 +636,12 @@ if (event.type === "invoice.payment_failed") {
   try {
     if (!stripe) {
       return send(res, 500, { error: "Stripe is not configured." });
+    }
+
+    if (!supabaseAdmin) {
+      return send(res, 503, {
+        error: "Subscription access is temporarily unavailable."
+      });
     }
 
     const url = new URL(req.url, `http://${req.headers.host}`);
