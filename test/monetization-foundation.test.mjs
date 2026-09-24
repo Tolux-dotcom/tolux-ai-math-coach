@@ -42,16 +42,25 @@ test("server verifies browser tokens against the browser Supabase project", () =
   assert.doesNotMatch(server, /supabaseAdmin\.auth\.getUser\(token\)/);
   assert.match(server, /\[auth\] Supabase project mismatch/);
   assert.match(server, /process\.env\.SUPABASE_URL \|\| SUPABASE_AUTH_URL/);
+  assert.match(server, /resolveSupabaseServerConfig/);
+  assert.match(server, /supabaseServerConfig\.ready/);
+  assert.match(server, /privileged access disabled/);
+});
+
+test("checkout and webhooks stop safely when entitlement storage is unavailable", () => {
+  assert.match(server, /Subscription storage is temporarily unavailable/);
+  assert.match(server, /Payments are temporarily unavailable/);
+  assert.match(server, /Subscription access is temporarily unavailable/);
 });
 
 test("payment lifecycle updates access and protects session verification", () => {
-  assert.match(server, /setStudentSubscription\(userId, true\)/);
   assert.match(server, /session\.client_reference_id !== user\.id/);
   assert.match(server, /session\.metadata\?\.tolux_user_id !== user\.id/);
   assert.match(server, /reconcilePaidCheckoutEntitlement/);
   assert.match(server, /customer\.subscription\.updated/);
   assert.match(server, /reconcileSubscriptionEntitlement/);
   assert.match(server, /Subscription entitlement update failed/);
+  assert.match(server, /Stripe checkout entitlement activated/);
   assert.match(server, /setStudentSubscription\(authenticatedUserId, true\)/);
   assert.match(server, /entitlementActivated: reconciliation\.activated/);
   assert.doesNotMatch(server, /customerEmail: session\.customer_details/);
