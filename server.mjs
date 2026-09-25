@@ -6,6 +6,7 @@ import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
+import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
 import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
@@ -487,6 +488,34 @@ const server = http.createServer(async (req, res) => {
       return send(res, 500, {
         error: err?.message || "Unexpected server error."
       });
+    }
+  }
+  if (req.method === "GET" && req.url === "/api/test-prep/full-access") {
+    try {
+      const user = await getAuthenticatedUser(req);
+
+      if (!user) {
+        const decision = resolveFullSimulationAccess();
+        return send(res, decision.status, decision.body);
+      }
+
+      if (!supabaseAdmin) {
+        const decision = resolveFullSimulationAccess({ authenticated: true });
+        return send(res, decision.status, decision.body);
+      }
+
+      const usage = await getStudentUsage(user.id);
+      const decision = resolveFullSimulationAccess({
+        authenticated: true,
+        entitlementAvailable: Boolean(usage),
+        isSubscriber: Boolean(usage?.is_subscriber)
+      });
+
+      return send(res, decision.status, decision.body);
+    } catch (err) {
+      console.error("Full Simulation access error:", err);
+      const decision = resolveFullSimulationAccess({ authenticated: true });
+      return send(res, decision.status, decision.body);
     }
   }
 if (req.method === "POST" && req.url === "/api/stripe-webhook") {

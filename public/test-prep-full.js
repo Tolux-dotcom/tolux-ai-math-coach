@@ -75,15 +75,11 @@
     ));
   }
 
-  async function isSignedIn() {
-    try {
-      const client = getSupabaseClient();
-      if (!client) return false;
-      const { data } = await client.auth.getSession();
-      return Boolean(data?.session?.user);
-    } catch {
-      return false;
-    }
+  async function verifyFullSimulationAccess() {
+    const client = getSupabaseClient();
+    const verifier = window.toluxTestPrepAccess?.verifyFullSimulationAccess;
+    if (!verifier) return { status: 503, data: { allowed: false } };
+    return verifier({ client, fetchImpl: fetch });
   }
 
   function selectedAnswers() {
@@ -210,12 +206,37 @@
   }
 
   async function handleFullStart() {
-    if (!(await isSignedIn())) {
-      modeMessage.innerHTML = '<strong>Free account required for the Full Simulation.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
-      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const button = modeWrap?.querySelector('[data-test-prep-mode="full"]');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Checking access…';
+    }
+
+    let access;
+    try {
+      access = await verifyFullSimulationAccess();
+    } catch {
+      access = { status: 503, data: { allowed: false } };
+    }
+
+    if (access.status === 200 && access.data?.allowed === true && access.data?.isSubscriber === true) {
+      enableFullButton();
+      startFullTest();
       return;
     }
-    startFullTest();
+
+    enableFullButton();
+    if (access.status === 401) {
+      modeMessage.innerHTML = '<strong>Sign in required for the Full Simulation.</strong> <a href="/#authPanel">Sign in to your subscriber account</a>, then return to Test Prep.';
+    } else if (access.status === 403 && access.data?.upgradeRequired) {
+      modeMessage.innerHTML = '<strong>An active Tolux subscription is required for the Full Simulation.</strong> <a href="/#pricingSection">View membership options</a>.';
+    } else {
+      modeMessage.innerHTML = '<strong>Full Simulation access could not be verified.</strong> Please try again later. Your account was not changed.';
+    }
+
+    if (modeMessage) {
+      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   function enableFullButton() {
