@@ -17,6 +17,7 @@
   const nextButton = document.querySelector('#nextTestQuestion');
   const submitButton = document.querySelector('#submitTest');
   const scoreSummary = document.querySelector('#scoreSummary');
+  const saveStatus = document.querySelector('#testPrepSaveStatus');
   const categoryResults = document.querySelector('#categoryResults');
   const missedReview = document.querySelector('#missedReview');
   const retakeButton = document.querySelector('#retakeQuickCheck');
@@ -28,6 +29,7 @@
   let activeQuestions = [];
   let currentIndex = 0;
   let responses = new Map();
+  let startedAt = null;
 
   function shuffled(items) {
     const copy = [...items];
@@ -139,12 +141,29 @@
     return a.length === b.length && a.every((value, index) => value === b[index]);
   }
 
+  async function persistResult(percent, itemRecords) {
+    if (!saveStatus || !window.toluxTestPrepProgress) return;
+    saveStatus.textContent = 'Saving this Test Prep result…';
+    const outcome = await window.toluxTestPrepProgress.save({
+      modeId: 'full',
+      percent,
+      itemRecords,
+      startedAt
+    });
+    saveStatus.textContent = outcome.status === 'synced'
+      ? 'Saved to your Tolux progress dashboard.'
+      : outcome.status === 'queued'
+        ? 'Saved on this device. Tolux will retry account sync when you return.'
+        : 'Saved only on this device. Sign in before starting a future session to sync that result across devices.';
+  }
+
   function scoreFullTest() {
     if (!saveCurrentResponse()) return;
     let earned = 0;
     let possible = 0;
     const categoryTotals = new Map();
     const misses = [];
+    const itemRecords = [];
 
     for (const question of activeQuestions) {
       const selected = responses.get(question.id) || [];
@@ -158,6 +177,11 @@
       total.possible += question.points;
       if (correct) total.earned += question.points;
       if (!correct) misses.push({ question, selected });
+      itemRecords.push({
+        item_id: question.id,
+        first_attempt_correct: correct,
+        first_error_tag: correct ? null : question.teks
+      });
     }
 
     const percent = possible ? Math.round((earned / possible) * 100) : 0;
@@ -191,6 +215,7 @@
     results.hidden = false;
     progressBar.style.width = '100%';
     results.scrollIntoView({ behavior: 'smooth' });
+    void persistResult(percent, itemRecords);
   }
 
   function startFullTest() {
@@ -198,6 +223,8 @@
     activeQuestions = assembleFullTest();
     currentIndex = 0;
     responses = new Map();
+    startedAt = Date.now();
+    if (saveStatus) saveStatus.textContent = '';
     modeMessage.textContent = '';
     results.hidden = true;
     runner.hidden = false;
