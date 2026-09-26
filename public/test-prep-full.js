@@ -17,6 +17,7 @@
   const nextButton = document.querySelector('#nextTestQuestion');
   const submitButton = document.querySelector('#submitTest');
   const scoreSummary = document.querySelector('#scoreSummary');
+  const saveStatus = document.querySelector('#testPrepSaveStatus');
   const categoryResults = document.querySelector('#categoryResults');
   const missedReview = document.querySelector('#missedReview');
   const retakeButton = document.querySelector('#retakeQuickCheck');
@@ -28,6 +29,7 @@
   let activeQuestions = [];
   let currentIndex = 0;
   let responses = new Map();
+  let startedAt = null;
 
   function shuffled(items) {
     const copy = [...items];
@@ -75,15 +77,11 @@
     ));
   }
 
-  async function isSignedIn() {
-    try {
-      const client = getSupabaseClient();
-      if (!client) return false;
-      const { data } = await client.auth.getSession();
-      return Boolean(data?.session?.user);
-    } catch {
-      return false;
-    }
+  async function verifyFullSimulationAccess() {
+    const client = getSupabaseClient();
+    const verifier = window.toluxTestPrepAccess?.verifyFullSimulationAccess;
+    if (!verifier) return { status: 503, data: { allowed: false } };
+    return verifier({ client, fetchImpl: fetch });
   }
 
   function selectedAnswers() {
@@ -143,12 +141,29 @@
     return a.length === b.length && a.every((value, index) => value === b[index]);
   }
 
+  async function persistResult(percent, itemRecords) {
+    if (!saveStatus || !window.toluxTestPrepProgress) return;
+    saveStatus.textContent = 'Saving this Test Prep result…';
+    const outcome = await window.toluxTestPrepProgress.save({
+      modeId: 'full',
+      percent,
+      itemRecords,
+      startedAt
+    });
+    saveStatus.textContent = outcome.status === 'synced'
+      ? 'Saved to your Tolux progress dashboard.'
+      : outcome.status === 'queued'
+        ? 'Saved on this device. Tolux will retry account sync when you return.'
+        : 'Saved only on this device. Sign in before starting a future session to sync that result across devices.';
+  }
+
   function scoreFullTest() {
     if (!saveCurrentResponse()) return;
     let earned = 0;
     let possible = 0;
     const categoryTotals = new Map();
     const misses = [];
+    const itemRecords = [];
 
     for (const question of activeQuestions) {
       const selected = responses.get(question.id) || [];
@@ -162,6 +177,11 @@
       total.possible += question.points;
       if (correct) total.earned += question.points;
       if (!correct) misses.push({ question, selected });
+      itemRecords.push({
+        item_id: question.id,
+        first_attempt_correct: correct,
+        first_error_tag: correct ? null : question.teks
+      });
     }
 
     const percent = possible ? Math.round((earned / possible) * 100) : 0;
@@ -195,6 +215,7 @@
     results.hidden = false;
     progressBar.style.width = '100%';
     results.scrollIntoView({ behavior: 'smooth' });
+    void persistResult(percent, itemRecords);
   }
 
   function startFullTest() {
@@ -202,6 +223,8 @@
     activeQuestions = assembleFullTest();
     currentIndex = 0;
     responses = new Map();
+    startedAt = Date.now();
+    if (saveStatus) saveStatus.textContent = '';
     modeMessage.textContent = '';
     results.hidden = true;
     runner.hidden = false;
@@ -210,12 +233,37 @@
   }
 
   async function handleFullStart() {
-    if (!(await isSignedIn())) {
-      modeMessage.innerHTML = '<strong>Free account required for the Full Simulation.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
-      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const button = modeWrap?.querySelector('[data-test-prep-mode="full"]');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Checking access…';
+    }
+
+    let access;
+    try {
+      access = await verifyFullSimulationAccess();
+    } catch {
+      access = { status: 503, data: { allowed: false } };
+    }
+
+    if (access.status === 200 && access.data?.allowed === true && access.data?.isSubscriber === true) {
+      enableFullButton();
+      startFullTest();
       return;
     }
-    startFullTest();
+
+    enableFullButton();
+    if (access.status === 401) {
+      modeMessage.innerHTML = '<strong>Sign in required for the Full Simulation.</strong> <a href="/#authPanel">Sign in to your subscriber account</a>, then return to Test Prep.';
+    } else if (access.status === 403 && access.data?.upgradeRequired) {
+      modeMessage.innerHTML = '<strong>An active Tolux subscription is required for the Full Simulation.</strong> <a href="/#pricingSection">View membership options</a>.';
+    } else {
+      modeMessage.innerHTML = '<strong>Full Simulation access could not be verified.</strong> Please try again later. Your account was not changed.';
+    }
+
+    if (modeMessage) {
+      modeMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   function enableFullButton() {
