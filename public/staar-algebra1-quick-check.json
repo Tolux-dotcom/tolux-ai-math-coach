@@ -59,7 +59,7 @@
       "points": 1,
       "type": "multiple_choice",
       "prompt": "Solve 4(2x - 3) + 5 = 3x + 18.",
-      "choices": ["x = 1", "x = 5", "x = 7", "x = 25/5"],
+      "choices": ["x = 1", "x = 5", "x = 7", "x = 25/4"],
       "answer": [1],
       "rationale": "8x - 12 + 5 = 3x + 18, so 5x = 25 and x = 5."
     },
