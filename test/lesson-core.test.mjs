@@ -16,6 +16,9 @@ test("normalizes common student answer notation", () => {
   assert.equal(normalizeAnswer("4√(3)"), "4√3");
   assert.equal(normalizeAnswer("4sqrt(3)"), "4√3");
   assert.equal(normalizeAnswer("4sqrt3"), "4√3");
+  assert.equal(normalizeAnswer("-2 cbrt(8)"), "-2∛8");
+  assert.equal(normalizeAnswer("3cbrt8"), "3∛8");
+  assert.equal(normalizeAnswer("description"), "description");
 });
 
 test("accepts equivalent equation, fraction, unit, radical, and special-case answers", () => {
@@ -25,6 +28,7 @@ test("accepts equivalent equation, fraction, unit, radical, and special-case ans
   assert.equal(answersEquivalent("6", { answer_key: "6 GB" }), true);
   assert.equal(answersEquivalent("4√(3)", { answer_key: "4√3" }), true);
   assert.equal(answersEquivalent("4sqrt(3)", { answer_key: "4√3" }), true);
+  assert.equal(answersEquivalent("3cbrt(8)", { answer_key: "3∛8" }), true);
   assert.equal(
     answersEquivalent("all real numbers", {
       answer_key: "Infinitely many solutions"

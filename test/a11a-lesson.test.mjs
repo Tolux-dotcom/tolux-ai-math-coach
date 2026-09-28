@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import {
   answersEquivalent,
+  explanationSatisfies,
   selectStageItems,
   validateLessonModule
 } from "../public/lesson-core.mjs";
@@ -71,5 +72,34 @@ test("A.11A mastery includes an explanation item about the coefficient error", (
   const item = module.items.find(candidate => candidate.id === "A11A-M04");
   assert.equal(item.answer_key, "no");
   assert.ok(item.explanation_prompt);
-  assert.ok(item.explanation_keywords.length >= 3);
+  assert.ok(item.required_explanation_keyword_groups.length >= 1);
+  assert.ok(item.explanation_keywords.length >= 2);
+});
+
+test("A.11A accepts equivalent complete explanations for the coefficient error", () => {
+  const item = module.items.find(candidate => candidate.id === "A11A-M04");
+  const validExplanations = [
+    "18 = 9 × 2, and √9 = 3, so √18 = 3√2.",
+    "The square root of 9 is 3, so the square root of 18 is 3 times the square root of 2.",
+    "Nine comes out of the radical as three; the simplified result is three root two.",
+    "Use the perfect-square factor: 18 is 9 times 2, giving 3sqrt(2)."
+  ];
+
+  for (const explanation of validExplanations) {
+    assert.equal(explanationSatisfies(explanation, item), true, explanation);
+  }
+});
+
+test("A.11A rejects explanations missing the correct form or supporting reasoning", () => {
+  const item = module.items.find(candidate => candidate.id === "A11A-M04");
+  const incompleteExplanations = [
+    "The student is wrong because 9 is a perfect square.",
+    "It should be 3√2.",
+    "No, I guessed.",
+    "√18 = 9√2 because 18 is 9 times 2."
+  ];
+
+  for (const explanation of incompleteExplanations) {
+    assert.equal(explanationSatisfies(explanation, item), false, explanation);
+  }
 });
