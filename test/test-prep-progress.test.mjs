@@ -119,18 +119,19 @@ test('keeps signed-out Quick Check progress local without attributing it to a la
   assert.equal(api.readPending('student-1', storage).length, 0);
 });
 
-test('loads persistence before either assessment runner and exposes save status', () => {
+test('loads persistence before the unified assessment runner and exposes save status', () => {
   const html = fs.readFileSync(
     new URL('../public/test-prep.html', import.meta.url),
     'utf8'
   );
   const sharedIndex = html.indexOf('/assessment-progress.js');
-  const quickIndex = html.indexOf('/test-prep.js');
-  const fullIndex = html.indexOf('/test-prep-full.js');
+  const accessIndex = html.indexOf('/subscriber-access-client.js');
+  const runnerIndex = html.indexOf('/test-prep.js');
 
   assert.ok(sharedIndex > 0);
-  assert.ok(sharedIndex < quickIndex);
-  assert.ok(sharedIndex < fullIndex);
+  assert.ok(sharedIndex < runnerIndex);
+  assert.ok(accessIndex < runnerIndex);
+  assert.doesNotMatch(html, /test-prep-full\.js/);
   assert.match(html, /id="testPrepSaveStatus"/);
 });
 

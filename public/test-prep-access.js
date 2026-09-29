@@ -26,8 +26,8 @@
   function renderAccessState() {
     if (accessNote) {
       accessNote.innerHTML = signedIn
-        ? '<strong>You are signed in.</strong> Quick Check and the 25-question Half Test are available, with detailed remediation after submission.'
-        : '<strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score immediately. The 25-question Half Test requires a free Tolux account.';
+        ? '<strong>You are signed in.</strong> Quick Check and the 25-question Half Test are available. The 50-question Full Simulation also requires an active subscription.'
+        : '<strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score immediately. The 25-question Half Test requires a free Tolux account, and the 50-question Full Simulation requires an active subscription.';
     }
 
     if (!resultGate) return;

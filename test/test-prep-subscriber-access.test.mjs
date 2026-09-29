@@ -5,8 +5,8 @@ import vm from "node:vm";
 import { resolveFullSimulationAccess } from "../test-prep-access.mjs";
 
 const serverSource = fs.readFileSync(new URL("../server.mjs", import.meta.url), "utf8");
-const fullRunnerSource = fs.readFileSync(
-  new URL("../public/test-prep-full.js", import.meta.url),
+const testPrepRunnerSource = fs.readFileSync(
+  new URL("../public/test-prep.js", import.meta.url),
   "utf8"
 );
 const accessClientSource = fs.readFileSync(
@@ -225,14 +225,16 @@ test("server verifies the browser token and database entitlement", () => {
 
 test("Full Simulation starts only after the server confirms subscription access", () => {
   const helperIndex = testPrepHtml.indexOf('/subscriber-access-client.js');
-  const runnerIndex = testPrepHtml.indexOf('/test-prep-full.js');
+  const runnerIndex = testPrepHtml.indexOf('/test-prep.js');
   assert.ok(helperIndex >= 0, "access client must be loaded");
-  assert.ok(runnerIndex > helperIndex, "access client must load before the Full runner");
-  assert.match(fullRunnerSource, /window\.toluxTestPrepAccess\?\.verifyFullSimulationAccess/);
+  assert.ok(runnerIndex > helperIndex, "access client must load before the unified runner");
+  assert.match(testPrepHtml, /type="module" src="\/test-prep\.js"/);
+  assert.doesNotMatch(testPrepHtml, /test-prep-full\.js/);
+  assert.match(testPrepRunnerSource, /window\.toluxTestPrepAccess\?\.verifyFullSimulationAccess/);
   assert.match(
-    fullRunnerSource,
+    testPrepRunnerSource,
     /access\.data\?\.allowed === true && access\.data\?\.isSubscriber === true/
   );
-  assert.match(fullRunnerSource, /href="\/#pricingSection"/);
-  assert.doesNotMatch(fullRunnerSource, /Free account required for the Full Simulation/);
+  assert.match(testPrepRunnerSource, /href="\/#pricingSection"/);
+  assert.doesNotMatch(testPrepRunnerSource, /Free account required for the Full Simulation/);
 });
