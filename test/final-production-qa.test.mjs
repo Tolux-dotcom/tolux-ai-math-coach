@@ -9,9 +9,8 @@ const index = read('public/index.html');
 const robots = read('public/robots.txt');
 
 test('browser and server validate sessions against the same Supabase project', () => {
-  const projectUrl = 'https://xnadszfvjkyxltskywin.supabase.co';
-  assert.match(app, new RegExp(projectUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.match(server, new RegExp(projectUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(app, /window\.TOLUX_PUBLIC_CONFIG\.url/);
+  assert.match(server, /resolvePublicAuthConfig\(process\.env\)/);
   assert.match(server, /const supabaseAuth = createClient\(/);
   assert.match(server, /supabaseAuth\.auth\.getUser\(token\)/);
   assert.doesNotMatch(server, /supabaseAdmin\.auth\.getUser\(token\)/);

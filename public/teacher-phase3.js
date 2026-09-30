@@ -1,8 +1,8 @@
 (() => {
   if (!window.supabase) return;
 
-  const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
-  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+  const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
+  const SUPABASE_PUBLISHABLE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
   const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
   const $ = selector => document.querySelector(selector);
 

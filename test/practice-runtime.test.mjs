@@ -1,3 +1,4 @@
+import { DEFAULT_AUTH_CONFIG } from '../public-auth-config.mjs';
 import test from "node:test";
 import assert from "node:assert/strict";
 
@@ -117,6 +118,7 @@ test("practice runtime counts each question once and persists a complete review"
   Math.random = () => 0.42;
 
   const window = {
+    TOLUX_PUBLIC_CONFIG: DEFAULT_AUTH_CONFIG,
     location: {
       search: "?skill=A.5B&difficulty=mixed&count=5"
     },

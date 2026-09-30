@@ -5,8 +5,8 @@ import {
   scoreSession
 } from './test-prep-core.mjs';
 
-const SUPABASE_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
+const SUPABASE_PUBLISHABLE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
 
 const modeWrap = document.querySelector('#testPrepModes');
 const modeMessage = document.querySelector('#testPrepModeMessage');

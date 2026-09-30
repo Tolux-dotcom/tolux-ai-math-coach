@@ -33,10 +33,7 @@ test("checkout uses authenticated server-controlled Tolux plans", () => {
 });
 
 test("server verifies browser tokens against the browser Supabase project", () => {
-  assert.match(
-    server,
-    /const SUPABASE_AUTH_URL = "https:\/\/xnadszfvjkyxltskywin\.supabase\.co"/
-  );
+  assert.match(server, /resolvePublicAuthConfig\(process\.env\)/);
   assert.match(server, /const supabaseAuth = createClient\(/);
   assert.match(server, /supabaseAuth\.auth\.getUser\(token\)/);
   assert.doesNotMatch(server, /supabaseAdmin\.auth\.getUser\(token\)/);

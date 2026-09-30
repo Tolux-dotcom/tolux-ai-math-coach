@@ -17,9 +17,9 @@ function displayText(value) {
   return escapeHtml(formatMathNotation(value));
 }
 
-const SUPABASE_URL = "https://xnadszfvjkyxltskywin.supabase.co";
+const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
 const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+  window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
 const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 

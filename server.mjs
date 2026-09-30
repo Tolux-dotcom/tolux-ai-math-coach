@@ -1,3 +1,4 @@
+import { resolvePublicAuthConfig, publicAuthConfigScript } from "./public-auth-config.mjs";
 import "./growth-server-hooks.mjs";
 import http from "node:http";
 import fs from "node:fs";
@@ -36,9 +37,7 @@ const internalQa = createInternalQaController();
 // Authentication must be verified by the same Supabase project used by the
 // browser clients in public/app.js and public/lesson.js. Database access still
 // uses the server-only service key below.
-const SUPABASE_AUTH_URL = "https://xnadszfvjkyxltskywin.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const { url: SUPABASE_AUTH_URL, publishableKey: SUPABASE_PUBLISHABLE_KEY } = resolvePublicAuthConfig(process.env);
 const supabaseAuth = createClient(
   SUPABASE_AUTH_URL,
   SUPABASE_PUBLISHABLE_KEY,
@@ -356,6 +355,10 @@ if (rel === "/") rel = "/index.html";
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.method === "GET" && req.url === "/public-auth-config.js") {
+    res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-store" });
+    return res.end(publicAuthConfigScript({ url: SUPABASE_AUTH_URL, publishableKey: SUPABASE_PUBLISHABLE_KEY }));
+  }
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "Access-Control-Allow-Origin": "*",

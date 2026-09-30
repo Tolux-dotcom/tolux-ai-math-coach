@@ -1,10 +1,10 @@
+import { resolvePublicAuthConfig } from "./public-auth-config.mjs";
 import http from 'node:http';
 import { createClient } from '@supabase/supabase-js';
 import { getGrowthMetrics, recordGrowthEvent } from './growth-analytics.mjs';
 import { createInternalQaController } from './internal-qa.mjs';
 
-const SUPABASE_AUTH_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+const { url: SUPABASE_AUTH_URL, publishableKey: SUPABASE_PUBLISHABLE_KEY } = resolvePublicAuthConfig(process.env);
 const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 const serverUrl = process.env.SUPABASE_URL || SUPABASE_AUTH_URL;
 const authClient = createClient(SUPABASE_AUTH_URL, SUPABASE_PUBLISHABLE_KEY, {

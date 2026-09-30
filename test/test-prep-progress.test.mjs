@@ -1,3 +1,4 @@
+import { DEFAULT_AUTH_CONFIG } from '../public-auth-config.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -40,6 +41,7 @@ function fixture({ session = null, responses = [], storageData = new Map() } = {
     return { ok: status >= 200 && status < 300, status };
   };
   const window = {
+    TOLUX_PUBLIC_CONFIG: DEFAULT_AUTH_CONFIG,
     localStorage: storage,
     fetch,
     crypto: {
