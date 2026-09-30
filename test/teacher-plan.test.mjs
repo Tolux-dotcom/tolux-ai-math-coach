@@ -8,7 +8,7 @@ const migration = fs.readFileSync(new URL("../supabase/migrations/202609080001_c
 
 test("teacher plan exposes free classroom assignment workflow", () => {
   assert.match(html, /FREE TEACHER PLAN/);
-  assert.match(html, /Create student launch link/);
+  assert.match(html, /Create student assignment link/);
   assert.match(js, /teacher_classrooms/);
   assert.match(js, /teacher_assignments/);
   assert.match(js, /practice\.html/);

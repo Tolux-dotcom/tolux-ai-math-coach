@@ -56,7 +56,7 @@ test('Batch 9 help reveals answers and allows students to continue after review'
   const help=read('batch9-help.js');
   assert.match(help,/Final answer:/);
   assert.match(help,/Review Solution & Continue/);
-  assert.match(help,/hint\s*3/i);
+  assert.ok(help.includes(String.raw`third=/hint\s*3/i`), 'third-hint detection must match Hint 3');
   assert.match(help,/another way/i);
 });
 

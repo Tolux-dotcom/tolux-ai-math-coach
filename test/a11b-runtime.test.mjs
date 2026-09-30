@@ -30,7 +30,7 @@ test("A.11B lesson loads a visual exponent-law decision map", () => {
 });
 
 test("A.11B Practice Mode routes to the dedicated structured runtime", () => {
-  assert.match(practiceHtml, /skill === "A\.11B"/);
+  assert.match(practiceHtml, /skill\s*===\s*"A\.11B"/);
   assert.match(practiceHtml, /a11b-practice\.js/);
   assert.match(practiceRuntime, /\/a11b-laws-of-exponents\.json/);
   assert.match(practiceRuntime, /\[5, 10, 20\]/);
