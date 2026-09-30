@@ -42,8 +42,8 @@
     {
       "id": "qc4",
       "reporting_category": 2,
-      "teks": "A.2A",
-      "module_id": "alg1-a2a-linear-domain-range",
+      "teks": "A.2C",
+      "module_id": "alg1-a2c-equations-from-representations",
       "points": 1,
       "type": "multiple_choice",
       "prompt": "The table shows x-values -2, 0, 3 and corresponding y-values 7, 3, -3. Which equation represents the relationship?",
@@ -70,10 +70,10 @@
       "module_id": "alg1-a2h-write-linear-inequalities",
       "points": 2,
       "type": "multi_select",
-      "prompt": "A school club can spend at most $180 on shirts. There is a $24 setup fee and each shirt costs $12. Select TWO statements that correctly model or interpret the situation.",
-      "choices": ["12s + 24 ≤ 180", "12s + 24 ≥ 180", "s ≤ 13", "s ≥ 13", "s ≤ 17"],
-      "answer": [0, 2],
-      "rationale": "At most means ≤. Solving 12s + 24 ≤ 180 gives 12s ≤ 156, so s ≤ 13."
+      "prompt": "A school club can spend at most $180 on standard shirts x that cost $12 each and premium shirts y that cost $18 each. Select TWO inequalities that correctly model the situation.",
+      "choices": ["12x + 18y ≤ 180", "2x + 3y ≤ 30", "12x + 18y ≥ 180", "18x + 12y ≤ 180", "2x + 3y ≥ 30"],
+      "answer": [0, 1],
+      "rationale": "At most means the total cost cannot exceed $180, so 12x + 18y ≤ 180. Dividing every term by 6 gives the equivalent inequality 2x + 3y ≤ 30."
     },
     {
       "id": "qc7",
