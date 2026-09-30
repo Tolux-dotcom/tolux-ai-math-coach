@@ -1,3 +1,4 @@
+import { resolveCheckoutReturnConfig } from "./checkout-return-config.mjs";
 import { resolvePublicAuthConfig, publicAuthConfigScript } from "./public-auth-config.mjs";
 import "./growth-server-hooks.mjs";
 import http from "node:http";
@@ -682,6 +683,11 @@ if (event.type === "invoice.payment_failed") {
       return send(res, 400, { error: "Please choose a valid Tolux plan." });
     }
 
+    const checkoutReturnConfig = resolveCheckoutReturnConfig(process.env);
+    if (!checkoutReturnConfig.ready) {
+      return send(res, 503, { error: "Checkout is not ready for this environment. Please contact Tolux support." });
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
@@ -697,8 +703,8 @@ if (event.type === "invoice.payment_failed") {
           tolux_plan: plan
         }
       },
-      success_url: "https://mathcoach.tolux.org/?payment=success&session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "https://mathcoach.tolux.org/?payment=cancelled"
+      success_url: checkoutReturnConfig.successUrl,
+      cancel_url: checkoutReturnConfig.cancelUrl
     });
 
     return send(res, 200, { url: session.url });
