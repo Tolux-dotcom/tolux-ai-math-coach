@@ -13,6 +13,7 @@ import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
 import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
+  isCheckoutEntitlementEventType,
   reconcilePaidCheckoutEntitlement,
   reconcileSubscriptionEntitlement
 } from "./subscription-entitlement.mjs";
@@ -585,7 +586,10 @@ try {
     );
   }
 }
-    if (event.type === "checkout.session.completed") {
+    // A subscription Checkout can confirm payment immediately or later. Both
+    // successful paths must reconcile entitlement through the same fail-closed
+    // verifier so asynchronous payment customers are not left locked out.
+    if (isCheckoutEntitlementEventType(event.type)) {
       const session = event.data.object;
       const userId = session.client_reference_id;
       const reconciliation = await reconcilePaidCheckoutEntitlement({
