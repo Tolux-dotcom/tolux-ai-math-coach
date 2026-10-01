@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  isCheckoutEntitlementEventType,
   isPaidSubscriptionCheckoutForUser,
   reconcilePaidCheckoutEntitlement,
   reconcileSubscriptionEntitlement,
@@ -21,6 +22,28 @@ function paidSession(overrides = {}) {
     ...overrides
   };
 }
+
+test("reconciles both immediate and asynchronous successful Checkout events", () => {
+  assert.equal(
+    isCheckoutEntitlementEventType("checkout.session.completed"),
+    true
+  );
+  assert.equal(
+    isCheckoutEntitlementEventType(
+      "checkout.session.async_payment_succeeded"
+    ),
+    true
+  );
+
+  for (const eventType of [
+    "checkout.session.async_payment_failed",
+    "checkout.session.expired",
+    "customer.subscription.updated",
+    undefined
+  ]) {
+    assert.equal(isCheckoutEntitlementEventType(eventType), false);
+  }
+});
 
 test("recognizes only a paid subscription checkout owned by the authenticated user", () => {
   assert.equal(isPaidSubscriptionCheckoutForUser(paidSession(), USER_ID), true);
