@@ -1,3 +1,4 @@
+import { DEFAULT_AUTH_CONFIG } from '../public-auth-config.mjs';
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -147,6 +148,7 @@ async function createHarness(name, {
     }
   };
   const window = {
+    TOLUX_PUBLIC_CONFIG: DEFAULT_AUTH_CONFIG,
     location: {
       search: `?module=alg1-a5a-linear-equations&start=${start}`
     },

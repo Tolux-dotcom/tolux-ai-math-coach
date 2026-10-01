@@ -29,8 +29,8 @@ const els = {
   live: $('#practiceLiveScore')
 };
 
-const SUPABASE_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
+const SUPABASE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const sb = window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 const LESSON_PROGRESS_PREFIX = 'toluxLessonProgress:';
 const PENDING_PROGRESS_PREFIX = 'toluxPendingLessonProgress:';

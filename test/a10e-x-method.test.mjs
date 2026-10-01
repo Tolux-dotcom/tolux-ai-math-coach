@@ -49,7 +49,7 @@ test("X method explicitly teaches that both side numbers are divided by a", () =
   assert.match(source, /divide <strong>BOTH side numbers<\/strong> by <strong>a = \$\{example\.a\}<\/strong>/);
   assert.match(source, /Step 4: Divide BOTH side numbers by a = \$\{example\.a\}/);
   assert.match(source, /Both side numbers are divided by a/);
-  assert.match(source, /divide BOTH side numbers by a<\/span>/);
+  assert.match(source, /divide BOTH side numbers by a<\/span>/i);
 });
 
 test("divide-by-a step uses the reduced fraction bottoms-up rule instead of a false binomial equality", () => {

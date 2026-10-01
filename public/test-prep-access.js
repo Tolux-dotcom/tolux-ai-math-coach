@@ -1,6 +1,6 @@
 (() => {
-  const SUPABASE_URL = 'https://xnadszfvjkyxltskywin.supabase.co';
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+  const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
+  const SUPABASE_PUBLISHABLE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
 
   const accessNote = document.querySelector('#testPrepAccessNote');
   const resultGate = document.querySelector('#testPrepResultGate');
@@ -26,8 +26,8 @@
   function renderAccessState() {
     if (accessNote) {
       accessNote.innerHTML = signedIn
-        ? '<strong>You are signed in.</strong> Quick Check and the 25-question Half Test are available, with detailed remediation after submission.'
-        : '<strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score immediately. The 25-question Half Test requires a free Tolux account.';
+        ? '<strong>You are signed in.</strong> Quick Check and the 25-question Half Test are available. The 50-question Full Simulation also requires an active subscription.'
+        : '<strong>No sign-in required for Quick Check.</strong> Take all 10 questions and see your score immediately. The 25-question Half Test requires a free Tolux account, and the 50-question Full Simulation requires an active subscription.';
     }
 
     if (!resultGate) return;

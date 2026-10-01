@@ -1,7 +1,7 @@
 import { answersEquivalent, escapeHtml, formatMathNotation } from './lesson-core.mjs';
 
-const SUPABASE_URL='https://xnadszfvjkyxltskywin.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY='sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+const SUPABASE_URL=window.TOLUX_PUBLIC_CONFIG.url;
+const SUPABASE_PUBLISHABLE_KEY=window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const supabaseClient=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;
 const els={title:document.querySelector('#practiceTitle'),meta:document.querySelector('#practiceMeta'),progressLabel:document.querySelector('#practiceProgressLabel'),progressBar:document.querySelector('#practiceProgressBar'),questionView:document.querySelector('#practiceQuestionView'),number:document.querySelector('#practiceQuestionNumber'),difficulty:document.querySelector('#practiceDifficulty'),prompt:document.querySelector('#practicePrompt'),answer:document.querySelector('#practiceAnswer'),check:document.querySelector('#checkPracticeAnswer'),stuck:document.querySelector('#practiceStuckBtn'),explain:document.querySelector('#practiceExplainBtn'),feedback:document.querySelector('#practiceFeedback'),next:document.querySelector('#nextPracticeQuestion'),summary:document.querySelector('#practiceSummary'),skill:document.querySelector('#practiceSkill'),sessionDifficulty:document.querySelector('#practiceSessionDifficulty'),sessionCount:document.querySelector('#practiceSessionCount'),liveScore:document.querySelector('#practiceLiveScore')};
 let moduleData=null,session=null,index=0,locked=false,isSubscriber=false; const records=new Map(),counted=new Set(),startedAt=Date.now();

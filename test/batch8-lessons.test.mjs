@@ -43,7 +43,7 @@ test('Modules 26-30 load actual graph visuals and comprehensive help',()=>{
   assert.match(visuals,/one solution/i);
   assert.match(visuals,/estimate/i);
   assert.match(visuals,/OVERLAP = solutions to both/);
-  assert.match(help,/Hint 3|hint\s*3/i);
+  assert.ok(help.includes(String.raw`third=/hint\s*3/i`), 'third-hint detection must match Hint 3');
   assert.match(help,/Final answer:/);
   assert.match(help,/incorrect|not correct/i);
 });

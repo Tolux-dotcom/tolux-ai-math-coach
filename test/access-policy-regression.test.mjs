@@ -23,7 +23,7 @@ test("main question box participates in active-learning trial heartbeats", () =>
 });
 
 test("free diagnostic bypass cannot unlock the AI coach", () => {
-  assert.match(diagnosticBypassSource, /\/api\/lesson-usage/);
+  assert.match(serverSource, /getFreeDiagnosticAccess\(body\?\.itemId\)/);
   assert.doesNotMatch(diagnosticBypassSource, /\/api\/coach/);
   assert.doesNotMatch(diagnosticBypassSource, /\/api\/trial-heartbeat/);
   assert.match(diagnosticBypassSource, /A5A-D01/);

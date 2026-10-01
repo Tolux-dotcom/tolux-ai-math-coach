@@ -6,7 +6,7 @@ const SUPPORTED=new Set(['A.6A','A.6B','A.6C','A.7A','A.7B','A.7C','A.8A','A.8B'
 if(!SUPPORTED.has(skill))throw new Error('Unsupported audited structured practice skill.');
 const $=s=>document.querySelector(s);
 const els={title:$('#practiceTitle'),meta:$('#practiceMeta'),progressLabel:$('#practiceProgressLabel'),progressBar:$('#practiceProgressBar'),view:$('#practiceQuestionView'),number:$('#practiceQuestionNumber'),difficulty:$('#practiceDifficulty'),prompt:$('#practicePrompt'),answer:$('#practiceAnswer'),check:$('#checkPracticeAnswer'),stuck:$('#practiceStuckBtn'),explain:$('#practiceExplainBtn'),feedback:$('#practiceFeedback'),next:$('#nextPracticeQuestion'),summary:$('#practiceSummary'),skill:$('#practiceSkill'),sessionDifficulty:$('#practiceSessionDifficulty'),sessionCount:$('#practiceSessionCount'),live:$('#practiceLiveScore')};
-const SUPABASE_URL='https://xnadszfvjkyxltskywin.supabase.co';const SUPABASE_KEY='sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN';
+const SUPABASE_URL=window.TOLUX_PUBLIC_CONFIG.url;const SUPABASE_KEY=window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const sb=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 let session=null,index=0,locked=false,isSubscriber=false,heartbeatTimer=null;const records=new Map(),counted=new Set(),startedAt=Date.now();
 const current=()=>session?.items?.[index]||null;

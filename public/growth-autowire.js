@@ -6,8 +6,8 @@
     try {
       const client = window.supabase?.createClient
         ? window.__toluxGrowthSupabase || (window.__toluxGrowthSupabase = window.supabase.createClient(
-            'https://xnadszfvjkyxltskywin.supabase.co',
-            'sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN'
+            window.TOLUX_PUBLIC_CONFIG.url,
+            window.TOLUX_PUBLIC_CONFIG.publishableKey
           ))
         : null;
       if (!client) return null;

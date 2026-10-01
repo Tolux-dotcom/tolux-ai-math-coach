@@ -31,7 +31,7 @@ test("A.11A is available to the lesson router", () => {
 });
 
 test("A.11A practice uses its dedicated verified runtime", () => {
-  assert.match(practiceHtml, /skill === "A\.11A"/);
+  assert.match(practiceHtml, /skill\s*===\s*"A\.11A"/);
   assert.match(practiceHtml, /import\("\/a11a-practice\.js"\)/);
   assert.match(practiceRuntime, /\/a11a-radical-expressions\.json/);
   assert.match(practiceRuntime, /\[5, 10, 20\]/);

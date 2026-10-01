@@ -54,7 +54,7 @@ test("all seven process standards are embedded across the course", () => {
   );
 });
 
-test("all completed structured lessons route to lesson and practice modes", () => {
+test("all available structured lessons route to lesson and practice modes", () => {
   const a5a = findCourseModule(catalog, "alg1-a5a-linear-equations");
   assert.equal(a5a.lesson_path, "/a5a-linear-equations.json");
   assert.deepEqual(a5a.available_modes, ["lesson", "practice"]);
@@ -72,8 +72,12 @@ test("all completed structured lessons route to lesson and practice modes", () =
   assert.deepEqual(
     practiceModules(catalog).map(module => module.teks[0]),
     [
-      "A.11A",
+      "A.11A", "A.11B",
       "A.10A", "A.10B", "A.10C", "A.10D", "A.10E", "A.10F",
+      "A.12A", "A.12B", "A.12C", "A.12D", "A.12E",
+      "A.2A", "A.2B", "A.2C", "A.2D", "A.2E", "A.2F", "A.2G", "A.2H", "A.2I",
+      "A.3A", "A.3B", "A.3C", "A.3D", "A.3E", "A.3F", "A.3G", "A.3H",
+      "A.4A", "A.4B", "A.4C",
       "A.5A", "A.5B", "A.5C",
       "A.6A", "A.6B", "A.6C",
       "A.7A", "A.7B", "A.7C",

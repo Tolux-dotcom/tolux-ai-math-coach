@@ -23,7 +23,7 @@ test("A.12A practice keeps help readily available", () => {
 
 test("A.12A has dedicated 5, 10, and 20 question Practice Mode routing", () => {
   assert.match(practice, /\[5,10,20\]/);
-  assert.match(practiceHtml, /skill === "A\.12A"/);
+  assert.match(practiceHtml, /skill\s*===\s*"A\.12A"/);
   assert.match(practiceHtml, /a12a-practice\.js/);
 });
 

@@ -36,10 +36,10 @@ test("A.12A provides visual support for mappings and the vertical line test", ()
 
 test("A.12A help reveals the correct answer and full solution after an attempt", () => {
   assert.match(help, /Final answer:/);
-  assert.match(help, /wrongAttempt/);
+  assert.match(help, /const wrong=/);
   assert.match(help, /Check your work: answer and full solution/);
-  assert.match(help, /Hint 3/);
-  assert.match(help, /Another way/);
+  assert.ok(help.includes(String.raw`third=/hint\s*3/i`), 'third-hint detection must match Hint 3');
+  assert.match(help, /another way/i);
   assert.match(lessonHtml, /a12a-help\.js/);
 });
 

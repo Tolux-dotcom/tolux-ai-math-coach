@@ -1,3 +1,6 @@
+import { resolveCheckoutReturnConfig } from "./checkout-return-config.mjs";
+import { resolvePublicAuthConfig, publicAuthConfigScript } from "./public-auth-config.mjs";
+import "./growth-server-hooks.mjs";
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
@@ -6,7 +9,14 @@ import OpenAI from "openai";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
+import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
+import {
+  isCheckoutEntitlementEventType,
+  reconcilePaidCheckoutEntitlement,
+  reconcileSubscriptionEntitlement
+} from "./subscription-entitlement.mjs";
 import {
   buildLessonProgressRow,
   dedupeLessonProgressActivities,
@@ -29,9 +39,7 @@ const internalQa = createInternalQaController();
 // Authentication must be verified by the same Supabase project used by the
 // browser clients in public/app.js and public/lesson.js. Database access still
 // uses the server-only service key below.
-const SUPABASE_AUTH_URL = "https://xnadszfvjkyxltskywin.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_fDz2NjorGqEX4FVRPcrlIA_-xdX0KpN";
+const { url: SUPABASE_AUTH_URL, publishableKey: SUPABASE_PUBLISHABLE_KEY } = resolvePublicAuthConfig(process.env);
 const supabaseAuth = createClient(
   SUPABASE_AUTH_URL,
   SUPABASE_PUBLISHABLE_KEY,
@@ -47,10 +55,15 @@ const supabaseAuth = createClient(
 const supabaseServerKey =
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
 const supabaseServerUrl = process.env.SUPABASE_URL || SUPABASE_AUTH_URL;
+const supabaseServerConfig = resolveSupabaseServerConfig({
+  authUrl: SUPABASE_AUTH_URL,
+  configuredUrl: supabaseServerUrl,
+  hasServerKey: Boolean(supabaseServerKey)
+});
 const supabaseAdmin =
-  supabaseServerKey
+  supabaseServerConfig.ready
     ? createClient(
-        supabaseServerUrl,
+        supabaseServerConfig.clientUrl,
         supabaseServerKey,
         {
           auth: {
@@ -61,15 +74,20 @@ const supabaseAdmin =
       )
     : null;
 
-if (!supabaseAdmin) {
+if (supabaseServerConfig.reason === "missing-server-key") {
   console.error("[auth] Supabase server client is not configured", {
     hasUrl: Boolean(process.env.SUPABASE_URL),
     hasServerKey: Boolean(supabaseServerKey)
   });
-} else if (supabaseServerUrl !== SUPABASE_AUTH_URL) {
-  console.error("[auth] Supabase project mismatch", {
-    expectedProject: new URL(SUPABASE_AUTH_URL).hostname,
-    configuredProject: new URL(supabaseServerUrl).hostname
+} else if (!supabaseServerConfig.ready) {
+  console.error("[auth] Supabase project mismatch; privileged access disabled", {
+    reason: supabaseServerConfig.reason,
+    expectedProject: supabaseServerConfig.authProjectUrl
+      ? new URL(supabaseServerConfig.authProjectUrl).hostname
+      : null,
+    configuredProject: supabaseServerConfig.serverProjectUrl
+      ? new URL(supabaseServerConfig.serverProjectUrl).hostname
+      : null
   });
 }
 
@@ -339,6 +357,10 @@ if (rel === "/") rel = "/index.html";
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.method === "GET" && req.url === "/public-auth-config.js") {
+    res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-store" });
+    return res.end(publicAuthConfigScript({ url: SUPABASE_AUTH_URL, publishableKey: SUPABASE_PUBLISHABLE_KEY }));
+  }
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "Access-Control-Allow-Origin": "*",
@@ -474,10 +496,44 @@ const server = http.createServer(async (req, res) => {
       });
     }
   }
-if (req.method === "POST" && req.url === "/api/stripe-webhook") {
+  if (req.method === "GET" && req.url === "/api/test-prep/full-access") {
+    try {
+      const user = await getAuthenticatedUser(req);
+
+      if (!user) {
+        const decision = resolveFullSimulationAccess();
+        return send(res, decision.status, decision.body);
+      }
+
+      if (!supabaseAdmin) {
+        const decision = resolveFullSimulationAccess({ authenticated: true });
+        return send(res, decision.status, decision.body);
+      }
+
+      const usage = await getStudentUsage(user.id);
+      const decision = resolveFullSimulationAccess({
+        authenticated: true,
+        entitlementAvailable: Boolean(usage),
+        isSubscriber: Boolean(usage?.is_subscriber)
+      });
+
+      return send(res, decision.status, decision.body);
+    } catch (err) {
+      console.error("Full Simulation access error:", err);
+      const decision = resolveFullSimulationAccess({ authenticated: true });
+      return send(res, decision.status, decision.body);
+    }
+  }
+if (req.method === "POST" && req.url.split("?")[0] === "/api/stripe-webhook") {
   try {
     if (!stripe) {
       return send(res, 503, { error: "Stripe is not configured." });
+    }
+
+    if (!supabaseAdmin) {
+      return send(res, 503, {
+        error: "Subscription storage is temporarily unavailable."
+      });
     }
 
     const signature = req.headers["stripe-signature"];
@@ -530,23 +586,64 @@ try {
     );
   }
 }
-    if (event.type === "checkout.session.completed") {
+    // A subscription Checkout can confirm payment immediately or later. Both
+    // successful paths must reconcile entitlement through the same fail-closed
+    // verifier so asynchronous payment customers are not left locked out.
+    if (isCheckoutEntitlementEventType(event.type)) {
       const session = event.data.object;
-      const userId = session.client_reference_id || session.metadata?.tolux_user_id;
+      const userId = session.client_reference_id;
+      const reconciliation = await reconcilePaidCheckoutEntitlement({
+        session,
+        userId,
+        activateSubscription: authenticatedUserId =>
+          setStudentSubscription(authenticatedUserId, true)
+      });
 
-      if (userId && session.payment_status === "paid") {
-        await setStudentSubscription(userId, true);
+      if (reconciliation.verified && !reconciliation.activated) {
+        return send(res, 503, {
+          error: "Subscription entitlement update failed. Please retry."
+        });
       }
 
-      console.log("Stripe checkout completed:", session.id);
+      if (reconciliation.activated) {
+        console.log("Stripe checkout entitlement activated:", session.id);
+      } else {
+        console.warn("Stripe checkout was not eligible for entitlement:", {
+          id: session.id,
+          mode: session.mode || null,
+          status: session.status || null,
+          paymentStatus: session.payment_status || null
+        });
+      }
     }
 
-    if (event.type === "customer.subscription.deleted") {
+    if (
+      event.type === "customer.subscription.updated" ||
+      event.type === "customer.subscription.deleted"
+    ) {
       const subscription = event.data.object;
-      const userId = subscription.metadata?.tolux_user_id;
+      const reconciliation = await reconcileSubscriptionEntitlement({
+        subscription,
+        updateSubscription: setStudentSubscription
+      });
 
-      if (userId) await setStudentSubscription(userId, false);
-      console.log("Stripe subscription cancelled:", subscription.id);
+      if (!reconciliation.handled) {
+        console.warn("Stripe subscription status was not reconciled:", {
+          id: subscription.id,
+          status: subscription.status || null,
+          hasToluxUserId: Boolean(subscription.metadata?.tolux_user_id)
+        });
+      } else if (!reconciliation.updated) {
+        return send(res, 503, {
+          error: "Subscription entitlement update failed. Please retry."
+        });
+      } else {
+        console.log("Stripe subscription entitlement updated:", {
+          id: subscription.id,
+          status: reconciliation.status,
+          isSubscriber: reconciliation.isSubscriber
+        });
+      }
     }
 
 if (event.type === "invoice.payment_failed") {
@@ -572,6 +669,12 @@ if (event.type === "invoice.payment_failed") {
       return send(res, 503, { error: "Stripe is not configured." });
     }
 
+    if (!supabaseAdmin) {
+      return send(res, 503, {
+        error: "Payments are temporarily unavailable. Please try again shortly."
+      });
+    }
+
     const user = await getAuthenticatedUser(req);
     if (!user) {
       return send(res, 401, { error: "Please sign in before choosing a plan." });
@@ -582,6 +685,11 @@ if (event.type === "invoice.payment_failed") {
 
     if (!priceId) {
       return send(res, 400, { error: "Please choose a valid Tolux plan." });
+    }
+
+    const checkoutReturnConfig = resolveCheckoutReturnConfig(process.env);
+    if (!checkoutReturnConfig.ready) {
+      return send(res, 503, { error: "Checkout is not ready for this environment. Please contact Tolux support." });
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -599,8 +707,8 @@ if (event.type === "invoice.payment_failed") {
           tolux_plan: plan
         }
       },
-      success_url: "https://mathcoach.tolux.org/?payment=success&session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "https://mathcoach.tolux.org/?payment=cancelled"
+      success_url: checkoutReturnConfig.successUrl,
+      cancel_url: checkoutReturnConfig.cancelUrl
     });
 
     return send(res, 200, { url: session.url });
@@ -613,6 +721,12 @@ if (event.type === "invoice.payment_failed") {
   try {
     if (!stripe) {
       return send(res, 500, { error: "Stripe is not configured." });
+    }
+
+    if (!supabaseAdmin) {
+      return send(res, 503, {
+        error: "Subscription access is temporarily unavailable."
+      });
     }
 
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -629,16 +743,29 @@ if (event.type === "invoice.payment_failed") {
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    if (session.client_reference_id !== user.id) {
+    if (
+      session.client_reference_id !== user.id ||
+      session.metadata?.tolux_user_id !== user.id
+    ) {
       return send(res, 403, { error: "This checkout does not belong to your account." });
     }
 
-    const paid =
-      session.status === "complete" &&
-      session.payment_status === "paid";
+    const reconciliation = await reconcilePaidCheckoutEntitlement({
+      session,
+      userId: user.id,
+      activateSubscription: authenticatedUserId =>
+        setStudentSubscription(authenticatedUserId, true)
+    });
+
+    if (reconciliation.verified && !reconciliation.activated) {
+      return send(res, 503, {
+        error: "Payment is confirmed, but subscription access could not be activated yet. Please retry shortly."
+      });
+    }
 
     return send(res, 200, {
-      verified: paid,
+      verified: reconciliation.verified,
+      entitlementActivated: reconciliation.activated,
       paymentStatus: session.payment_status,
       subscriptionId: session.subscription || null
     });
