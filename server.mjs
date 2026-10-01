@@ -523,7 +523,7 @@ const server = http.createServer(async (req, res) => {
       return send(res, decision.status, decision.body);
     }
   }
-if (req.method === "POST" && req.url === "/api/stripe-webhook") {
+if (req.method === "POST" && req.url.split("?")[0] === "/api/stripe-webhook") {
   try {
     if (!stripe) {
       return send(res, 503, { error: "Stripe is not configured." });
