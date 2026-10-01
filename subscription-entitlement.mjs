@@ -1,3 +1,12 @@
+const CHECKOUT_ENTITLEMENT_EVENT_TYPES = new Set([
+  "checkout.session.completed",
+  "checkout.session.async_payment_succeeded"
+]);
+
+export function isCheckoutEntitlementEventType(eventType) {
+  return CHECKOUT_ENTITLEMENT_EVENT_TYPES.has(eventType);
+}
+
 export function isPaidSubscriptionCheckoutForUser(session, userId) {
   if (!session || typeof session !== "object" || !userId) return false;
 
