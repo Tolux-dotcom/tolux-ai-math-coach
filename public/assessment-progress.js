@@ -225,5 +225,7 @@
     save
   };
 
-  flushPending().catch(() => {});
+  if (document.currentScript?.dataset.deferReplay !== 'true') {
+    flushPending().catch(() => {});
+  }
 })();

@@ -1515,6 +1515,7 @@ async function refreshDashboardProgress(session) {
   const refreshId = ++progressRefreshSequence;
 
   try {
+    await window.toluxTestPrepProgress?.flushPending({ client: supabaseClient });
     await syncPendingLessonProgress(session);
     const response = await fetch("/api/lesson-progress", {
       headers: { Authorization: `Bearer ${session.access_token}` }
