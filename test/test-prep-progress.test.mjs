@@ -9,7 +9,15 @@ const source = fs.readFileSync(
   'utf8'
 );
 
-function fixture({ session = null, responses = [], storageData = new Map() } = {}) {
+function fixture({
+  session = null,
+  refreshedSession = {
+    access_token: 'refreshed-token',
+    user: { id: 'student-1' }
+  },
+  responses = [],
+  storageData = new Map()
+} = {}) {
   const requests = [];
   let responseIndex = 0;
   let activeSession = session;
@@ -27,10 +35,7 @@ function fixture({ session = null, responses = [], storageData = new Map() } = {
         return { data: { session: activeSession }, error: null };
       },
       async refreshSession() {
-        activeSession = {
-          access_token: 'refreshed-token',
-          user: { id: 'student-1' }
-        };
+        activeSession = refreshedSession;
         return { data: { session: activeSession }, error: null };
       }
     }
@@ -167,6 +172,28 @@ test('refreshes once after 401 and queues a result after a later server failure'
   const queued = await second.api.save(baseInput);
   assert.equal(queued.status, 'queued');
   assert.equal(second.api.readPending('student-1', second.storage).length, 1);
+});
+
+test('never retries an owned result with a refreshed session from another account', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-expired', user: { id: 'student-1' } },
+    refreshedSession: {
+      access_token: 'student-2-token',
+      user: { id: 'student-2' }
+    },
+    responses: [401]
+  });
+
+  const outcome = await state.api.save(baseInput);
+
+  assert.equal(outcome.status, 'queued');
+  assert.equal(state.requests.length, 1);
+  assert.equal(
+    state.requests[0].options.headers.Authorization,
+    'Bearer student-1-expired'
+  );
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+  assert.equal(state.api.readPending('student-2', state.storage).length, 0);
 });
 
 test('isolates failed-save replay by the signed-in Supabase user', async () => {
