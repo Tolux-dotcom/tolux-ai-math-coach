@@ -135,7 +135,13 @@
     }
   }
 
-  async function postReport(report, session, client, fetchImpl = window.fetch.bind(window)) {
+  async function postReport(
+    report,
+    session,
+    client,
+    fetchImpl = window.fetch.bind(window),
+    expectedOwnerId = String(session?.user?.id || '').trim()
+  ) {
     let activeSession = session;
     let response = await fetchImpl('/api/lesson-progress', {
       method: 'POST',
@@ -149,7 +155,12 @@
     if (response.status === 401 && client?.auth?.refreshSession) {
       const { data, error } = await client.auth.refreshSession();
       activeSession = error ? null : data?.session;
-      if (activeSession?.access_token) {
+      const refreshedOwnerId = String(activeSession?.user?.id || '').trim();
+      if (
+        activeSession?.access_token &&
+        expectedOwnerId &&
+        refreshedOwnerId === expectedOwnerId
+      ) {
         response = await fetchImpl('/api/lesson-progress', {
           method: 'POST',
           headers: {
@@ -181,7 +192,13 @@
     }
 
     try {
-      const response = await postReport(report, session, client, fetchImpl);
+      const response = await postReport(
+        report,
+        session,
+        client,
+        fetchImpl,
+        ownerId
+      );
       if (!response.ok) throw new Error(`Progress save failed with ${response.status}.`);
       removePending(ownerId, report.completion_id, storage);
       return { status: 'synced', report };
@@ -207,7 +224,13 @@
     let synced = 0;
     for (const report of pending) {
       try {
-        const response = await postReport(report, session, client, fetchImpl);
+        const response = await postReport(
+          report,
+          session,
+          client,
+          fetchImpl,
+          ownerId
+        );
         if (!response.ok) break;
         removePending(ownerId, report.completion_id, storage);
         synced += 1;
