@@ -13,6 +13,11 @@ test('preview auth uses paired project and public key with matching storage', ()
  assert.equal(resolveSupabaseServerConfig({authUrl:config.url,configuredUrl:config.url,hasServerKey:true}).ready,true);
  assert.equal(resolveSupabaseServerConfig({authUrl:config.url,configuredUrl:DEFAULT_AUTH_CONFIG.url,hasServerKey:true}).ready,false);
 });
+test('preview auth can reuse the configured server Supabase URL', () => {
+ const config=resolvePublicAuthConfig({SUPABASE_URL:'https://preview-project.supabase.co/',SUPABASE_PUBLISHABLE_KEY:'sb_publishable_preview'});
+ assert.equal(config.url,'https://preview-project.supabase.co');
+ assert.equal(config.publishableKey,'sb_publishable_preview');
+});
 test('partial, unsafe, secret, and scoped configuration fails closed', () => {
  for(const env of [{SUPABASE_AUTH_URL:'https://preview.supabase.co'}, {SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test'}, ...['http://preview.supabase.co','https://evil.example','https://preview.supabase.co/path','https://user:password@preview.supabase.co','https://preview.supabase.co?key=secret'].map(url=>({SUPABASE_AUTH_URL:url,SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test'})), {SUPABASE_AUTH_URL:'https://preview.supabase.co',SUPABASE_PUBLISHABLE_KEY:'sb_secret_private'}]) assert.throws(()=>resolvePublicAuthConfig(env));
 });

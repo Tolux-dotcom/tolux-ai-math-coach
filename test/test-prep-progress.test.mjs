@@ -9,7 +9,15 @@ const source = fs.readFileSync(
   'utf8'
 );
 
-function fixture({ session = null, responses = [], storageData = new Map() } = {}) {
+function fixture({
+  session = null,
+  refreshedSession = {
+    access_token: 'refreshed-token',
+    user: { id: 'student-1' }
+  },
+  responses = [],
+  storageData = new Map()
+} = {}) {
   const requests = [];
   let responseIndex = 0;
   let activeSession = session;
@@ -27,10 +35,7 @@ function fixture({ session = null, responses = [], storageData = new Map() } = {
         return { data: { session: activeSession }, error: null };
       },
       async refreshSession() {
-        activeSession = {
-          access_token: 'refreshed-token',
-          user: { id: 'student-1' }
-        };
+        activeSession = refreshedSession;
         return { data: { session: activeSession }, error: null };
       }
     }
@@ -55,7 +60,7 @@ function fixture({ session = null, responses = [], storageData = new Map() } = {
       }
     }
   };
-  const context = { window, Date, JSON, Map, Number, String, Boolean, Array, Error };
+  const context = { window, document: { currentScript: { dataset: {} } }, Date, JSON, Map, Number, String, Boolean, Array, Error };
   vm.createContext(context);
   vm.runInContext(source, context);
   return {
@@ -169,6 +174,28 @@ test('refreshes once after 401 and queues a result after a later server failure'
   assert.equal(second.api.readPending('student-1', second.storage).length, 1);
 });
 
+test('never retries an owned result with a refreshed session from another account', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-expired', user: { id: 'student-1' } },
+    refreshedSession: {
+      access_token: 'student-2-token',
+      user: { id: 'student-2' }
+    },
+    responses: [401]
+  });
+
+  const outcome = await state.api.save(baseInput);
+
+  assert.equal(outcome.status, 'queued');
+  assert.equal(state.requests.length, 1);
+  assert.equal(
+    state.requests[0].options.headers.Authorization,
+    'Bearer student-1-expired'
+  );
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+  assert.equal(state.api.readPending('student-2', state.storage).length, 0);
+});
+
 test('isolates failed-save replay by the signed-in Supabase user', async () => {
   const storageData = new Map();
   const fixtureState = fixture({
@@ -211,4 +238,35 @@ test('isolates failed-save replay by the signed-in Supabase user', async () => {
     { status: 'synced', synced: 1 }
   );
   assert.equal(fixtureState.api.readPending('student-1', fixtureState.storage).length, 0);
+});
+
+test('dashboard replays an owned failed Quick Check before fetching account history', async () => {
+  const state = fixture({
+    session: { access_token: 'valid-token', user: { id: 'student-1' } },
+    responses: [503, 200]
+  });
+  await state.api.save({ ...baseInput, modeId: 'quick' });
+  const appSource = fs.readFileSync(new URL('../public/app.js', import.meta.url), 'utf8');
+  const fn = appSource.slice(appSource.indexOf('async function refreshDashboardProgress('), appSource.indexOf('\nfunction updateDashboardActivity('));
+  const calls = [];
+  const context = {
+    window: { toluxTestPrepProgress: state.api },
+    supabaseClient: state.client,
+    progressRefreshSequence: 0,
+    syncPendingLessonProgress: async () => calls.push('lessons'),
+    fetch: async () => {
+      assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+      calls.push('history');
+      return { ok: true, json: async () => ({ activities: [{ module_id: 'test-prep-quick-check', mastery_score: 76 }] }) };
+    },
+    renderDashboardProgress: (activities, source) => calls.push([source, activities[0].module_id]),
+    console
+  };
+  vm.createContext(context);
+  vm.runInContext(fn, context);
+  await context.refreshDashboardProgress({ access_token: 'valid-token' });
+  assert.deepEqual(calls, ['lessons', 'history', ['account', 'test-prep-quick-check']]);
+  const html = fs.readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+  assert.ok(html.indexOf('/assessment-progress.js') < html.indexOf('/app.js'));
+  assert.match(html, /assessment-progress.js" data-defer-replay="true"/);
 });
