@@ -260,13 +260,86 @@ test('dashboard replays an owned failed Quick Check before fetching account hist
       return { ok: true, json: async () => ({ activities: [{ module_id: 'test-prep-quick-check', mastery_score: 76 }] }) };
     },
     renderDashboardProgress: (activities, source) => calls.push([source, activities[0].module_id]),
+    renderDeviceOnlyTestPrep: (activities, accountAvailable) =>
+      calls.push(['device', accountAvailable, activities.length]),
     console
   };
   vm.createContext(context);
   vm.runInContext(fn, context);
   await context.refreshDashboardProgress({ access_token: 'valid-token' });
-  assert.deepEqual(calls, ['lessons', 'history', ['account', 'test-prep-quick-check']]);
+  assert.deepEqual(calls, [
+    'lessons',
+    'history',
+    ['account', 'test-prep-quick-check'],
+    ['device', true, 1]
+  ]);
   const html = fs.readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
   assert.ok(html.indexOf('/assessment-progress.js') < html.indexOf('/app.js'));
   assert.match(html, /assessment-progress.js" data-defer-replay="true"/);
+});
+
+test('dashboard surfaces an unconfirmed device-only Test Prep result without attributing it to the account', () => {
+  const appSource = fs.readFileSync(new URL('../public/app.js', import.meta.url), 'utf8');
+  const start = appSource.indexOf('function readLocalTestPrepActivities(');
+  const end = appSource.indexOf('\nfunction readPendingLessonProgress(', start);
+  const functions = appSource.slice(start, end);
+  const storageData = new Map([
+    ['toluxTestPrepProgress:local-result', JSON.stringify({
+      completion_id: '123e4567-e89b-42d3-a456-426614174001',
+      module_id: 'test-prep-quick-check',
+      completed_at: '2026-10-01T08:00:00.000Z',
+      mastery_score: 82
+    })]
+  ]);
+  const panel = {
+    hidden: true,
+    children: [],
+    replaceChildren() { this.children = []; },
+    append(...children) { this.children.push(...children); }
+  };
+  const document = {
+    querySelector(selector) {
+      return selector === '#deviceOnlyTestPrep' ? panel : null;
+    },
+    createElement(tagName) {
+      return { tagName, textContent: '' };
+    }
+  };
+  const localStorage = {
+    get length() { return storageData.size; },
+    key(index) { return [...storageData.keys()][index] || null; },
+    getItem(key) { return storageData.get(key) || null; }
+  };
+  const context = {
+    LOCAL_TEST_PREP_PREFIX: 'toluxTestPrepProgress:',
+    localStorage,
+    document,
+    moduleTitle: () => 'Test Prep Quick Check',
+    formatCompletionDate: () => 'Oct 1, 2026, 3:00 AM',
+    Date,
+    JSON,
+    Number,
+    String,
+    Set,
+    Array,
+    console
+  };
+  vm.createContext(context);
+  vm.runInContext(functions, context);
+
+  context.renderDeviceOnlyTestPrep([], true);
+
+  assert.equal(panel.hidden, false);
+  assert.deepEqual(
+    panel.children.map(child => child.textContent),
+    [
+      'Test Prep result saved on this device only',
+      'Test Prep Quick Check • 82% • Oct 1, 2026, 3:00 AM',
+      'This result is not confirmed in the signed-in account. Keep this browser’s data intact while Tolux attempts recovery.'
+    ]
+  );
+  assert.match(
+    fs.readFileSync(new URL('../public/index.html', import.meta.url), 'utf8'),
+    /id="deviceOnlyTestPrep"[^>]+hidden/
+  );
 });
