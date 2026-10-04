@@ -5,6 +5,7 @@ const SUPABASE_PUBLISHABLE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
 const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
+const LOCAL_TEST_PREP_PREFIX = "toluxTestPrepProgress:";
 let dashboardProgressActivities = [];
 let dashboardProgressSource = "empty";
 let progressRefreshSequence = 0;
@@ -1401,6 +1402,75 @@ function readLocalLessonActivities() {
   );
 }
 
+function readLocalTestPrepActivities() {
+  const activities = [];
+
+  try {
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (!key?.startsWith(LOCAL_TEST_PREP_PREFIX)) continue;
+
+      const activity = JSON.parse(localStorage.getItem(key));
+      const score = Number(activity?.mastery_score);
+      const completedAt = new Date(activity?.completed_at);
+      if (
+        activity?.completion_id &&
+        String(activity?.module_id || "").startsWith("test-prep-") &&
+        Number.isInteger(score) &&
+        score >= 0 &&
+        score <= 100 &&
+        !Number.isNaN(completedAt.getTime())
+      ) {
+        activities.push(activity);
+      }
+    }
+  } catch (error) {
+    console.warn("Unable to read device-only Test Prep progress:", error);
+  }
+
+  return activities.sort(
+    (left, right) =>
+      new Date(right.completed_at).getTime() -
+      new Date(left.completed_at).getTime()
+  );
+}
+
+function renderDeviceOnlyTestPrep(accountActivities = [], accountAvailable = false) {
+  const panel = document.querySelector("#deviceOnlyTestPrep");
+  if (!panel) return;
+
+  const accountCompletionIds = new Set(
+    (Array.isArray(accountActivities) ? accountActivities : [])
+      .map(activity => String(activity?.client_completion_id || "").trim())
+      .filter(Boolean)
+  );
+  const unconfirmed = readLocalTestPrepActivities().filter(
+    activity => !accountCompletionIds.has(String(activity.completion_id))
+  );
+
+  panel.replaceChildren();
+  if (!unconfirmed.length) {
+    panel.hidden = true;
+    return;
+  }
+
+  const latest = unconfirmed[0];
+  const title = document.createElement("strong");
+  title.textContent = accountAvailable
+    ? "Test Prep result saved on this device only"
+    : "Test Prep result saved on this device";
+  const summary = document.createElement("span");
+  summary.textContent =
+    `${moduleTitle(latest.module_id)} • ${latest.mastery_score}% • ` +
+    formatCompletionDate(latest.completed_at);
+  const guidance = document.createElement("small");
+  guidance.textContent = accountAvailable
+    ? "This result is not confirmed in the signed-in account. Keep this browser’s data intact while Tolux attempts recovery."
+    : "Sign in and open My Progress to confirm whether this result is synced to your Tolux account.";
+  panel.append(title, summary, guidance);
+  panel.hidden = false;
+}
+
 function readPendingLessonProgress() {
   const pending = [];
 
@@ -1509,6 +1579,7 @@ function renderDashboardProgress(activities, source = "account") {
 async function refreshDashboardProgress(session) {
   if (!session?.access_token) {
     renderDashboardProgress(readLocalLessonActivities(), "local");
+    renderDeviceOnlyTestPrep([], false);
     return;
   }
 
@@ -1528,10 +1599,12 @@ async function refreshDashboardProgress(session) {
 
     if (refreshId !== progressRefreshSequence) return;
     renderDashboardProgress(data.activities, "account");
+    renderDeviceOnlyTestPrep(data.activities, true);
   } catch (error) {
     console.error("Unable to refresh lesson progress:", error);
     if (refreshId !== progressRefreshSequence) return;
     renderDashboardProgress(readLocalLessonActivities(), "local");
+    renderDeviceOnlyTestPrep([], false);
     const progressStatus = document.querySelector("#progressStatus");
     if (progressStatus) {
       progressStatus.textContent =
@@ -1581,6 +1654,7 @@ function restoreDashboardActivity() {
   if (localLessonActivities.length > 0) {
     renderDashboardProgress(localLessonActivities, "local");
   }
+  renderDeviceOnlyTestPrep([], false);
 }
 
 restoreDashboardActivity();
