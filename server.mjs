@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
 import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { createDailyFreeAccessController } from "./daily-free-access.mjs";
 import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
   isCheckoutEntitlementEventType,
@@ -35,6 +36,7 @@ const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 const internalQa = createInternalQaController();
+const dailyFreeAccess = createDailyFreeAccessController();
 
 // Authentication must be verified by the same Supabase project used by the
 // browser clients in public/app.js and public/lesson.js. Database access still
@@ -809,11 +811,19 @@ if (!usage) {
   });
 }
 
-const trial = usage.is_subscriber || qaSession
+const dailyFreeState =
+  !usage.is_subscriber && !qaSession && dailyFreeAccess.configured
+    ? dailyFreeAccess.read(req.headers.cookie, user.id)
+    : null;
+const dailyFreeStatus = dailyFreeState
+  ? dailyFreeAccess.status(dailyFreeState)
+  : null;
+
+const trial = usage.is_subscriber || qaSession || dailyFreeStatus
   ? null
   : await getStudentTrialAccess(user.id);
 
-if (!usage.is_subscriber && !qaSession && !trial) {
+if (!usage.is_subscriber && !qaSession && !dailyFreeStatus && !trial) {
   return send(res, 500, {
     error: "Unable to verify your free learning time right now."
   });
@@ -824,7 +834,18 @@ const trialStatus = buildTrialStatus(
   usage.is_subscriber
 );
 
-if (!qaSession && trialStatus.trialExpired) {
+if (dailyFreeStatus?.exhausted) {
+  return send(res, 403, {
+    error: `You've used today's ${dailyFreeStatus.limit} free AI tutor sessions. Your free allowance resets tomorrow. Upgrade for unlimited tutoring.`,
+    limitReached: true,
+    dailyFreeMode: true,
+    dailyFreeUsed: dailyFreeStatus.used,
+    dailyFreeRemaining: 0,
+    dailyFreeLimit: dailyFreeStatus.limit
+  });
+}
+
+if (!qaSession && !dailyFreeStatus && trialStatus.trialExpired) {
   return send(res, 403, {
     error: "You've completed your 10-minute free learning trial. Upgrade to continue with Tolux AI Math Coach.",
     limitReached: true,
@@ -868,10 +889,17 @@ if (!qaSession && trialStatus.trialExpired) {
 
       
       let responseHeaders = {};
+      let dailyFreeResponse = null;
 
       if (qaSession) {
         const advancedQa = internalQa.advance(qaSession);
         responseHeaders = { "Set-Cookie": advancedQa.cookie };
+      } else if (dailyFreeState && !usage.is_subscriber) {
+        const advancedDaily = dailyFreeAccess.advance(dailyFreeState);
+        if (advancedDaily) {
+          responseHeaders = { "Set-Cookie": advancedDaily.cookie };
+          dailyFreeResponse = advancedDaily.status;
+        }
       }
 
       send(
@@ -881,8 +909,12 @@ if (!qaSession && trialStatus.trialExpired) {
           reply: response.output_text || "I could not generate a response.",
           qaMode: Boolean(qaSession),
           isSubscriber: usage.is_subscriber,
-          trialSecondsUsed: qaSession ? 0 : trialStatus.trialSecondsUsed,
-          trialSecondsRemaining: qaSession
+          dailyFreeMode: Boolean(dailyFreeResponse),
+          dailyFreeUsed: dailyFreeResponse?.used,
+          dailyFreeRemaining: dailyFreeResponse?.remaining,
+          dailyFreeLimit: dailyFreeResponse?.limit,
+          trialSecondsUsed: qaSession || dailyFreeResponse ? 0 : trialStatus.trialSecondsUsed,
+          trialSecondsRemaining: qaSession || dailyFreeResponse
             ? TRIAL_SECONDS
             : trialStatus.trialSecondsRemaining,
           trialSecondsLimit: TRIAL_SECONDS
