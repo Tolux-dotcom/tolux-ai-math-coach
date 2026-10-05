@@ -93,6 +93,17 @@ the normal student gate.
 The mechanism is disabled in production even if the other variables are present.
 Do not place the cookie secret or the allowlist in browser-side code.
 
+## Teacher dashboard preview
+
+The first teacher-facing view is intentionally read-only and scoped to the
+currently signed-in student account. It summarizes existing lesson/practice
+progress into TEKS labels, mastery scores, first-attempt accuracy, hints, and
+recorded misconception tags.
+
+It does not create teacher-to-student relationships, classroom rosters, or
+cross-student access. Those require a reviewed consent/authorization model and
+separate data design before institutional pilots.
+
 ## Lesson progress storage
 
 Apply `supabase/migrations/202608290001_create_lesson_completions.sql` to the
