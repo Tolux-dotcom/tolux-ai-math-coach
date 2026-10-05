@@ -3,3 +3,5 @@
 Preview-only activation branch for validating the daily-reset AI coach allowance. No production configuration is changed.
 
 Environment activation rebuild triggered after preview-only variables were configured.
+
+Auth URL paired with preview publishable key; rebuilding for runtime QA.
