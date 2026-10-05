@@ -13,6 +13,9 @@ import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
 import { buildTeacherProgressSummary } from "./teacher-progress.mjs";
 import { createDailyFreeAccessController } from "./daily-free-access.mjs";
+import {
+  createOwnedCustomerPortalSession
+} from "./customer-portal.mjs";
 import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
   isCheckoutEntitlementEventType,
@@ -763,6 +766,61 @@ if (event.type === "invoice.payment_failed") {
   } catch (err) {
     console.error(err);
     return send(res, 500, { error: err?.message || "Unable to start checkout." });
+  }
+}
+  if (req.method === "POST" && req.url === "/api/create-customer-portal-session") {
+  try {
+    const user = await getAuthenticatedUser(req);
+    if (!user) {
+      return send(res, 401, {
+        error: "Please sign in to manage your subscription."
+      });
+    }
+
+    if (!stripe) {
+      return send(res, 503, {
+        error: "Subscription management is temporarily unavailable."
+      });
+    }
+
+    const checkoutReturnConfig = resolveCheckoutReturnConfig(process.env);
+    if (!checkoutReturnConfig.ready) {
+      return send(res, 503, {
+        error: "Subscription management is not ready for this environment."
+      });
+    }
+
+    const returnUrl = `${new URL(checkoutReturnConfig.cancelUrl).origin}/support.html#billing`;
+    const portal = await createOwnedCustomerPortalSession({
+      stripeClient: stripe,
+      userId: user.id,
+      returnUrl
+    });
+
+    if (portal.reason === "ambiguous-live-customers") {
+      return send(res, 409, {
+        error: "More than one active billing profile needs review. Please contact Tolux support."
+      });
+    }
+
+    if (portal.reason === "invalid-portal-url") {
+      return send(res, 502, {
+        error: "Stripe did not return a valid subscription-management link."
+      });
+    }
+
+    if (!portal.ok) {
+      return send(res, 404, {
+        error: "No Stripe subscription was found for this Tolux account. Please contact Tolux support."
+      });
+    }
+
+    return send(res, 200, { url: portal.url });
+  } catch (err) {
+    console.error("Customer Portal error:", err);
+    return send(res, 500, {
+      error: "Unable to open subscription management. Please try again or contact Tolux support."
+    });
   }
 }
   if (req.method === "GET" && req.url.startsWith("/api/verify-session")) {
