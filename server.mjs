@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getFreeDiagnosticAccess } from "./diagnostic-access.mjs";
 import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
+import { buildTeacherProgressSummary } from "./teacher-progress.mjs";
 import { createDailyFreeAccessController } from "./daily-free-access.mjs";
 import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
@@ -498,6 +499,51 @@ const server = http.createServer(async (req, res) => {
       });
     }
   }
+  if (req.method === "GET" && req.url === "/api/teacher-progress-preview") {
+    try {
+      const user = await getAuthenticatedUser(req);
+
+      if (!user) {
+        return send(res, 401, {
+          error: "Please sign in to view the teacher progress preview."
+        });
+      }
+
+      if (!supabaseAdmin) {
+        return send(res, 503, {
+          error: "Progress storage is not configured."
+        });
+      }
+
+      const activities = await getStudentLessonProgress(user.id);
+      if (!activities) {
+        return send(res, 500, {
+          error: "Unable to load student progress right now."
+        });
+      }
+
+      let catalog = { units: [] };
+      try {
+        catalog = JSON.parse(
+          fs.readFileSync(path.join(publicDir, "algebra1-course.json"), "utf8")
+        );
+      } catch (error) {
+        console.error("Unable to load Algebra 1 catalog for teacher preview:", error);
+      }
+
+      return send(
+        res,
+        200,
+        buildTeacherProgressSummary(activities, catalog)
+      );
+    } catch (err) {
+      console.error("Teacher progress preview error:", err);
+      return send(res, 500, {
+        error: "Unable to load the teacher progress preview."
+      });
+    }
+  }
+
   if (req.method === "GET" && req.url === "/api/test-prep/full-access") {
     try {
       const user = await getAuthenticatedUser(req);
