@@ -72,6 +72,24 @@ Example workflow:
 
 The server uses the OpenAI Responses API and accepts both text and base64 image input.
 
+## Optional daily free AI coach allowance
+
+The general AI coach can use a daily-reset free allowance without changing the
+paid subscription entitlement or the structured lesson/practice gates. This is
+disabled unless all server-side requirements are met:
+
+- `DAILY_FREE_ALLOWANCE_ENABLED=true`
+- `DAILY_FREE_COOKIE_SECRET` is at least 32 private characters
+- `DAILY_FREE_AI_COACH_LIMIT` optionally sets the daily AI-coach interaction
+  limit (default 5, maximum 20)
+
+The counter is stored in a signed, secure, HTTP-only, host-only cookie and resets
+at the next UTC day. Paid subscribers bypass the daily limit. If the feature is
+not fully configured, the existing 10-minute free-trial behavior remains in
+place. The first rollout is deliberately limited to the general AI coach; it
+does not alter deterministic Practice Mode, the free diagnostic, Stripe
+entitlements, or Test Prep access.
+
 ## Preview-only internal QA sessions
 
 Authorized testers can exercise the free-usage flow repeatedly without changing
