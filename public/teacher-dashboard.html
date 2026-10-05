@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="/public-auth-config.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Teacher Progress Preview | Tolux AI Math Coach</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main style="max-width:1100px;margin:0 auto;padding:24px;">
+    <section class="panel">
+      <span class="eyebrow">TEACHER DASHBOARD PREVIEW</span>
+      <h1>TEKS mastery and intervention view</h1>
+      <p>This pilot view summarizes the progress of the currently signed-in student only. It does not expose other students or create classroom access.</p>
+      <p><a href="/">← Back to Math Coach</a></p>
+    </section>
+
+    <section class="panel" id="teacherAuthMessage">Sign in on the Math Coach dashboard, then return here to load progress.</section>
+
+    <section class="panel" id="teacherSummary" hidden>
+      <div class="status" style="display:flex;gap:12px;flex-wrap:wrap;">
+        <span id="teacherCompleted">0 completed modules</span>
+        <span id="teacherMastered">0 mastered</span>
+        <span id="teacherDeveloping">0 developing</span>
+        <span id="teacherIntervention">0 intervention</span>
+        <span id="teacherFirstAttempt">First-attempt rate: —</span>
+      </div>
+    </section>
+
+    <section class="panel" id="teacherMisconceptionsPanel" hidden>
+      <h2>Most common misconceptions</h2>
+      <div id="teacherMisconceptions"></div>
+    </section>
+
+    <section class="panel" id="teacherStandardsPanel" hidden>
+      <h2>Recent TEKS mastery evidence</h2>
+      <div id="teacherStandards"></div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/teacher-dashboard.js"></script>
+</body>
+</html>
