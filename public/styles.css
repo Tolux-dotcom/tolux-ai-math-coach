@@ -468,6 +468,25 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
   font-size: 0.84rem;
 }
 
+.device-only-progress {
+  display: grid;
+  gap: 5px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #f3c969;
+  border-radius: 10px;
+  background: #fff8e8;
+}
+
+.device-only-progress[hidden] {
+  display: none;
+}
+
+.device-only-progress span,
+.device-only-progress small {
+  color: #694f18;
+}
+
 .progress-activity-list {
   display: grid;
   gap: 12px;
