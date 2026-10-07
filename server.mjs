@@ -266,7 +266,58 @@ const STRIPE_PLAN_PRICE_IDS = {
   family: process.env.STRIPE_FAMILY_PRICE_ID || "price_1U7IAuDF1jioApSQbhKRA280"
 };
 
-async function setStudentSubscription(userId, isSubscriber) {
+async function saveStripeBillingOwnership(userId, billingOwnership) {
+  if (!supabaseAdmin || !userId || !billingOwnership) return true;
+
+  const { error } = await supabaseAdmin
+    .from("stripe_billing_ownership")
+    .upsert(
+      {
+        user_id: userId,
+        stripe_customer_id: billingOwnership.stripeCustomerId,
+        stripe_subscription_id: billingOwnership.stripeSubscriptionId,
+        updated_at: new Date().toISOString()
+      },
+      { onConflict: "user_id" }
+    );
+
+  if (error) {
+    console.error("Failed to save Stripe billing ownership:", error);
+    return false;
+  }
+
+  return true;
+}
+
+async function getStripeBillingOwnership(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("stripe_billing_ownership")
+    .select("stripe_customer_id, stripe_subscription_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    // Existing customers remain supported through Stripe's metadata search
+    // until the additive ownership migration has been applied/backfilled.
+    console.error("Failed to read Stripe billing ownership:", error);
+    return null;
+  }
+
+  if (!data) return null;
+
+  return {
+    stripeCustomerId: data.stripe_customer_id,
+    stripeSubscriptionId: data.stripe_subscription_id
+  };
+}
+
+async function setStudentSubscription(
+  userId,
+  isSubscriber,
+  billingOwnership = null
+) {
   if (!supabaseAdmin || !userId) return false;
 
   const usage = await getStudentUsage(userId);
@@ -282,7 +333,7 @@ async function setStudentSubscription(userId, isSubscriber) {
     return false;
   }
 
-  return true;
+  return saveStripeBillingOwnership(userId, billingOwnership);
 }
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
@@ -646,8 +697,8 @@ try {
       const reconciliation = await reconcilePaidCheckoutEntitlement({
         session,
         userId,
-        activateSubscription: authenticatedUserId =>
-          setStudentSubscription(authenticatedUserId, true)
+        activateSubscription: (authenticatedUserId, billingOwnership) =>
+          setStudentSubscription(authenticatedUserId, true, billingOwnership)
       });
 
       if (reconciliation.verified && !reconciliation.activated) {
@@ -791,10 +842,12 @@ if (event.type === "invoice.payment_failed") {
     }
 
     const returnUrl = `${new URL(checkoutReturnConfig.cancelUrl).origin}/support.html#billing`;
+    const billingOwnership = await getStripeBillingOwnership(user.id);
     const portal = await createOwnedCustomerPortalSession({
       stripeClient: stripe,
       userId: user.id,
-      returnUrl
+      returnUrl,
+      billingOwnership
     });
 
     if (portal.reason === "ambiguous-live-customers") {
@@ -859,8 +912,8 @@ if (event.type === "invoice.payment_failed") {
     const reconciliation = await reconcilePaidCheckoutEntitlement({
       session,
       userId: user.id,
-      activateSubscription: authenticatedUserId =>
-        setStudentSubscription(authenticatedUserId, true)
+      activateSubscription: (authenticatedUserId, billingOwnership) =>
+        setStudentSubscription(authenticatedUserId, true, billingOwnership)
     });
 
     if (reconciliation.verified && !reconciliation.activated) {

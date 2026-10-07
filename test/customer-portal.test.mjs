@@ -58,6 +58,61 @@ test('searches Stripe by server-verified Tolux ownership metadata', async () => 
   assert.deepEqual(selected, { customerId: 'cus_owned', reason: 'found' });
 });
 
+test('prefers the stored subscription and verifies it directly with Stripe', async () => {
+  let retrievedId;
+  let searchCalls = 0;
+  const stripe = {
+    subscriptions: {
+      async retrieve(id) {
+        retrievedId = id;
+        return {
+          id,
+          customer: 'cus_owned',
+          status: 'active',
+          metadata: { tolux_user_id: USER_ID }
+        };
+      },
+      async search() {
+        searchCalls += 1;
+        return { data: [] };
+      }
+    }
+  };
+
+  const selected = await findOwnedPortalCustomer(stripe, USER_ID, {
+    stripeCustomerId: 'cus_owned',
+    stripeSubscriptionId: 'sub_owned'
+  });
+
+  assert.equal(retrievedId, 'sub_owned');
+  assert.equal(searchCalls, 0);
+  assert.deepEqual(selected, { customerId: 'cus_owned', reason: 'found' });
+});
+
+test('fails closed when stored billing ownership disagrees with Stripe', async () => {
+  const stripe = {
+    subscriptions: {
+      async retrieve() {
+        return {
+          customer: 'cus_other',
+          status: 'active',
+          metadata: { tolux_user_id: USER_ID }
+        };
+      }
+    }
+  };
+
+  const selected = await findOwnedPortalCustomer(stripe, USER_ID, {
+    stripeCustomerId: 'cus_owned',
+    stripeSubscriptionId: 'sub_owned'
+  });
+
+  assert.deepEqual(selected, {
+    customerId: null,
+    reason: 'billing-ownership-mismatch'
+  });
+});
+
 test('accepts only Stripe-hosted Customer Portal session URLs', () => {
   assert.equal(isStripeBillingPortalUrl('https://billing.stripe.com/p/session/test_123'), true);
   for (const url of [
@@ -127,7 +182,9 @@ test('server creates a portal session only after authentication and owned-custom
   const route = server.slice(start, end);
   assert.ok(start > 0 && end > start);
   assert.ok(route.indexOf('getAuthenticatedUser(req)') < route.indexOf('createOwnedCustomerPortalSession'));
+  assert.ok(route.indexOf('getStripeBillingOwnership(user.id)') < route.indexOf('createOwnedCustomerPortalSession'));
   assert.match(route, /userId: user\.id/);
+  assert.match(route, /billingOwnership/);
   assert.match(route, /returnUrl/);
   assert.doesNotMatch(route, /headers\.(origin|host)|body\.(return|redirect|customer)/);
 });

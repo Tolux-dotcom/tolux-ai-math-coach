@@ -34,6 +34,10 @@ function customerId(subscription) {
     : null;
 }
 
+function isStripeId(value, prefix) {
+  return new RegExp(`^${prefix}_[A-Za-z0-9]+$`).test(String(value || ""));
+}
+
 export function selectOwnedPortalCustomer(subscriptions, userId) {
   if (!isSupabaseUserId(userId)) {
     return { customerId: null, reason: "invalid-user-id" };
@@ -75,9 +79,40 @@ export function selectOwnedPortalCustomer(subscriptions, userId) {
   return { customerId: owned[0].customerId, reason: "found" };
 }
 
-export async function findOwnedPortalCustomer(stripeClient, userId) {
+export async function findOwnedPortalCustomer(
+  stripeClient,
+  userId,
+  billingOwnership = null
+) {
   if (!stripeClient || !isSupabaseUserId(userId)) {
     return { customerId: null, reason: "invalid-user-id" };
+  }
+
+  if (billingOwnership) {
+    const subscriptionId = billingOwnership.stripeSubscriptionId;
+    const storedCustomerId = billingOwnership.stripeCustomerId;
+
+    if (
+      !isStripeId(subscriptionId, "sub") ||
+      !isStripeId(storedCustomerId, "cus")
+    ) {
+      return { customerId: null, reason: "invalid-billing-ownership" };
+    }
+
+    const subscription = await stripeClient.subscriptions.retrieve(
+      subscriptionId
+    );
+    const selected = selectOwnedPortalCustomer([subscription], userId);
+
+    if (!selected.customerId) {
+      return { customerId: null, reason: "billing-ownership-mismatch" };
+    }
+
+    if (selected.customerId !== storedCustomerId) {
+      return { customerId: null, reason: "billing-ownership-mismatch" };
+    }
+
+    return selected;
   }
 
   const result = await stripeClient.subscriptions.search({
@@ -104,9 +139,14 @@ export function isStripeBillingPortalUrl(value) {
 export async function createOwnedCustomerPortalSession({
   stripeClient,
   userId,
-  returnUrl
+  returnUrl,
+  billingOwnership = null
 }) {
-  const match = await findOwnedPortalCustomer(stripeClient, userId);
+  const match = await findOwnedPortalCustomer(
+    stripeClient,
+    userId,
+    billingOwnership
+  );
   if (!match.customerId) {
     return { ok: false, reason: match.reason, url: null };
   }
