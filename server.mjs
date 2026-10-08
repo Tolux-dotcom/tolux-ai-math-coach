@@ -868,6 +868,16 @@ if (event.type === "invoice.payment_failed") {
       });
     }
 
+    const ownershipSaved = await saveStripeBillingOwnership(
+      user.id,
+      portal.billingOwnership
+    );
+    if (!ownershipSaved) {
+      return send(res, 503, {
+        error: "Subscription management is temporarily unavailable. Please try again."
+      });
+    }
+
     return send(res, 200, { url: portal.url });
   } catch (err) {
     console.error("Customer Portal error:", err);

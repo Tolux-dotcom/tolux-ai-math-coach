@@ -20,26 +20,47 @@ test('accepts only Supabase-shaped UUID account identifiers', () => {
 
 test('selects only a subscription explicitly owned by the authenticated Tolux user', () => {
   const selected = selectOwnedPortalCustomer([
-    { customer: 'cus_other', status: 'active', created: 20, metadata: { tolux_user_id: '03595ff4-f81c-4d9f-9521-631ddab3d2f8' } },
-    { customer: 'cus_owned', status: 'active', created: 10, metadata: { tolux_user_id: USER_ID } }
+    { id: 'sub_other', customer: 'cus_other', status: 'active', created: 20, metadata: { tolux_user_id: '03595ff4-f81c-4d9f-9521-631ddab3d2f8' } },
+    { id: 'sub_owned', customer: 'cus_owned', status: 'active', created: 10, metadata: { tolux_user_id: USER_ID } }
   ], USER_ID);
-  assert.deepEqual(selected, { customerId: 'cus_owned', reason: 'found' });
+  assert.deepEqual(selected, {
+    customerId: 'cus_owned',
+    subscriptionId: 'sub_owned',
+    reason: 'found'
+  });
 });
 
 test('fails closed when one account has live subscriptions under multiple Stripe customers', () => {
   const selected = selectOwnedPortalCustomer([
-    { customer: 'cus_one', status: 'active', metadata: { tolux_user_id: USER_ID } },
-    { customer: 'cus_two', status: 'past_due', metadata: { tolux_user_id: USER_ID } }
+    { id: 'sub_one', customer: 'cus_one', status: 'active', metadata: { tolux_user_id: USER_ID } },
+    { id: 'sub_two', customer: 'cus_two', status: 'past_due', metadata: { tolux_user_id: USER_ID } }
   ], USER_ID);
   assert.deepEqual(selected, { customerId: null, reason: 'ambiguous-live-customers' });
 });
 
+test('uses the newest live subscription when one Stripe customer has renewed', () => {
+  const selected = selectOwnedPortalCustomer([
+    { id: 'sub_old', customer: 'cus_owned', status: 'active', created: 10, metadata: { tolux_user_id: USER_ID } },
+    { id: 'sub_new', customer: 'cus_owned', status: 'active', created: 20, metadata: { tolux_user_id: USER_ID } }
+  ], USER_ID);
+
+  assert.deepEqual(selected, {
+    customerId: 'cus_owned',
+    subscriptionId: 'sub_new',
+    reason: 'found'
+  });
+});
+
 test('uses the most recent historical billing profile when no live subscription remains', () => {
   const selected = selectOwnedPortalCustomer([
-    { customer: 'cus_old', status: 'canceled', created: 10, metadata: { tolux_user_id: USER_ID } },
-    { customer: { id: 'cus_latest' }, status: 'canceled', created: 20, metadata: { tolux_user_id: USER_ID } }
+    { id: 'sub_old', customer: 'cus_old', status: 'canceled', created: 10, metadata: { tolux_user_id: USER_ID } },
+    { id: 'sub_latest', customer: { id: 'cus_latest' }, status: 'canceled', created: 20, metadata: { tolux_user_id: USER_ID } }
   ], USER_ID);
-  assert.deepEqual(selected, { customerId: 'cus_latest', reason: 'found' });
+  assert.deepEqual(selected, {
+    customerId: 'cus_latest',
+    subscriptionId: 'sub_latest',
+    reason: 'found'
+  });
 });
 
 test('searches Stripe by server-verified Tolux ownership metadata', async () => {
@@ -48,14 +69,18 @@ test('searches Stripe by server-verified Tolux ownership metadata', async () => 
     subscriptions: {
       async search(params) {
         searchParams = params;
-        return { data: [{ customer: 'cus_owned', status: 'trialing', metadata: { tolux_user_id: USER_ID } }] };
+        return { data: [{ id: 'sub_owned', customer: 'cus_owned', status: 'trialing', metadata: { tolux_user_id: USER_ID } }] };
       }
     }
   };
   const selected = await findOwnedPortalCustomer(stripe, USER_ID);
   assert.equal(searchParams.query, `metadata['tolux_user_id']:'${USER_ID}'`);
   assert.equal(searchParams.limit, 100);
-  assert.deepEqual(selected, { customerId: 'cus_owned', reason: 'found' });
+  assert.deepEqual(selected, {
+    customerId: 'cus_owned',
+    subscriptionId: 'sub_owned',
+    reason: 'found'
+  });
 });
 
 test('prefers the stored subscription and verifies it directly with Stripe', async () => {
@@ -86,7 +111,11 @@ test('prefers the stored subscription and verifies it directly with Stripe', asy
 
   assert.equal(retrievedId, 'sub_owned');
   assert.equal(searchCalls, 0);
-  assert.deepEqual(selected, { customerId: 'cus_owned', reason: 'found' });
+  assert.deepEqual(selected, {
+    customerId: 'cus_owned',
+    subscriptionId: 'sub_owned',
+    reason: 'found'
+  });
 });
 
 test('fails closed when stored billing ownership disagrees with Stripe', async () => {
@@ -95,6 +124,31 @@ test('fails closed when stored billing ownership disagrees with Stripe', async (
       async retrieve() {
         return {
           customer: 'cus_other',
+          status: 'active',
+          metadata: { tolux_user_id: USER_ID }
+        };
+      }
+    }
+  };
+
+  const selected = await findOwnedPortalCustomer(stripe, USER_ID, {
+    stripeCustomerId: 'cus_owned',
+    stripeSubscriptionId: 'sub_owned'
+  });
+
+  assert.deepEqual(selected, {
+    customerId: null,
+    reason: 'billing-ownership-mismatch'
+  });
+});
+
+test('fails closed when Stripe returns a different stored subscription id', async () => {
+  const stripe = {
+    subscriptions: {
+      async retrieve() {
+        return {
+          id: 'sub_other',
+          customer: 'cus_owned',
           status: 'active',
           metadata: { tolux_user_id: USER_ID }
         };
@@ -128,7 +182,7 @@ test('creates a Customer Portal session for only the owned Stripe customer', asy
   const stripe = {
     subscriptions: {
       async search() {
-        return { data: [{ customer: 'cus_owned', status: 'active', metadata: { tolux_user_id: USER_ID } }] };
+        return { data: [{ id: 'sub_owned', customer: 'cus_owned', status: 'active', metadata: { tolux_user_id: USER_ID } }] };
       }
     },
     billingPortal: {
@@ -152,7 +206,11 @@ test('creates a Customer Portal session for only the owned Stripe customer', asy
   assert.deepEqual(result, {
     ok: true,
     reason: 'created',
-    url: 'https://billing.stripe.com/p/session/test_123'
+    url: 'https://billing.stripe.com/p/session/test_123',
+    billingOwnership: {
+      stripeCustomerId: 'cus_owned',
+      stripeSubscriptionId: 'sub_owned'
+    }
   });
 });
 
@@ -161,7 +219,7 @@ test('does not create a portal session for an unowned or ambiguous customer', as
   const stripe = {
     subscriptions: {
       async search() {
-        return { data: [{ customer: 'cus_other', status: 'active', metadata: { tolux_user_id: '03595ff4-f81c-4d9f-9521-631ddab3d2f8' } }] };
+        return { data: [{ id: 'sub_other', customer: 'cus_other', status: 'active', metadata: { tolux_user_id: '03595ff4-f81c-4d9f-9521-631ddab3d2f8' } }] };
       }
     },
     billingPortal: { sessions: { async create() { createCalls += 1; } } }
@@ -185,6 +243,8 @@ test('server creates a portal session only after authentication and owned-custom
   assert.ok(route.indexOf('getStripeBillingOwnership(user.id)') < route.indexOf('createOwnedCustomerPortalSession'));
   assert.match(route, /userId: user\.id/);
   assert.match(route, /billingOwnership/);
+  assert.ok(route.indexOf('createOwnedCustomerPortalSession') < route.indexOf('saveStripeBillingOwnership'));
+  assert.match(route, /portal\.billingOwnership/);
   assert.match(route, /returnUrl/);
   assert.doesNotMatch(route, /headers\.(origin|host)|body\.(return|redirect|customer)/);
 });

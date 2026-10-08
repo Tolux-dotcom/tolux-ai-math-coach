@@ -34,6 +34,10 @@ function customerId(subscription) {
     : null;
 }
 
+function subscriptionId(subscription) {
+  return typeof subscription?.id === "string" ? subscription.id : null;
+}
+
 function isStripeId(value, prefix) {
   return new RegExp(`^${prefix}_[A-Za-z0-9]+$`).test(String(value || ""));
 }
@@ -47,10 +51,15 @@ export function selectOwnedPortalCustomer(subscriptions, userId) {
     .filter(subscription => subscription?.metadata?.tolux_user_id === userId)
     .map(subscription => ({
       customerId: customerId(subscription),
+      subscriptionId: subscriptionId(subscription),
       status: String(subscription?.status || ""),
       created: Number(subscription?.created || 0)
     }))
-    .filter(subscription => subscription.customerId);
+    .filter(
+      subscription =>
+        isStripeId(subscription.customerId, "cus") &&
+        isStripeId(subscription.subscriptionId, "sub")
+    );
 
   if (!owned.length) {
     return { customerId: null, reason: "not-found" };
@@ -67,7 +76,20 @@ export function selectOwnedPortalCustomer(subscriptions, userId) {
   }
 
   if (liveCustomerIds.size === 1) {
-    return { customerId: [...liveCustomerIds][0], reason: "found" };
+    const selectedCustomerId = [...liveCustomerIds][0];
+    const selected = owned
+      .filter(
+        subscription =>
+          subscription.customerId === selectedCustomerId &&
+          LIVE_STATUSES.has(subscription.status)
+      )
+      .sort((left, right) => right.created - left.created)[0];
+
+    return {
+      customerId: selected.customerId,
+      subscriptionId: selected.subscriptionId,
+      reason: "found"
+    };
   }
 
   owned.sort((left, right) => {
@@ -76,7 +98,11 @@ export function selectOwnedPortalCustomer(subscriptions, userId) {
     return leftPriority - rightPriority || right.created - left.created;
   });
 
-  return { customerId: owned[0].customerId, reason: "found" };
+  return {
+    customerId: owned[0].customerId,
+    subscriptionId: owned[0].subscriptionId,
+    reason: "found"
+  };
 }
 
 export async function findOwnedPortalCustomer(
@@ -108,7 +134,10 @@ export async function findOwnedPortalCustomer(
       return { customerId: null, reason: "billing-ownership-mismatch" };
     }
 
-    if (selected.customerId !== storedCustomerId) {
+    if (
+      selected.customerId !== storedCustomerId ||
+      selected.subscriptionId !== subscriptionId
+    ) {
       return { customerId: null, reason: "billing-ownership-mismatch" };
     }
 
@@ -160,5 +189,13 @@ export async function createOwnedCustomerPortalSession({
     return { ok: false, reason: "invalid-portal-url", url: null };
   }
 
-  return { ok: true, reason: "created", url: portalSession.url };
+  return {
+    ok: true,
+    reason: "created",
+    url: portalSession.url,
+    billingOwnership: {
+      stripeCustomerId: match.customerId,
+      stripeSubscriptionId: match.subscriptionId
+    }
+  };
 }
