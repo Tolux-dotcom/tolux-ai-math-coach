@@ -266,7 +266,7 @@ test('dashboard replays an owned failed Quick Check before fetching account hist
   };
   vm.createContext(context);
   vm.runInContext(fn, context);
-  await context.refreshDashboardProgress({ access_token: 'valid-token' });
+  await context.refreshDashboardProgress({ access_token: 'valid-token', user: { id: 'student-1' } });
   assert.deepEqual(calls, [
     'lessons',
     'history',
@@ -276,6 +276,81 @@ test('dashboard replays an owned failed Quick Check before fetching account hist
   const html = fs.readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
   assert.ok(html.indexOf('/assessment-progress.js') < html.indexOf('/app.js'));
   assert.match(html, /assessment-progress.js" data-defer-replay="true"/);
+});
+
+function dashboardFixture({ session, replay = async () => {}, statuses = [200] }) {
+  const state = fixture({ session });
+  const appSource = fs.readFileSync(new URL('../public/app.js', import.meta.url), 'utf8');
+  const fn = appSource.slice(appSource.indexOf('async function refreshDashboardProgress('), appSource.indexOf('\nfunction updateDashboardActivity('));
+  const requests = [];
+  const rendered = [];
+  const context = {
+    window: { toluxTestPrepProgress: { flushPending: () => replay(state) } },
+    supabaseClient: state.client,
+    progressRefreshSequence: 0,
+    syncPendingLessonProgress: async () => {},
+    fetch: async (url, options) => {
+      requests.push(options.headers.Authorization);
+      const status = statuses[requests.length - 1] ?? 200;
+      return { status, ok: status === 200, json: async () => ({ activities: [{ module_id: 'test-prep-quick-check', mastery_score: 76 }] }) };
+    },
+    renderDashboardProgress: (activities, source) => rendered.push(source),
+    renderDeviceOnlyTestPrep: () => {},
+    readLocalLessonActivities: () => [],
+    document: { querySelector: () => null },
+    console: { error() {} }
+  };
+  vm.createContext(context);
+  vm.runInContext(fn, context);
+  return { context, state, requests, rendered };
+}
+
+test('dashboard uses the refreshed token after replay instead of hiding saved account history', async () => {
+  const session = { access_token: 'expired-token', user: { id: 'student-1' } };
+  const state = dashboardFixture({
+    session,
+    replay: async state => state.client.auth.refreshSession()
+  });
+  await state.context.refreshDashboardProgress(session);
+  assert.deepEqual(state.requests, ['Bearer refreshed-token']);
+  assert.deepEqual(state.rendered, ['account']);
+});
+
+test('dashboard retries an expired history token once and keeps server failures visible', async () => {
+  const session = { access_token: 'expired-token', user: { id: 'student-1' } };
+  const recovered = dashboardFixture({ session, statuses: [401, 200] });
+  await recovered.context.refreshDashboardProgress(session);
+  assert.deepEqual(recovered.requests, ['Bearer expired-token', 'Bearer refreshed-token']);
+  assert.deepEqual(recovered.rendered, ['account']);
+  const unavailable = dashboardFixture({ session, statuses: [401, 401] });
+  await unavailable.context.refreshDashboardProgress(session);
+  assert.equal(unavailable.requests.length, 2);
+  assert.deepEqual(unavailable.rendered, ['local']);
+});
+
+test('dashboard never loads another account history after a session switch during replay', async () => {
+  const session = { access_token: 'student-1-token', user: { id: 'student-1' } };
+  const state = dashboardFixture({
+    session,
+    replay: async state => state.setSession({ access_token: 'student-2-token', user: { id: 'student-2' } })
+  });
+  await state.context.refreshDashboardProgress(session);
+  assert.deepEqual(state.requests, []);
+  assert.ok(!state.rendered.includes('account'));
+});
+
+test('signing out invalidates an in-flight dashboard refresh', async () => {
+  const session = { access_token: 'student-1-token', user: { id: 'student-1' } };
+  let release;
+  const replay = new Promise(resolve => { release = resolve; });
+  const state = dashboardFixture({ session, replay: () => replay });
+  const pending = state.context.refreshDashboardProgress(session);
+  state.state.setSession(null);
+  await state.context.refreshDashboardProgress(null);
+  release();
+  await pending;
+  assert.deepEqual(state.requests, []);
+  assert.deepEqual(state.rendered, ['local']);
 });
 
 test('dashboard surfaces an unconfirmed device-only Test Prep result without attributing it to the account', () => {

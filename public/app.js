@@ -1577,26 +1577,47 @@ function renderDashboardProgress(activities, source = "account") {
 }
 
 async function refreshDashboardProgress(session) {
+  const refreshId = ++progressRefreshSequence;
   if (!session?.access_token) {
     renderDashboardProgress(readLocalLessonActivities(), "local");
     renderDeviceOnlyTestPrep([], false);
     return;
   }
 
-  const refreshId = ++progressRefreshSequence;
+  const ownerId = String(session.user?.id || "").trim();
 
   try {
     await window.toluxTestPrepProgress?.flushPending({ client: supabaseClient });
-    await syncPendingLessonProgress(session);
-    const response = await fetch("/api/lesson-progress", {
-      headers: { Authorization: `Bearer ${session.access_token}` }
+    // Replay can refresh the token. Read the current session before history,
+    // and never finish an earlier account's refresh with a different user.
+    const currentSession = async () => {
+      const { data, error } = await supabaseClient.auth.getSession();
+      const active = error ? null : data?.session;
+      if (!ownerId || !active?.access_token || active.user?.id !== ownerId) {
+        throw new Error("Progress session changed; sign in again to load your history.");
+      }
+      return active;
+    };
+    let activeSession = await currentSession();
+    await syncPendingLessonProgress(activeSession);
+    activeSession = await currentSession();
+    const loadHistory = token => fetch("/api/lesson-progress", {
+      headers: { Authorization: `Bearer ${token}` }
     });
+    let response = await loadHistory(activeSession.access_token);
+    if (response.status === 401) {
+      const { error } = await supabaseClient.auth.refreshSession();
+      if (error) throw error;
+      activeSession = await currentSession();
+      response = await loadHistory(activeSession.access_token);
+    }
     const data = await response.json();
 
     if (!response.ok || !Array.isArray(data.activities)) {
       throw new Error(data.error || "Unable to load lesson progress.");
     }
 
+    await currentSession();
     if (refreshId !== progressRefreshSequence) return;
     renderDashboardProgress(data.activities, "account");
     renderDeviceOnlyTestPrep(data.activities, true);
