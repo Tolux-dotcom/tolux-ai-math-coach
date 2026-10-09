@@ -191,6 +191,9 @@
       return { status: 'local-only', report };
     }
 
+    // Persist ownership and the retry record before starting the request.
+    // A page close/reload may prevent the request's failure handler from running.
+    queuePending(ownerId, report, storage);
     try {
       const response = await postReport(
         report,
@@ -203,7 +206,6 @@
       removePending(ownerId, report.completion_id, storage);
       return { status: 'synced', report };
     } catch (error) {
-      queuePending(ownerId, report, storage);
       return { status: 'queued', report, error };
     }
   }

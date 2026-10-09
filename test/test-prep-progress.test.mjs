@@ -155,6 +155,68 @@ test('saves signed-in progress through the authenticated server endpoint', async
   assert.equal(JSON.parse(requests[0].options.body).module_id, 'test-prep-half-test');
 });
 
+test('queues an owned result before the request settles and clears it only after success', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-token', user: { id: 'student-1' } }
+  });
+  let finishRequest;
+  let requestStarted;
+  const started = new Promise(resolve => { requestStarted = resolve; });
+  const pending = state.api.save(baseInput, {
+    fetchImpl: async () => {
+      requestStarted();
+      return new Promise(resolve => { finishRequest = resolve; });
+    }
+  });
+  await started;
+  const queued = state.api.readPending('student-1', state.storage);
+  assert.equal(queued.length, 1);
+  assert.equal(queued[0].module_id, 'test-prep-half-test');
+  assert.ok(state.storageData.has(`toluxTestPrepProgress:${queued[0].completion_id}`));
+  finishRequest({ ok: true, status: 200 });
+  assert.equal((await pending).status, 'synced');
+  assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+  assert.ok(state.storageData.has(`toluxTestPrepProgress:${queued[0].completion_id}`));
+});
+
+test('a reloaded page replays an interrupted Quick Check only for its original owner', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-token', user: { id: 'student-1' } }
+  });
+  let requestStarted;
+  const started = new Promise(resolve => { requestStarted = resolve; });
+  // Simulate a request abandoned by navigation: its promise never settles.
+  void state.api.save({ ...baseInput, modeId: 'quick' }, {
+    fetchImpl: () => {
+      requestStarted();
+      return new Promise(() => {});
+    }
+  });
+  await started;
+  const report = state.api.readPending('student-1', state.storage)[0];
+  assert.ok(report?.completion_id);
+
+  const other = fixture({
+    session: { access_token: 'student-2-token', user: { id: 'student-2' } },
+    storageData: state.storageData
+  });
+  await other.api.flushPending();
+  assert.equal(other.requests.length, 0);
+  assert.equal(other.api.readPending('student-1', other.storage).length, 1);
+
+  const original = fixture({
+    session: { access_token: 'student-1-new-token', user: { id: 'student-1' } },
+    storageData: state.storageData
+  });
+  // Automatic page-load replay is allowed to finish before assertions.
+  await new Promise(resolve => setImmediate(resolve));
+  assert.ok(original.requests.length > 0);
+  assert.equal(JSON.parse(original.requests[0].options.body).completion_id, report.completion_id);
+  assert.equal(original.requests[0].options.headers.Authorization, 'Bearer student-1-new-token');
+  assert.equal(original.api.readPending('student-1', original.storage).length, 0);
+  assert.ok(original.storageData.has(`toluxTestPrepProgress:${report.completion_id}`));
+});
+
 test('refreshes once after 401 and queues a result after a later server failure', async () => {
   const first = fixture({
     session: { access_token: 'expired-token', user: { id: 'student-1' } },
