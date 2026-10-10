@@ -148,3 +148,17 @@ export function dedupeLessonProgressActivities(activities) {
     return true;
   });
 }
+
+export function mergeLessonProgressActivities(
+  recentActivities = [],
+  requiredActivities = []
+) {
+  return dedupeLessonProgressActivities([
+    ...(Array.isArray(recentActivities) ? recentActivities : []),
+    ...(Array.isArray(requiredActivities) ? requiredActivities : [])
+  ]).sort(
+    (left, right) =>
+      new Date(right?.completed_at || 0).getTime() -
+      new Date(left?.completed_at || 0).getTime()
+  );
+}

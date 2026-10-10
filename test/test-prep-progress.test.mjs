@@ -415,6 +415,50 @@ test('signing out invalidates an in-flight dashboard refresh', async () => {
   assert.deepEqual(state.rendered, ['local']);
 });
 
+test('dashboard displays the latest account Test Prep result separately from recent activity', () => {
+  const appSource = fs.readFileSync(new URL('../public/app.js', import.meta.url), 'utf8');
+  const start = appSource.indexOf('function renderLatestTestPrepProgress(');
+  const end = appSource.indexOf('\nfunction renderDeviceOnlyTestPrep(', start);
+  const fn = appSource.slice(start, end);
+  const panel = {
+    hidden: true,
+    children: [],
+    replaceChildren() { this.children = []; },
+    append(...children) { this.children.push(...children); }
+  };
+  const context = {
+    document: {
+      querySelector: selector => selector === '#latestTestPrepProgress' ? panel : null,
+      createElement: tagName => ({ tagName, textContent: '' })
+    },
+    moduleTitle: () => 'Test Prep Quick Check',
+    formatCompletionDate: () => 'Sep 1, 2026, 7:00 AM',
+    Array,
+    String
+  };
+  vm.createContext(context);
+  vm.runInContext(fn, context);
+  context.renderLatestTestPrepProgress([
+    { module_id: 'alg1-a5a-linear-equations', mastery_score: 100 },
+    {
+      module_id: 'test-prep-quick-check',
+      mastery_score: 70,
+      completed_at: '2026-09-01T12:00:00.000Z'
+    }
+  ], 'account');
+  assert.equal(panel.hidden, false);
+  assert.deepEqual(
+    panel.children.map(child => child.textContent),
+    ['Latest Test Prep result', 'Test Prep Quick Check • 70% • Sep 1, 2026, 7:00 AM']
+  );
+  context.renderLatestTestPrepProgress([], 'local');
+  assert.equal(panel.hidden, true);
+  assert.match(
+    fs.readFileSync(new URL('../public/index.html', import.meta.url), 'utf8'),
+    /id="latestTestPrepProgress"[^>]+hidden/
+  );
+});
+
 test('dashboard surfaces an unconfirmed device-only Test Prep result without attributing it to the account', () => {
   const appSource = fs.readFileSync(new URL('../public/app.js', import.meta.url), 'utf8');
   const start = appSource.indexOf('function readLocalTestPrepActivities(');

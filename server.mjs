@@ -24,7 +24,7 @@ import {
 } from "./subscription-entitlement.mjs";
 import {
   buildLessonProgressRow,
-  dedupeLessonProgressActivities,
+  mergeLessonProgressActivities,
   normalizeLessonProgressReport
 } from "./lesson-progress.mjs";
 import {
@@ -218,6 +218,11 @@ const LESSON_PROGRESS_FIELDS = [
   "time_on_skill_seconds",
   "item_records"
 ].join(", ");
+const TEST_PREP_MODULE_IDS = [
+  "test-prep-quick-check",
+  "test-prep-half-test",
+  "test-prep-full-simulation"
+];
 
 async function saveStudentLessonProgress(userId, report, options = {}) {
   if (!supabaseAdmin || !userId) return null;
@@ -245,19 +250,35 @@ async function saveStudentLessonProgress(userId, report, options = {}) {
 async function getStudentLessonProgress(userId) {
   if (!supabaseAdmin || !userId) return null;
 
-  const { data, error } = await supabaseAdmin
-    .from("lesson_completions")
-    .select(LESSON_PROGRESS_FIELDS)
-    .eq("user_id", userId)
-    .order("completed_at", { ascending: false })
-    .limit(25);
+  const [recentResult, testPrepResult] = await Promise.all([
+    supabaseAdmin
+      .from("lesson_completions")
+      .select(LESSON_PROGRESS_FIELDS)
+      .eq("user_id", userId)
+      .order("completed_at", { ascending: false })
+      .limit(25),
+    supabaseAdmin
+      .from("lesson_completions")
+      .select(LESSON_PROGRESS_FIELDS)
+      .eq("user_id", userId)
+      .in("module_id", TEST_PREP_MODULE_IDS)
+      .order("completed_at", { ascending: false })
+      .limit(1)
+  ]);
 
-  if (error) {
-    console.error("Failed to read lesson progress:", error);
+  if (recentResult.error) {
+    console.error("Failed to read lesson progress:", recentResult.error);
     return null;
   }
 
-  return dedupeLessonProgressActivities(data || []);
+  if (testPrepResult.error) {
+    console.warn("Failed to read the latest Test Prep result:", testPrepResult.error);
+  }
+
+  return mergeLessonProgressActivities(
+    recentResult.data || [],
+    testPrepResult.error ? [] : testPrepResult.data || []
+  );
 }
 
 const FREE_QUESTION_LIMIT = 10;

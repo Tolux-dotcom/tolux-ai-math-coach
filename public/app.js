@@ -1435,6 +1435,32 @@ function readLocalTestPrepActivities() {
   );
 }
 
+function renderLatestTestPrepProgress(accountActivities = [], source = "account") {
+  const panel = document.querySelector("#latestTestPrepProgress");
+  if (!panel) return;
+
+  const latest = source === "account"
+    ? (Array.isArray(accountActivities) ? accountActivities : []).find(
+        activity => String(activity?.module_id || "").startsWith("test-prep-")
+      )
+    : null;
+
+  panel.replaceChildren();
+  if (!latest) {
+    panel.hidden = true;
+    return;
+  }
+
+  const title = document.createElement("strong");
+  title.textContent = "Latest Test Prep result";
+  const summary = document.createElement("span");
+  summary.textContent =
+    `${moduleTitle(latest.module_id)} • ${latest.mastery_score}% • ` +
+    formatCompletionDate(latest.completed_at);
+  panel.append(title, summary);
+  panel.hidden = false;
+}
+
 function renderDeviceOnlyTestPrep(accountActivities = [], accountAvailable = false) {
   const panel = document.querySelector("#deviceOnlyTestPrep");
   if (!panel) return;
@@ -1516,6 +1542,8 @@ function renderDashboardProgress(activities, source = "account") {
   const recentActivity = document.querySelector("#recentActivity");
   const progressStatus = document.querySelector("#progressStatus");
   const safeActivities = Array.isArray(activities) ? activities : [];
+
+  renderLatestTestPrepProgress(safeActivities, source);
 
   dashboardProgressActivities = safeActivities;
   dashboardProgressSource = safeActivities.length ? source : "empty";

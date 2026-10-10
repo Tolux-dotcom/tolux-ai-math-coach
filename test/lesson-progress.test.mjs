@@ -1,8 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {
   buildLessonProgressRow,
   dedupeLessonProgressActivities,
+  mergeLessonProgressActivities,
   normalizeLessonProgressReport
 } from "../lesson-progress.mjs";
 
@@ -91,4 +93,36 @@ test("deduplicates repeated completion records without removing distinct attempt
     dedupeLessonProgressActivities([first, repeated, later]),
     [first, later]
   );
+});
+
+test("keeps the latest Test Prep result visible beyond the recent activity window", () => {
+  const recent = Array.from({ length: 25 }, (_, index) => ({
+    client_completion_id: `recent-${index}`,
+    module_id: `alg1-module-${index}`,
+    completed_at: `2026-10-${String(30 - index).padStart(2, "0")}T12:00:00.000Z`,
+    mastery_label: "Mastered",
+    mastery_score: 100,
+    time_on_skill_seconds: 300
+  }));
+  const testPrep = {
+    client_completion_id: "test-prep-result",
+    module_id: "test-prep-quick-check",
+    completed_at: "2026-09-01T12:00:00.000Z",
+    mastery_label: "Developing",
+    mastery_score: 70,
+    time_on_skill_seconds: 600
+  };
+
+  const merged = mergeLessonProgressActivities(recent, [testPrep]);
+  assert.equal(merged.length, 26);
+  assert.equal(merged.at(-1).client_completion_id, "test-prep-result");
+});
+
+test("account history requests the latest Test Prep result outside the recent 25", () => {
+  const server = fs.readFileSync(
+    new URL("../server.mjs", import.meta.url),
+    "utf8"
+  );
+  assert.match(server, /\.in\("module_id", TEST_PREP_MODULE_IDS\)/);
+  assert.match(server, /mergeLessonProgressActivities\(/);
 });
