@@ -5,6 +5,7 @@ import {
   isPaidSubscriptionCheckoutForUser,
   reconcilePaidCheckoutEntitlement,
   reconcileSubscriptionEntitlement,
+  resolveStripeBillingOwnership,
   resolveSubscriptionEntitlement
 } from "../subscription-entitlement.mjs";
 
@@ -18,6 +19,7 @@ function paidSession(overrides = {}) {
     payment_status: "paid",
     client_reference_id: USER_ID,
     metadata: { tolux_user_id: USER_ID, tolux_plan: "student" },
+    customer: "cus_tolux",
     subscription: "sub_tolux",
     ...overrides
   };
@@ -45,6 +47,32 @@ test("reconciles both immediate and asynchronous successful Checkout events", ()
   }
 });
 
+test("extracts only complete Stripe customer and subscription ownership", () => {
+  assert.deepEqual(resolveStripeBillingOwnership(paidSession()), {
+    stripeCustomerId: "cus_tolux",
+    stripeSubscriptionId: "sub_tolux"
+  });
+  assert.deepEqual(
+    resolveStripeBillingOwnership({
+      object: "subscription",
+      id: "sub_direct",
+      customer: { id: "cus_direct" }
+    }),
+    {
+      stripeCustomerId: "cus_direct",
+      stripeSubscriptionId: "sub_direct"
+    }
+  );
+
+  for (const source of [
+    null,
+    { customer: "cus_tolux" },
+    { customer: "not-a-customer", subscription: "sub_tolux" }
+  ]) {
+    assert.equal(resolveStripeBillingOwnership(source), null);
+  }
+});
+
 test("recognizes only a paid subscription checkout owned by the authenticated user", () => {
   assert.equal(isPaidSubscriptionCheckoutForUser(paidSession(), USER_ID), true);
 
@@ -65,14 +93,20 @@ test("repairs entitlement after Stripe independently confirms the paid checkout"
   const result = await reconcilePaidCheckoutEntitlement({
     session: paidSession(),
     userId: USER_ID,
-    activateSubscription: async userId => {
-      activations.push(userId);
+    activateSubscription: async (userId, billingOwnership) => {
+      activations.push({ userId, billingOwnership });
       return true;
     }
   });
 
   assert.deepEqual(result, { verified: true, activated: true });
-  assert.deepEqual(activations, [USER_ID]);
+  assert.deepEqual(activations, [{
+    userId: USER_ID,
+    billingOwnership: {
+      stripeCustomerId: "cus_tolux",
+      stripeSubscriptionId: "sub_tolux"
+    }
+  }]);
 });
 
 test("never writes entitlement for an unpaid or mismatched checkout", async () => {
