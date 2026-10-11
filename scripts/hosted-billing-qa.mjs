@@ -86,7 +86,7 @@ if(['setup','resume'].includes(process.argv[2])) {
   config.accessToken=session.session.access_token; config.refreshToken=session.session.refresh_token; await persist();
   const completionId=config.completionId || crypto.randomUUID();
   config.completionId=completionId;
-  const report={completion_id:completionId,module_id:'test-prep-quick-check',completed_at:new Date().toISOString(),mastery_label:'Developing',mastery_score:80,time_on_skill_seconds:120,item_records:[]};
+  const report={completion_id:completionId,module_id:'test-prep-quick-check',completed_at:new Date().toISOString(),mastery_label:'Mastered',mastery_score:80,time_on_skill_seconds:120,item_records:Array.from({length:10},(_,i)=>({item_id:`qa-item-${i+1}`,attempt_count:1,first_attempt_correct:i<8,hint_count:0,first_error_tag:i<8?null:'test-prep-missed'}))};
   config.report=report; await persist();
   const saved=await app('/api/lesson-progress',{token:config.accessToken,body:report});
   assert.equal(saved.status,200,'Authenticated quiz save failed');
@@ -104,6 +104,24 @@ if(['setup','resume'].includes(process.argv[2])) {
   config.portalUrl=portal.data.url; await persist();
   await fs.writeFile('/workspace/scratch/tolux-billing-qa-portal-20261011.json',JSON.stringify({portalUrl:config.portalUrl}),{mode:0o600});
   console.log(JSON.stringify({stage:'setup',authIsolated:true,stripeMode:'test',entitlement:usage.is_subscriber,quizScore:80,replayRows:rows.data.length,signedOutAndBackIn:true,portalCreated:true}));
+} else if(process.argv[2]==='verify') {
+  const usage=await waitUsage(false);
+  assert.equal(usage.questions_used,4,'Cancellation changed the question counter');
+  const login=await auth.auth.signInWithPassword({email:config.email,password:config.password});
+  assert(!login.error); const token=login.data.session.access_token;
+  const progress=await app('/api/lesson-progress',{token}); assert.equal(progress.status,200);
+  assert(progress.data.activities.some(x=>x.module_id==='test-prep-quick-check'&&x.mastery_score===80));
+  const access=await app('/api/test-prep/full-access',{token}); assert.equal(access.status,403);
+  const replay=await app('/api/lesson-progress',{token,body:config.report}); assert.equal(replay.status,200);
+  const rows=await db.from('lesson_completions').select('mastery_score').eq('user_id',config.userId).eq('client_completion_id',config.completionId);
+  assert(!rows.error); assert.equal(rows.data.length,1); assert.equal(rows.data[0].mastery_score,80);
+  const created=await db.auth.admin.createUser({email:'qa-other-20261011@example.invalid',password:config.password,email_confirm:true});
+  assert(!created.error); config.otherUserId=created.data.user.id; await persist();
+  const other=await auth.auth.signInWithPassword({email:'qa-other-20261011@example.invalid',password:config.password}); assert(!other.error);
+  const otherToken=other.data.session.access_token;
+  const otherProgress=await app('/api/lesson-progress',{token:otherToken}); assert.equal(otherProgress.status,200); assert.equal(otherProgress.data.activities.length,0);
+  const otherPortal=await app('/api/create-customer-portal-session',{token:otherToken,body:{}}); assert.equal(otherPortal.status,404);
+  console.log(JSON.stringify({stage:'verify',cancellationRevokedAccess:true,quizScoreAfterCancellation:80,questionCounter:4,replayRows:1,otherAccountProgressEmpty:true,otherAccountPortalStatus:404}));
 } else {
   console.log(JSON.stringify({stage:'probe',authIsolated:true,unauthenticatedProgressStatus:unauth.status}));
 }

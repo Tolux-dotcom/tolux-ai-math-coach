@@ -4,7 +4,14 @@ This is the dedicated `qa/billing-integration` branch, based on draft PR #129.
 Never merge or promote this branch to production: it deliberately refuses every
 deployment except an explicitly configured isolated preview.
 
-## Read-only audit, October 10, 2026
+## Current status, October 11, 2026
+
+Hosted isolated cancellation, signed webhook persistence, retained score after
+fresh sign-in, replay idempotency and account isolation passed. The disposable
+Supabase branch was deleted, the test callback disabled, and branch secrets
+cleared. QA is intentionally inactive again. See [executed evidence](qa/hosted-billing-20261011.md).
+
+## Historical read-only audit, October 10, 2026
 
 The PR #129 deployment at commit `ae7f7ec` is READY. Its public authentication
 configuration points to production Supabase `xnadszfvjkyxltskywin`. No branch-specific
@@ -69,7 +76,7 @@ an existing production endpoint or disable Vercel Authentication.
 
 ## Evidence
 
-Focused isolation guards: 7/7 passed. Full QA branch suite: 496/496 passed, including
-mathematical validation and the existing signed local webhook-routing smoke test.
-Syntax checks passed. These are local checks; hosted authenticated cancellation
-and webhook persistence are still pending until test credentials are configured.
+Focused isolation guards: 7/7 passed. Latest full QA branch suite: 497/497 passed,
+including mathematical validation and signed local webhook-routing checks. Syntax
+checks passed. Hosted authenticated cancellation and webhook persistence passed
+on October 11; the environment has since been cleaned up and disabled.
