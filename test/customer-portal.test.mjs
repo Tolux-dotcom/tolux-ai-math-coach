@@ -169,12 +169,29 @@ test('fails closed when Stripe returns a different stored subscription id', asyn
 
 test('accepts only Stripe-hosted Customer Portal session URLs', () => {
   assert.equal(isStripeBillingPortalUrl('https://billing.stripe.com/p/session/test_123'), true);
+  assert.equal(isStripeBillingPortalUrl('https://billing.stripe.com/p/session?secret=test_fixture'), true);
   for (const url of [
+    'https://billing.stripe.com/p/session',
+    'https://billing.stripe.com/p/session?secret=',
+    'https://billing.stripe.com/p/session-other?secret=test_fixture',
+    'https://user:pass@billing.stripe.com/p/session?secret=test_fixture',
     'http://billing.stripe.com/p/session/test_123',
     'https://billing.stripe.com.evil.example/p/session/test_123',
     'https://billing.stripe.com/not-a-session',
     'https://example.com/p/session/test_123'
   ]) assert.equal(isStripeBillingPortalUrl(url), false);
+});
+
+test('browser and server accept the Stripe query-secret format with the same strict origin', async () => {
+  const { isStripePortalUrl } = await import('../public/support.js');
+  for (const url of [
+    'https://billing.stripe.com/p/session/test_fixture',
+    'https://billing.stripe.com/p/session?secret=test_fixture',
+    'https://billing.stripe.com/p/session?secret=',
+    'https://billing.stripe.com.evil.example/p/session?secret=test_fixture',
+    'https://user:pass@billing.stripe.com/p/session?secret=test_fixture',
+    'https://billing.stripe.com/p/session-other?secret=test_fixture'
+  ]) assert.equal(isStripePortalUrl(url), isStripeBillingPortalUrl(url));
 });
 
 test('creates a Customer Portal session for only the owned Stripe customer', async () => {
