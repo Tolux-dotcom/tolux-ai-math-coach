@@ -12,6 +12,8 @@ create table if not exists public.stripe_billing_ownership (
 
 alter table public.stripe_billing_ownership enable row level security;
 revoke all on table public.stripe_billing_ownership from public, anon, authenticated;
+-- Remove Supabase default grants before restoring only the required operations.
+revoke all on table public.stripe_billing_ownership from service_role;
 grant select, insert, update on table public.stripe_billing_ownership to service_role;
 
 comment on table public.stripe_billing_ownership is

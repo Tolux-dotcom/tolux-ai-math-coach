@@ -40,6 +40,9 @@ try {
     .map(table => db.query(`SELECT * FROM ${table} ORDER BY user_id`)));
   const before = (await snapshot()).map(result => result.rows);
 
+  // Supabase grants service_role broad privileges on new public tables by default.
+  // A plain GRANT does not remove those inherited privileges.
+  await db.exec('ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service_role');
   await db.exec(migration);
   assert.equal((await db.query("SELECT relrowsecurity FROM pg_class WHERE oid = 'public.stripe_billing_ownership'::regclass")).rows[0].relrowsecurity, true);
   passed('migration executes and enables row-level security');
@@ -69,8 +72,10 @@ try {
 
   await asRole('service_role', async () => {
     await assert.rejects(db.query('DELETE FROM public.stripe_billing_ownership'), error => error.code === '42501');
+    await assert.rejects(db.query('TRUNCATE public.stripe_billing_ownership'), error => error.code === '42501');
   });
-  passed('service role has no delete grant');
+  assert.deepEqual((await db.query("SELECT privilege_type FROM information_schema.role_table_grants WHERE table_schema = 'public' AND table_name = 'stripe_billing_ownership' AND grantee = 'service_role' ORDER BY privilege_type")).rows.map(row => row.privilege_type), ['INSERT', 'SELECT', 'UPDATE']);
+  passed('service role has only select, insert, and update despite broad default grants');
 
   await assert.rejects(db.query('INSERT INTO public.stripe_billing_ownership (user_id, stripe_customer_id, stripe_subscription_id) VALUES ($1, $2, $3)', [other, 'cus_fixture', 'sub_other']), error => error.code === '23505');
   await assert.rejects(db.query('INSERT INTO public.stripe_billing_ownership (user_id, stripe_customer_id, stripe_subscription_id) VALUES ($1, $2, $3)', [other, 'cus_other', 'sub_renewed']), error => error.code === '23505');

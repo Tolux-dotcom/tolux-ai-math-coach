@@ -27,6 +27,10 @@ test("billing ownership migration is additive and server-only", () => {
     migration,
     /grant select, insert, update on table public\.stripe_billing_ownership to service_role/i
   );
+  assert.match(
+    migration,
+    /revoke all on table public\.stripe_billing_ownership from service_role;[\s\S]*grant select, insert, update/i
+  );
   assert.doesNotMatch(migration, /drop table|delete from|truncate/i);
 });
 
