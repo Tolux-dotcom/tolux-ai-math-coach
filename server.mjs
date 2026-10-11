@@ -1,4 +1,6 @@
 import { resolveCheckoutReturnConfig } from "./checkout-return-config.mjs";
+import { assertIsolatedBillingQa } from "./staging-runtime-guard.mjs";
+assertIsolatedBillingQa(process.env);
 import { resolvePublicAuthConfig, publicAuthConfigScript } from "./public-auth-config.mjs";
 import "./growth-server-hooks.mjs";
 import http from "node:http";

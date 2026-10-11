@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 
 test('webhook query parameters preserve POST routing and signature verification', async () => {
   const port = 19397;
-  const env = { PATH: process.env.PATH, PORT: String(port), SUPABASE_AUTH_URL: 'https://routing-qa.supabase.co', SUPABASE_URL: 'https://routing-qa.supabase.co', SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_dummy', SUPABASE_SERVICE_ROLE_KEY: 'dummy-service-key', STRIPE_SECRET_KEY: 'sk_test_dummy', STRIPE_WEBHOOK_SECRET: 'whsec_dummy' };
+  const env = { PATH: process.env.PATH, PORT: String(port), VERCEL_ENV:'preview', TOLUX_STAGING_PROJECT_REF:'abcdefghijklmnopqrst', SUPABASE_AUTH_URL: 'https://abcdefghijklmnopqrst.supabase.co', SUPABASE_URL: 'https://abcdefghijklmnopqrst.supabase.co', SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_dummy', SUPABASE_SERVICE_ROLE_KEY: 'sb_secret_dummy', STRIPE_SECRET_KEY: 'sk_test_dummy', STRIPE_WEBHOOK_SECRET: 'whsec_dummy', STRIPE_CANCELLATION_WEBHOOK_SECRET:'whsec_dummy', STRIPE_PAYMENT_FAILED_WEBHOOK_SECRET:'whsec_dummy', CHECKOUT_RETURN_ORIGIN:'https://routing-qa.vercel.app' };
   const child = spawn(process.execPath, ['server.mjs'], { env, stdio: ['ignore', 'pipe', 'pipe'] });
   try {
     await new Promise((resolve, reject) => {
