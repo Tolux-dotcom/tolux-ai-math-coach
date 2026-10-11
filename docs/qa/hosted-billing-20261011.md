@@ -1,5 +1,10 @@
 # Hosted isolated billing verification — October 11, 2026
 
+This report records the earlier isolated test run. The subsequently authorized
+production migration and live Portal setup are complete; see
+[production prerequisite evidence](production-billing-prerequisites-20261011.md).
+Production application deployment remains a separate release step.
+
 ## Outcome
 
 The deployed application resolved the synthetic account's verified Stripe ownership,
