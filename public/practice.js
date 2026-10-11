@@ -44,6 +44,7 @@ let currentIndex = 0;
 let lessonLocked = false;
 let isSubscriber = false;
 let completionReport = null;
+let practiceOwnerId = null;
 let trialHeartbeatTimer = null;
 const countedInteractions = new Set();
 const itemRecords = new Map();
@@ -168,17 +169,13 @@ function teachingExplanationMarkup(item) {
 
 async function getPracticeSession() {
   if (!supabaseClient) return null;
-
-  let {
-    data: { session: authSession }
-  } = await supabaseClient.auth.getSession();
-
-  if (!authSession) {
-    const { data } = await supabaseClient.auth.refreshSession();
-    authSession = data?.session || null;
-  }
-
-  return authSession;
+  const { data, error } = await supabaseClient.auth.getSession();
+  const authSession = error ? null : data?.session;
+  const ownerId = authSession?.user?.id;
+  if (!authSession?.access_token || !ownerId) return null;
+  // Bind this attempt to its first signed-in student, never a later account.
+  if (!practiceOwnerId) practiceOwnerId = ownerId;
+  return ownerId === practiceOwnerId ? authSession : null;
 }
 
 async function fetchWithPracticeSession(url, options = {}) {
@@ -195,14 +192,17 @@ async function fetchWithPracticeSession(url, options = {}) {
 
   let response = await request(authSession);
   if (response.status === 401) {
+    if (!(await getPracticeSession())) return { response, session: null };
     const { data, error } = await supabaseClient.auth.refreshSession();
     const refreshedSession = error ? null : data?.session;
-    if (refreshedSession) {
+    if (refreshedSession?.user?.id === practiceOwnerId &&
+        refreshedSession?.access_token && await getPracticeSession()) {
       authSession = refreshedSession;
       response = await request(authSession);
     }
   }
 
+  if (!(await getPracticeSession())) return { response: null, session: null };
   return { response, session: authSession };
 }
 
@@ -221,7 +221,6 @@ function showUpgrade(message) {
 
 async function ensurePracticeAccess(item) {
   if (!item || lessonLocked) return false;
-  if (countedInteractions.has(item.id)) return true;
 
   try {
     const authSession = await getPracticeSession();
@@ -229,13 +228,14 @@ async function ensurePracticeAccess(item) {
       setFeedback(`
         <div class="lesson-state lesson-state-warning">
           <strong>Sign in required</strong>
-          <p>Return to the dashboard and sign in before using a learning interaction.</p>
+          <p>Return to the dashboard and sign in with the account that started this practice session.</p>
           <a class="lesson-link-button" href="/">Go to Sign In</a>
         </div>
       `);
       return false;
     }
 
+    if (countedInteractions.has(item.id)) return true;
     const { response } = await fetchWithPracticeSession("/api/lesson-usage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -435,6 +435,7 @@ function buildCompletionReport(summary) {
   if (completionReport) return completionReport;
   completionReport = {
     completion_id: generateCompletionId(),
+    owner_user_id: practiceOwnerId,
     module_id: `practice-${session.module_id}`,
     completed_at: new Date().toISOString(),
     mastery_label: summary.label,
@@ -458,24 +459,24 @@ async function savePracticeCompletion(summary) {
     console.warn("Practice progress could not be saved locally:", error);
   }
 
-  const authSession = await getPracticeSession();
-  if (!authSession) throw new Error("Sign in is required to sync practice progress.");
-
-  const response = await fetch("/api/lesson-progress", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authSession.access_token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(report)
-  });
+  if (!report.owner_user_id) throw new Error("Sign in to sync this practice session.");
+  const { response, session: authSession } = await fetchWithPracticeSession(
+    "/api/lesson-progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(report)
+    }
+  );
+  if (!authSession || !response || !(await getPracticeSession())) {
+    throw new Error("Sign in with the account that started this practice session to sync progress.");
+  }
   const data = await response.json();
-  if (!response.ok || !data.activity) {
-    throw new Error(data.error || "Unable to save practice progress.");
+  if (!response.ok || !data.activity || !(await getPracticeSession())) {
+    throw new Error(data.error || "Unable to confirm practice progress for the original account.");
   }
 
   try {
-    localStorage.setItem(moduleKey, JSON.stringify(data.activity));
+    localStorage.setItem(moduleKey, JSON.stringify({ ...data.activity, owner_user_id: report.owner_user_id }));
     localStorage.removeItem(pendingKey);
   } catch (error) {
     console.warn("Synced practice progress could not be reconciled:", error);
@@ -538,7 +539,7 @@ async function finishSession() {
   } catch (error) {
     console.error("Practice completion sync failed:", error);
     status.textContent =
-      "Saved on this device. Tolux will retry account sync from the dashboard.";
+      "Saved on this device. Sign in with the account that started this practice session and open the dashboard to retry sync.";
   }
 }
 

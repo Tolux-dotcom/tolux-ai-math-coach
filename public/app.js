@@ -1497,7 +1497,7 @@ function renderDeviceOnlyTestPrep(accountActivities = [], accountAvailable = fal
   panel.hidden = false;
 }
 
-function readPendingLessonProgress() {
+function readPendingLessonProgress(ownerId) {
   const pending = [];
 
   try {
@@ -1506,7 +1506,11 @@ function readPendingLessonProgress() {
       if (!key?.startsWith(PENDING_PROGRESS_PREFIX)) continue;
 
       const report = JSON.parse(localStorage.getItem(key));
-      if (report?.completion_id) pending.push({ key, report });
+      if (!report?.completion_id) continue;
+      // Keep unowned legacy Practice records intact; never guess their student.
+      if (String(report.module_id || "").startsWith("practice-") &&
+          (!ownerId || report.owner_user_id !== ownerId)) continue;
+      pending.push({ key, report });
     }
   } catch (error) {
     console.warn("Unable to read pending lesson progress:", error);
@@ -1518,8 +1522,12 @@ function readPendingLessonProgress() {
 async function syncPendingLessonProgress(session) {
   migrateLegacyLocalLessonProgress();
 
-  for (const { key, report } of readPendingLessonProgress()) {
+  for (const { key, report } of readPendingLessonProgress(session?.user?.id)) {
     try {
+      if (String(report.module_id || "").startsWith("practice-")) {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || data?.session?.user?.id !== report.owner_user_id) return;
+      }
       const response = await fetch("/api/lesson-progress", {
         method: "POST",
         headers: {
