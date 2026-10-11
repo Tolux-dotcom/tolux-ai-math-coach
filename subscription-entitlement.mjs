@@ -21,6 +21,27 @@ export function isPaidSubscriptionCheckoutForUser(session, userId) {
   );
 }
 
+function stripeId(value) {
+  if (typeof value === "string") return value.trim();
+  return typeof value?.id === "string" ? value.id.trim() : "";
+}
+
+export function resolveStripeBillingOwnership(source) {
+  const stripeCustomerId = stripeId(source?.customer);
+  const stripeSubscriptionId = stripeId(
+    source?.subscription || (source?.object === "subscription" ? source : null)
+  );
+
+  if (
+    !/^cus_[A-Za-z0-9]+$/.test(stripeCustomerId) ||
+    !/^sub_[A-Za-z0-9]+$/.test(stripeSubscriptionId)
+  ) {
+    return null;
+  }
+
+  return { stripeCustomerId, stripeSubscriptionId };
+}
+
 export async function reconcilePaidCheckoutEntitlement({
   session,
   userId,
@@ -34,7 +55,10 @@ export async function reconcilePaidCheckoutEntitlement({
     return { verified: true, activated: false };
   }
 
-  const activated = await activateSubscription(userId);
+  const activated = await activateSubscription(
+    userId,
+    resolveStripeBillingOwnership(session)
+  );
 
   return {
     verified: true,
@@ -91,7 +115,8 @@ export async function reconcileSubscriptionEntitlement({
 
   const updated = await updateSubscription(
     entitlement.userId,
-    entitlement.isSubscriber
+    entitlement.isSubscriber,
+    resolveStripeBillingOwnership(subscription)
   );
 
   return {

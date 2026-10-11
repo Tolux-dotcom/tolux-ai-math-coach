@@ -58,7 +58,11 @@ test("payment lifecycle updates access and protects session verification", () =>
   assert.match(server, /reconcileSubscriptionEntitlement/);
   assert.match(server, /Subscription entitlement update failed/);
   assert.match(server, /Stripe checkout entitlement activated/);
-  assert.match(server, /setStudentSubscription\(authenticatedUserId, true\)/);
+  assert.match(
+    server,
+    /setStudentSubscription\(authenticatedUserId, true, billingOwnership\)/
+  );
+  assert.match(server, /saveStripeBillingOwnership/);
   assert.match(server, /entitlementActivated: reconciliation\.activated/);
   assert.doesNotMatch(server, /customerEmail: session\.customer_details/);
 });

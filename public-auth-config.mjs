@@ -4,7 +4,7 @@ export const DEFAULT_AUTH_CONFIG = Object.freeze({
 });
 
 export function resolvePublicAuthConfig(env = {}) {
-  const configuredUrl = env.SUPABASE_AUTH_URL;
+  const configuredUrl = env.SUPABASE_AUTH_URL || env.SUPABASE_URL;
   const configuredKey = env.SUPABASE_PUBLISHABLE_KEY;
   if (!configuredUrl && !configuredKey) return DEFAULT_AUTH_CONFIG;
   if (!configuredUrl || !configuredKey) throw new Error('Public authentication configuration requires both URL and publishable key.');

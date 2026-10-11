@@ -13,6 +13,9 @@ import { resolveFullSimulationAccess } from "./test-prep-access.mjs";
 import { createInternalQaController } from "./internal-qa.mjs";
 import { buildTeacherProgressSummary } from "./teacher-progress.mjs";
 import { createDailyFreeAccessController } from "./daily-free-access.mjs";
+import {
+  createOwnedCustomerPortalSession
+} from "./customer-portal.mjs";
 import { resolveSupabaseServerConfig } from "./supabase-server-config.mjs";
 import {
   isCheckoutEntitlementEventType,
@@ -21,7 +24,7 @@ import {
 } from "./subscription-entitlement.mjs";
 import {
   buildLessonProgressRow,
-  dedupeLessonProgressActivities,
+  mergeLessonProgressActivities,
   normalizeLessonProgressReport
 } from "./lesson-progress.mjs";
 import {
@@ -215,6 +218,11 @@ const LESSON_PROGRESS_FIELDS = [
   "time_on_skill_seconds",
   "item_records"
 ].join(", ");
+const TEST_PREP_MODULE_IDS = [
+  "test-prep-quick-check",
+  "test-prep-half-test",
+  "test-prep-full-simulation"
+];
 
 async function saveStudentLessonProgress(userId, report, options = {}) {
   if (!supabaseAdmin || !userId) return null;
@@ -242,19 +250,35 @@ async function saveStudentLessonProgress(userId, report, options = {}) {
 async function getStudentLessonProgress(userId) {
   if (!supabaseAdmin || !userId) return null;
 
-  const { data, error } = await supabaseAdmin
-    .from("lesson_completions")
-    .select(LESSON_PROGRESS_FIELDS)
-    .eq("user_id", userId)
-    .order("completed_at", { ascending: false })
-    .limit(25);
+  const [recentResult, testPrepResult] = await Promise.all([
+    supabaseAdmin
+      .from("lesson_completions")
+      .select(LESSON_PROGRESS_FIELDS)
+      .eq("user_id", userId)
+      .order("completed_at", { ascending: false })
+      .limit(25),
+    supabaseAdmin
+      .from("lesson_completions")
+      .select(LESSON_PROGRESS_FIELDS)
+      .eq("user_id", userId)
+      .in("module_id", TEST_PREP_MODULE_IDS)
+      .order("completed_at", { ascending: false })
+      .limit(1)
+  ]);
 
-  if (error) {
-    console.error("Failed to read lesson progress:", error);
+  if (recentResult.error) {
+    console.error("Failed to read lesson progress:", recentResult.error);
     return null;
   }
 
-  return dedupeLessonProgressActivities(data || []);
+  if (testPrepResult.error) {
+    console.warn("Failed to read the latest Test Prep result:", testPrepResult.error);
+  }
+
+  return mergeLessonProgressActivities(
+    recentResult.data || [],
+    testPrepResult.error ? [] : testPrepResult.data || []
+  );
 }
 
 const FREE_QUESTION_LIMIT = 10;
@@ -263,7 +287,58 @@ const STRIPE_PLAN_PRICE_IDS = {
   family: process.env.STRIPE_FAMILY_PRICE_ID || "price_1U7IAuDF1jioApSQbhKRA280"
 };
 
-async function setStudentSubscription(userId, isSubscriber) {
+async function saveStripeBillingOwnership(userId, billingOwnership) {
+  if (!supabaseAdmin || !userId || !billingOwnership) return true;
+
+  const { error } = await supabaseAdmin
+    .from("stripe_billing_ownership")
+    .upsert(
+      {
+        user_id: userId,
+        stripe_customer_id: billingOwnership.stripeCustomerId,
+        stripe_subscription_id: billingOwnership.stripeSubscriptionId,
+        updated_at: new Date().toISOString()
+      },
+      { onConflict: "user_id" }
+    );
+
+  if (error) {
+    console.error("Failed to save Stripe billing ownership:", error);
+    return false;
+  }
+
+  return true;
+}
+
+async function getStripeBillingOwnership(userId) {
+  if (!supabaseAdmin || !userId) return null;
+
+  const { data, error } = await supabaseAdmin
+    .from("stripe_billing_ownership")
+    .select("stripe_customer_id, stripe_subscription_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    // Existing customers remain supported through Stripe's metadata search
+    // until the additive ownership migration has been applied/backfilled.
+    console.error("Failed to read Stripe billing ownership:", error);
+    return null;
+  }
+
+  if (!data) return null;
+
+  return {
+    stripeCustomerId: data.stripe_customer_id,
+    stripeSubscriptionId: data.stripe_subscription_id
+  };
+}
+
+async function setStudentSubscription(
+  userId,
+  isSubscriber,
+  billingOwnership = null
+) {
   if (!supabaseAdmin || !userId) return false;
 
   const usage = await getStudentUsage(userId);
@@ -279,7 +354,7 @@ async function setStudentSubscription(userId, isSubscriber) {
     return false;
   }
 
-  return true;
+  return saveStripeBillingOwnership(userId, billingOwnership);
 }
 const MASTER_INSTRUCTIONS = `
 You are Tolux AI Math Coach, a patient mathematics tutor.
@@ -643,8 +718,8 @@ try {
       const reconciliation = await reconcilePaidCheckoutEntitlement({
         session,
         userId,
-        activateSubscription: authenticatedUserId =>
-          setStudentSubscription(authenticatedUserId, true)
+        activateSubscription: (authenticatedUserId, billingOwnership) =>
+          setStudentSubscription(authenticatedUserId, true, billingOwnership)
       });
 
       if (reconciliation.verified && !reconciliation.activated) {
@@ -765,6 +840,73 @@ if (event.type === "invoice.payment_failed") {
     return send(res, 500, { error: err?.message || "Unable to start checkout." });
   }
 }
+  if (req.method === "POST" && req.url === "/api/create-customer-portal-session") {
+  try {
+    const user = await getAuthenticatedUser(req);
+    if (!user) {
+      return send(res, 401, {
+        error: "Please sign in to manage your subscription."
+      });
+    }
+
+    if (!stripe) {
+      return send(res, 503, {
+        error: "Subscription management is temporarily unavailable."
+      });
+    }
+
+    const checkoutReturnConfig = resolveCheckoutReturnConfig(process.env);
+    if (!checkoutReturnConfig.ready) {
+      return send(res, 503, {
+        error: "Subscription management is not ready for this environment."
+      });
+    }
+
+    const returnUrl = `${new URL(checkoutReturnConfig.cancelUrl).origin}/support.html#billing`;
+    const billingOwnership = await getStripeBillingOwnership(user.id);
+    const portal = await createOwnedCustomerPortalSession({
+      stripeClient: stripe,
+      userId: user.id,
+      returnUrl,
+      billingOwnership
+    });
+
+    if (portal.reason === "ambiguous-live-customers") {
+      return send(res, 409, {
+        error: "More than one active billing profile needs review. Please contact Tolux support."
+      });
+    }
+
+    if (portal.reason === "invalid-portal-url") {
+      return send(res, 502, {
+        error: "Stripe did not return a valid subscription-management link."
+      });
+    }
+
+    if (!portal.ok) {
+      return send(res, 404, {
+        error: "No Stripe subscription was found for this Tolux account. Please contact Tolux support."
+      });
+    }
+
+    const ownershipSaved = await saveStripeBillingOwnership(
+      user.id,
+      portal.billingOwnership
+    );
+    if (!ownershipSaved) {
+      return send(res, 503, {
+        error: "Subscription management is temporarily unavailable. Please try again."
+      });
+    }
+
+    return send(res, 200, { url: portal.url });
+  } catch (err) {
+    console.error("Customer Portal error:", err);
+    return send(res, 500, {
+      error: "Unable to open subscription management. Please try again or contact Tolux support."
+    });
+  }
+}
   if (req.method === "GET" && req.url.startsWith("/api/verify-session")) {
   try {
     if (!stripe) {
@@ -801,8 +943,8 @@ if (event.type === "invoice.payment_failed") {
     const reconciliation = await reconcilePaidCheckoutEntitlement({
       session,
       userId: user.id,
-      activateSubscription: authenticatedUserId =>
-        setStudentSubscription(authenticatedUserId, true)
+      activateSubscription: (authenticatedUserId, billingOwnership) =>
+        setStudentSubscription(authenticatedUserId, true, billingOwnership)
     });
 
     if (reconciliation.verified && !reconciliation.activated) {
