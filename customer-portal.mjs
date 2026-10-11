@@ -158,7 +158,9 @@ export function isStripeBillingPortalUrl(value) {
     return (
       url.protocol === "https:" &&
       url.origin === "https://billing.stripe.com" &&
-      url.pathname.startsWith("/p/session/")
+      !url.username && !url.password &&
+      (url.pathname.startsWith("/p/session/") ||
+        (url.pathname === "/p/session" && Boolean(url.searchParams.get("secret"))))
     );
   } catch {
     return false;

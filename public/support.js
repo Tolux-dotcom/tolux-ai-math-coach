@@ -7,7 +7,9 @@ export function buildSupportEmail({ topic, accountEmail, message }) {
 export function isStripePortalUrl(value) {
   try {
     const url = new URL(value);
-    return url.origin === 'https://billing.stripe.com' && url.pathname.startsWith('/p/session/');
+    return url.origin === 'https://billing.stripe.com' && !url.username && !url.password &&
+      (url.pathname.startsWith('/p/session/') ||
+        (url.pathname === '/p/session' && Boolean(url.searchParams.get('secret'))));
   } catch {
     return false;
   }
