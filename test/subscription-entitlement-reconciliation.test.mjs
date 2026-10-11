@@ -216,6 +216,32 @@ test("does not write entitlement for unmapped subscriptions", async () => {
   assert.equal(updateCount, 0);
 });
 
+test("scheduled cancellation keeps paid-period access until Stripe reports canceled", async () => {
+  const updates = [];
+  for (const status of ["active", "canceled"]) {
+    const result = await reconcileSubscriptionEntitlement({
+      subscription: {
+        object: "subscription",
+        id: "sub_cancelperiod",
+        customer: "cus_cancelperiod",
+        status,
+        cancel_at_period_end: true,
+        metadata: { tolux_user_id: USER_ID }
+      },
+      updateSubscription: async (userId, isSubscriber, billingOwnership) => {
+        updates.push({ userId, isSubscriber, billingOwnership });
+        return true;
+      }
+    });
+    assert.equal(result.updated, true);
+  }
+  assert.deepEqual(updates.map(update => update.isSubscriber), [true, false]);
+  assert.ok(updates.every(update => update.userId === USER_ID));
+  assert.deepEqual(updates[1].billingOwnership, {
+    stripeCustomerId: "cus_cancelperiod", stripeSubscriptionId: "sub_cancelperiod"
+  });
+});
+
 test("reports entitlement persistence failure so Stripe can retry", async () => {
   const result = await reconcileSubscriptionEntitlement({
     subscription: {

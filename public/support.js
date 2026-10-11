@@ -28,13 +28,23 @@ async function getSupportSession() {
 async function openCustomerPortal() {
   const button = document.getElementById('manageSubscription');
   const status = document.getElementById('billingStatus');
+  if (button.disabled) return;
   button.disabled = true;
   status.textContent = 'Checking your signed-in Tolux account…';
 
   try {
     const { client, session } = await getSupportSession();
-    if (!session) {
+    if (!session?.user?.id || !session.access_token) {
       throw new Error('Please return to Math Coach and sign in with the email used to subscribe, then open this page again.');
+    }
+
+    const ownerId = session.user.id;
+    async function currentOwnerSession() {
+      const { data, error } = await client.auth.getSession();
+      if (error || !data?.session?.access_token || data.session.user?.id !== ownerId) {
+        throw new Error('Your signed-in account changed. Return to Math Coach and sign in with the subscription account, then try again.');
+      }
+      return data.session;
     }
 
     let response = await fetch('/api/create-customer-portal-session', {
@@ -43,19 +53,23 @@ async function openCustomerPortal() {
     });
 
     if (response.status === 401) {
+      await currentOwnerSession();
       const { data, error } = await client.auth.refreshSession();
       if (error || !data?.session) {
         throw new Error('Your sign-in expired. Please sign in again before managing the subscription.');
       }
+      const retrySession = await currentOwnerSession();
       response = await fetch('/api/create-customer-portal-session', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${data.session.access_token}` }
+        headers: { Authorization: `Bearer ${retrySession.access_token}` }
       });
     }
 
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.error || 'Unable to open subscription management.');
     if (!isStripePortalUrl(payload.url)) throw new Error('Stripe returned an invalid subscription-management link.');
+
+    await currentOwnerSession();
 
     status.textContent = 'Opening Stripe’s secure subscription page…';
     window.location.assign(payload.url);
