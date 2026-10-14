@@ -54,7 +54,7 @@ test('A.5C audited practice keeps 5 10 20 support and current attempt behavior',
   assert.match(a5c,/Review Solution & Continue/);
   assert.match(a5c,/Hint 3: answer and complete reasoning/);
   assert.match(a5c,/first_attempt_correct/);
-  assert.match(a5c,/lesson-progress/);
+  assert.match(a5c,/persistPracticeCompletion/);
   assert.match(a5c,/trial-heartbeat/);
 });
 

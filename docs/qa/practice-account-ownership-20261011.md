@@ -1,5 +1,7 @@
 # Practice progress ownership — October 11–12, 2026
 
+Latest extension: [A.5A–A.5C executable ownership and retry QA, October 14](a5-practice-account-ownership-20261014.md). The earlier evidence below is retained as historical scope; current full suite is 550/550.
+
 Base: main `1cf77ad3179e4b8074200c14df3db25859c7be4a` (PR #129 release).
 Branch: `fix/practice-progress-account-ownership`.
 
