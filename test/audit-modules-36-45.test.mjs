@@ -65,6 +65,6 @@ test('A.6A through A.9A route through audited structured Practice Mode',()=>{
   assert.match(structured,/Review Solution & Continue/);
   assert.match(structured,/Hint 3: answer and complete reasoning/);
   assert.match(structured,/first_attempt_correct/);
-  assert.match(structured,/lesson-progress/);
+  assert.match(structured,/persistPracticeCompletion/);
   assert.match(structured,/trial-heartbeat/);
 });
