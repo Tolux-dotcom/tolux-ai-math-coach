@@ -210,5 +210,3 @@ for (const skill of ['A.10A', 'A.10B', 'A.10C', 'A.10D', 'A.10E']) {
     assert.deepEqual(f.requests.filter(r => r.url === '/api/lesson-progress').map(r => JSON.parse(r.options.body).completion_id), [id, id]);
   });
 }
-
-
