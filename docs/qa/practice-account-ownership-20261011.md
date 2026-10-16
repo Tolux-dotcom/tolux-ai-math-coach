@@ -1,6 +1,6 @@
 # Practice progress ownership — October 11–12, 2026
 
-Latest extension: [Quadratic/exponential ownership and retry QA, October 15](structured-practice-account-ownership-20261015.md). Earlier evidence below and the [October 14 A.5A–A.5C record](a5-practice-account-ownership-20261014.md) is retained as historical scope; current full suite is 667/667.
+Latest extension: [Polynomial ownership and retry QA, October 16](polynomial-practice-account-ownership-20261016.md), completing owner-safe code paths across all 49 explicit Practice router skills. The [October 15 quadratic/exponential record](structured-practice-account-ownership-20261015.md), [October 14 A.5A–A.5C record](a5-practice-account-ownership-20261014.md), and earlier evidence below retain their historical scope; current full suite is 718/718. Routed skill coverage is not curriculum completion.
 
 Base: main `1cf77ad3179e4b8074200c14df3db25859c7be4a` (PR #129 release).
 Branch: `fix/practice-progress-account-ownership`.

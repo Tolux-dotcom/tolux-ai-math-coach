@@ -50,7 +50,7 @@ test('Modules 6 and 7 audited Practice Mode supports 5 10 20, hints, full soluti
   assert.match(auditedPractice, /Hint 3: answer and complete reasoning/);
   assert.match(auditedPractice, /Correct answer and full explanation/);
   assert.match(auditedPractice, /first_attempt_correct/);
-  assert.match(auditedPractice, /\/api\/lesson-progress/);
+  assert.match(auditedPractice, /persistPracticeCompletion/);
   assert.match(auditedPractice, /A\.10D/);
   assert.match(auditedPractice, /A\.10E/);
 });
