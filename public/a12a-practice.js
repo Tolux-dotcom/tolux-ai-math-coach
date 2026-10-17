@@ -1,9 +1,8 @@
 import { answersEquivalent, escapeHtml, formatMathNotation } from "./lesson-core.mjs";
+import { createPracticeCompletionId, persistPracticeCompletion } from "./practice-progress.mjs";
 
 const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
 const SUPABASE_PUBLISHABLE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
-const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
-const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   : null;
@@ -27,6 +26,7 @@ let currentIndex = 0;
 let locked = false;
 let isSubscriber = false;
 let completionReport = null;
+let practiceOwnerId = null;
 let trialTimer = null;
 const records = new Map();
 const counted = new Set();
@@ -64,17 +64,18 @@ function solutionMarkup(item, heading="Correct answer and full explanation") {
   return `<div class="solution-panel practice-solution"><h3>${escapeHtml(heading)}</h3><p><strong>Final answer:</strong> ${escapeHtml(formatMathNotation(item.answer_key))}</p><ol class="solution-steps">${steps}</ol><div class="teaching-check"><strong>Rule to remember</strong><p>Each input must have exactly one output. Repeated outputs are allowed. One input with two different outputs means the relation is not a function.</p></div></div>`;
 }
 
-async function getAuthSession(){if(!supabaseClient)return null;let{data:{session:s}}=await supabaseClient.auth.getSession();if(!s){const{data}=await supabaseClient.auth.refreshSession();s=data?.session||null;}return s;}
+async function getAuthSession(){if(!supabaseClient)return null;const{data,error}=await supabaseClient.auth.getSession();const s=error?null:data?.session;const owner=s?.user?.id;if(!s?.access_token||!owner)return null;if(!practiceOwnerId)practiceOwnerId=owner;return owner===practiceOwnerId?s:null;}
+async function refreshAuthSession(){if(!supabaseClient||!practiceOwnerId)return null;const{data,error}=await supabaseClient.auth.refreshSession();const s=error?null:data?.session;return s?.access_token&&s?.user?.id===practiceOwnerId?s:null;}
 async function fetchWithSession(url,options={}){
   let s=await getAuthSession();
   if(!s)return{response:null,session:null};
   const request=active=>fetch(url,{...options,headers:{...(options.headers||{}),Authorization:`Bearer ${active.access_token}`}});
   let response=await request(s);
-  if(response.status===401){const{data,error}=await supabaseClient.auth.refreshSession();const refreshed=error?null:data?.session;if(refreshed){s=refreshed;response=await request(s);}}
-  return{response,session:s};
+  if(response.status===401){if(!(await getAuthSession()))return{response,session:null};const refreshed=await refreshAuthSession();if(refreshed){s=refreshed;response=await request(s);}}
+  return await getAuthSession()?{response,session:s}:{response:null,session:null};
 }
 async function ensureAccess(item){
-  if(!item||locked)return false;if(counted.has(item.id))return true;
+  if(!item||locked)return false;const active=await getAuthSession();if(!active){setFeedback('<div class="lesson-state lesson-state-warning"><strong>Sign in required</strong><p>Return to the dashboard and sign in with the account that started this practice session.</p></div>');return false;}if(counted.has(item.id))return true;
   try{
     const{response,session:auth}=await fetchWithSession("/api/lesson-usage",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemId:item.id})});
     if(!auth||!response){setFeedback('<div class="lesson-state lesson-state-warning"><strong>Sign in required</strong><p>Return to the dashboard and sign in before checking this answer.</p></div>');return false;}
@@ -118,16 +119,9 @@ function calculateSummary(){
   const scorePercent=total?Math.round(correct/total*100):0;
   return{correct,total,scorePercent,label:scorePercent>=80?"Mastered":scorePercent>=60?"Developing":"Intervention Needed",missed:session.items.filter(item=>records.get(item.id)?.first_attempt_correct!==true)};
 }
-function completionId(){return window.crypto?.randomUUID?.()||`a12a-${Date.now()}-${Math.random().toString(16).slice(2)}`;}
 async function saveCompletion(summary){
-  if(!completionReport){completionReport={completion_id:completionId(),module_id:"practice-alg1-a12a-identify-functions",completed_at:new Date().toISOString(),mastery_label:summary.label,mastery_score:summary.scorePercent,is_subscriber:isSubscriber,time_on_skill_seconds:Math.round((Date.now()-startedAt)/1000),item_records:[...records.values()]};}
-  const moduleKey=`${LESSON_PROGRESS_PREFIX}${completionReport.module_id}`;const pendingKey=`${PENDING_PROGRESS_PREFIX}${completionReport.completion_id}`;
-  try{localStorage.setItem(moduleKey,JSON.stringify(completionReport));localStorage.setItem(pendingKey,JSON.stringify(completionReport));}catch(error){console.warn("A.12A local progress save failed",error);}
-  const{response,session:auth}=await fetchWithSession("/api/lesson-progress",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(completionReport)});
-  if(!auth||!response)throw new Error("Sign in is required to sync practice progress.");
-  const data=await response.json();if(!response.ok||!data.activity)throw new Error(data.error||"Unable to save practice progress.");
-  try{localStorage.setItem(moduleKey,JSON.stringify(data.activity));localStorage.removeItem(pendingKey);}catch(error){console.warn("A.12A synced progress reconciliation failed",error);}
-  return data.activity;
+  if(!completionReport){completionReport={completion_id:createPracticeCompletionId(),owner_user_id:practiceOwnerId,module_id:"practice-alg1-a12a-identify-functions",completed_at:new Date().toISOString(),mastery_label:summary.label,mastery_score:summary.scorePercent,is_subscriber:isSubscriber,time_on_skill_seconds:Math.round((Date.now()-startedAt)/1000),item_records:[...records.values()]};}
+  return persistPracticeCompletion({report:completionReport,getSession:getAuthSession,refreshSession:refreshAuthSession});
 }
 function missedReviewMarkup(summary){
   if(!summary.missed.length)return "<p>You answered every question correctly on the first attempt.</p>";
@@ -138,7 +132,7 @@ async function finish(){
   els.questionView.hidden=true;els.summary.hidden=false;els.progressBar.style.width="100%";els.progressBar.setAttribute("aria-valuenow","100");els.progressLabel.textContent="Practice session complete";
   els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.label}</h2><p class="mastery-score">${summary.scorePercent}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><p id="a12aSaveStatus" class="completion-save-status">Saving your practice progress…</p>${missedReviewMarkup(summary)}<div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
   const status=document.querySelector("#a12aSaveStatus");
-  try{await saveCompletion(summary);if(status)status.textContent="Saved to your Tolux progress dashboard.";}catch(error){console.error("A.12A practice completion sync failed",error);if(status)status.textContent="Saved on this device. Tolux will retry account sync from the dashboard.";}
+  const sync=await saveCompletion(summary);if(status)status.textContent=sync.synced?"Saved to your Tolux progress dashboard.":"Saved on this device for the account that started this session. Open the dashboard while signed in to retry.";
 }
 function next(){if(currentIndex>=session.count-1){finish();return;}currentIndex+=1;renderQuestion();}
 

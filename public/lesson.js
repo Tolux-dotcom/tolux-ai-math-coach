@@ -12,6 +12,7 @@ import {
   findCourseModule,
   validateCourseCatalog
 } from "./course-core.mjs";
+import { persistPracticeCompletion } from "./practice-progress.mjs";
 
 function displayText(value) {
   return escapeHtml(formatMathNotation(value));
@@ -20,8 +21,6 @@ function displayText(value) {
 const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
 const SUPABASE_PUBLISHABLE_KEY =
   window.TOLUX_PUBLIC_CONFIG.publishableKey;
-const LESSON_PROGRESS_PREFIX = "toluxLessonProgress:";
-const PENDING_PROGRESS_PREFIX = "toluxPendingLessonProgress:";
 
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
@@ -63,6 +62,7 @@ let lessonLocked = false;
 let isSubscriber = false;
 let includeDiagnostic = false;
 let completionReport = null;
+let lessonOwnerId = null;
 let completionSavePromise = null;
 let trialHeartbeatTimer = null;
 
@@ -180,16 +180,19 @@ function showFatalLessonError(message) {
 async function getLessonSession() {
   if (!supabaseClient) return null;
 
-  let {
-    data: { session }
-  } = await supabaseClient.auth.getSession();
+  const { data, error } = await supabaseClient.auth.getSession();
+  const session = error ? null : data?.session;
+  const ownerId = session?.user?.id;
+  if (!session?.access_token || !ownerId) return null;
+  if (!lessonOwnerId) lessonOwnerId = ownerId;
+  return ownerId === lessonOwnerId ? session : null;
+}
 
-  if (!session) {
-    const { data: refreshData } = await supabaseClient.auth.refreshSession();
-    session = refreshData?.session || null;
-  }
-
-  return session;
+async function refreshLessonSession() {
+  if (!supabaseClient || !lessonOwnerId) return null;
+  const { data, error } = await supabaseClient.auth.refreshSession();
+  const session = error ? null : data?.session;
+  return session?.access_token && session?.user?.id === lessonOwnerId ? session : null;
 }
 
 async function fetchWithLessonSession(url, options = {}) {
@@ -207,16 +210,16 @@ async function fetchWithLessonSession(url, options = {}) {
   let response = await request(session);
 
   if (response.status === 401) {
-    const { data, error } = await supabaseClient.auth.refreshSession();
-    const refreshedSession = error ? null : data?.session;
+    if (!(await getLessonSession())) return { response: null, session: null };
+    const refreshedSession = await refreshLessonSession();
 
-    if (refreshedSession) {
+    if (refreshedSession && await getLessonSession()) {
       session = refreshedSession;
       response = await request(session);
     }
   }
 
-  return { response, session };
+  return await getLessonSession() ? { response, session } : { response: null, session: null };
 }
 
 function showLessonUpgrade(message) {
@@ -242,11 +245,26 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
 
   const key = interactionKey || item.id || item.prompt;
 
-  if (countedLessonInteractions.has(key)) {
-    return true;
-  }
-
   try {
+    const authenticatedSession = await getLessonSession();
+    // The two public readiness items do not create an authenticated lesson owner.
+    // Only the server's explicit free-diagnostic response can grant this access.
+    if (!authenticatedSession && !lessonOwnerId && currentStageType === "diagnostic" &&
+        lessonModule?.module_id === "alg1-a5a-linear-equations" &&
+        ["A5A-D01", "A5A-D02"].includes(item.id)) {
+      const response = await fetch("/api/lesson-usage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itemId: item.id })
+      });
+      const data = await response.json();
+      return Boolean(response.ok && data.allowed && data.isFreeDiagnostic);
+    }
+    if (!authenticatedSession) {
+      setFeedback('<strong>Sign in required.</strong><p>Sign in to the account that started this lesson.</p>');
+      return false;
+    }
+    if (countedLessonInteractions.has(key)) return true;
     const { response, session } = await fetchWithLessonSession(
       "/api/lesson-usage",
       {
@@ -270,6 +288,7 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
     }
 
     const data = await response.json();
+    if (!(await getLessonSession())) return false;
 
     if (response.ok && data.allowed) {
       countedLessonInteractions.add(key);
@@ -324,6 +343,7 @@ async function sendTrialHeartbeat() {
     );
     if (!response) return;
     const data = await response.json();
+    if (!(await getLessonSession())) return;
     if (data.limitReached) {
       showLessonUpgrade(
         data.error || "You've completed your 10-minute free learning trial."
@@ -567,6 +587,9 @@ function renderCompletion() {
       <p id="completionSaveStatus" class="completion-save-status" role="status">
         Saving your mastery progress…
       </p>
+      <button id="retryLessonSaveBtn" class="lesson-link-button" type="button" hidden>
+        Retry progress save
+      </button>
       <button
         id="returnDashboardBtn"
         class="lesson-link-button"
@@ -581,20 +604,34 @@ function renderCompletion() {
   setFeedback();
   const returnDashboardBtn = document.querySelector("#returnDashboardBtn");
   const completionSaveStatus = document.querySelector("#completionSaveStatus");
+  const retryLessonSaveBtn = document.querySelector("#retryLessonSaveBtn");
 
-  completionSavePromise = saveLessonCompletion()
-    .then(() => {
-      completionSaveStatus.textContent =
-        "Progress saved. Your dashboard and My Progress are up to date.";
-    })
-    .catch(error => {
-      console.warn("Lesson progress will be retried from the dashboard:", error);
-      completionSaveStatus.textContent =
-        "Saved on this device. Tolux will retry the secure account save on your dashboard.";
-    })
-    .finally(() => {
-      returnDashboardBtn.disabled = false;
-    });
+  const retrySave = () => {
+    retryLessonSaveBtn.disabled = true;
+    returnDashboardBtn.disabled = true;
+    completionSaveStatus.textContent = "Saving your mastery progress…";
+    completionSavePromise = saveLessonCompletion()
+      .then(result => {
+        completionSaveStatus.textContent = result.synced
+          ? "Progress saved. Your dashboard and My Progress are up to date."
+          : result.pendingSaved
+            ? "Saved on this device for the account that started this lesson. Open the dashboard while signed in to retry."
+            : "Progress could not be saved to your account or this device. Keep this page open and try again.";
+        retryLessonSaveBtn.hidden = result.synced;
+      })
+      .catch(error => {
+        console.warn("Lesson progress save failed:", error);
+        completionSaveStatus.textContent = "Unable to confirm a progress save. Keep this page open and try again.";
+        retryLessonSaveBtn.hidden = false;
+      })
+      .finally(() => {
+        returnDashboardBtn.disabled = false;
+        retryLessonSaveBtn.disabled = false;
+      });
+    return completionSavePromise;
+  };
+  retryLessonSaveBtn.addEventListener("click", retrySave);
+  retrySave();
 
   returnDashboardBtn.addEventListener("click", async () => {
     await completionSavePromise;
@@ -631,6 +668,7 @@ function buildLessonCompletionReport() {
 
   completionReport = {
     completion_id: generateCompletionId(),
+    owner_user_id: lessonOwnerId,
     module_id: lessonModule.module_id,
     completed_at: new Date().toISOString(),
     mastery_label: masterySummary.label,
@@ -644,44 +682,12 @@ function buildLessonCompletionReport() {
 }
 
 async function saveLessonCompletion() {
-  const report = buildLessonCompletionReport();
-  const moduleKey = `${LESSON_PROGRESS_PREFIX}${lessonModule.module_id}`;
-  const pendingKey = `${PENDING_PROGRESS_PREFIX}${report.completion_id}`;
-
-  try {
-    localStorage.setItem(moduleKey, JSON.stringify(report));
-    localStorage.setItem(pendingKey, JSON.stringify(report));
-  } catch (error) {
-    console.warn("Lesson completion could not be saved locally:", error);
-  }
-
-  const { response, session } = await fetchWithLessonSession(
-    "/api/lesson-progress",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(report)
-    }
-  );
-  if (!session || !response) {
-    throw new Error("Sign in is required to sync lesson progress.");
-  }
-  const data = await response.json();
-
-  if (!response.ok || !data.activity) {
-    throw new Error(data.error || "Unable to save lesson progress.");
-  }
-
-  try {
-    localStorage.setItem(moduleKey, JSON.stringify(data.activity));
-    localStorage.removeItem(pendingKey);
-  } catch (error) {
-    console.warn("Saved progress could not be reconciled locally:", error);
-  }
-
-  return data.activity;
+  // Tutor and Practice share the same server report and owner-safe recovery contract.
+  return persistPracticeCompletion({
+    report: buildLessonCompletionReport(),
+    getSession: getLessonSession,
+    refreshSession: refreshLessonSession
+  });
 }
 
 function remediationReviewMarkup() {

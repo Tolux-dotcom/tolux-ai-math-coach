@@ -1349,7 +1349,10 @@ function migrateLegacyLocalLessonProgress() {
       if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
 
       const activity = JSON.parse(localStorage.getItem(key));
-      if (!activity?.module_id || activity.completion_id) continue;
+      if (!activity?.module_id || activity.completion_id || activity.client_completion_id) continue;
+      const moduleId = String(activity.module_id);
+      if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-")) &&
+          !activity.owner_user_id) continue;
 
       activity.completion_id = generateProgressCompletionId();
       localStorage.setItem(key, JSON.stringify(activity));
@@ -1378,7 +1381,7 @@ function formatSkillTime(seconds) {
   return `${minutes} min on skill`;
 }
 
-function readLocalLessonActivities() {
+function readLocalLessonActivities(ownerId) {
   const activities = [];
 
   try {
@@ -1388,6 +1391,9 @@ function readLocalLessonActivities() {
 
       const activity = JSON.parse(localStorage.getItem(key));
       if (activity?.module_id && activity?.completed_at) {
+        const moduleId = String(activity.module_id);
+        if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-") || activity.owner_user_id) &&
+            (!ownerId || activity.owner_user_id !== ownerId)) continue;
         activities.push(activity);
       }
     }
@@ -1497,7 +1503,7 @@ function renderDeviceOnlyTestPrep(accountActivities = [], accountAvailable = fal
   panel.hidden = false;
 }
 
-function readPendingLessonProgress() {
+function readPendingLessonProgress(ownerId) {
   const pending = [];
 
   try {
@@ -1506,7 +1512,12 @@ function readPendingLessonProgress() {
       if (!key?.startsWith(PENDING_PROGRESS_PREFIX)) continue;
 
       const report = JSON.parse(localStorage.getItem(key));
-      if (report?.completion_id) pending.push({ key, report });
+      if (!report?.completion_id) continue;
+      // Keep unowned legacy Practice/Tutor records intact; never guess their student.
+      const moduleId = String(report.module_id || "");
+      if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-") || report.owner_user_id) &&
+          (!ownerId || report.owner_user_id !== ownerId)) continue;
+      pending.push({ key, report });
     }
   } catch (error) {
     console.warn("Unable to read pending lesson progress:", error);
@@ -1518,18 +1529,34 @@ function readPendingLessonProgress() {
 async function syncPendingLessonProgress(session) {
   migrateLegacyLocalLessonProgress();
 
-  for (const { key, report } of readPendingLessonProgress()) {
+  for (const { key, report } of readPendingLessonProgress(session?.user?.id)) {
     try {
+      const ownedReport = String(report.module_id || "").startsWith("practice-") ||
+        String(report.module_id || "").startsWith("alg1-") || Boolean(report.owner_user_id);
+      let activeSession = session;
+      if (ownedReport) {
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error || !data?.session?.access_token || data.session.user?.id !== report.owner_user_id) return;
+        activeSession = data.session;
+      }
       const response = await fetch("/api/lesson-progress", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${activeSession.access_token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(report)
       });
 
-      if (response.ok) localStorage.removeItem(key);
+      if (response.ok) {
+        const data = await response.json();
+        if (!data.activity) continue;
+        if (ownedReport) {
+          const { data: authData, error } = await supabaseClient.auth.getSession();
+          if (error || authData?.session?.user?.id !== report.owner_user_id) return;
+        }
+        localStorage.removeItem(key);
+      }
     } catch (error) {
       console.warn("Pending lesson progress will be retried later:", error);
     }
@@ -1652,12 +1679,20 @@ async function refreshDashboardProgress(session) {
   } catch (error) {
     console.error("Unable to refresh lesson progress:", error);
     if (refreshId !== progressRefreshSequence) return;
-    renderDashboardProgress(readLocalLessonActivities(), "local");
+    let fallbackOwnerId = null;
+    try {
+      const { data, error: sessionError } = await supabaseClient.auth.getSession();
+      if (!sessionError && data?.session?.access_token && data.session.user?.id === ownerId) {
+        fallbackOwnerId = ownerId;
+      }
+    } catch { /* Do not expose another account's local history when auth is unavailable. */ }
+    if (refreshId !== progressRefreshSequence) return;
+    renderDashboardProgress(readLocalLessonActivities(fallbackOwnerId), "local");
     renderDeviceOnlyTestPrep([], false);
     const progressStatus = document.querySelector("#progressStatus");
     if (progressStatus) {
       progressStatus.textContent =
-        "Account progress is temporarily unavailable; showing this device's saved activity.";
+        "Account progress is temporarily unavailable; only confirmed-owner device activity can be shown.";
     }
   }
 }
