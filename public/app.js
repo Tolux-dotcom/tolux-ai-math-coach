@@ -1533,28 +1533,47 @@ async function syncPendingLessonProgress(session) {
     try {
       const ownedReport = String(report.module_id || "").startsWith("practice-") ||
         String(report.module_id || "").startsWith("alg1-") || Boolean(report.owner_user_id);
+      const ownedSession = async () => {
+        const { data, error } = await supabaseClient.auth.getSession();
+        const active = error ? null : data?.session;
+        return active?.access_token && active.user?.id === report.owner_user_id ? active : null;
+      };
       let activeSession = session;
       if (ownedReport) {
-        const { data, error } = await supabaseClient.auth.getSession();
-        if (error || !data?.session?.access_token || data.session.user?.id !== report.owner_user_id) return;
-        activeSession = data.session;
+        activeSession = await ownedSession();
+        if (!activeSession) return;
       }
-      const response = await fetch("/api/lesson-progress", {
+      const postReport = active => fetch("/api/lesson-progress", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${activeSession.access_token}`,
+          Authorization: `Bearer ${active.access_token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(report)
       });
+      let response = await postReport(activeSession);
+
+      if (ownedReport) {
+        if (!(await ownedSession())) return;
+        if (response.status === 401) {
+          // Retry this completion once, and never refresh/replay across students.
+          // A second 401 stops the batch instead of refreshing each pending item.
+          try {
+            const { data, error } = await supabaseClient.auth.refreshSession();
+            const refreshed = error ? null : data?.session;
+            if (!refreshed?.access_token || refreshed.user?.id !== report.owner_user_id ||
+                !(await ownedSession())) return;
+            activeSession = refreshed;
+          } catch { return; }
+          response = await postReport(activeSession);
+          if (!(await ownedSession()) || response.status === 401) return;
+        }
+      }
 
       if (response.ok) {
         const data = await response.json();
         if (!data.activity) continue;
-        if (ownedReport) {
-          const { data: authData, error } = await supabaseClient.auth.getSession();
-          if (error || authData?.session?.user?.id !== report.owner_user_id) return;
-        }
+        if (ownedReport && !(await ownedSession())) return;
         localStorage.removeItem(key);
       }
     } catch (error) {

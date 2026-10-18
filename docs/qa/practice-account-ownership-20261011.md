@@ -1,6 +1,6 @@
 # Practice progress ownership — October 11–12, 2026
 
-Latest extension: [Tutor ownership, dashboard replay/fallback, and readiness regression QA, October 17](tutor-progress-account-ownership-20261017.md). The [October 16 polynomial record](polynomial-practice-account-ownership-20261016.md) completes code-path coverage across all 49 explicit Practice router skills. The [October 15 quadratic/exponential record](structured-practice-account-ownership-20261015.md), [October 14 A.5A–A.5C record](a5-practice-account-ownership-20261014.md), and earlier evidence below retain their historical scope; current full suite is 742/742. Routed skill coverage is not curriculum completion.
+Latest extension: [Dashboard same-owner 401 replay refresh QA, October 18](dashboard-replay-refresh-20261018.md). The [October 17 Tutor/replay/fallback record](tutor-progress-account-ownership-20261017.md), [October 16 polynomial record](polynomial-practice-account-ownership-20261016.md), [October 15 quadratic/exponential record](structured-practice-account-ownership-20261015.md), [October 14 A.5A–A.5C record](a5-practice-account-ownership-20261014.md), and earlier evidence below retain their historical scope; current full suite is 768/768. All 49 explicit Practice router skills have owner-safe code paths; routed skill coverage is not curriculum completion.
 
 Base: main `1cf77ad3179e4b8074200c14df3db25859c7be4a` (PR #129 release).
 Branch: `fix/practice-progress-account-ownership`.
