@@ -1348,7 +1348,10 @@ function migrateLegacyLocalLessonProgress() {
       const key = localStorage.key(index);
       if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
 
-      const activity = JSON.parse(localStorage.getItem(key));
+      let activity;
+      try { activity = JSON.parse(localStorage.getItem(key)); }
+      catch { continue; } // Keep this unreadable record intact and inspect the next one.
+      if (!activity || typeof activity !== "object" || Array.isArray(activity)) continue;
       if (!activity?.module_id || activity.completion_id || activity.client_completion_id) continue;
       const moduleId = String(activity.module_id);
       if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-")) &&
@@ -1389,7 +1392,10 @@ function readLocalLessonActivities(ownerId) {
       const key = localStorage.key(index);
       if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
 
-      const activity = JSON.parse(localStorage.getItem(key));
+      let activity;
+      try { activity = JSON.parse(localStorage.getItem(key)); }
+      catch { continue; } // One damaged record must not hide other owned activity.
+      if (!activity || typeof activity !== "object" || Array.isArray(activity)) continue;
       if (activity?.module_id && activity?.completed_at) {
         const moduleId = String(activity.module_id);
         if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-") || activity.owner_user_id) &&
@@ -1511,7 +1517,10 @@ function readPendingLessonProgress(ownerId) {
       const key = localStorage.key(index);
       if (!key?.startsWith(PENDING_PROGRESS_PREFIX)) continue;
 
-      const report = JSON.parse(localStorage.getItem(key));
+      let report;
+      try { report = JSON.parse(localStorage.getItem(key)); }
+      catch { continue; } // Preserve the unreadable value; never clear browser data to recover.
+      if (!report || typeof report !== "object" || Array.isArray(report)) continue;
       if (!report?.completion_id) continue;
       // Keep unowned legacy Practice/Tutor records intact; never guess their student.
       const moduleId = String(report.module_id || "");
