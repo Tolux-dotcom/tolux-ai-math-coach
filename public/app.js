@@ -1352,17 +1352,30 @@ function migrateLegacyLocalLessonProgress() {
       try { activity = JSON.parse(localStorage.getItem(key)); }
       catch { continue; } // Keep this unreadable record intact and inspect the next one.
       if (!activity || typeof activity !== "object" || Array.isArray(activity)) continue;
-      if (!activity?.module_id || activity.completion_id || activity.client_completion_id) continue;
+      if (!activity.module_id || activity.client_completion_id) continue;
+      // Only resume ids explicitly staged by this migration. Ordinary completed
+      // local history must not be queued again after a successful replay.
+      if (activity.completion_id && activity.local_progress_migration_pending !== true) continue;
       const moduleId = String(activity.module_id);
       if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-")) &&
           !activity.owner_user_id) continue;
 
-      activity.completion_id = generateProgressCompletionId();
-      localStorage.setItem(key, JSON.stringify(activity));
-      localStorage.setItem(
-        `${PENDING_PROGRESS_PREFIX}${activity.completion_id}`,
-        JSON.stringify(activity)
-      );
+      try {
+        if (!activity.completion_id) {
+          activity.completion_id = generateProgressCompletionId();
+          // Persist the id and retry marker atomically before preparing the queue.
+          // If this write fails, the untouched legacy entry remains retryable.
+          localStorage.setItem(key, JSON.stringify({ ...activity, local_progress_migration_pending: true }));
+        }
+        delete activity.local_progress_migration_pending;
+        const serialized = JSON.stringify(activity);
+        localStorage.setItem(`${PENDING_PROGRESS_PREFIX}${activity.completion_id}`, serialized);
+        // A failed final write leaves the staged marker and the same id intact.
+        // Repeating the queue write is safe; it never creates a second completion.
+        localStorage.setItem(key, serialized);
+      } catch {
+        console.warn("A legacy lesson progress migration remains pending on this device.");
+      }
     }
   } catch (error) {
     console.warn("Unable to prepare legacy lesson progress for sync:", error);

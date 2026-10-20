@@ -29,12 +29,12 @@ function response(status, data) {
   return { status, ok: status >= 200 && status < 300, async json() { return data; } };
 }
 
-function fixture({ respond, failedReads = new Set() } = {}) {
-  const data = new Map(), requests = [], logs = [];
-  let token = owner.access_token, refreshes = 0;
+function fixture({ respond, failedReads = new Set(), beforeWrite } = {}) {
+  const data = new Map(), requests = [], logs = [], writes = [];
+  let token = owner.access_token, refreshes = 0, generated = 0;
   const context = vm.createContext({
     Date, Uint8Array, LESSON_PROGRESS_PREFIX: localPrefix, PENDING_PROGRESS_PREFIX: pendingPrefix,
-    window: { crypto: { randomUUID: () => generatedId } },
+    window: { crypto: { randomUUID: () => `123e4567-e89b-42d3-a456-${426614174999 + generated++}` } },
     document: { querySelector() { return { textContent: '' }; } },
     console: { warn(...args) { logs.push(args); }, error(...args) { logs.push(args); } },
     supabaseClient: { auth: {
@@ -44,7 +44,8 @@ function fixture({ respond, failedReads = new Set() } = {}) {
     localStorage: {
       get length() { return data.size; }, key(i) { return [...data.keys()][i] || null; },
       getItem(k) { if (failedReads.has(k)) throw new Error('Read unavailable'); return data.get(k) || null; },
-      setItem(k, v) { data.set(k, String(v)); }, removeItem(k) { data.delete(k); }
+      setItem(k, v) { writes.push({ key: k, value: String(v) }); beforeWrite?.(k, v, writes.length); data.set(k, String(v)); },
+      removeItem(k) { data.delete(k); }
     },
     async fetch(url, options) {
       requests.push({ url, options });
@@ -56,7 +57,7 @@ function fixture({ respond, failedReads = new Set() } = {}) {
   vm.runInContext(migration + localReader + replay + refresh, context);
   const run = code => vm.runInContext(code, context);
   const api = {
-    data, requests, logs, get refreshes() { return refreshes; },
+    data, requests, logs, writes, get refreshes() { return refreshes; },
     migrate: () => run('migrateLegacyLocalLessonProgress()'),
     pending: () => run(`readPendingLessonProgress('${owner.user.id}')`),
     local: () => run(`readLocalLessonActivities('${owner.user.id}')`),
@@ -71,6 +72,84 @@ function fixture({ respond, failedReads = new Set() } = {}) {
 }
 
 for (const [kind, moduleId] of [['Tutor', 'alg1-a5a-linear-equations'], ['Practice', 'practice-alg1-a5a-linear-equations']]) {
+  test(`${kind}: failed migration staging leaves the legacy result byte-for-byte intact and retryable`, () => {
+    const legacy = report(moduleId); delete legacy.completion_id;
+    const original = JSON.stringify(legacy), key = localPrefix + moduleId;
+    const f = fixture({ beforeWrite() { throw new Error('Storage unavailable'); } });
+    f.data.set(key, original); f.migrate();
+    assert.equal(f.data.get(key), original); assert.equal(f.data.size, 1);
+    const reload = fixture(); for (const entry of f.data) reload.data.set(...entry);
+    reload.migrate();
+    assert.equal(reload.pending().length, 1);
+    assert.equal(reload.pending()[0].report.mastery_score, legacy.mastery_score);
+  });
+
+  test(`${kind}: failed queue write resumes after reload with the same completion id and original owner`, () => {
+    const legacy = report(moduleId); delete legacy.completion_id;
+    const key = localPrefix + moduleId;
+    const f = fixture({ beforeWrite(k) { if (k.startsWith(pendingPrefix)) throw new Error('Quota exceeded'); } });
+    f.data.set(key, JSON.stringify(legacy)); f.migrate();
+    const staged = JSON.parse(f.data.get(key));
+    assert.equal(staged.completion_id, generatedId);
+    assert.equal(staged.local_progress_migration_pending, true);
+    assert.equal(f.pending().length, 0);
+    const reload = fixture(); for (const entry of f.data) reload.data.set(...entry);
+    reload.migrate(); reload.migrate();
+    const queued = reload.pending(); assert.equal(queued.length, 1);
+    assert.deepEqual(JSON.parse(JSON.stringify(queued[0].report)), { ...legacy, completion_id: generatedId });
+    assert.deepEqual(JSON.parse(reload.data.get(key)), { ...legacy, completion_id: generatedId });
+  });
+
+  test(`${kind}: failed migration finalization never creates a second queue id or sends its local marker`, async () => {
+    const legacy = report(moduleId); delete legacy.completion_id;
+    const key = localPrefix + moduleId;
+    const f = fixture({ beforeWrite(k, value) {
+      if (k === key && !JSON.parse(value).local_progress_migration_pending) throw new Error('Finalization unavailable');
+    } });
+    f.data.set(key, JSON.stringify(legacy)); f.migrate(); f.migrate();
+    assert.equal(f.pending().length, 1);
+    assert.equal(JSON.parse(f.data.get(key)).local_progress_migration_pending, true);
+    await f.replay(); assert.equal(f.requests.length, 1);
+    assert.deepEqual(JSON.parse(f.requests[0].options.body), { ...legacy, completion_id: generatedId });
+    const reload = fixture(); for (const entry of f.data) reload.data.set(...entry);
+    reload.migrate();
+    assert.equal(reload.pending().length, 1);
+    assert.equal(reload.pending()[0].report.completion_id, generatedId);
+    assert.equal(normalizeLessonProgressReport(reload.pending()[0].report).client_completion_id, generatedId);
+    assert.equal(JSON.parse(reload.data.get(key)).local_progress_migration_pending, undefined);
+  });
+
+  test(`${kind}: a migration write failure cannot strand later owned legacy results`, () => {
+    const first = report(moduleId), second = report(moduleId + '-second', 2);
+    delete first.completion_id; delete second.completion_id;
+    const firstKey = localPrefix + first.module_id;
+    const f = fixture({ beforeWrite(k) { if (k === firstKey) throw new Error('One key unavailable'); } });
+    const original = JSON.stringify(first); f.data.set(firstKey, original);
+    f.data.set(localPrefix + second.module_id, JSON.stringify(second)); f.migrate();
+    assert.equal(f.data.get(firstKey), original);
+    assert.equal(f.pending().length, 1); assert.equal(f.pending()[0].report.module_id, second.module_id);
+    assert.equal(f.pending()[0].report.mastery_score, second.mastery_score);
+  });
+
+  test(`${kind}: successful migration stops writing once queued and does not revive completed ordinary history`, () => {
+    const legacy = report(moduleId); delete legacy.completion_id;
+    const f = fixture(); f.data.set(localPrefix + moduleId, JSON.stringify(legacy)); f.migrate();
+    const writeCount = f.writes.length; f.migrate(); assert.equal(f.writes.length, writeCount);
+    f.data.delete(pendingPrefix + generatedId); f.migrate();
+    assert.equal(f.pending().length, 0); assert.equal(f.writes.length, writeCount);
+  });
+
+  test(`${kind}: recovery markers never override confirmed history or missing original ownership`, () => {
+    const marked = { ...report(moduleId), local_progress_migration_pending: true };
+    const unowned = { ...marked, owner_user_id: null };
+    const confirmed = { ...marked, client_completion_id: marked.completion_id };
+    const f = fixture();
+    f.data.set(localPrefix + 'unowned', JSON.stringify(unowned));
+    f.data.set(localPrefix + 'confirmed', JSON.stringify(confirmed));
+    const original = [...f.data]; f.migrate();
+    assert.deepEqual([...f.data], original); assert.equal(f.writes.length, 0);
+  });
+
   test(`${kind}: malformed pending values cannot hide valid owned completions before or after them`, () => {
     const f = fixture();
     for (const [index, value] of [damaged, 'null', '[]', '7', 'true', '"text"'].entries()) f.data.set(`${pendingPrefix}bad-${index}`, value);
