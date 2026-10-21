@@ -17,7 +17,7 @@ const completionId = '123e4567-e89b-42d3-a456-426614174000';
 const pendingKey = `toluxPendingLessonProgress:${completionId}`;
 const summary = { label: 'Mastered', scorePercent: 80 };
 
-function fixture({ initial = owner, refreshed = { ...owner, access_token: 'fresh-token' }, responses = [] } = {}) {
+function fixture({ initial = owner, refreshed = { ...owner, access_token: 'fresh-token' }, responses = [], storageFailure = false } = {}) {
   let active = initial;
   let refreshes = 0;
   const storageData = new Map();
@@ -26,7 +26,7 @@ function fixture({ initial = owner, refreshed = { ...owner, access_token: 'fresh
     get length() { return storageData.size; },
     key(i) { return [...storageData.keys()][i] || null; },
     getItem(k) { return storageData.get(k) || null; },
-    setItem(k, v) { storageData.set(k, String(v)); },
+    setItem(k, v) { if (storageFailure) throw new Error('Storage unavailable'); storageData.set(k, String(v)); },
     removeItem(k) { storageData.delete(k); }
   };
   const client = { auth: {
@@ -84,6 +84,14 @@ test('Practice queues its original owner before the request and clears only conf
   assert.equal(f.storageData.has(pendingKey), false);
   const local = JSON.parse(f.storageData.get('toluxLessonProgress:practice-alg1-a5a-linear-equations'));
   assert.equal(local.owner_user_id, owner.user.id);
+});
+
+test('generic Practice reports that an offline result was not saved when device storage is unavailable', async () => {
+  const f = fixture({ storageFailure: true, responses: [() => { throw new Error('Offline'); }] });
+  await f.bind();
+  await assert.rejects(f.save(), error => error.pendingSaved === false);
+  assert.equal(f.storageData.size, 0);
+  assert.match(practiceSource, /Progress could not be saved to your account or this device/);
 });
 
 test('Practice retries a 401 once with a refreshed token for the same student', async () => {

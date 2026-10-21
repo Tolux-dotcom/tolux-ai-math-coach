@@ -30,14 +30,14 @@ function response(status = 200, activity = { mastery_score: 80 }) {
   };
 }
 
-function fixture({ initial = owner, refreshed = { ...owner, access_token: 'fresh-token' }, responses = [] } = {}) {
+function fixture({ initial = owner, refreshed = { ...owner, access_token: 'fresh-token' }, responses = [], storageFailure = false } = {}) {
   let active = initial;
   let refreshes = 0;
   const data = new Map();
   const requests = [];
   const storage = {
     getItem(key) { return data.get(key) || null; },
-    setItem(key, value) { data.set(key, String(value)); },
+    setItem(key, value) { if (storageFailure) throw new Error('Storage unavailable'); data.set(key, String(value)); },
     removeItem(key) { data.delete(key); }
   };
   return {
@@ -108,6 +108,14 @@ test('offline and non-success responses keep the original completion queued', as
   });
 });
 
+test('shared persistence distinguishes an unavailable device queue from an offline queued result', async () => {
+  const f = fixture({ storageFailure: true, responses: [() => { throw new Error('Offline'); }] });
+  const result = await f.save();
+  assert.equal(result.synced, false);
+  assert.equal(result.pendingSaved, false);
+  assert.equal(f.data.size, 0);
+});
+
 test('a 401 retries once with the refreshed token for the same owner', async () => {
   const f = fixture({ responses: [() => response(401, null), () => response()] });
   const result = await f.save();
@@ -174,6 +182,8 @@ test('all 23 Batch 5–9 skills use the shared owner-safe completion path', () =
     assert.match(source, /getSession:auth,refreshSession:refreshAuth/);
     assert.match(source, /const \w+=await auth\(\);[\s\S]*?counted\.has/);
     assert.match(source, /completion-save-status/);
+    assert.match(source, /pendingSaved/);
+    assert.match(source, /Progress could not be saved to your account or this device/);
     assert.doesNotMatch(source, /fetch\('\/api\/lesson-progress'/);
     assert.doesNotMatch(source, /completion_id:crypto\.randomUUID/);
   }

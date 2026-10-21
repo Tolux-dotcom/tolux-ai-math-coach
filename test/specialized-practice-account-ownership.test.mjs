@@ -21,6 +21,8 @@ for (const file of runtimes) {
     assert.match(source, /persistPracticeCompletion\(\{/);
     assert.match(source, /refreshSession:refreshAuth|refreshSession: refreshAuth/);
     assert.match(source, /account that started this session/);
+    assert.match(source, /pendingSaved/);
+    assert.match(source, /Progress could not be saved to your account or this device/);
     assert.doesNotMatch(source, /fetch\(["']\/api\/lesson-progress["']/);
   });
 }

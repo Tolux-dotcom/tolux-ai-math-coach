@@ -375,7 +375,9 @@ async function finishSession() {
   const sync = await saveCompletion(summary);
   status.textContent = sync.synced
     ? "Saved to your Tolux progress dashboard."
-    : "Saved on this device for the account that started this session. Open the dashboard while signed in to retry.";
+    : sync.pendingSaved
+      ? "Saved on this device for the account that started this session. Open the dashboard while signed in to retry."
+      : "Progress could not be saved to your account or this device. Keep this page open and try again.";
 }
 
 function advance() {

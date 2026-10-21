@@ -132,7 +132,7 @@ async function finish(){
   els.questionView.hidden=true;els.summary.hidden=false;els.progressBar.style.width="100%";els.progressBar.setAttribute("aria-valuenow","100");els.progressLabel.textContent="Practice session complete";
   els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.label}</h2><p class="mastery-score">${summary.scorePercent}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><p id="a12aSaveStatus" class="completion-save-status">Saving your practice progress…</p>${missedReviewMarkup(summary)}<div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
   const status=document.querySelector("#a12aSaveStatus");
-  const sync=await saveCompletion(summary);if(status)status.textContent=sync.synced?"Saved to your Tolux progress dashboard.":"Saved on this device for the account that started this session. Open the dashboard while signed in to retry.";
+  const sync=await saveCompletion(summary);if(status)status.textContent=sync.synced?"Saved to your Tolux progress dashboard.":sync.pendingSaved?"Saved on this device for the account that started this session. Open the dashboard while signed in to retry.":"Progress could not be saved to your account or this device. Keep this page open and try again.";
 }
 function next(){if(currentIndex>=session.count-1){finish();return;}currentIndex+=1;renderQuestion();}
 

@@ -452,37 +452,47 @@ async function savePracticeCompletion(summary) {
   const moduleKey = `${LESSON_PROGRESS_PREFIX}${report.module_id}`;
   const pendingKey = `${PENDING_PROGRESS_PREFIX}${report.completion_id}`;
 
+  let pendingSaved = false;
   try {
     localStorage.setItem(moduleKey, JSON.stringify(report));
     localStorage.setItem(pendingKey, JSON.stringify(report));
+    pendingSaved = true;
   } catch (error) {
     console.warn("Practice progress could not be saved locally:", error);
   }
 
-  if (!report.owner_user_id) throw new Error("Sign in to sync this practice session.");
-  const { response, session: authSession } = await fetchWithPracticeSession(
-    "/api/lesson-progress", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(report)
-    }
-  );
-  if (!authSession || !response || !(await getPracticeSession())) {
-    throw new Error("Sign in with the account that started this practice session to sync progress.");
-  }
-  const data = await response.json();
-  if (!response.ok || !data.activity || !(await getPracticeSession())) {
-    throw new Error(data.error || "Unable to confirm practice progress for the original account.");
-  }
-
   try {
-    localStorage.setItem(moduleKey, JSON.stringify({ ...data.activity, owner_user_id: report.owner_user_id }));
-    localStorage.removeItem(pendingKey);
-  } catch (error) {
-    console.warn("Synced practice progress could not be reconciled:", error);
-  }
+    if (!report.owner_user_id) throw new Error("Sign in to sync this practice session.");
+    const { response, session: authSession } = await fetchWithPracticeSession(
+      "/api/lesson-progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(report)
+      }
+    );
+    if (!authSession || !response || !(await getPracticeSession())) {
+      throw new Error("Sign in with the account that started this practice session to sync progress.");
+    }
+    const data = await response.json();
+    if (!response.ok || !data.activity || !(await getPracticeSession())) {
+      throw new Error(data.error || "Unable to confirm practice progress for the original account.");
+    }
 
-  return data.activity;
+    try {
+      localStorage.setItem(moduleKey, JSON.stringify({ ...data.activity, owner_user_id: report.owner_user_id }));
+      localStorage.removeItem(pendingKey);
+    } catch (error) {
+      console.warn("Synced practice progress could not be reconciled:", error);
+    }
+
+    return data.activity;
+  } catch (error) {
+    const syncError = error instanceof Error
+      ? error
+      : new Error(String(error || "Practice progress sync failed."));
+    syncError.pendingSaved = pendingSaved;
+    throw syncError;
+  }
 }
 
 function missedReviewMarkup(summary) {
@@ -538,8 +548,9 @@ async function finishSession() {
     status.textContent = "Saved to your Tolux progress dashboard.";
   } catch (error) {
     console.error("Practice completion sync failed:", error);
-    status.textContent =
-      "Saved on this device. Sign in with the account that started this practice session and open the dashboard to retry sync.";
+    status.textContent = error.pendingSaved
+      ? "Saved on this device. Sign in with the account that started this practice session and open the dashboard to retry sync."
+      : "Progress could not be saved to your account or this device. Keep this page open and try again.";
   }
 }
 
