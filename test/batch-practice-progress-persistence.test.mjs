@@ -184,6 +184,9 @@ test('all 23 Batch 5–9 skills use the shared owner-safe completion path', () =
     assert.match(source, /completion-save-status/);
     assert.match(source, /pendingSaved/);
     assert.match(source, /Progress could not be saved to your account or this device/);
+    assert.match(source, /let completionReport=null/);
+    assert.match(source, /data-practice-retry-save/);
+    assert.match(source, /Retrying progress save/);
     assert.doesNotMatch(source, /fetch\('\/api\/lesson-progress'/);
     assert.doesNotMatch(source, /completion_id:crypto\.randomUUID/);
   }
@@ -192,5 +195,103 @@ test('all 23 Batch 5–9 skills use the shared owner-safe completion path', () =
   const packageSource = fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8');
   for (const asset of ['practice-progress.mjs', ...[5, 6, 7, 8, 9].map(n => `batch${n}-practice.js`)]) {
     assert.match(packageSource, new RegExp(`node --check public/${asset.replace('.', '\\.')}`));
+  }
+});
+
+test('Batch Practice retries reuse the exact completion instead of creating a duplicate attempt', async t => {
+  for (const batch of [5, 6, 7, 8, 9]) {
+    await t.test(`Batch ${batch}`, async () => {
+      const source = fs.readFileSync(
+        new URL(`../public/batch${batch}-practice.js`, import.meta.url),
+        'utf8'
+      );
+      const start = source.indexOf('async function save()');
+      const end = source.indexOf('async function next()', start);
+      assert.notEqual(start, -1);
+      assert.notEqual(end, -1);
+      const saveSource = source.slice(start, end);
+      const reports = [];
+      let identifiersCreated = 0;
+      const makeSave = new Function(
+        'records',
+        'config',
+        'practiceOwnerId',
+        'isSubscriber',
+        'startedAt',
+        'createPracticeCompletionId',
+        'persistPracticeCompletion',
+        'auth',
+        'refreshAuth',
+        `let completionReport=null;${saveSource};return save;`
+      );
+      const save = makeSave(
+        new Map([['item-1', { item_id: 'item-1', first_attempt_correct: true }]]),
+        { moduleId: 'same-attempt-test' },
+        owner.user.id,
+        true,
+        Date.now() - 1000,
+        () => `completion-${++identifiersCreated}`,
+        async ({ report: attemptedReport }) => {
+          reports.push(attemptedReport);
+          return reports.length === 1
+            ? { synced: false, pendingSaved: true }
+            : { synced: true, pendingSaved: false };
+        },
+        async () => owner,
+        async () => owner
+      );
+
+      const first = await save();
+      const retry = await save();
+
+      assert.equal(first.synced, false);
+      assert.equal(retry.synced, true);
+      assert.equal(identifiersCreated, 1);
+      assert.equal(reports.length, 2);
+      assert.equal(reports[0], reports[1]);
+      assert.equal(reports[0].completion_id, 'completion-1');
+    });
+  }
+});
+
+test('Batch Practice retry controls report the result and disappear after a confirmed sync', async t => {
+  for (const batch of [5, 6, 7, 8, 9]) {
+    await t.test(`Batch ${batch}`, async () => {
+      const source = fs.readFileSync(
+        new URL(`../public/batch${batch}-practice.js`, import.meta.url),
+        'utf8'
+      );
+      const start = source.indexOf('function saveStatus(');
+      const end = source.indexOf('async function next()', start);
+      const retrySource = source.slice(start, end);
+      let click;
+      const status = { textContent: '' };
+      const button = {
+        disabled: false,
+        removed: false,
+        addEventListener(event, handler) {
+          assert.equal(event, 'click');
+          click = handler;
+        },
+        remove() { this.removed = true; }
+      };
+      const bind = new Function(
+        'els',
+        'save',
+        `${retrySource};return bindRetry;`
+      )({
+        summary: {
+          querySelector(selector) {
+            return selector === '[data-practice-retry-save]' ? button : status;
+          }
+        }
+      }, async () => ({ synced: true, pendingSaved: false }));
+
+      bind();
+      assert.equal(typeof click, 'function');
+      await click();
+      assert.equal(status.textContent, 'Saved to your Tolux progress dashboard.');
+      assert.equal(button.removed, true);
+    });
   }
 });
