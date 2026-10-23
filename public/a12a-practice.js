@@ -123,6 +123,23 @@ async function saveCompletion(summary){
   if(!completionReport){completionReport={completion_id:createPracticeCompletionId(),owner_user_id:practiceOwnerId,module_id:"practice-alg1-a12a-identify-functions",completed_at:new Date().toISOString(),mastery_label:summary.label,mastery_score:summary.scorePercent,is_subscriber:isSubscriber,time_on_skill_seconds:Math.round((Date.now()-startedAt)/1000),item_records:[...records.values()]};}
   return persistPracticeCompletion({report:completionReport,getSession:getAuthSession,refreshSession:refreshAuthSession});
 }
+function practiceSaveStatus(result){
+  return result?.synced
+    ? "Saved to your Tolux progress dashboard."
+    : result?.pendingSaved
+      ? "Saved on this device for the account that started this session. Retry now or open the dashboard while signed in."
+      : "Progress could not be saved to your account or this device. Keep this page open and try again.";
+}
+async function retryPracticeSave(button,status,attemptSave){
+  button.disabled=true;status.textContent="Retrying progress save…";
+  try{const result=await attemptSave();status.textContent=practiceSaveStatus(result);if(result?.synced){button.remove();return;}}
+  catch(error){status.textContent=practiceSaveStatus({pendingSaved:Boolean(error?.pendingSaved)});}
+  button.disabled=false;
+}
+function bindPracticeRetry(container,status,attemptSave){
+  const button=container.querySelector("[data-practice-retry-save]");if(!button||!status)return null;
+  button.addEventListener("click",()=>retryPracticeSave(button,status,attemptSave));return button;
+}
 function missedReviewMarkup(summary){
   if(!summary.missed.length)return "<p>You answered every question correctly on the first attempt.</p>";
   return `<h3>Review these questions</h3><div class="practice-review-list">${summary.missed.map(item=>`<article><strong>${escapeHtml(formatMathNotation(item.prompt))}</strong>${solutionMarkup(item,"Review the correct reasoning")}</article>`).join("")}</div>`;
@@ -130,9 +147,10 @@ function missedReviewMarkup(summary){
 async function finish(){
   const summary=calculateSummary();
   els.questionView.hidden=true;els.summary.hidden=false;els.progressBar.style.width="100%";els.progressBar.setAttribute("aria-valuenow","100");els.progressLabel.textContent="Practice session complete";
-  els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.label}</h2><p class="mastery-score">${summary.scorePercent}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><p id="a12aSaveStatus" class="completion-save-status">Saving your practice progress…</p>${missedReviewMarkup(summary)}<div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
+  els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.label}</h2><p class="mastery-score">${summary.scorePercent}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><p id="a12aSaveStatus" class="completion-save-status">Saving your practice progress…</p><button type="button" class="lesson-link-button practice-secondary-link" data-practice-retry-save hidden>Retry Progress Save</button>${missedReviewMarkup(summary)}<div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
   const status=document.querySelector("#a12aSaveStatus");
-  const sync=await saveCompletion(summary);if(status)status.textContent=sync.synced?"Saved to your Tolux progress dashboard.":sync.pendingSaved?"Saved on this device for the account that started this session. Open the dashboard while signed in to retry.":"Progress could not be saved to your account or this device. Keep this page open and try again.";
+  const retryButton=bindPracticeRetry(els.summary,status,()=>saveCompletion(summary));
+  const sync=await saveCompletion(summary);if(status)status.textContent=practiceSaveStatus(sync);if(!sync.synced&&retryButton)retryButton.hidden=false;
 }
 function next(){if(currentIndex>=session.count-1){finish();return;}currentIndex+=1;renderQuestion();}
 

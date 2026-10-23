@@ -94,6 +94,27 @@ test('generic Practice reports that an offline result was not saved when device 
   assert.match(practiceSource, /Progress could not be saved to your account or this device/);
 });
 
+test('generic Practice exposes a direct same-page retry control', () => {
+  assert.match(practiceSource, /data-practice-retry-save/);
+  assert.match(practiceSource, /Retrying progress save/);
+  assert.match(practiceSource, /retryPracticeSave/);
+});
+
+test('generic Practice retry reuses the original completion identifier', async () => {
+  const f = fixture({ responses: [
+    () => { throw new Error('Offline'); },
+    () => response()
+  ] });
+  await f.bind();
+  await assert.rejects(f.save());
+  await f.save();
+  const reports = f.requests.map(request => JSON.parse(request.options.body));
+  assert.equal(reports.length, 2);
+  assert.equal(reports[0].completion_id, completionId);
+  assert.equal(reports[1].completion_id, completionId);
+  assert.deepEqual(reports[1], reports[0]);
+});
+
 test('Practice retries a 401 once with a refreshed token for the same student', async () => {
   const f = fixture({ responses: [() => response(401)] });
   await f.bind();

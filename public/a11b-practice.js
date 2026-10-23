@@ -351,6 +351,37 @@ async function saveCompletion(summary) {
   });
 }
 
+function practiceSaveStatus(result) {
+  return result?.synced
+    ? "Saved to your Tolux progress dashboard."
+    : result?.pendingSaved
+      ? "Saved on this device for the account that started this session. Retry now or open the dashboard while signed in."
+      : "Progress could not be saved to your account or this device. Keep this page open and try again.";
+}
+
+async function retryPracticeSave(button, status, attemptSave) {
+  button.disabled = true;
+  status.textContent = "Retrying progress save…";
+  try {
+    const result = await attemptSave();
+    status.textContent = practiceSaveStatus(result);
+    if (result?.synced) {
+      button.remove();
+      return;
+    }
+  } catch (error) {
+    status.textContent = practiceSaveStatus({ pendingSaved: Boolean(error?.pendingSaved) });
+  }
+  button.disabled = false;
+}
+
+function bindPracticeRetry(container, status, attemptSave) {
+  const button = container.querySelector("[data-practice-retry-save]");
+  if (!button || !status) return null;
+  button.addEventListener("click", () => retryPracticeSave(button, status, attemptSave));
+  return button;
+}
+
 async function finishSession() {
   const summary = calculateSummary();
   els.questionView.hidden = true;
@@ -367,16 +398,15 @@ async function finishSession() {
     <p class="mastery-score">${summary.scorePercent}%</p>
     <p>${summary.correct} of ${summary.total} correct on the first attempt.</p>
     <p id="practiceSaveStatus" class="completion-save-status">Saving your practice progress…</p>
+    <button type="button" class="lesson-link-button practice-secondary-link" data-practice-retry-save hidden>Retry Progress Save</button>
     ${missed}
     <div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>
   `;
   const status = document.querySelector("#practiceSaveStatus");
+  const retryButton = bindPracticeRetry(els.summary, status, () => saveCompletion(summary));
   const sync = await saveCompletion(summary);
-  status.textContent = sync.synced
-    ? "Saved to your Tolux progress dashboard."
-    : sync.pendingSaved
-      ? "Saved on this device for the account that started this session. Open the dashboard while signed in to retry."
-      : "Progress could not be saved to your account or this device. Keep this page open and try again.";
+  status.textContent = practiceSaveStatus(sync);
+  if (!sync.synced && retryButton) retryButton.hidden = false;
 }
 
 function advanceQuestion() {
