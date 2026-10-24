@@ -47,7 +47,25 @@ test("guided and independent A.10F items provide useful multi-step help", () => 
     item.type === "guided_practice" || item.type === "independent_practice"
   );
   assert.ok(studentWork.every(item => Array.isArray(item.hint_steps) && item.hint_steps.length >= 3));
+  assert.ok(studentWork.every(item => Array.isArray(item.solution_steps) && item.solution_steps.length >= 3));
   assert.ok(studentWork.every(item => Array.isArray(item.alternate_solution_steps) && item.alternate_solution_steps.length >= 2));
+
+  for (const item of studentWork) {
+    for (const step of item.solution_steps) {
+      assert.ok(step.equation?.trim(), `${item.id} has an empty solution equation`);
+      assert.ok(step.explanation?.trim(), `${item.id} has an empty solution explanation`);
+    }
+    assert.equal(
+      answersEquivalent(item.solution_steps.at(-1).equation, item),
+      true,
+      `${item.id} solution does not finish at the verified answer`
+    );
+    assert.notDeepEqual(
+      item.solution_steps,
+      item.alternate_solution_steps,
+      `${item.id} needs a genuinely alternate explanation`
+    );
+  }
 });
 
 test("A.10F covers GCF-first, sum-vs-difference, repeated factoring, verification, and context", () => {
