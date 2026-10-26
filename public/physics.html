@@ -224,6 +224,7 @@ function normalizeAnswer(value) {
     .replace(/meters?\s+per\s+second/g,'m/s')
     .replace(/m\s*\/\s*sec(?:ond)?s?/g,'m/s')
     .replace(/m\s*\/\s*s/g,'m/s')
+    .replace(/([0-9])\s*(m\/s2?)/g,'$1 $2')
     .replace(/\s+/g,' ');
 }
 function requiredUnit(item) {
@@ -435,7 +436,7 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
       hintLevel+=1;
     });
     document.querySelector('#physicsExplain').addEventListener('click',()=>{
-      feedback.innerHTML=`<div class="physics-info"><strong>Another way to think about it</strong><p>${escapeHtml(item.alternate_explanation||'Represent the motion with a number line or graph, then connect the picture to the equation.')}</p>${renderVisual(item.visual)}</div>`;
+      feedback.innerHTML=`<div class="physics-info"><strong>Another way to think about it</strong><p>${escapeHtml(item.alternate_explanation||'Represent the motion with a number line or graph, then connect the picture to the equation.')}</p>${item.alternate_explanation_steps?.length ? '<ol>'+item.alternate_explanation_steps.map(step=>'<li>'+escapeHtml(step)+'</li>').join('')+'</ol>' : ''}${renderVisual(item.visual)}</div>`;
     });
     document.querySelector('#physicsSimilar').addEventListener('click',()=>{
       if(!item.similar_problem){feedback.innerHTML='<div class="physics-info"><strong>Similar Problem</strong><p>No alternate item is stored for this exact skill yet.</p></div>';return;}
