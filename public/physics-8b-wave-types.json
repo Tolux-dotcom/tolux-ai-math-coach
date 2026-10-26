@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-8b-wave-types",
+  "course_id": "physics",
+  "teks": [
+    "8B"
+  ],
+  "title": "Transverse and Longitudinal Waves",
+  "learning_goal": "Compare transverse and longitudinal waves, including electromagnetic waves and sound waves.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Waves transfer energy",
+      "content": "A wave is a disturbance that transfers energy from one place to another without transporting matter overall from source to destination."
+    },
+    {
+      "id": "transverse",
+      "title": "2. Transverse waves",
+      "content": "In a transverse wave, the medium or field oscillates perpendicular to the direction the wave travels. Electromagnetic waves are transverse."
+    },
+    {
+      "id": "longitudinal",
+      "title": "3. Longitudinal waves",
+      "content": "In a longitudinal wave, particles oscillate parallel to the direction of travel, producing compressions and rarefactions. Sound in air is longitudinal."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked comparison",
+      "content": "A wave on a rope moves horizontally while the rope moves up and down, so it is transverse. Sound travels through air while air particles vibrate back and forth along the direction of travel, so it is longitudinal."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A slinky is pushed and pulled so compressions move along its length. What type of wave is this?",
+      "hint": "Compare the direction the coils move with the direction the disturbance travels.",
+      "alternate_explanation": "The coils vibrate back and forth along the same line the wave moves.",
+      "answer": "A longitudinal wave."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, distinguish transverse and longitudinal waves and classify common examples such as sound, rope waves, and electromagnetic waves."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
