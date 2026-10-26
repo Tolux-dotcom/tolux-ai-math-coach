@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-7e-collisions",
+  "course_id": "physics",
+  "teks": [
+    "7E"
+  ],
+  "title": "Conservation of Momentum in Collisions",
+  "learning_goal": "Analyze conservation of momentum in one-dimensional elastic and inelastic collisions.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Total momentum is conserved",
+      "content": "In an isolated system, total momentum before a collision equals total momentum after the collision. Keep a consistent positive direction when assigning signs to velocity."
+    },
+    {
+      "id": "elastic",
+      "title": "2. Elastic collisions",
+      "content": "In an elastic collision, total momentum and total kinetic energy are conserved."
+    },
+    {
+      "id": "inelastic",
+      "title": "3. Inelastic collisions",
+      "content": "In an inelastic collision, momentum is conserved but kinetic energy is not. In a perfectly inelastic collision, the objects stick together after impact."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "A 2 kg cart moving at 4 m/s strikes a 2 kg cart at rest and they stick together. Initial momentum is 8 kg·m/s. The combined mass is 4 kg, so the final velocity is 8/4 = 2 m/s."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A 3 kg cart moving at 4 m/s collides with a 1 kg cart at rest. They stick together. What is their final velocity?",
+      "hint": "Find total momentum before the collision, then divide by the combined mass.",
+      "alternate_explanation": "Because they stick together, treat the two carts as one combined object after the collision.",
+      "answer": "3 m/s"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, apply conservation of momentum in one dimension, distinguish elastic from inelastic collisions, use signs consistently, and solve perfectly inelastic collision problems."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
