@@ -598,117 +598,68 @@
   "mastery_check": [
     {
       "id": "5E-M01",
-      "prompt": "Two equal forces act in opposite directions on the same object. What do they contribute to its net force?",
+      "prompt": "A curling stone glides straight at steady speed after release on an ideal frictionless surface. Must a forward force keep acting?",
       "choices": [
-        "Zero",
-        "Twice either force",
-        "A force in the motion direction"
+        "No, zero net force permits constant velocity",
+        "Yes, motion always requires a forward net force"
       ],
-      "answer": "Zero",
+      "answer": "No, zero net force permits constant velocity",
       "accepted_answers": [
-        "Zero"
+        "No, zero net force permits constant velocity"
       ],
-      "hint_steps": [
-        "Identify the object and decide whether its velocity changes.",
-        "What happens when equal positive and negative components are added?"
-      ],
-      "alternate_explanation": "Vector addition accounts for direction. Equal opposite forces cancel in the net sum, although both interactions remain present. An arrow diagram should show both forces.",
-      "alternate_explanation_steps": [
-        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
-        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
-        "What happens when equal positive and negative components are added?"
-      ]
+      "alternate_explanation": "Newton’s first law concerns changes of velocity, not maintaining existing velocity."
     },
     {
       "id": "5E-M02",
-      "prompt": "A spacecraft coasts far from significant external forces. What motion is expected in an inertial frame?",
+      "prompt": "A train turns at unchanged speed. Can its forces be balanced?",
       "choices": [
-        "Constant velocity",
-        "It must gradually stop",
-        "It must continually accelerate"
+        "Yes, unchanged speed means equilibrium",
+        "No, its changing direction requires acceleration"
       ],
-      "answer": "Constant velocity",
+      "answer": "No, its changing direction requires acceleration",
       "accepted_answers": [
-        "Constant velocity"
+        "No, its changing direction requires acceleration"
       ],
-      "hint_steps": [
-        "Identify the object and decide whether its velocity changes.",
-        "What external interaction would slow it down?"
-      ],
-      "alternate_explanation": "With negligible net external force, the spacecraft maintains its velocity. Engines are needed to change that velocity, not to preserve it in this ideal case.",
-      "alternate_explanation_steps": [
-        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
-        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
-        "What external interaction would slow it down?"
-      ]
+      "alternate_explanation": "Velocity includes direction; a turn requires nonzero net force."
     },
     {
       "id": "5E-M03",
-      "prompt": "An object is in equilibrium. What can you conclude about its motion?",
+      "prompt": "An elevator moves upward at constant velocity. Compare total upward and downward force.",
       "choices": [
-        "It must be stationary",
-        "It must move faster",
-        "Its velocity is constant, possibly zero"
+        "They are equal in magnitude",
+        "Upward force must be greater"
       ],
-      "answer": "Its velocity is constant, possibly zero",
+      "answer": "They are equal in magnitude",
       "accepted_answers": [
-        "Its velocity is constant, possibly zero"
+        "They are equal in magnitude"
       ],
-      "hint_steps": [
-        "Identify the object and decide whether its velocity changes.",
-        "Can a nonzero velocity remain unchanged?"
-      ],
-      "alternate_explanation": "Equilibrium means the vector sum of external forces is zero. Newton’s first law allows rest and straight-line motion at constant nonzero velocity. Equilibrium does not require the object to be stationary.",
-      "alternate_explanation_steps": [
-        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
-        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
-        "Can a nonzero velocity remain unchanged?"
-      ]
+      "alternate_explanation": "Acceleration is zero for constant velocity. Force balance does not imply rest."
     },
     {
       "id": "5E-M04",
-      "prompt": "A car travels at constant speed around a curve. Is its net force zero?",
+      "prompt": "Two stationary carts have different masses. Which has greater inertia?",
       "choices": [
-        "Yes, because its speed is constant",
-        "No, because its velocity changes direction"
+        "Neither has inertia until moving",
+        "The more massive cart"
       ],
-      "answer": "No, because its velocity changes direction",
+      "answer": "The more massive cart",
       "accepted_answers": [
-        "No, because its velocity changes direction"
+        "The more massive cart"
       ],
-      "hint_steps": [
-        "Identify the object and decide whether its velocity changes.",
-        "Does constant speed guarantee constant velocity?"
-      ],
-      "alternate_explanation": "Velocity includes direction. Turning changes velocity even with constant speed, so acceleration and a nonzero inward net force are required. This is not equilibrium.",
-      "alternate_explanation_steps": [
-        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
-        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
-        "Does constant speed guarantee constant velocity?"
-      ]
+      "alternate_explanation": "Mass measures inertia whether or not the object is moving."
     },
     {
       "id": "5E-M05",
-      "prompt": "Which object has greater inertia: a 2 kg cart or an 8 kg cart?",
+      "prompt": "A driver accelerates forward and an unsecured bag initially slips backward relative to the car. What explains this?",
       "choices": [
-        "The 2 kg cart",
-        "The 8 kg cart",
-        "They always have equal inertia"
+        "The bag tends to retain its earlier road-frame velocity",
+        "A new backward inertia force acts in the road frame"
       ],
-      "answer": "The 8 kg cart",
+      "answer": "The bag tends to retain its earlier road-frame velocity",
       "accepted_answers": [
-        "The 8 kg cart"
+        "The bag tends to retain its earlier road-frame velocity"
       ],
-      "hint_steps": [
-        "Identify the object and decide whether its velocity changes.",
-        "Which object has more mass?"
-      ],
-      "alternate_explanation": "Mass measures inertia, the resistance to a change in velocity. The 8 kg cart has more mass and therefore greater inertia. Inertia is a property, not a force acting on the cart.",
-      "alternate_explanation_steps": [
-        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
-        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
-        "Which object has more mass?"
-      ]
+      "alternate_explanation": "Relative backward motion can result from the car speeding up; identify actual interactions in an inertial frame."
     }
   ],
   "practice": {
