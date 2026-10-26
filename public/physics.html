@@ -263,6 +263,9 @@ function escapeHtml(value='') {
 
 function renderVisual(visual) {
   if (!visual) return '';
+  if (visual.type === 'balanced_forces') {
+    return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Balanced forces on a book')}</figcaption><svg viewBox="0 0 640 270" role="img" aria-label="Equal-length arrows show upward normal force and downward weight acting on the book. Both act on the same object."><rect x="265" y="115" width="80" height="35" rx="4" fill="#dce8fc" stroke="#405c87"/><text x="305" y="138" text-anchor="middle">Book</text><line x1="305" y1="115" x2="305" y2="35" stroke="#1261df" stroke-width="4"/><polygon points="305,35 298,49 312,49" fill="#1261df"/><line x1="305" y1="150" x2="305" y2="230" stroke="#7145d6" stroke-width="4"/><polygon points="305,230 298,216 312,216" fill="#7145d6"/><text x="330" y="60">Normal force from table</text><text x="330" y="215">Weight from Earth</text></svg><p>Equal opposite forces balance on the book. They are not a third-law pair because both act on the same object.</p></figure>`;
+  }
   if (visual.type === 'circular_motion') {
     return `<figure class="physics-visual"><figcaption>Uniform circular motion, viewed from above</figcaption><svg viewBox="0 0 640 260" role="img" aria-label="At the rightmost point on a circle, velocity points upward along the tangent and acceleration points left toward the center."><circle cx="240" cy="140" r="85" fill="none" stroke="#9ab0cd" stroke-width="2"/><circle cx="240" cy="140" r="5" class="v-start"/><circle cx="325" cy="140" r="7" class="v-start"/><line x1="325" y1="140" x2="325" y2="35" stroke="#1261df" stroke-width="4"/><polygon points="325,35 318,49 332,49" fill="#1261df"/><line x1="325" y1="140" x2="250" y2="140" stroke="#7145d6" stroke-width="4"/><polygon points="250,140 264,133 264,147" fill="#7145d6"/><text x="345" y="55">Velocity: tangent</text><text x="340" y="165">Acceleration: inward</text><text x="215" y="165">Center</text></svg><p>Blue shows instantaneous velocity; purple shows acceleration. Their directions differ.</p></figure>`;
   }
@@ -442,7 +445,7 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
     <h2>${isSimilar?'Similar Problem':escapeHtml(label)}</h2>
     <div class="physics-prompt">${escapeHtml(item.prompt)}</div>
     ${renderVisual(item.visual)}
-    <div class="physics-answer-row"><label>Your answer<input id="physicsAnswer" type="text" autocomplete="off" placeholder="Enter your answer with units"></label><button class="physics-primary" id="physicsCheck">Check Answer</button></div>
+    <div class="physics-answer-row"><label>Your answer${item.choices?.length ? `<select id="physicsAnswer" style="width:100%;padding:12px;font:inherit"><option value="">Choose an answer</option>${item.choices.map(choice=>`<option value="${escapeHtml(choice)}">${escapeHtml(choice)}</option>`).join('')}</select>` : '<input id="physicsAnswer" type="text" autocomplete="off" placeholder="Enter your answer with units">'}</label><button class="physics-primary" id="physicsCheck">Check Answer</button></div>
     <div class="physics-question-help" ${hideHelp?'hidden':''}>
       <button id="physicsStuck" type="button">❓ I'm Stuck</button>
       <button id="physicsExplain" type="button">↻ Explain Another Way</button>
@@ -461,7 +464,7 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
     if(isMastery && !isSimilar) masteryResults.push({id:item.id,correct});
     if(activeMode==='Practice Mode' && attempts===1) practiceFirstAttempts.push(correct);
     if(correct){
-      feedback.innerHTML=`<div class="physics-success"><strong>Correct.</strong><p>${escapeHtml(item.answer ? `Answer: ${item.answer}` : '')}</p></div>`;
+      feedback.innerHTML=`<div class="physics-success"><strong>Correct.</strong><p>${escapeHtml(item.answer ? `Answer: ${item.answer}` : '')}</p>${!isMastery && item.choices?.length ? '<p>'+escapeHtml(item.alternate_explanation||'')+'</p>' : ''}</div>`;
       input.disabled=true; document.querySelector('#physicsCheck').disabled=true;
       next.hidden=false;
       next.textContent = isSimilar ? 'Return to Original Question →' : (itemIndex===currentItems.length-1 ? 'Continue →' : 'Next Question →');
@@ -469,12 +472,12 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
       const unitLabel = grade.requiredUnit === 'm/s2' ? 'm/s²' : grade.requiredUnit;
       feedback.innerHTML=`<div class="physics-warning"><strong>Your number is right, but the unit is missing.</strong><p>Physics answers need the quantity and its unit. Add ${unitLabel} and check again.</p></div>`;
     } else {
-      feedback.innerHTML='<div class="physics-warning"><strong>Not quite yet.</strong><p>Check both the numerical value and the unit, or use one of the help buttons for this question.</p></div>';
+      feedback.innerHTML=`<div class="physics-warning"><strong>Not quite yet.</strong><p>${item.choices?.length ? 'Reconsider whether velocity changes and which forces act on the object.' : 'Check both the numerical value and the unit, or use one of the help buttons for this question.'}</p></div>`;
       if(isMastery && !isSimilar){ input.disabled=true; document.querySelector('#physicsCheck').disabled=true; next.hidden=false; next.textContent=itemIndex===currentItems.length-1?'Review Mastery →':'Next Mastery Question →';}
     }
   };
   document.querySelector('#physicsCheck').addEventListener('click',check);
-  input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  input.addEventListener('keydown',e=>{if(e.key==='Enter' && !item.choices?.length)check();});
   if(!hideHelp){
     document.querySelector('#physicsStuck').addEventListener('click',()=>{
       const hints=item.hint_steps||[item.hint].filter(Boolean);
