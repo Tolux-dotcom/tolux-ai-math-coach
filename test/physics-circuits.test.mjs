@@ -31,12 +31,21 @@ test('opening a switch distinguishes broken series loop from intact parallel bra
   assert.equal((parallel.match(/<polygon /g)||[]).length,2);
 });
 
-test('circuit figures provide accessible descriptions and fit inside narrow scroll regions',()=>{
+test('circuit figures provide accessible descriptions and fit the available lesson width',()=>{
   for(const item of [...lesson.concept_cards,...lesson.worked_examples].filter(c=>c.visual)){
     const html=renderCircuitVisual(item.visual);
     assert.match(html,/role="img" aria-label="[^"]+"/);
-    assert.match(html,/overflow-x:auto/);assert.match(html,/tabindex="0"/);
+    assert.doesNotMatch(html,/overflow-x:auto|min-width:480px/);
+    assert.match(html,/grid-template-columns:minmax\(0,1fr\)/);
     assert.doesNotMatch(html,/NaN|Infinity|undefined/);
   }
   assert.equal(renderCircuitVisual({type:'circuit_diagram',arrangement:'unknown'}),'');
+});
+
+test('circuit cards use full lesson width instead of nested narrow columns',()=>{
+ const html=readFileSync(new URL('../public/physics.html',import.meta.url),'utf8');
+ const css=readFileSync(new URL('../public/physics.css',import.meta.url),'utf8');
+ assert.match(html,/physics-circuit-card/);
+ assert.match(css,/\.physics-circuit-card\s*\{[^}]*grid-column:1\s*\/\s*-1/);
+ assert.match(css,/\.physics-workspace-active:has\(\.physics-circuit-visual\)/);
 });

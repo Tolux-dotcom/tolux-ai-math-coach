@@ -421,7 +421,7 @@ function nextStage() {
 }
 
 function renderConcept() {
-  const cards=(activeLesson.concept_cards||[]).map(card=>`<article class="physics-concept-card"><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.content)}</p>${renderVisual(card.visual)}</article>`).join('');
+  const cards=(activeLesson.concept_cards||[]).map(card=>`<article class="physics-concept-card${card.visual?.type==='circuit_diagram'?' physics-circuit-card':''}"><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.content)}</p>${renderVisual(card.visual)}</article>`).join('');
   lessonStages.innerHTML=`<article class="physics-active-card"><span class="eyebrow">Start from the beginning</span><h2>Build the idea before solving</h2><p>Connect the words, equations, and visual representations before moving into worked examples.</p><div class="physics-concept-grid">${cards}</div>${renderConceptualReflections()}<button class="physics-primary" id="continuePhysics">Continue to Worked Examples →</button></article>`;
   document.querySelectorAll('[data-reasoning-index]').forEach(button=>button.addEventListener('click',()=>{
     const i=Number(button.dataset.reasoningIndex),q=activeLesson.conceptual_questions[i];

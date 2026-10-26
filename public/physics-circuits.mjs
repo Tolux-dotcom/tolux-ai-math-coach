@@ -1,7 +1,7 @@
 // Circuit diagrams use conventional current and an ideal DC source.
 const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const line = (x1,y1,x2,y2,color='#334155',width=3) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${width}"/>`;
-const text = (x,y,label,anchor='middle') => `<text x="${x}" y="${y}" text-anchor="${anchor}" style="fill:#172b46;font:17px system-ui,sans-serif">${escape(label)}</text>`;
+const text = (x,y,label,anchor='middle') => `<text x="${x}" y="${y}" text-anchor="${anchor}" style="fill:#172b46;font:20px system-ui,sans-serif">${escape(label)}</text>`;
 const arrow = (x,y,direction=1,color='#1261df') => line(x,y,x+36*direction,y,color,4)+`<polygon points="${x+36*direction},${y} ${x+25*direction},${y-6} ${x+25*direction},${y+6}" fill="${color}"/>`;
 const number = n => Number(n.toFixed(3)).toString();
 
@@ -41,7 +41,7 @@ function circuitPanel({arrangement,component='bulb',open=false,voltage,r1,r2}) {
     diagram+=text(230,126,numeric?`${number(current)} A; ${number(current*r1)} V drop`:'Same current')+text(430,126,numeric?`${number(current)} A; ${number(current*r2)} V drop`:'Same current');
     diagram+=text(320,352,open?'No closed loop: current = 0 A':numeric?`Voltage drops: ${number(current*r1)} + ${number(current*r2)} = ${voltage} V`:'Opening the only loop stops current everywhere');
   }
-  return `<figure class="physics-visual" style="margin:0;min-width:0"><figcaption>${escape(heading)}</figcaption><div style="overflow-x:auto" tabindex="0" role="region" aria-label="Circuit diagram; scroll horizontally on small screens"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" role="img" aria-label="${escape(description)}" style="display:block;width:100%;min-width:480px;height:auto;max-height:none;background:#fff">${diagram}</svg></div><p>${escape(description)}</p></figure>`;
+  return `<figure class="physics-visual" style="margin:0;min-width:0"><figcaption>${escape(heading)}</figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" role="img" aria-label="${escape(description)}" style="display:block;width:100%;min-width:0;height:auto;max-height:none;background:#fff">${diagram}</svg><p>${escape(description)}</p></figure>`;
 }
 
 export function renderCircuitVisual(visual) {
@@ -49,5 +49,5 @@ export function renderCircuitVisual(visual) {
   const params={component:visual.component==='resistor'?'resistor':'bulb',open:visual.open===true,voltage:visual.voltage,r1:visual.r1,r2:visual.r2};
   const arrangements=visual.arrangement==='comparison'?['series','parallel']:[visual.arrangement];
   if(arrangements.some(a=>!['series','parallel'].includes(a))) return '';
-  return `<section aria-label="Series and parallel circuit diagrams"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px">${arrangements.map(arrangement=>circuitPanel({...params,arrangement})).join('')}</div><p>Arrows show conventional current from + to − through the external circuit, not electron motion. Arrow lengths show direction, not current magnitude. Wires have negligible resistance; the battery is ideal. A circle with a cross is a bulb; a rectangle is a resistor.</p></section>`;
+  return `<section class="physics-circuit-visual" aria-label="Series and parallel circuit diagrams"><div style="display:grid;grid-template-columns:minmax(0,1fr);gap:20px">${arrangements.map(arrangement=>circuitPanel({...params,arrangement})).join('')}</div><p>Arrows show conventional current from + to − through the external circuit, not electron motion. Arrow lengths show direction, not current magnitude. Wires have negligible resistance; the battery is ideal. A circle with a cross is a bulb; a rectangle is a resistor.</p></section>`;
 }

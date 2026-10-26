@@ -220,3 +220,11 @@
 .physics-mastery-score{margin:8px 0;color:#1f7a4d!important;font-size:3rem!important;font-weight:900}
 @media(max-width:1100px){.physics-workspace-active{grid-template-columns:1fr}.physics-path{position:static}.physics-concept-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.physics-active-card{padding:20px}.physics-answer-row{grid-template-columns:1fr}.physics-question-help{display:grid}.physics-question-help button{width:100%;text-align:left}}
+
+/* Give circuit drawings the full teaching area without horizontal scrolling. */
+.physics-concept-card.physics-circuit-card{grid-column:1 / -1;min-width:0}
+.physics-workspace-active:has(.physics-circuit-visual){grid-template-columns:minmax(0,1fr)}
+.physics-workspace-active:has(.physics-circuit-visual) .physics-path{position:static}
+.physics-circuit-visual{min-width:0;max-width:100%}
+.physics-circuit-visual .physics-visual{min-width:0}
+@media(max-width:650px){.physics-circuit-card{padding:10px}.physics-circuit-visual .physics-visual{padding:8px}}
