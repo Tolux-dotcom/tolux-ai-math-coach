@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Describe a wave",
+      "content": "Amplitude describes maximum displacement from equilibrium. Wavelength λ is the distance between corresponding points on successive waves. Frequency f is the number of cycles per second.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Frequency f",
+          "Wavelength λ",
+          "Wave speed v = fλ"
+        ],
+        "label": "At fixed speed, increasing frequency decreases wavelength."
+      }
+    },
+    {
+      "title": "Wave speed relationship",
+      "content": "Wave speed is related to frequency and wavelength by v = fλ."
+    },
+    {
+      "title": "Units",
+      "content": "Wave speed is measured in m/s, frequency in hertz (Hz), and wavelength in meters."
+    },
+    {
+      "title": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+      "content": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle."
+    },
+    {
+      "title": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+      "content": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "8C-W01",
+      "prompt": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+      "choices": [
+        "10 m/s",
+        "2.5 m/s"
+      ],
+      "answer": "10 m/s",
+      "accepted_answers": [
+        "10 m/s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+      "alternate_explanation_steps": [
+        "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?"
+        },
+        {
+          "equation": "10 m/s",
+          "explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Frequency f",
+          "Wavelength λ",
+          "Wave speed v = fλ"
+        ],
+        "label": "At fixed speed, increasing frequency decreases wavelength."
+      }
+    },
+    {
+      "id": "8C-W02",
+      "prompt": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+      "choices": [
+        "It doubles",
+        "It halves"
+      ],
+      "answer": "It halves",
+      "accepted_answers": [
+        "It halves"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+      "alternate_explanation_steps": [
+        "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?"
+        },
+        {
+          "equation": "It halves",
+          "explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "8C-G01",
+      "prompt": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+      "choices": [
+        "10 m/s",
+        "2.5 m/s"
+      ],
+      "answer": "10 m/s",
+      "accepted_answers": [
+        "10 m/s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+      "alternate_explanation_steps": [
+        "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8C-Q03",
+        "prompt": "What is the period of a 4 Hz wave?",
+        "choices": [
+          "0.25 s",
+          "4 s"
+        ],
+        "answer": "0.25 s",
+        "accepted_answers": [
+          "0.25 s"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+        "alternate_explanation_steps": [
+          "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8C-G02",
+      "prompt": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+      "choices": [
+        "It doubles",
+        "It halves"
+      ],
+      "answer": "It halves",
+      "accepted_answers": [
+        "It halves"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+      "alternate_explanation_steps": [
+        "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8C-Q04",
+        "prompt": "Which describes amplitude?",
+        "choices": [
+          "Distance between two adjacent crests",
+          "Maximum displacement from equilibrium"
+        ],
+        "answer": "Maximum displacement from equilibrium",
+        "accepted_answers": [
+          "Maximum displacement from equilibrium"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+        "alternate_explanation_steps": [
+          "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "8C-P01",
+      "prompt": "What is the period of a 4 Hz wave?",
+      "choices": [
+        "0.25 s",
+        "4 s"
+      ],
+      "answer": "0.25 s",
+      "accepted_answers": [
+        "0.25 s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+      "alternate_explanation_steps": [
+        "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8C-Q05",
+        "prompt": "A wave enters a medium where speed changes but the source remains steady. Which quantity remains fixed at the boundary?",
+        "choices": [
+          "Frequency",
+          "Wavelength"
+        ],
+        "answer": "Frequency",
+        "accepted_answers": [
+          "Frequency"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+        "alternate_explanation_steps": [
+          "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8C-P02",
+      "prompt": "Which describes amplitude?",
+      "choices": [
+        "Distance between two adjacent crests",
+        "Maximum displacement from equilibrium"
+      ],
+      "answer": "Maximum displacement from equilibrium",
+      "accepted_answers": [
+        "Maximum displacement from equilibrium"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+      "alternate_explanation_steps": [
+        "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8C-Q01",
+        "prompt": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+        "choices": [
+          "10 m/s",
+          "2.5 m/s"
+        ],
+        "answer": "10 m/s",
+        "accepted_answers": [
+          "10 m/s"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+        "alternate_explanation_steps": [
+          "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8C-P03",
+      "prompt": "A wave enters a medium where speed changes but the source remains steady. Which quantity remains fixed at the boundary?",
+      "choices": [
+        "Frequency",
+        "Wavelength"
+      ],
+      "answer": "Frequency",
+      "accepted_answers": [
+        "Frequency"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+      "alternate_explanation_steps": [
+        "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8C-Q02",
+        "prompt": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+        "choices": [
+          "It doubles",
+          "It halves"
+        ],
+        "answer": "It halves",
+        "accepted_answers": [
+          "It halves"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+        "alternate_explanation_steps": [
+          "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "8C-M01",
+      "prompt": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+      "choices": [
+        "10 m/s",
+        "2.5 m/s"
+      ],
+      "answer": "10 m/s",
+      "accepted_answers": [
+        "10 m/s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+      "alternate_explanation_steps": [
+        "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8C-M02",
+      "prompt": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+      "choices": [
+        "It doubles",
+        "It halves"
+      ],
+      "answer": "It halves",
+      "accepted_answers": [
+        "It halves"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+      "alternate_explanation_steps": [
+        "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8C-M03",
+      "prompt": "What is the period of a 4 Hz wave?",
+      "choices": [
+        "0.25 s",
+        "4 s"
+      ],
+      "answer": "0.25 s",
+      "accepted_answers": [
+        "0.25 s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+      "alternate_explanation_steps": [
+        "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8C-M04",
+      "prompt": "Which describes amplitude?",
+      "choices": [
+        "Distance between two adjacent crests",
+        "Maximum displacement from equilibrium"
+      ],
+      "answer": "Maximum displacement from equilibrium",
+      "accepted_answers": [
+        "Maximum displacement from equilibrium"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+      "alternate_explanation_steps": [
+        "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8C-M05",
+      "prompt": "A wave enters a medium where speed changes but the source remains steady. Which quantity remains fixed at the boundary?",
+      "choices": [
+        "Frequency",
+        "Wavelength"
+      ],
+      "answer": "Frequency",
+      "accepted_answers": [
+        "Frequency"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+      "alternate_explanation_steps": [
+        "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "8C-P01",
+        "prompt": "What is the period of a 4 Hz wave?",
+        "choices": [
+          "0.25 s",
+          "4 s"
+        ],
+        "answer": "0.25 s",
+        "accepted_answers": [
+          "0.25 s"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+        "alternate_explanation_steps": [
+          "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8C-Q05",
+          "prompt": "A wave enters a medium where speed changes but the source remains steady. Which quantity remains fixed at the boundary?",
+          "choices": [
+            "Frequency",
+            "Wavelength"
+          ],
+          "answer": "Frequency",
+          "accepted_answers": [
+            "Frequency"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+          "alternate_explanation_steps": [
+            "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8C-P02",
+        "prompt": "Which describes amplitude?",
+        "choices": [
+          "Distance between two adjacent crests",
+          "Maximum displacement from equilibrium"
+        ],
+        "answer": "Maximum displacement from equilibrium",
+        "accepted_answers": [
+          "Maximum displacement from equilibrium"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+        "alternate_explanation_steps": [
+          "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8C-Q01",
+          "prompt": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+          "choices": [
+            "10 m/s",
+            "2.5 m/s"
+          ],
+          "answer": "10 m/s",
+          "accepted_answers": [
+            "10 m/s"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+          "alternate_explanation_steps": [
+            "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8C-P03",
+        "prompt": "A wave enters a medium where speed changes but the source remains steady. Which quantity remains fixed at the boundary?",
+        "choices": [
+          "Frequency",
+          "Wavelength"
+        ],
+        "answer": "Frequency",
+        "accepted_answers": [
+          "Frequency"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+        "alternate_explanation_steps": [
+          "The source sets frequency. Wavelength adjusts according to v = fλ when propagation speed changes.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8C-Q02",
+          "prompt": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+          "choices": [
+            "It doubles",
+            "It halves"
+          ],
+          "answer": "It halves",
+          "accepted_answers": [
+            "It halves"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+          "alternate_explanation_steps": [
+            "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "8C-G01",
+        "prompt": "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?",
+        "choices": [
+          "10 m/s",
+          "2.5 m/s"
+        ],
+        "answer": "10 m/s",
+        "accepted_answers": [
+          "10 m/s"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+        "alternate_explanation_steps": [
+          "v = fλ = 5 × 2 = 10 m/s. Frequency counts cycles per second and wavelength measures distance per cycle.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8C-Q03",
+          "prompt": "What is the period of a 4 Hz wave?",
+          "choices": [
+            "0.25 s",
+            "4 s"
+          ],
+          "answer": "0.25 s",
+          "accepted_answers": [
+            "0.25 s"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+          "alternate_explanation_steps": [
+            "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8C-G02",
+        "prompt": "In the same nondispersive medium, frequency doubles while wave speed stays fixed. How does wavelength change?",
+        "choices": [
+          "It doubles",
+          "It halves"
+        ],
+        "answer": "It halves",
+        "accepted_answers": [
+          "It halves"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+        "alternate_explanation_steps": [
+          "λ = v/f. At fixed wave speed, frequency and wavelength vary inversely.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8C-Q04",
+          "prompt": "Which describes amplitude?",
+          "choices": [
+            "Distance between two adjacent crests",
+            "Maximum displacement from equilibrium"
+          ],
+          "answer": "Maximum displacement from equilibrium",
+          "accepted_answers": [
+            "Maximum displacement from equilibrium"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+          "alternate_explanation_steps": [
+            "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "8C-C01",
+      "prompt": "What is the period of a 4 Hz wave? Explain why, using your own words.",
+      "expected_ideas": [
+        "0.25 s",
+        "T = 1/f = 1/4 s. Period is time per cycle, not number of cycles per second."
+      ],
+      "misconceptions": [
+        "4 s"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "8C-C02",
+      "prompt": "Which describes amplitude? Explain why, using your own words.",
+      "expected_ideas": [
+        "Maximum displacement from equilibrium",
+        "Amplitude measures oscillation size. Wavelength measures spatial repetition and period measures temporal repetition."
+      ],
+      "misconceptions": [
+        "Distance between two adjacent crests"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
