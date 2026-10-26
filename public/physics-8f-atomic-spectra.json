@@ -395,108 +395,68 @@
   "mastery_check": [
     {
       "id": "8F-M01",
-      "prompt": "Why do isolated atoms emit distinct spectral lines?",
+      "prompt": "An atom emits a photon when dropping from energy 5 eV to 2 eV. What is the emitted photon energy?",
       "choices": [
-        "Allowed energy levels are discrete",
-        "Electrons can emit every possible energy equally"
+        "3 eV",
+        "7 eV"
       ],
-      "answer": "Allowed energy levels are discrete",
+      "answer": "3 eV",
       "accepted_answers": [
-        "Allowed energy levels are discrete"
+        "3 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
-      "alternate_explanation_steps": [
-        "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
     },
     {
       "id": "8F-M02",
-      "prompt": "An electron drops to a lower atomic energy level. What happens?",
+      "prompt": "An atom emits a photon when dropping from energy 6 eV to 3 eV. What is the emitted photon energy?",
       "choices": [
-        "A photon must be absorbed",
-        "A photon can be emitted"
+        "9 eV",
+        "3 eV"
       ],
-      "answer": "A photon can be emitted",
+      "answer": "3 eV",
       "accepted_answers": [
-        "A photon can be emitted"
+        "3 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
-      "alternate_explanation_steps": [
-        "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
     },
     {
       "id": "8F-M03",
-      "prompt": "Why can spectral patterns help identify elements?",
+      "prompt": "An atom emits a photon when dropping from energy 7 eV to 4 eV. What is the emitted photon energy?",
       "choices": [
-        "Elements have characteristic allowed transitions",
-        "Every element has the same energy-level spacing"
+        "3 eV",
+        "11 eV"
       ],
-      "answer": "Elements have characteristic allowed transitions",
+      "answer": "3 eV",
       "accepted_answers": [
-        "Elements have characteristic allowed transitions"
+        "3 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Different atomic structures give distinctive sets of transition energies and wavelengths.",
-      "alternate_explanation_steps": [
-        "Different atomic structures give distinctive sets of transition energies and wavelengths.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
     },
     {
       "id": "8F-M04",
-      "prompt": "Which transition emits the higher-frequency photon?",
+      "prompt": "An atom emits a photon when dropping from energy 8 eV to 5 eV. What is the emitted photon energy?",
       "choices": [
-        "The one with the smaller energy drop",
-        "The one with the larger energy drop"
+        "13 eV",
+        "3 eV"
       ],
-      "answer": "The one with the larger energy drop",
+      "answer": "3 eV",
       "accepted_answers": [
-        "The one with the larger energy drop"
+        "3 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
-      "alternate_explanation_steps": [
-        "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
     },
     {
       "id": "8F-M05",
-      "prompt": "Why is an arbitrary photon not necessarily absorbed by an isolated atom?",
+      "prompt": "An atom emits a photon when dropping from energy 9 eV to 6 eV. What is the emitted photon energy?",
       "choices": [
-        "Its energy may not match an allowed transition",
-        "Atoms absorb all frequencies equally"
+        "3 eV",
+        "15 eV"
       ],
-      "answer": "Its energy may not match an allowed transition",
+      "answer": "3 eV",
       "accepted_answers": [
-        "Its energy may not match an allowed transition"
+        "3 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
-      "alternate_explanation_steps": [
-        "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
     }
   ],
   "practice": {
@@ -752,6 +712,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
