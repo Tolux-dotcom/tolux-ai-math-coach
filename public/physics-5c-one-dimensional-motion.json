@@ -621,5 +621,13 @@
       ],
       "follow_up": "What happens to a negative velocity when positive changes are added?"
     }
-  ]
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true,
+    "render_math_symbols_cleanly": true
+  }
 }
