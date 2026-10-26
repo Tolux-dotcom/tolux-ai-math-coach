@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-6a-coulombs-law",
+  "course_id": "physics",
+  "teks": [
+    "6A"
+  ],
+  "title": "Coulomb's Law",
+  "learning_goal": "Use Coulomb's law to predict the magnitude and direction of electric force between charged objects.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Electric charges exert forces",
+      "content": "Like charges repel and opposite charges attract. The electric force acts along the line connecting the two charges."
+    },
+    {
+      "id": "law",
+      "title": "2. Coulomb's law",
+      "content": "The magnitude of electric force is F = k|q₁q₂|/r², where k is Coulomb's constant, q₁ and q₂ are the charges, and r is the distance between them."
+    },
+    {
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "If the distance between two charges doubles while the charges stay the same, the electric force becomes one-fourth as large because 1/(2²) = 1/4."
+    },
+    {
+      "id": "direction",
+      "title": "4. Determine attraction or repulsion",
+      "content": "Use the signs of the charges to determine direction. Same signs repel. Opposite signs attract. Use the equation for magnitude and the charge signs for direction."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Two charged particles remain unchanged, but their separation becomes half as large. By what factor does the electric force change?",
+      "hint": "Distance is squared in the denominator. Replace r with r/2.",
+      "alternate_explanation": "Halving the distance makes the denominator four times smaller, so the force becomes four times larger.",
+      "answer": "The electric force becomes 4 times as large."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, use F = k|q₁q₂|/r², predict force changes from charge and distance, and determine whether two charges attract or repel."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
