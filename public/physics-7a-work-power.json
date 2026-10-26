@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-7a-work-power",
+  "course_id": "physics",
+  "teks": [
+    "7A"
+  ],
+  "title": "Work and Power",
+  "learning_goal": "Calculate and explain work and power in one dimension.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. What counts as work?",
+      "content": "In physics, work is done when a force causes displacement in the direction of the force. For a constant force in one dimension, W = Fd when force and displacement point in the same direction."
+    },
+    {
+      "id": "sign",
+      "title": "2. Positive, negative, and zero work",
+      "content": "Work is positive when force and displacement point in the same direction, negative when they point in opposite directions, and zero when there is no displacement in the force direction."
+    },
+    {
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "A 30 N force pushes a box 5 m in the same direction as the force. The work done is W = Fd = 30 × 5 = 150 J."
+    },
+    {
+      "id": "power",
+      "title": "4. Power",
+      "content": "Power is the rate at which work is done. Use P = W/t. The SI unit of power is the watt, where 1 W = 1 J/s."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A student does 600 J of work in 12 s. What is the average power?",
+      "hint": "Use P = W/t.",
+      "alternate_explanation": "Power tells how quickly the work is completed, so divide the total work by the time taken.",
+      "answer": "50 W"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, decide whether work is positive, negative, or zero, calculate W = Fd for one-dimensional motion, and calculate power using P = W/t."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
