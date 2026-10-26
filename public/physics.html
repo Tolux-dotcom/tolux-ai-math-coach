@@ -93,17 +93,16 @@
         </div>
       </div>
       <div id="lessonEmpty" class="physics-empty">Choose any lesson above. Tolux will show the concept, example, guided practice, and mastery sequence here.</div>
-      <div class="physics-workspace" id="lessonWorkspace" hidden>
+      <div class="physics-lesson-progress" id="physicsLessonProgress" hidden>
+        <div class="physics-progress-head"><strong id="physicsStageLabel">Lesson ready</strong><span id="physicsProgressText">0%</span></div>
+        <div class="physics-progress-track"><div id="physicsProgressFill"></div></div>
+      </div>
+      <div class="physics-workspace physics-workspace-active" id="lessonWorkspace" hidden>
         <div class="physics-stage-list" id="lessonStages"></div>
-        <aside class="physics-help">
-          <h3>Need help?</h3>
-          <p>Use the same support pattern as Math Coach. Tolux gives the smallest useful help first.</p>
-          <div class="physics-help-actions">
-            <button type="button" id="stuckBtn">❓ I'm stuck</button>
-            <button type="button" id="anotherWayBtn">↻ Explain another way</button>
-            <button type="button" id="similarBtn">🧩 Similar problem</button>
-          </div>
-          <div id="coachHelp" aria-live="polite"></div>
+        <aside class="physics-path">
+          <h3>Lesson Path</h3>
+          <ol id="physicsLessonPath"></ol>
+          <p><strong>Goal:</strong> <span id="physicsLessonGoal"></span></p>
         </aside>
       </div>
     </section>
@@ -117,25 +116,35 @@ const lessonEmpty = document.querySelector('#lessonEmpty');
 const lessonTitle = document.querySelector('#lessonTitle');
 const lessonSubtitle = document.querySelector('#lessonSubtitle');
 const lessonStages = document.querySelector('#lessonStages');
-const coachHelp = document.querySelector('#coachHelp');
+const progressWrap = document.querySelector('#physicsLessonProgress');
+const progressFill = document.querySelector('#physicsProgressFill');
+const progressText = document.querySelector('#physicsProgressText');
+const stageLabel = document.querySelector('#physicsStageLabel');
+const lessonPathEl = document.querySelector('#physicsLessonPath');
+const lessonGoal = document.querySelector('#physicsLessonGoal');
+
 let activeLesson = null;
 let activeModuleButton = null;
 let activeMode = 'Tutor Mode';
-let activeSupportItem = null;
+let flowIndex = 0;
+let itemIndex = 0;
+let workedIndex = 0;
+let hintLevel = 0;
+let currentItems = [];
+let currentItem = null;
+let originalItem = null;
+let masteryResults = [];
+let recheckResults = [];
 let practiceIndex = 0;
+let practiceFirstAttempts = [];
 
 document.querySelectorAll('.physics-mode').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.physics-mode').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     activeMode = btn.dataset.mode;
-    lessonSubtitle.textContent = activeLesson
-      ? `${activeMode} • TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`
-      : `${activeMode} selected. Choose a TEKS lesson to begin.`;
-    if (activeLesson) {
-      practiceIndex = 0;
-      renderLesson();
-    }
+    if (activeLesson) resetAndRender();
+    else lessonSubtitle.textContent = `${activeMode} selected. Choose a TEKS lesson to begin.`;
   });
 });
 
@@ -145,7 +154,6 @@ document.querySelectorAll('[data-scroll]').forEach(btn => {
     document.querySelector(id === 'top' ? '#top' : `#${id}`)?.scrollIntoView({behavior:'smooth'});
   });
 });
-
 document.querySelector('#startPhysicsBtn').addEventListener('click', () => {
   document.querySelector('#course').scrollIntoView({behavior:'smooth'});
 });
@@ -157,15 +165,12 @@ coverageEl.textContent = `${modules.length} of ${catalog.content_standard_count}
 for (const unit of catalog.units) {
   const section = document.createElement('section');
   section.className = 'physics-unit';
-
   const head = document.createElement('div');
   head.className = 'physics-unit-head';
   head.innerHTML = `<div><h3>Strand ${unit.sequence}: ${unit.title}</h3></div><span>${unit.modules.length}</span>`;
   section.appendChild(head);
-
   const list = document.createElement('div');
   list.className = 'physics-lessons';
-
   for (const mod of unit.modules) {
     const btn = document.createElement('button');
     btn.className = 'physics-lesson';
@@ -183,125 +188,289 @@ async function openLesson(mod, btn) {
   if (activeModuleButton) activeModuleButton.classList.remove('active');
   activeModuleButton = btn;
   activeModuleButton.classList.add('active');
-  practiceIndex = 0;
-  renderLesson();
+  resetAndRender();
   document.querySelector('#lesson').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function normalizeAnswer(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replaceAll('−', '-')
-    .replaceAll('²', '2')
-    .replace(/\s+/g, ' ');
-}
-
-function isAnswerCorrect(item, value) {
-  const accepted = item?.accepted_answers?.length ? item.accepted_answers : [item?.answer];
-  return accepted.filter(Boolean).some(answer => normalizeAnswer(answer) === normalizeAnswer(value));
-}
-
-function createProblemCard(item, title, afterCorrect) {
-  activeSupportItem = item;
-  const article = document.createElement('article');
-  article.className = 'physics-stage-card physics-guided';
-  article.innerHTML = `
-    <h3>${title}</h3>
-    <p>${item.prompt}</p>
-    <div class="physics-answer-row">
-      <label>My answer <input class="physics-answer-input" type="text" autocomplete="off" placeholder="Enter your answer" /></label>
-      <button type="button" class="physics-check-answer">Check answer</button>
-    </div>
-    <p class="physics-answer-feedback" aria-live="polite"></p>`;
-  const input = article.querySelector('.physics-answer-input');
-  const feedback = article.querySelector('.physics-answer-feedback');
-  const check = () => {
-    if (!input.value.trim()) {
-      feedback.textContent = 'Enter an answer first.';
-      return;
-    }
-    if (isAnswerCorrect(item, input.value)) {
-      feedback.textContent = 'You got it. ' + (item.answer ? `Answer: ${item.answer}.` : '');
-      if (afterCorrect) afterCorrect(article);
-    } else {
-      feedback.textContent = 'Not yet. Try again, or use “I’m stuck” for a small hint.';
-    }
-  };
-  article.querySelector('.physics-check-answer').addEventListener('click', check);
-  input.addEventListener('keydown', event => {
-    if (event.key === 'Enter') check();
-  });
-  article.addEventListener('click', () => {
-    activeSupportItem = item;
-  });
-  return article;
-}
-
-async function renderLesson() {
+function resetAndRender() {
+  flowIndex = 0;
+  itemIndex = 0;
+  workedIndex = 0;
+  hintLevel = 0;
+  currentItems = [];
+  currentItem = null;
+  originalItem = null;
+  masteryResults = [];
+  recheckResults = [];
+  practiceIndex = 0;
+  practiceFirstAttempts = [];
   lessonTitle.textContent = `TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`;
   lessonSubtitle.textContent = `${activeMode} • ${activeLesson.learning_goal}`;
-  lessonStages.innerHTML = '';
-  coachHelp.textContent = '';
-  activeSupportItem = null;
-
-  if (activeMode === 'Practice Mode' && activeLesson.practice?.problems?.length) {
-    const intro = document.createElement('article');
-    intro.className = 'physics-stage-card';
-    intro.innerHTML = `<h3>Practice by yourself</h3><p>${activeLesson.practice.intro || 'Solve one problem at a time and check your answer.'}</p>`;
-    lessonStages.appendChild(intro);
-
-    const problems = activeLesson.practice.problems;
-    const item = problems[practiceIndex % problems.length];
-    const card = createProblemCard(item, `Question ${practiceIndex + 1}`, article => {
-      if (article.querySelector('.physics-next-problem')) return;
-      const next = document.createElement('button');
-      next.type = 'button';
-      next.className = 'physics-next-problem';
-      next.textContent = 'Next problem';
-      next.addEventListener('click', () => {
-        practiceIndex = (practiceIndex + 1) % problems.length;
-        renderLesson();
-      });
-      article.appendChild(next);
-    });
-    lessonStages.appendChild(card);
-  } else {
-    for (const stage of activeLesson.stages) {
-      if (stage.prompt) {
-        lessonStages.appendChild(createProblemCard(stage, stage.title));
-      } else {
-        const article = document.createElement('article');
-        article.className = 'physics-stage-card';
-        article.innerHTML = `<h3>${stage.title}</h3><p>${stage.content || ''}</p>`;
-        lessonStages.appendChild(article);
-      }
-    }
-  }
-
+  lessonGoal.textContent = activeLesson.learning_goal;
   lessonEmpty.hidden = true;
   lessonWorkspace.hidden = false;
-  if (window.MathJax?.typesetPromise) await window.MathJax.typesetPromise([document.querySelector('#lesson')]);
+  progressWrap.hidden = false;
+  renderActiveMode();
 }
 
-document.querySelector('#stuckBtn').addEventListener('click', () => {
-  coachHelp.textContent = activeSupportItem?.hint || 'Start by identifying what the problem gives you and what it asks you to find.';
-});
-document.querySelector('#anotherWayBtn').addEventListener('click', () => {
-  coachHelp.textContent = activeSupportItem?.alternate_explanation || 'Let’s connect the idea to a number line, graph, diagram, or everyday example.';
-});
-document.querySelector('#similarBtn').addEventListener('click', () => {
-  if (activeMode === 'Practice Mode' && activeLesson?.practice?.problems?.length) {
-    practiceIndex = (practiceIndex + 1) % activeLesson.practice.problems.length;
-    renderLesson();
-    coachHelp.textContent = 'Here is a new problem on the same skill.';
+function normalizeAnswer(value) {
+  return String(value || '').trim().toLowerCase()
+    .replaceAll('−','-').replaceAll('²','2')
+    .replace(/\s+/g,' ');
+}
+function isCorrect(item,value) {
+  const accepted = item?.accepted_answers?.length ? item.accepted_answers : [item?.answer];
+  return accepted.filter(Boolean).some(a => normalizeAnswer(a) === normalizeAnswer(value));
+}
+function escapeHtml(value='') {
+  return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+function renderVisual(visual) {
+  if (!visual) return '';
+  if (visual.type === 'number_line') {
+    const min=Number(visual.start), max=Number(visual.end), from=Number(visual.from), to=Number(visual.to);
+    const width=640, left=42, right=598, y=70;
+    const px=x=>left+((x-min)/(max-min))*(right-left);
+    const dir = to >= from ? 1 : -1;
+    const arrowX = px(to);
+    const arrowPts = dir>0
+      ? `${arrowX},${y} ${arrowX-12},${y-7} ${arrowX-12},${y+7}`
+      : `${arrowX},${y} ${arrowX+12},${y-7} ${arrowX+12},${y+7}`;
+    return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Motion representation')}</figcaption>
+      <svg viewBox="0 0 640 130" role="img" aria-label="${escapeHtml(visual.label||'Number line motion')}">
+        <line x1="${left}" y1="${y}" x2="${right}" y2="${y}" class="v-axis"/>
+        <line x1="${px(from)}" y1="${y}" x2="${px(to)}" y2="${y}" class="v-motion"/>
+        <polygon points="${arrowPts}" class="v-motion-fill"/>
+        <circle cx="${px(from)}" cy="${y}" r="6" class="v-start"/>
+        <text x="${px(from)}" y="100" text-anchor="middle">start ${from} m</text>
+        <text x="${px(to)}" y="42" text-anchor="middle">end ${to} m</text>
+      </svg></figure>`;
+  }
+  if (visual.type === 'velocity_arrows') {
+    return `<figure class="physics-visual"><figcaption>Velocity includes direction</figcaption>
+      <svg viewBox="0 0 640 130" role="img" aria-label="Positive and negative velocity arrows">
+        <line x1="320" y1="65" x2="120" y2="65" class="v-motion"/><polygon points="120,65 135,56 135,74" class="v-motion-fill"/>
+        <line x1="320" y1="65" x2="520" y2="65" class="v-motion"/><polygon points="520,65 505,56 505,74" class="v-motion-fill"/>
+        <text x="170" y="100" text-anchor="middle">negative velocity</text><text x="470" y="100" text-anchor="middle">positive velocity</text>
+        <circle cx="320" cy="65" r="8" class="v-start"/>
+      </svg></figure>`;
+  }
+  if (visual.type === 'velocity_time') {
+    const pts=visual.points||[]; if(!pts.length) return '';
+    const xs=pts.map(p=>Number(p[0])), ys=pts.map(p=>Number(p[1]));
+    const maxX=Math.max(...xs,1), maxY=Math.max(...ys,1), left=60,right=600,top=20,bottom=120;
+    const px=x=>left+(x/maxX)*(right-left), py=y=>bottom-(y/maxY)*(bottom-top);
+    const poly=pts.map(p=>`${px(Number(p[0]))},${py(Number(p[1]))}`).join(' ');
+    return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Velocity-time graph')}</figcaption>
+      <svg viewBox="0 0 640 160" role="img" aria-label="${escapeHtml(visual.label||'Velocity-time graph')}">
+        <line x1="${left}" y1="${bottom}" x2="${right}" y2="${bottom}" class="v-axis"/><line x1="${left}" y1="${bottom}" x2="${left}" y2="${top}" class="v-axis"/>
+        <polyline points="${poly}" fill="none" class="v-graph"/>
+        ${pts.map(p=>`<circle cx="${px(Number(p[0]))}" cy="${py(Number(p[1]))}" r="5" class="v-start"/>`).join('')}
+        <text x="330" y="150" text-anchor="middle">time</text><text x="18" y="75" transform="rotate(-90 18 75)" text-anchor="middle">velocity</text>
+      </svg></figure>`;
+  }
+  return '';
+}
+
+function updatePath(activeType) {
+  const flow = activeLesson.lesson_flow || [];
+  lessonPathEl.innerHTML = flow.map((stage,index)=>{
+    const state = index < flowIndex ? 'complete' : index === flowIndex ? 'current' : 'upcoming';
+    return `<li class="physics-path-${state}"><span>${index < flowIndex ? '✓' : index+1}</span>${escapeHtml(stage.label)}</li>`;
+  }).join('');
+  const percent = activeMode === 'Practice Mode'
+    ? Math.round((practiceIndex / Math.max(1,activeLesson.practice?.problems?.length||1))*100)
+    : Math.round((flowIndex / Math.max(1,flow.length))*100);
+  progressFill.style.width = `${Math.min(100,percent)}%`;
+  progressText.textContent = `${Math.min(100,percent)}%`;
+  stageLabel.textContent = activeType || activeMode;
+}
+
+function renderActiveMode() {
+  lessonStages.innerHTML='';
+  if (activeMode === 'Practice Mode' && activeLesson.practice?.problems?.length) {
+    renderPracticeQuestion();
     return;
   }
-  const independent = activeLesson?.stages.find(s => s.id === 'independent-practice');
-  coachHelp.textContent = independent?.prompt
-    ? `Try this related problem: ${independent.prompt}`
-    : 'Try a similar example using the same relationship with different values.';
-});
+  if (activeLesson.lesson_flow?.length) {
+    renderTutorStage();
+    return;
+  }
+  renderLegacyLesson();
+}
+
+function renderLegacyLesson() {
+  updatePath('Lesson');
+  for (const stage of activeLesson.stages || []) {
+    const article=document.createElement('article');
+    article.className='physics-stage-card';
+    article.innerHTML=`<h3>${escapeHtml(stage.title)}</h3><p>${escapeHtml(stage.content||stage.prompt||'')}</p>`;
+    lessonStages.appendChild(article);
+  }
+}
+
+function renderTutorStage() {
+  lessonStages.innerHTML='';
+  const flow=activeLesson.lesson_flow;
+  const stage=flow[flowIndex];
+  if(!stage){ renderCompletion(true); return; }
+  updatePath(stage.label);
+  if(stage.type==='concept') return renderConcept();
+  if(stage.type==='worked_examples') return renderWorkedExample();
+  if(stage.type==='guided_practice') return startQuestionSet(activeLesson.guided_practice||[], 'Guided Practice');
+  if(stage.type==='independent_practice') return startQuestionSet(activeLesson.independent_practice||[], 'Practice by Yourself');
+  if(stage.type==='mastery_check') return startQuestionSet(activeLesson.mastery_check||[], 'Mastery Check', true);
+  if(stage.type==='remediation_or_complete') return finishMastery();
+}
+
+function nextStage() {
+  flowIndex += 1; itemIndex=0; workedIndex=0; hintLevel=0; originalItem=null; renderTutorStage();
+}
+
+function renderConcept() {
+  const cards=(activeLesson.concept_cards||[]).map(card=>`<article class="physics-concept-card"><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.content)}</p>${renderVisual(card.visual)}</article>`).join('');
+  lessonStages.innerHTML=`<article class="physics-active-card"><span class="eyebrow">Start from the beginning</span><h2>Build the idea before solving</h2><p>Connect the words, equations, and visual representations before moving into worked examples.</p><div class="physics-concept-grid">${cards}</div><button class="physics-primary" id="continuePhysics">Continue to Worked Examples →</button></article>`;
+  document.querySelector('#continuePhysics').addEventListener('click',nextStage);
+}
+
+function solutionSteps(item) {
+  return `<ol class="physics-solution-steps">${(item.solution_steps||[]).map((s,i)=>`<li><span>${i+1}</span><div><strong>${escapeHtml(s.equation)}</strong><p>${escapeHtml(s.explanation)}</p></div></li>`).join('')}</ol>`;
+}
+function renderWorkedExample() {
+  const items=activeLesson.worked_examples||[];
+  const item=items[workedIndex];
+  if(!item){ nextStage(); return; }
+  updatePath(`Worked Examples • ${workedIndex+1} of ${items.length}`);
+  lessonStages.innerHTML=`<article class="physics-active-card"><div class="physics-question-head"><span class="physics-difficulty">${escapeHtml(item.difficulty||'Practice')}</span><span>${escapeHtml(item.id||'')}</span></div><h2>Watch Tolux solve one step at a time</h2><div class="physics-prompt">${escapeHtml(item.prompt)}</div>${renderVisual(item.visual)}${solutionSteps(item)}<button class="physics-primary" id="workedNext">${workedIndex===items.length-1?'Continue to Guided Practice →':'Next Worked Example →'}</button></article>`;
+  document.querySelector('#workedNext').addEventListener('click',()=>{workedIndex+=1; renderWorkedExample();});
+}
+
+function startQuestionSet(items,label,isMastery=false) {
+  currentItems=items; currentItem=originalItem || items[itemIndex];
+  if(!currentItem){ nextStage(); return; }
+  renderQuestion(currentItem,label,isMastery);
+}
+
+function renderQuestion(item,label,isMastery=false,isSimilar=false) {
+  hintLevel=0;
+  updatePath(`${label} • ${isSimilar?'Similar Problem':`${itemIndex+1} of ${currentItems.length}`}`);
+  const hideHelp=isMastery && !isSimilar;
+  lessonStages.innerHTML=`<article class="physics-active-card physics-question-card">
+    <div class="physics-question-head"><span class="physics-difficulty">${escapeHtml(item.difficulty||label)}</span><span>${escapeHtml(item.id||'')}</span></div>
+    <h2>${isSimilar?'Similar Problem':escapeHtml(label)}</h2>
+    <div class="physics-prompt">${escapeHtml(item.prompt)}</div>
+    ${renderVisual(item.visual)}
+    <div class="physics-answer-row"><label>Your answer<input id="physicsAnswer" type="text" autocomplete="off" placeholder="Enter your answer"></label><button class="physics-primary" id="physicsCheck">Check Answer</button></div>
+    <div class="physics-question-help" ${hideHelp?'hidden':''}>
+      <button id="physicsStuck" type="button">❓ I'm Stuck</button>
+      <button id="physicsExplain" type="button">↻ Explain Another Way</button>
+      <button id="physicsSimilar" type="button">🧩 Similar Problem</button>
+    </div>
+    <div id="physicsFeedback" class="physics-feedback" aria-live="polite"></div>
+    <button class="physics-primary" id="physicsNext" hidden>Next Question →</button>
+  </article>`;
+  const input=document.querySelector('#physicsAnswer'), feedback=document.querySelector('#physicsFeedback'), next=document.querySelector('#physicsNext');
+  let attempts=0;
+  const check=()=>{
+    if(!input.value.trim()){feedback.textContent='Enter an answer before checking.';return;}
+    attempts+=1;
+    const correct=isCorrect(item,input.value);
+    if(isMastery && !isSimilar) masteryResults.push({id:item.id,correct});
+    if(activeMode==='Practice Mode' && attempts===1) practiceFirstAttempts.push(correct);
+    if(correct){
+      feedback.innerHTML=`<div class="physics-success"><strong>Correct.</strong><p>${escapeHtml(item.answer ? `Answer: ${item.answer}` : '')}</p></div>`;
+      input.disabled=true; document.querySelector('#physicsCheck').disabled=true;
+      next.hidden=false;
+      next.textContent = isSimilar ? 'Return to Original Question →' : (itemIndex===currentItems.length-1 ? 'Continue →' : 'Next Question →');
+    } else {
+      feedback.innerHTML='<div class="physics-warning"><strong>Not quite yet.</strong><p>Try again, or use one of the help buttons for this question.</p></div>';
+      if(isMastery && !isSimilar){ input.disabled=true; document.querySelector('#physicsCheck').disabled=true; next.hidden=false; next.textContent=itemIndex===currentItems.length-1?'Review Mastery →':'Next Mastery Question →';}
+    }
+  };
+  document.querySelector('#physicsCheck').addEventListener('click',check);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  if(!hideHelp){
+    document.querySelector('#physicsStuck').addEventListener('click',()=>{
+      const hints=item.hint_steps||[item.hint].filter(Boolean);
+      const hint=hints.length?hints[Math.min(hintLevel,hints.length-1)]:'Identify what is given, what is asked, and the physical relationship that connects them.';
+      feedback.innerHTML=`<div class="physics-warning"><strong>Hint ${Math.min(hintLevel+1,Math.max(1,hints.length))}</strong><p>${escapeHtml(hint)}</p></div>`;
+      hintLevel+=1;
+    });
+    document.querySelector('#physicsExplain').addEventListener('click',()=>{
+      feedback.innerHTML=`<div class="physics-info"><strong>Another way to think about it</strong><p>${escapeHtml(item.alternate_explanation||'Represent the motion with a number line or graph, then connect the picture to the equation.')}</p>${renderVisual(item.visual)}</div>`;
+    });
+    document.querySelector('#physicsSimilar').addEventListener('click',()=>{
+      if(!item.similar_problem){feedback.innerHTML='<div class="physics-info"><strong>Similar Problem</strong><p>No alternate item is stored for this exact skill yet.</p></div>';return;}
+      originalItem=item;
+      renderQuestion(item.similar_problem,label,false,true);
+    });
+  }
+  next.addEventListener('click',()=>{
+    if(isSimilar){ const original=originalItem; originalItem=null; renderQuestion(original,label,false,false); return; }
+    itemIndex+=1; hintLevel=0;
+    if(activeMode==='Practice Mode'){
+      practiceIndex+=1;
+      if(practiceIndex >= currentItems.length) renderPracticeSummary();
+      else renderPracticeQuestion();
+      return;
+    }
+    if(itemIndex>=currentItems.length){ itemIndex=0; nextStage(); }
+    else renderQuestion(currentItems[itemIndex],label,isMastery,false);
+  });
+  input.focus();
+}
+
+function renderPracticeQuestion() {
+  const problems=activeLesson.practice.problems;
+  currentItems=problems; itemIndex=practiceIndex; currentItem=problems[practiceIndex];
+  if(!currentItem){renderPracticeSummary();return;}
+  updatePath(`Practice Mode • Question ${practiceIndex+1} of ${problems.length}`);
+  renderQuestion(currentItem,'Practice by Yourself',false,false);
+}
+function renderPracticeSummary() {
+  const total=practiceFirstAttempts.length;
+  const correct=practiceFirstAttempts.filter(Boolean).length;
+  const pct=total?Math.round(correct/total*100):0;
+  progressFill.style.width='100%'; progressText.textContent='100%'; stageLabel.textContent='Practice complete';
+  lessonStages.innerHTML=`<article class="physics-active-card physics-complete"><div class="physics-completion-mark">✓</div><h2>Practice Session Complete</h2><p class="physics-mastery-score">${pct}%</p><p>${correct} of ${total} correct on the first attempt.</p><button class="physics-primary" id="restartPractice">Practice Again</button></article>`;
+  document.querySelector('#restartPractice').addEventListener('click',()=>{practiceIndex=0;practiceFirstAttempts=[];renderPracticeQuestion();});
+}
+
+function finishMastery() {
+  const total=(activeLesson.mastery_check||[]).length;
+  const correct=masteryResults.filter(r=>r.correct).length;
+  const pct=total?Math.round(correct/total*100):0;
+  if(pct >= (activeLesson.mastery_policy?.threshold_percent||80)){ renderCompletion(false,pct,correct,total); return; }
+  renderRemediation(pct,correct,total);
+}
+function renderRemediation(pct,correct,total) {
+  updatePath('Targeted Remediation');
+  lessonStages.innerHTML=`<article class="physics-active-card"><span class="eyebrow">Next best step</span><h2>Let's repair the exact skill</h2><p>Your mastery score is ${pct}%. ${escapeHtml(activeLesson.remediation?.message||'Review and try a short recheck.')}</p><button class="physics-primary" id="startRecheck">Start 2-Question Recheck →</button></article>`;
+  document.querySelector('#startRecheck').addEventListener('click',()=>{
+    currentItems=activeLesson.remediation?.recheck||[]; itemIndex=0; recheckResults=[]; renderRecheckQuestion();
+  });
+}
+function renderRecheckQuestion() {
+  const item=currentItems[itemIndex];
+  if(!item){
+    const all=recheckResults.length===currentItems.length && recheckResults.every(Boolean);
+    if(all){masteryResults=[]; flowIndex=(activeLesson.lesson_flow||[]).findIndex(s=>s.type==='mastery_check'); itemIndex=0; renderTutorStage();}
+    else renderRemediation(0,0,currentItems.length);
+    return;
+  }
+  renderQuestion(item,'Targeted Recheck',false,false);
+  const check=document.querySelector('#physicsCheck');
+  const next=document.querySelector('#physicsNext');
+  let recorded=false;
+  check.addEventListener('click',()=>{ if(!recorded && document.querySelector('#physicsAnswer').value.trim()){recheckResults.push(isCorrect(item,document.querySelector('#physicsAnswer').value)); recorded=true;} });
+  next.addEventListener('click',()=>{itemIndex+=1;renderRecheckQuestion();},{once:true});
+}
+function renderCompletion(fromFlow=false,pct=100,correct=0,total=0) {
+  progressFill.style.width='100%'; progressText.textContent='100%'; stageLabel.textContent='Lesson Complete';
+  lessonStages.innerHTML=`<article class="physics-active-card physics-complete"><div class="physics-completion-mark">✓</div><h2>Lesson Complete</h2><p class="physics-mastery-score">${pct}%</p><p>${total ? `${correct} of ${total} mastery questions correct.` : 'You completed the lesson path.'}</p><p>You completed TEKS ${escapeHtml(activeLesson.teks.join(', '))}: ${escapeHtml(activeLesson.title)}.</p><button class="physics-primary" id="restartLesson">Review Lesson Again</button></article>`;
+  document.querySelector('#restartLesson').addEventListener('click',resetAndRender);
+}
 </script>
 </body>
 </html>
