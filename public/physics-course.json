@@ -155,8 +155,11 @@
           ],
           "title": "Electric and Magnetic Fields",
           "summary": "Connect electric and magnetic forces and fields to everyday devices.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-6b-electric-magnetic-fields.json"
         },
         {
           "module_id": "phy-6c-charge-transfer",
@@ -166,8 +169,11 @@
           ],
           "title": "Charge Transfer",
           "summary": "Investigate induction, conduction, polarization, and conservation of charge.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-6c-charge-transfer.json"
         },
         {
           "module_id": "phy-6d-series-parallel-circuits",
@@ -177,8 +183,11 @@
           ],
           "title": "Series and Parallel Circuits",
           "summary": "Analyze, design, and construct series and parallel circuits.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-6d-series-parallel-circuits.json"
         },
         {
           "module_id": "phy-6e-ohms-law-power",
@@ -188,8 +197,11 @@
           ],
           "title": "Ohm's Law and Electric Power",
           "summary": "Calculate current, voltage, resistance, and power in circuits.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-6e-ohms-law-power.json"
         }
       ]
     },
