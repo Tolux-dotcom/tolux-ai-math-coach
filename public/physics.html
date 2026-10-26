@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tolux AI Physics Coach</title>
+  <meta name="description" content="TEKS-aligned Texas Physics coaching with step-by-step lessons, guided practice, and mastery support." />
+  <link rel="stylesheet" href="/styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <main style="max-width:1100px;margin:0 auto;padding:32px 20px;">
+    <header class="panel">
+      <span class="eyebrow">Texas Physics • TEKS-aligned</span>
+      <h1>Tolux AI Physics Coach</h1>
+      <p>Learn the concept, understand the why, practice with guidance, and demonstrate mastery.</p>
+      <p><a href="/">← Back to Math Coach</a></p>
+    </header>
+
+    <section class="panel">
+      <h2>How can I help you today?</h2>
+      <div class="modes">
+        <button class="mode selected" type="button"><i>🎓</i><strong>Tutor Mode</strong><small>Learn step by step</small></button>
+        <button class="mode" type="button"><i>📘</i><strong>Homework Help</strong><small>Work through a problem</small></button>
+        <button class="mode" type="button"><i>✏️</i><strong>Practice Mode</strong><small>Practice and master skills</small></button>
+        <button class="mode" type="button"><i>✓</i><strong>Check My Work</strong><small>Find the first mistake</small></button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Physics TEKS Course Map</h2>
+      <p id="coverage">Loading 29 Physics content standards…</p>
+      <div id="physicsUnits"></div>
+    </section>
+
+    <section class="panel" id="lessonPanel" hidden>
+      <h2 id="lessonTitle"></h2>
+      <div id="lessonStages"></div>
+      <div class="quick">
+        <button type="button" id="stuckBtn">❓ I'm stuck</button>
+        <button type="button" id="anotherWayBtn">↻ Explain another way</button>
+        <button type="button" id="similarBtn">🧩 Similar problem</button>
+      </div>
+      <p id="coachHelp" aria-live="polite"></p>
+    </section>
+  </main>
+<script type="module">
+const unitsEl = document.querySelector('#physicsUnits');
+const coverageEl = document.querySelector('#coverage');
+const lessonPanel = document.querySelector('#lessonPanel');
+const lessonTitle = document.querySelector('#lessonTitle');
+const lessonStages = document.querySelector('#lessonStages');
+const coachHelp = document.querySelector('#coachHelp');
+let activeLesson = null;
+
+const catalog = await fetch('/physics-course.json').then(r => r.json());
+const moduleCount = catalog.units.flatMap(u => u.modules).length;
+coverageEl.textContent = `${moduleCount} Physics content TEKS mapped across ${catalog.units.length} strands. TEKS 5A is available as the first structured lesson; the remaining modules are staged for authoring.`;
+
+for (const unit of catalog.units) {
+  const section = document.createElement('section');
+  section.style.marginBottom = '24px';
+  const h = document.createElement('h3');
+  h.textContent = `Strand ${unit.sequence}: ${unit.title}`;
+  section.appendChild(h);
+  const list = document.createElement('div');
+  list.className = 'courses';
+  for (const mod of unit.modules) {
+    const btn = document.createElement('button');
+    btn.className = 'course';
+    btn.type = 'button';
+    btn.innerHTML = `<span><strong>TEKS ${mod.teks[0]} • ${mod.title}</strong><small>${mod.summary}</small></span>`;
+    if (mod.available_modes.includes('lesson')) {
+      btn.addEventListener('click', () => openLesson(mod));
+    } else {
+      btn.disabled = true;
+      btn.setAttribute('aria-disabled','true');
+    }
+    list.appendChild(btn);
+  }
+  section.appendChild(list);
+  unitsEl.appendChild(section);
+}
+
+async function openLesson(mod) {
+  activeLesson = await fetch(mod.lesson_path).then(r => r.json());
+  lessonTitle.textContent = `TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`;
+  lessonStages.innerHTML = '';
+  for (const stage of activeLesson.stages) {
+    const article = document.createElement('article');
+    article.style.margin = '18px 0';
+    article.innerHTML = `<h3>${stage.title}</h3><p>${stage.content || stage.prompt || ''}</p>`;
+    lessonStages.appendChild(article);
+  }
+  lessonPanel.hidden = false;
+  coachHelp.textContent = '';
+  lessonPanel.scrollIntoView({behavior:'smooth'});
+  if (window.MathJax?.typesetPromise) await window.MathJax.typesetPromise([lessonPanel]);
+}
+
+document.querySelector('#stuckBtn').addEventListener('click', () => {
+  const guided = activeLesson?.stages.find(s => s.id === 'guided-practice');
+  coachHelp.textContent = guided?.hint || 'Start by identifying what the problem gives you and what it asks you to find.';
+});
+document.querySelector('#anotherWayBtn').addEventListener('click', () => {
+  const guided = activeLesson?.stages.find(s => s.id === 'guided-practice');
+  coachHelp.textContent = guided?.alternate_explanation || 'Let’s connect the idea to a graph, diagram, or everyday example.';
+});
+document.querySelector('#similarBtn').addEventListener('click', () => {
+  coachHelp.textContent = 'Similar problem: A bicycle moves from 10 m to 34 m in 6 s. What is its average velocity?';
+});
+</script>
+</body>
+</html>
