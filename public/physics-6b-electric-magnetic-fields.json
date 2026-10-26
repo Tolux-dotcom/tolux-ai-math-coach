@@ -399,108 +399,108 @@
   "mastery_check": [
     {
       "id": "6B-M01",
-      "prompt": "What does the direction of an electric field arrow mean?",
+      "prompt": "A positive charge of 2 C moves at 3 m/s perpendicular to a uniform 2 T magnetic field. Find magnetic force magnitude.",
       "choices": [
-        "Force direction on a positive test charge",
-        "Direction every charged particle must move"
+        "12 N",
+        "6 N"
       ],
-      "answer": "Force direction on a positive test charge",
+      "answer": "12 N",
       "accepted_answers": [
-        "Force direction on a positive test charge"
+        "12 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
-      "alternate_explanation_steps": [
-        "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "For perpendicular motion F = |q|vB; the sine factor is one. These ideal values illustrate the relationship.",
+      "calculation_check": {
+        "operation": "product",
+        "values": [
+          2,
+          3,
+          2
+        ]
+      }
     },
     {
       "id": "6B-M02",
-      "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+      "prompt": "A positive charge of 3 C moves at 3 m/s perpendicular to a uniform 2 T magnetic field. Find magnetic force magnitude.",
       "choices": [
-        "A force along the magnetic field",
-        "Zero"
+        "9 N",
+        "18 N"
       ],
-      "answer": "Zero",
+      "answer": "18 N",
       "accepted_answers": [
-        "Zero"
+        "18 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
-      "alternate_explanation_steps": [
-        "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "For perpendicular motion F = |q|vB; the sine factor is one. These ideal values illustrate the relationship.",
+      "calculation_check": {
+        "operation": "product",
+        "values": [
+          3,
+          3,
+          2
+        ]
+      }
     },
     {
       "id": "6B-M03",
-      "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force?",
+      "prompt": "A positive charge of 4 C moves at 3 m/s perpendicular to a uniform 2 T magnetic field. Find magnetic force magnitude.",
       "choices": [
-        "Zero",
-        "Maximum magnitude"
+        "24 N",
+        "12 N"
       ],
-      "answer": "Zero",
+      "answer": "24 N",
       "accepted_answers": [
-        "Zero"
+        "24 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
-      "alternate_explanation_steps": [
-        "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "For perpendicular motion F = |q|vB; the sine factor is one. These ideal values illustrate the relationship.",
+      "calculation_check": {
+        "operation": "product",
+        "values": [
+          4,
+          3,
+          2
+        ]
+      }
     },
     {
       "id": "6B-M04",
-      "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed?",
+      "prompt": "A positive charge of 5 C moves at 3 m/s perpendicular to a uniform 2 T magnetic field. Find magnetic force magnitude.",
       "choices": [
-        "Magnetic force always points forward",
-        "Magnetic force is perpendicular to velocity"
+        "15 N",
+        "30 N"
       ],
-      "answer": "Magnetic force is perpendicular to velocity",
+      "answer": "30 N",
       "accepted_answers": [
-        "Magnetic force is perpendicular to velocity"
+        "30 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
-      "alternate_explanation_steps": [
-        "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "For perpendicular motion F = |q|vB; the sine factor is one. These ideal values illustrate the relationship.",
+      "calculation_check": {
+        "operation": "product",
+        "values": [
+          5,
+          3,
+          2
+        ]
+      }
     },
     {
       "id": "6B-M05",
-      "prompt": "What magnetic pattern surrounds a long straight current-carrying wire?",
+      "prompt": "A positive charge of 6 C moves at 3 m/s perpendicular to a uniform 2 T magnetic field. Find magnetic force magnitude.",
       "choices": [
-        "Concentric loops around the wire",
-        "Straight radial lines away from the wire"
+        "36 N",
+        "18 N"
       ],
-      "answer": "Concentric loops around the wire",
+      "answer": "36 N",
       "accepted_answers": [
-        "Concentric loops around the wire"
+        "36 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
-      "alternate_explanation_steps": [
-        "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "For perpendicular motion F = |q|vB; the sine factor is one. These ideal values illustrate the relationship.",
+      "calculation_check": {
+        "operation": "product",
+        "values": [
+          6,
+          3,
+          2
+        ]
+      }
     }
   ],
   "practice": {
@@ -756,6 +756,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
