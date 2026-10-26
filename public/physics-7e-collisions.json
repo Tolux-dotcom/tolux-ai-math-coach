@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Total momentum is conserved",
+      "content": "In an isolated system, total momentum before a collision equals total momentum after the collision. Keep a consistent positive direction when assigning signs to velocity.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "System before impact",
+          "Negligible external impulse",
+          "Same total momentum after"
+        ],
+        "label": "Kinetic energy is additionally conserved only for an elastic collision."
+      }
+    },
+    {
+      "title": "Elastic collisions",
+      "content": "In an elastic collision, total momentum and total kinetic energy are conserved."
+    },
+    {
+      "title": "Inelastic collisions",
+      "content": "In an inelastic collision, momentum is conserved but kinetic energy is not. In a perfectly inelastic collision, the objects stick together after impact."
+    },
+    {
+      "title": "When is total momentum conserved for a colliding system?",
+      "content": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation."
+    },
+    {
+      "title": "Two carts stick together after impact. What kind of collision is this?",
+      "content": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "7E-W01",
+      "prompt": "When is total momentum conserved for a colliding system?",
+      "choices": [
+        "When net external impulse is negligible",
+        "Whenever kinetic energy is conserved"
+      ],
+      "answer": "When net external impulse is negligible",
+      "accepted_answers": [
+        "When net external impulse is negligible"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+      "alternate_explanation_steps": [
+        "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "When is total momentum conserved for a colliding system?"
+        },
+        {
+          "equation": "When net external impulse is negligible",
+          "explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "System before impact",
+          "Negligible external impulse",
+          "Same total momentum after"
+        ],
+        "label": "Kinetic energy is additionally conserved only for an elastic collision."
+      }
+    },
+    {
+      "id": "7E-W02",
+      "prompt": "Two carts stick together after impact. What kind of collision is this?",
+      "choices": [
+        "Perfectly elastic",
+        "Perfectly inelastic"
+      ],
+      "answer": "Perfectly inelastic",
+      "accepted_answers": [
+        "Perfectly inelastic"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+      "alternate_explanation_steps": [
+        "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Two carts stick together after impact. What kind of collision is this?"
+        },
+        {
+          "equation": "Perfectly inelastic",
+          "explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "7E-G01",
+      "prompt": "When is total momentum conserved for a colliding system?",
+      "choices": [
+        "When net external impulse is negligible",
+        "Whenever kinetic energy is conserved"
+      ],
+      "answer": "When net external impulse is negligible",
+      "accepted_answers": [
+        "When net external impulse is negligible"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+      "alternate_explanation_steps": [
+        "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7E-Q03",
+        "prompt": "What additional quantity is conserved in an ideal elastic collision?",
+        "choices": [
+          "Total kinetic energy",
+          "Each object’s individual momentum"
+        ],
+        "answer": "Total kinetic energy",
+        "accepted_answers": [
+          "Total kinetic energy"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+        "alternate_explanation_steps": [
+          "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7E-G02",
+      "prompt": "Two carts stick together after impact. What kind of collision is this?",
+      "choices": [
+        "Perfectly elastic",
+        "Perfectly inelastic"
+      ],
+      "answer": "Perfectly inelastic",
+      "accepted_answers": [
+        "Perfectly inelastic"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+      "alternate_explanation_steps": [
+        "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7E-Q04",
+        "prompt": "A 2 kg cart at 3 m/s hits a stationary 1 kg cart and they stick. Ignoring external impulse, what is their common velocity?",
+        "choices": [
+          "3 m/s in the initial direction",
+          "2 m/s in the initial direction"
+        ],
+        "answer": "2 m/s in the initial direction",
+        "accepted_answers": [
+          "2 m/s in the initial direction"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+        "alternate_explanation_steps": [
+          "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "7E-P01",
+      "prompt": "What additional quantity is conserved in an ideal elastic collision?",
+      "choices": [
+        "Total kinetic energy",
+        "Each object’s individual momentum"
+      ],
+      "answer": "Total kinetic energy",
+      "accepted_answers": [
+        "Total kinetic energy"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+      "alternate_explanation_steps": [
+        "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7E-Q05",
+        "prompt": "In an isolated explosion from rest, can pieces move while total momentum stays zero?",
+        "choices": [
+          "Yes, their vector momenta can cancel",
+          "No, zero momentum forbids motion"
+        ],
+        "answer": "Yes, their vector momenta can cancel",
+        "accepted_answers": [
+          "Yes, their vector momenta can cancel"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+        "alternate_explanation_steps": [
+          "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7E-P02",
+      "prompt": "A 2 kg cart at 3 m/s hits a stationary 1 kg cart and they stick. Ignoring external impulse, what is their common velocity?",
+      "choices": [
+        "3 m/s in the initial direction",
+        "2 m/s in the initial direction"
+      ],
+      "answer": "2 m/s in the initial direction",
+      "accepted_answers": [
+        "2 m/s in the initial direction"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+      "alternate_explanation_steps": [
+        "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7E-Q01",
+        "prompt": "When is total momentum conserved for a colliding system?",
+        "choices": [
+          "When net external impulse is negligible",
+          "Whenever kinetic energy is conserved"
+        ],
+        "answer": "When net external impulse is negligible",
+        "accepted_answers": [
+          "When net external impulse is negligible"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+        "alternate_explanation_steps": [
+          "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7E-P03",
+      "prompt": "In an isolated explosion from rest, can pieces move while total momentum stays zero?",
+      "choices": [
+        "Yes, their vector momenta can cancel",
+        "No, zero momentum forbids motion"
+      ],
+      "answer": "Yes, their vector momenta can cancel",
+      "accepted_answers": [
+        "Yes, their vector momenta can cancel"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+      "alternate_explanation_steps": [
+        "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7E-Q02",
+        "prompt": "Two carts stick together after impact. What kind of collision is this?",
+        "choices": [
+          "Perfectly elastic",
+          "Perfectly inelastic"
+        ],
+        "answer": "Perfectly inelastic",
+        "accepted_answers": [
+          "Perfectly inelastic"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+        "alternate_explanation_steps": [
+          "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "7E-M01",
+      "prompt": "When is total momentum conserved for a colliding system?",
+      "choices": [
+        "When net external impulse is negligible",
+        "Whenever kinetic energy is conserved"
+      ],
+      "answer": "When net external impulse is negligible",
+      "accepted_answers": [
+        "When net external impulse is negligible"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+      "alternate_explanation_steps": [
+        "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7E-M02",
+      "prompt": "Two carts stick together after impact. What kind of collision is this?",
+      "choices": [
+        "Perfectly elastic",
+        "Perfectly inelastic"
+      ],
+      "answer": "Perfectly inelastic",
+      "accepted_answers": [
+        "Perfectly inelastic"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+      "alternate_explanation_steps": [
+        "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7E-M03",
+      "prompt": "What additional quantity is conserved in an ideal elastic collision?",
+      "choices": [
+        "Total kinetic energy",
+        "Each object’s individual momentum"
+      ],
+      "answer": "Total kinetic energy",
+      "accepted_answers": [
+        "Total kinetic energy"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+      "alternate_explanation_steps": [
+        "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7E-M04",
+      "prompt": "A 2 kg cart at 3 m/s hits a stationary 1 kg cart and they stick. Ignoring external impulse, what is their common velocity?",
+      "choices": [
+        "3 m/s in the initial direction",
+        "2 m/s in the initial direction"
+      ],
+      "answer": "2 m/s in the initial direction",
+      "accepted_answers": [
+        "2 m/s in the initial direction"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+      "alternate_explanation_steps": [
+        "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7E-M05",
+      "prompt": "In an isolated explosion from rest, can pieces move while total momentum stays zero?",
+      "choices": [
+        "Yes, their vector momenta can cancel",
+        "No, zero momentum forbids motion"
+      ],
+      "answer": "Yes, their vector momenta can cancel",
+      "accepted_answers": [
+        "Yes, their vector momenta can cancel"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+      "alternate_explanation_steps": [
+        "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "7E-P01",
+        "prompt": "What additional quantity is conserved in an ideal elastic collision?",
+        "choices": [
+          "Total kinetic energy",
+          "Each object’s individual momentum"
+        ],
+        "answer": "Total kinetic energy",
+        "accepted_answers": [
+          "Total kinetic energy"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+        "alternate_explanation_steps": [
+          "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7E-Q05",
+          "prompt": "In an isolated explosion from rest, can pieces move while total momentum stays zero?",
+          "choices": [
+            "Yes, their vector momenta can cancel",
+            "No, zero momentum forbids motion"
+          ],
+          "answer": "Yes, their vector momenta can cancel",
+          "accepted_answers": [
+            "Yes, their vector momenta can cancel"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+          "alternate_explanation_steps": [
+            "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7E-P02",
+        "prompt": "A 2 kg cart at 3 m/s hits a stationary 1 kg cart and they stick. Ignoring external impulse, what is their common velocity?",
+        "choices": [
+          "3 m/s in the initial direction",
+          "2 m/s in the initial direction"
+        ],
+        "answer": "2 m/s in the initial direction",
+        "accepted_answers": [
+          "2 m/s in the initial direction"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+        "alternate_explanation_steps": [
+          "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7E-Q01",
+          "prompt": "When is total momentum conserved for a colliding system?",
+          "choices": [
+            "When net external impulse is negligible",
+            "Whenever kinetic energy is conserved"
+          ],
+          "answer": "When net external impulse is negligible",
+          "accepted_answers": [
+            "When net external impulse is negligible"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+          "alternate_explanation_steps": [
+            "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7E-P03",
+        "prompt": "In an isolated explosion from rest, can pieces move while total momentum stays zero?",
+        "choices": [
+          "Yes, their vector momenta can cancel",
+          "No, zero momentum forbids motion"
+        ],
+        "answer": "Yes, their vector momenta can cancel",
+        "accepted_answers": [
+          "Yes, their vector momenta can cancel"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+        "alternate_explanation_steps": [
+          "Internal energy can become kinetic energy. Pieces have opposite momenta whose vector sum equals the original zero momentum.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7E-Q02",
+          "prompt": "Two carts stick together after impact. What kind of collision is this?",
+          "choices": [
+            "Perfectly elastic",
+            "Perfectly inelastic"
+          ],
+          "answer": "Perfectly inelastic",
+          "accepted_answers": [
+            "Perfectly inelastic"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+          "alternate_explanation_steps": [
+            "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "7E-G01",
+        "prompt": "When is total momentum conserved for a colliding system?",
+        "choices": [
+          "When net external impulse is negligible",
+          "Whenever kinetic energy is conserved"
+        ],
+        "answer": "When net external impulse is negligible",
+        "accepted_answers": [
+          "When net external impulse is negligible"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+        "alternate_explanation_steps": [
+          "Internal interaction forces cancel in the system momentum balance. External impulse, not the collision label alone, determines momentum conservation.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7E-Q03",
+          "prompt": "What additional quantity is conserved in an ideal elastic collision?",
+          "choices": [
+            "Total kinetic energy",
+            "Each object’s individual momentum"
+          ],
+          "answer": "Total kinetic energy",
+          "accepted_answers": [
+            "Total kinetic energy"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+          "alternate_explanation_steps": [
+            "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7E-G02",
+        "prompt": "Two carts stick together after impact. What kind of collision is this?",
+        "choices": [
+          "Perfectly elastic",
+          "Perfectly inelastic"
+        ],
+        "answer": "Perfectly inelastic",
+        "accepted_answers": [
+          "Perfectly inelastic"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+        "alternate_explanation_steps": [
+          "Sticking defines a perfectly inelastic collision. Momentum can be conserved while kinetic energy decreases into deformation, thermal energy, or sound.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7E-Q04",
+          "prompt": "A 2 kg cart at 3 m/s hits a stationary 1 kg cart and they stick. Ignoring external impulse, what is their common velocity?",
+          "choices": [
+            "3 m/s in the initial direction",
+            "2 m/s in the initial direction"
+          ],
+          "answer": "2 m/s in the initial direction",
+          "accepted_answers": [
+            "2 m/s in the initial direction"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+          "alternate_explanation_steps": [
+            "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "7E-C01",
+      "prompt": "What additional quantity is conserved in an ideal elastic collision? Explain why, using your own words.",
+      "expected_ideas": [
+        "Total kinetic energy",
+        "Momentum and total kinetic energy are conserved for the isolated elastic system, but individual objects exchange momentum and energy."
+      ],
+      "misconceptions": [
+        "Each object’s individual momentum"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "7E-C02",
+      "prompt": "A 2 kg cart at 3 m/s hits a stationary 1 kg cart and they stick. Ignoring external impulse, what is their common velocity? Explain why, using your own words.",
+      "expected_ideas": [
+        "2 m/s in the initial direction",
+        "Initial momentum is 6 kg·m/s. Combined mass is 3 kg, so v_final = 6/3 = 2 m/s."
+      ],
+      "misconceptions": [
+        "3 m/s in the initial direction"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
