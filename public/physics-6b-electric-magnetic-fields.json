@@ -47,5 +47,715 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Fields describe forces at a distance",
+      "content": "Electric and magnetic fields describe regions where charges or magnets can experience forces without direct contact. Field direction shows the direction a positive test charge or north magnetic pole would tend to move.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Moving charge",
+          "Magnetic field",
+          "Perpendicular force"
+        ],
+        "label": "Magnetic force can turn velocity; it vanishes for motion parallel to the field."
+      }
+    },
+    {
+      "title": "Electric fields",
+      "content": "Electric fields are produced by electric charges. Field lines point away from positive charges and toward negative charges. Stronger fields are represented by more closely spaced field lines."
+    },
+    {
+      "title": "Magnetic fields",
+      "content": "Magnetic fields are produced by magnets and moving electric charges. Outside a bar magnet, field lines emerge from the north pole and enter the south pole."
+    },
+    {
+      "title": "Everyday applications",
+      "content": "Motors use magnetic forces on current-carrying wires. Generators use changing magnetic fields to produce electric current. Transformers use changing magnetic fields to transfer electrical energy between coils."
+    },
+    {
+      "title": "What does the direction of an electric field arrow mean?",
+      "content": "A field describes force per unit positive test charge. Particle velocity need not point along its force."
+    },
+    {
+      "title": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+      "content": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "6B-W01",
+      "prompt": "What does the direction of an electric field arrow mean?",
+      "choices": [
+        "Force direction on a positive test charge",
+        "Direction every charged particle must move"
+      ],
+      "answer": "Force direction on a positive test charge",
+      "accepted_answers": [
+        "Force direction on a positive test charge"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+      "alternate_explanation_steps": [
+        "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "What does the direction of an electric field arrow mean?"
+        },
+        {
+          "equation": "Force direction on a positive test charge",
+          "explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Moving charge",
+          "Magnetic field",
+          "Perpendicular force"
+        ],
+        "label": "Magnetic force can turn velocity; it vanishes for motion parallel to the field."
+      }
+    },
+    {
+      "id": "6B-W02",
+      "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+      "choices": [
+        "A force along the magnetic field",
+        "Zero"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+      "alternate_explanation_steps": [
+        "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A stationary charge is placed in a magnetic field only. What magnetic force acts?"
+        },
+        {
+          "equation": "Zero",
+          "explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "6B-G01",
+      "prompt": "What does the direction of an electric field arrow mean?",
+      "choices": [
+        "Force direction on a positive test charge",
+        "Direction every charged particle must move"
+      ],
+      "answer": "Force direction on a positive test charge",
+      "accepted_answers": [
+        "Force direction on a positive test charge"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+      "alternate_explanation_steps": [
+        "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6B-Q03",
+        "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force?",
+        "choices": [
+          "Zero",
+          "Maximum magnitude"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+        "alternate_explanation_steps": [
+          "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6B-G02",
+      "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+      "choices": [
+        "A force along the magnetic field",
+        "Zero"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+      "alternate_explanation_steps": [
+        "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6B-Q04",
+        "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed?",
+        "choices": [
+          "Magnetic force always points forward",
+          "Magnetic force is perpendicular to velocity"
+        ],
+        "answer": "Magnetic force is perpendicular to velocity",
+        "accepted_answers": [
+          "Magnetic force is perpendicular to velocity"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+        "alternate_explanation_steps": [
+          "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "6B-P01",
+      "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force?",
+      "choices": [
+        "Zero",
+        "Maximum magnitude"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+      "alternate_explanation_steps": [
+        "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6B-Q05",
+        "prompt": "What magnetic pattern surrounds a long straight current-carrying wire?",
+        "choices": [
+          "Concentric loops around the wire",
+          "Straight radial lines away from the wire"
+        ],
+        "answer": "Concentric loops around the wire",
+        "accepted_answers": [
+          "Concentric loops around the wire"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+        "alternate_explanation_steps": [
+          "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6B-P02",
+      "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed?",
+      "choices": [
+        "Magnetic force always points forward",
+        "Magnetic force is perpendicular to velocity"
+      ],
+      "answer": "Magnetic force is perpendicular to velocity",
+      "accepted_answers": [
+        "Magnetic force is perpendicular to velocity"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+      "alternate_explanation_steps": [
+        "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6B-Q01",
+        "prompt": "What does the direction of an electric field arrow mean?",
+        "choices": [
+          "Force direction on a positive test charge",
+          "Direction every charged particle must move"
+        ],
+        "answer": "Force direction on a positive test charge",
+        "accepted_answers": [
+          "Force direction on a positive test charge"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+        "alternate_explanation_steps": [
+          "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6B-P03",
+      "prompt": "What magnetic pattern surrounds a long straight current-carrying wire?",
+      "choices": [
+        "Concentric loops around the wire",
+        "Straight radial lines away from the wire"
+      ],
+      "answer": "Concentric loops around the wire",
+      "accepted_answers": [
+        "Concentric loops around the wire"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+      "alternate_explanation_steps": [
+        "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6B-Q02",
+        "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+        "choices": [
+          "A force along the magnetic field",
+          "Zero"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+        "alternate_explanation_steps": [
+          "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "6B-M01",
+      "prompt": "What does the direction of an electric field arrow mean?",
+      "choices": [
+        "Force direction on a positive test charge",
+        "Direction every charged particle must move"
+      ],
+      "answer": "Force direction on a positive test charge",
+      "accepted_answers": [
+        "Force direction on a positive test charge"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+      "alternate_explanation_steps": [
+        "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6B-M02",
+      "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+      "choices": [
+        "A force along the magnetic field",
+        "Zero"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+      "alternate_explanation_steps": [
+        "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6B-M03",
+      "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force?",
+      "choices": [
+        "Zero",
+        "Maximum magnitude"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+      "alternate_explanation_steps": [
+        "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6B-M04",
+      "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed?",
+      "choices": [
+        "Magnetic force always points forward",
+        "Magnetic force is perpendicular to velocity"
+      ],
+      "answer": "Magnetic force is perpendicular to velocity",
+      "accepted_answers": [
+        "Magnetic force is perpendicular to velocity"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+      "alternate_explanation_steps": [
+        "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6B-M05",
+      "prompt": "What magnetic pattern surrounds a long straight current-carrying wire?",
+      "choices": [
+        "Concentric loops around the wire",
+        "Straight radial lines away from the wire"
+      ],
+      "answer": "Concentric loops around the wire",
+      "accepted_answers": [
+        "Concentric loops around the wire"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+      "alternate_explanation_steps": [
+        "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "6B-P01",
+        "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force?",
+        "choices": [
+          "Zero",
+          "Maximum magnitude"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+        "alternate_explanation_steps": [
+          "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6B-Q05",
+          "prompt": "What magnetic pattern surrounds a long straight current-carrying wire?",
+          "choices": [
+            "Concentric loops around the wire",
+            "Straight radial lines away from the wire"
+          ],
+          "answer": "Concentric loops around the wire",
+          "accepted_answers": [
+            "Concentric loops around the wire"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+          "alternate_explanation_steps": [
+            "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6B-P02",
+        "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed?",
+        "choices": [
+          "Magnetic force always points forward",
+          "Magnetic force is perpendicular to velocity"
+        ],
+        "answer": "Magnetic force is perpendicular to velocity",
+        "accepted_answers": [
+          "Magnetic force is perpendicular to velocity"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+        "alternate_explanation_steps": [
+          "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6B-Q01",
+          "prompt": "What does the direction of an electric field arrow mean?",
+          "choices": [
+            "Force direction on a positive test charge",
+            "Direction every charged particle must move"
+          ],
+          "answer": "Force direction on a positive test charge",
+          "accepted_answers": [
+            "Force direction on a positive test charge"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+          "alternate_explanation_steps": [
+            "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6B-P03",
+        "prompt": "What magnetic pattern surrounds a long straight current-carrying wire?",
+        "choices": [
+          "Concentric loops around the wire",
+          "Straight radial lines away from the wire"
+        ],
+        "answer": "Concentric loops around the wire",
+        "accepted_answers": [
+          "Concentric loops around the wire"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+        "alternate_explanation_steps": [
+          "Use the right-hand grip rule: thumb in conventional current direction, curled fingers in magnetic-field direction.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6B-Q02",
+          "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+          "choices": [
+            "A force along the magnetic field",
+            "Zero"
+          ],
+          "answer": "Zero",
+          "accepted_answers": [
+            "Zero"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+          "alternate_explanation_steps": [
+            "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "6B-G01",
+        "prompt": "What does the direction of an electric field arrow mean?",
+        "choices": [
+          "Force direction on a positive test charge",
+          "Direction every charged particle must move"
+        ],
+        "answer": "Force direction on a positive test charge",
+        "accepted_answers": [
+          "Force direction on a positive test charge"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+        "alternate_explanation_steps": [
+          "A field describes force per unit positive test charge. Particle velocity need not point along its force.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6B-Q03",
+          "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force?",
+          "choices": [
+            "Zero",
+            "Maximum magnitude"
+          ],
+          "answer": "Zero",
+          "accepted_answers": [
+            "Zero"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+          "alternate_explanation_steps": [
+            "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6B-G02",
+        "prompt": "A stationary charge is placed in a magnetic field only. What magnetic force acts?",
+        "choices": [
+          "A force along the magnetic field",
+          "Zero"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+        "alternate_explanation_steps": [
+          "Magnetic force on a point charge is qv × B; zero velocity makes this magnetic contribution zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6B-Q04",
+          "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed?",
+          "choices": [
+            "Magnetic force always points forward",
+            "Magnetic force is perpendicular to velocity"
+          ],
+          "answer": "Magnetic force is perpendicular to velocity",
+          "accepted_answers": [
+            "Magnetic force is perpendicular to velocity"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+          "alternate_explanation_steps": [
+            "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "6B-C01",
+      "prompt": "A charge moves parallel to a magnetic field. What is its magnetic force? Explain why, using your own words.",
+      "expected_ideas": [
+        "Zero",
+        "The cross product gives magnitude |q|vB sin θ. Parallel or antiparallel motion makes sin θ zero."
+      ],
+      "misconceptions": [
+        "Maximum magnitude"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "6B-C02",
+      "prompt": "Why can a uniform magnetic field bend a moving charge without changing its speed? Explain why, using your own words.",
+      "expected_ideas": [
+        "Magnetic force is perpendicular to velocity",
+        "For the magnetic contribution alone, force does no work because F·v = 0. It can change velocity direction without changing kinetic energy."
+      ],
+      "misconceptions": [
+        "Magnetic force always points forward"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
