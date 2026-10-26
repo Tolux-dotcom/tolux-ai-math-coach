@@ -1,0 +1,56 @@
+{
+  "lesson_id": "physics-8d-wave-behavior",
+  "course_id": "physics",
+  "teks": [
+    "8D"
+  ],
+  "title": "Wave Behavior",
+  "learning_goal": "Investigate reflection, refraction, diffraction, interference, standing waves, Doppler effect, polarization, and superposition.",
+  "stages": [
+    {
+      "id": "reflection",
+      "title": "1. Reflection and refraction",
+      "content": "Reflection occurs when a wave bounces from a boundary. Refraction occurs when a wave changes speed and direction as it enters a different medium."
+    },
+    {
+      "id": "diffraction",
+      "title": "2. Diffraction",
+      "content": "Diffraction is the spreading of waves around edges or through openings. It is strongest when the opening or obstacle size is comparable to the wavelength."
+    },
+    {
+      "id": "interference",
+      "title": "3. Interference and superposition",
+      "content": "When waves overlap, their displacements add. Constructive interference increases amplitude, while destructive interference reduces amplitude."
+    },
+    {
+      "id": "standing",
+      "title": "4. Standing waves and resonance",
+      "content": "Standing waves form from interference between waves traveling in opposite directions. Nodes have minimal motion and antinodes have maximum motion."
+    },
+    {
+      "id": "doppler",
+      "title": "5. Doppler effect and polarization",
+      "content": "The Doppler effect is an observed frequency shift caused by relative motion between source and observer. Polarization restricts the orientation of transverse-wave oscillations."
+    },
+    {
+      "id": "guided-practice",
+      "title": "6. Guided practice",
+      "prompt": "Two identical wave pulses meet crest-to-crest. What type of interference occurs?",
+      "hint": "Ask whether their displacements add or cancel.",
+      "alternate_explanation": "Two upward displacements combine into a larger upward displacement.",
+      "answer": "Constructive interference."
+    },
+    {
+      "id": "mastery",
+      "title": "7. Mastery check",
+      "content": "To demonstrate mastery, distinguish major wave behaviors, predict interference outcomes, identify nodes and antinodes, explain Doppler shifts, and describe polarization."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
