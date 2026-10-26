@@ -1,4 +1,5 @@
 import {createAdministratorLearningAccess, hasUnlimitedLearningAccess, buildLearningTrialStatus} from './administrator-learning-access.mjs';
+import { PHYSICS_REASONING_INSTRUCTIONS, preparePhysicsReasoning, parsePhysicsReasoning } from "./physics-reasoning.mjs";
 import { resolveCheckoutReturnConfig } from "./checkout-return-config.mjs";
 import { resolvePublicAuthConfig, publicAuthConfigScript } from "./public-auth-config.mjs";
 import "./growth-server-hooks.mjs";
@@ -993,7 +994,7 @@ if (event.type === "invoice.payment_failed") {
         });
       }
 
-      const { message, mode="Tutor Mode", course="Algebra 1", imageDataUrl=null, history=[] } = await readJson(req);
+      const { message, mode="Tutor Mode", course="Algebra 1", imageDataUrl=null, history=[], physicsReasoning=null } = await readJson(req);
       
       const user = await getAuthenticatedUser(req);
 
@@ -1059,6 +1060,15 @@ if (!qaSession && !dailyFreeStatus && trialStatus.trialExpired) {
     trialSecondsLimit: TRIAL_SECONDS
   });
 }
+      let physicsInput = null;
+      if (physicsReasoning !== null) {
+        try {
+          const lessons = fs.readdirSync(publicDir)
+            .filter(name => /^physics-.*\.json$/.test(name) && name !== 'physics-course.json')
+            .map(name => JSON.parse(fs.readFileSync(path.join(publicDir,name),'utf8')));
+          physicsInput = preparePhysicsReasoning(physicsReasoning, lessons);
+        } catch (error) { return send(res, 400, {error:error.message}); }
+      }
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
       const prior = Array.isArray(history) ? history.slice(-8).map(m => ({
@@ -1087,11 +1097,12 @@ if (!qaSession && !dailyFreeStatus && trialStatus.trialExpired) {
 
       const response = await openai.responses.create({
         model: "gpt-5-mini-2025-08-07",
-        instructions: MASTER_INSTRUCTIONS,
-        input
+        instructions: physicsInput ? PHYSICS_REASONING_INSTRUCTIONS : MASTER_INSTRUCTIONS,
+        input: physicsInput ? [{role:"user",content:[{type:"input_text",text:physicsInput}]}] : input
       });
 
       
+      const reasoningFeedback = physicsInput ? parsePhysicsReasoning(response.output_text || "") : null;
       let responseHeaders = {};
       let dailyFreeResponse = null;
 
@@ -1110,7 +1121,8 @@ if (!qaSession && !dailyFreeStatus && trialStatus.trialExpired) {
         res,
         200,
         {
-          reply: response.output_text || "I could not generate a response.",
+          reply: reasoningFeedback ? null : response.output_text || "I could not generate a response.",
+          reasoningFeedback,
           qaMode: Boolean(qaSession),
           isSubscriber: usage.is_subscriber,
           isAdministrator: usage.is_administrator === true,

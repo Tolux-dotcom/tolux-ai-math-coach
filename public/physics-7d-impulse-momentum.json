@@ -47,5 +47,696 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Momentum",
+      "content": "Linear momentum describes motion and is given by p = mv. Momentum is a vector, so direction matters.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Net force over time",
+          "Impulse ∫F dt",
+          "Momentum change Δp"
+        ],
+        "label": "For the same Δp, a longer stopping interval reduces average force magnitude."
+      }
+    },
+    {
+      "title": "Impulse",
+      "content": "Impulse is the product of force and time interval, J = FΔt, for a constant force. Impulse equals the change in momentum: J = Δp."
+    },
+    {
+      "title": "Why contact time matters",
+      "content": "For the same change in momentum, increasing the collision time reduces the average force. This is why airbags, padding, and crumple zones can reduce injury."
+    },
+    {
+      "title": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+      "content": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s."
+    },
+    {
+      "title": "For the same momentum change, increasing stopping time changes average force how?",
+      "content": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "7D-W01",
+      "prompt": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+      "choices": [
+        "12 N·s",
+        "3 N·s"
+      ],
+      "answer": "12 N·s",
+      "accepted_answers": [
+        "12 N·s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+      "alternate_explanation_steps": [
+        "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?"
+        },
+        {
+          "equation": "12 N·s",
+          "explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Net force over time",
+          "Impulse ∫F dt",
+          "Momentum change Δp"
+        ],
+        "label": "For the same Δp, a longer stopping interval reduces average force magnitude."
+      }
+    },
+    {
+      "id": "7D-W02",
+      "prompt": "For the same momentum change, increasing stopping time changes average force how?",
+      "choices": [
+        "It increases",
+        "It decreases"
+      ],
+      "answer": "It decreases",
+      "accepted_answers": [
+        "It decreases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+      "alternate_explanation_steps": [
+        "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "For the same momentum change, increasing stopping time changes average force how?"
+        },
+        {
+          "equation": "It decreases",
+          "explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "7D-G01",
+      "prompt": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+      "choices": [
+        "12 N·s",
+        "3 N·s"
+      ],
+      "answer": "12 N·s",
+      "accepted_answers": [
+        "12 N·s"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+      "alternate_explanation_steps": [
+        "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7D-Q03",
+        "prompt": "A ball reverses direction after hitting a wall. Why must signs be included in momentum change?",
+        "choices": [
+          "Momentum is a vector",
+          "Momentum is always positive"
+        ],
+        "answer": "Momentum is a vector",
+        "accepted_answers": [
+          "Momentum is a vector"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+        "alternate_explanation_steps": [
+          "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7D-G02",
+      "prompt": "For the same momentum change, increasing stopping time changes average force how?",
+      "choices": [
+        "It increases",
+        "It decreases"
+      ],
+      "answer": "It decreases",
+      "accepted_answers": [
+        "It decreases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+      "alternate_explanation_steps": [
+        "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7D-Q04",
+        "prompt": "A 2 kg cart moves at 3 m/s east. What is its momentum?",
+        "choices": [
+          "9 kg·m/s east",
+          "6 kg·m/s east"
+        ],
+        "answer": "6 kg·m/s east",
+        "accepted_answers": [
+          "6 kg·m/s east"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+        "alternate_explanation_steps": [
+          "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "7D-P01",
+      "prompt": "A ball reverses direction after hitting a wall. Why must signs be included in momentum change?",
+      "choices": [
+        "Momentum is a vector",
+        "Momentum is always positive"
+      ],
+      "answer": "Momentum is a vector",
+      "accepted_answers": [
+        "Momentum is a vector"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+      "alternate_explanation_steps": [
+        "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7D-Q05",
+        "prompt": "What does signed area under a force-time graph represent?",
+        "choices": [
+          "Impulse",
+          "Kinetic energy"
+        ],
+        "answer": "Impulse",
+        "accepted_answers": [
+          "Impulse"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+        "alternate_explanation_steps": [
+          "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7D-P02",
+      "prompt": "A 2 kg cart moves at 3 m/s east. What is its momentum?",
+      "choices": [
+        "9 kg·m/s east",
+        "6 kg·m/s east"
+      ],
+      "answer": "6 kg·m/s east",
+      "accepted_answers": [
+        "6 kg·m/s east"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+      "alternate_explanation_steps": [
+        "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7D-Q01",
+        "prompt": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+        "choices": [
+          "12 N·s",
+          "3 N·s"
+        ],
+        "answer": "12 N·s",
+        "accepted_answers": [
+          "12 N·s"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+        "alternate_explanation_steps": [
+          "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7D-P03",
+      "prompt": "What does signed area under a force-time graph represent?",
+      "choices": [
+        "Impulse",
+        "Kinetic energy"
+      ],
+      "answer": "Impulse",
+      "accepted_answers": [
+        "Impulse"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+      "alternate_explanation_steps": [
+        "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7D-Q02",
+        "prompt": "For the same momentum change, increasing stopping time changes average force how?",
+        "choices": [
+          "It increases",
+          "It decreases"
+        ],
+        "answer": "It decreases",
+        "accepted_answers": [
+          "It decreases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+        "alternate_explanation_steps": [
+          "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "7D-M01",
+      "prompt": "A constant signed net force of −2 N acts on a cart for 3 s. Find its signed impulse.",
+      "choices": [
+        "−6 N·s",
+        "6 N·s"
+      ],
+      "answer": "−6 N·s",
+      "accepted_answers": [
+        "−6 N·s"
+      ],
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -2,
+        "time": 3
+      }
+    },
+    {
+      "id": "7D-M02",
+      "prompt": "A constant signed net force of −3 N acts on a cart for 4 s. Find its signed impulse.",
+      "choices": [
+        "12 N·s",
+        "−12 N·s"
+      ],
+      "answer": "−12 N·s",
+      "accepted_answers": [
+        "−12 N·s"
+      ],
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -3,
+        "time": 4
+      }
+    },
+    {
+      "id": "7D-M03",
+      "prompt": "A constant signed net force of −4 N acts on a cart for 5 s. Find its signed impulse.",
+      "choices": [
+        "−20 N·s",
+        "20 N·s"
+      ],
+      "answer": "−20 N·s",
+      "accepted_answers": [
+        "−20 N·s"
+      ],
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -4,
+        "time": 5
+      }
+    },
+    {
+      "id": "7D-M04",
+      "prompt": "A constant signed net force of −5 N acts on a cart for 6 s. Find its signed impulse.",
+      "choices": [
+        "30 N·s",
+        "−30 N·s"
+      ],
+      "answer": "−30 N·s",
+      "accepted_answers": [
+        "−30 N·s"
+      ],
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -5,
+        "time": 6
+      }
+    },
+    {
+      "id": "7D-M05",
+      "prompt": "A constant signed net force of −6 N acts on a cart for 7 s. Find its signed impulse.",
+      "choices": [
+        "−42 N·s",
+        "42 N·s"
+      ],
+      "answer": "−42 N·s",
+      "accepted_answers": [
+        "−42 N·s"
+      ],
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -6,
+        "time": 7
+      }
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "7D-P01",
+        "prompt": "A ball reverses direction after hitting a wall. Why must signs be included in momentum change?",
+        "choices": [
+          "Momentum is a vector",
+          "Momentum is always positive"
+        ],
+        "answer": "Momentum is a vector",
+        "accepted_answers": [
+          "Momentum is a vector"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+        "alternate_explanation_steps": [
+          "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7D-Q05",
+          "prompt": "What does signed area under a force-time graph represent?",
+          "choices": [
+            "Impulse",
+            "Kinetic energy"
+          ],
+          "answer": "Impulse",
+          "accepted_answers": [
+            "Impulse"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+          "alternate_explanation_steps": [
+            "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7D-P02",
+        "prompt": "A 2 kg cart moves at 3 m/s east. What is its momentum?",
+        "choices": [
+          "9 kg·m/s east",
+          "6 kg·m/s east"
+        ],
+        "answer": "6 kg·m/s east",
+        "accepted_answers": [
+          "6 kg·m/s east"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+        "alternate_explanation_steps": [
+          "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7D-Q01",
+          "prompt": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+          "choices": [
+            "12 N·s",
+            "3 N·s"
+          ],
+          "answer": "12 N·s",
+          "accepted_answers": [
+            "12 N·s"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+          "alternate_explanation_steps": [
+            "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7D-P03",
+        "prompt": "What does signed area under a force-time graph represent?",
+        "choices": [
+          "Impulse",
+          "Kinetic energy"
+        ],
+        "answer": "Impulse",
+        "accepted_answers": [
+          "Impulse"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+        "alternate_explanation_steps": [
+          "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7D-Q02",
+          "prompt": "For the same momentum change, increasing stopping time changes average force how?",
+          "choices": [
+            "It increases",
+            "It decreases"
+          ],
+          "answer": "It decreases",
+          "accepted_answers": [
+            "It decreases"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+          "alternate_explanation_steps": [
+            "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "7D-G01",
+        "prompt": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+        "choices": [
+          "12 N·s",
+          "3 N·s"
+        ],
+        "answer": "12 N·s",
+        "accepted_answers": [
+          "12 N·s"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+        "alternate_explanation_steps": [
+          "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7D-Q03",
+          "prompt": "A ball reverses direction after hitting a wall. Why must signs be included in momentum change?",
+          "choices": [
+            "Momentum is a vector",
+            "Momentum is always positive"
+          ],
+          "answer": "Momentum is a vector",
+          "accepted_answers": [
+            "Momentum is a vector"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+          "alternate_explanation_steps": [
+            "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7D-G02",
+        "prompt": "For the same momentum change, increasing stopping time changes average force how?",
+        "choices": [
+          "It increases",
+          "It decreases"
+        ],
+        "answer": "It decreases",
+        "accepted_answers": [
+          "It decreases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+        "alternate_explanation_steps": [
+          "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7D-Q04",
+          "prompt": "A 2 kg cart moves at 3 m/s east. What is its momentum?",
+          "choices": [
+            "9 kg·m/s east",
+            "6 kg·m/s east"
+          ],
+          "answer": "6 kg·m/s east",
+          "accepted_answers": [
+            "6 kg·m/s east"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+          "alternate_explanation_steps": [
+            "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "7D-C01",
+      "prompt": "A ball reverses direction after hitting a wall. Why must signs be included in momentum change? Explain why, using your own words.",
+      "expected_ideas": [
+        "Momentum is a vector",
+        "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change."
+      ],
+      "misconceptions": [
+        "Momentum is always positive"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "7D-C02",
+      "prompt": "A 2 kg cart moves at 3 m/s east. What is its momentum? Explain why, using your own words.",
+      "expected_ideas": [
+        "6 kg·m/s east",
+        "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity."
+      ],
+      "misconceptions": [
+        "9 kg·m/s east"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }

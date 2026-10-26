@@ -47,5 +47,675 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Quantum uncertainty",
+      "content": "The uncertainty principle places a fundamental limit on how precisely certain pairs of physical quantities, such as position and momentum, can be known at the same time.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Prepared quantum states",
+          "Channel and measurement",
+          "Statistical disturbance check"
+        ],
+        "label": "QKD still needs authenticated classical communication and implementation security."
+      }
+    },
+    {
+      "title": "Quantum computing",
+      "content": "Quantum computers use quantum states called qubits. Superposition and entanglement can allow some computations to be structured very differently from classical computing."
+    },
+    {
+      "title": "Quantum and cybersecurity",
+      "content": "Quantum technologies can affect cybersecurity in two directions: some quantum algorithms threaten certain current encryption methods, while quantum key distribution can reveal attempts to intercept a key."
+    },
+    {
+      "title": "Other applications",
+      "content": "Quantum physics also underlies technologies such as lasers, semiconductors, LEDs, medical imaging components, atomic clocks, and precision sensors."
+    },
+    {
+      "title": "Why can quantum key distribution reveal some eavesdropping?",
+      "content": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance."
+    },
+    {
+      "title": "Does quantum key distribution by itself secure an unauthenticated classical channel?",
+      "content": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "9D-W01",
+      "prompt": "Why can quantum key distribution reveal some eavesdropping?",
+      "choices": [
+        "Measurements can disturb nonorthogonal signal states",
+        "All measurements are invisible"
+      ],
+      "answer": "Measurements can disturb nonorthogonal signal states",
+      "accepted_answers": [
+        "Measurements can disturb nonorthogonal signal states"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+      "alternate_explanation_steps": [
+        "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Why can quantum key distribution reveal some eavesdropping?"
+        },
+        {
+          "equation": "Measurements can disturb nonorthogonal signal states",
+          "explanation": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Prepared quantum states",
+          "Channel and measurement",
+          "Statistical disturbance check"
+        ],
+        "label": "QKD still needs authenticated classical communication and implementation security."
+      }
+    },
+    {
+      "id": "9D-W02",
+      "prompt": "Does quantum key distribution by itself secure an unauthenticated classical channel?",
+      "choices": [
+        "Yes, physics removes every security requirement",
+        "No, authentication is still needed"
+      ],
+      "answer": "No, authentication is still needed",
+      "accepted_answers": [
+        "No, authentication is still needed"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+      "alternate_explanation_steps": [
+        "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Does quantum key distribution by itself secure an unauthenticated classical channel?"
+        },
+        {
+          "equation": "No, authentication is still needed",
+          "explanation": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "9D-G01",
+      "prompt": "Why can quantum key distribution reveal some eavesdropping?",
+      "choices": [
+        "Measurements can disturb nonorthogonal signal states",
+        "All measurements are invisible"
+      ],
+      "answer": "Measurements can disturb nonorthogonal signal states",
+      "accepted_answers": [
+        "Measurements can disturb nonorthogonal signal states"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+      "alternate_explanation_steps": [
+        "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9D-Q03",
+        "prompt": "Can an arbitrary unknown quantum state be copied perfectly?",
+        "choices": [
+          "No, the no-cloning principle forbids this generally",
+          "Yes, like a classical file"
+        ],
+        "answer": "No, the no-cloning principle forbids this generally",
+        "accepted_answers": [
+          "No, the no-cloning principle forbids this generally"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+        "alternate_explanation_steps": [
+          "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "9D-G02",
+      "prompt": "Does quantum key distribution by itself secure an unauthenticated classical channel?",
+      "choices": [
+        "Yes, physics removes every security requirement",
+        "No, authentication is still needed"
+      ],
+      "answer": "No, authentication is still needed",
+      "accepted_answers": [
+        "No, authentication is still needed"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+      "alternate_explanation_steps": [
+        "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9D-Q04",
+        "prompt": "What contributes to quantum sensing advantages?",
+        "choices": [
+          "A guarantee of unlimited precision",
+          "Controlled quantum coherence and measurement"
+        ],
+        "answer": "Controlled quantum coherence and measurement",
+        "accepted_answers": [
+          "Controlled quantum coherence and measurement"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+        "alternate_explanation_steps": [
+          "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "9D-P01",
+      "prompt": "Can an arbitrary unknown quantum state be copied perfectly?",
+      "choices": [
+        "No, the no-cloning principle forbids this generally",
+        "Yes, like a classical file"
+      ],
+      "answer": "No, the no-cloning principle forbids this generally",
+      "accepted_answers": [
+        "No, the no-cloning principle forbids this generally"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+      "alternate_explanation_steps": [
+        "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9D-Q05",
+        "prompt": "Does entanglement allow usable messages faster than light by measurement alone?",
+        "choices": [
+          "No",
+          "Yes"
+        ],
+        "answer": "No",
+        "accepted_answers": [
+          "No"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+        "alternate_explanation_steps": [
+          "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "9D-P02",
+      "prompt": "What contributes to quantum sensing advantages?",
+      "choices": [
+        "A guarantee of unlimited precision",
+        "Controlled quantum coherence and measurement"
+      ],
+      "answer": "Controlled quantum coherence and measurement",
+      "accepted_answers": [
+        "Controlled quantum coherence and measurement"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+      "alternate_explanation_steps": [
+        "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9D-Q01",
+        "prompt": "Why can quantum key distribution reveal some eavesdropping?",
+        "choices": [
+          "Measurements can disturb nonorthogonal signal states",
+          "All measurements are invisible"
+        ],
+        "answer": "Measurements can disturb nonorthogonal signal states",
+        "accepted_answers": [
+          "Measurements can disturb nonorthogonal signal states"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+        "alternate_explanation_steps": [
+          "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "9D-P03",
+      "prompt": "Does entanglement allow usable messages faster than light by measurement alone?",
+      "choices": [
+        "No",
+        "Yes"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+      "alternate_explanation_steps": [
+        "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9D-Q02",
+        "prompt": "Does quantum key distribution by itself secure an unauthenticated classical channel?",
+        "choices": [
+          "Yes, physics removes every security requirement",
+          "No, authentication is still needed"
+        ],
+        "answer": "No, authentication is still needed",
+        "accepted_answers": [
+          "No, authentication is still needed"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+        "alternate_explanation_steps": [
+          "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "9D-M01",
+      "prompt": "A quantum key exchange detects a high error rate. What should the participants do?",
+      "choices": [
+        "Treat the key as potentially compromised and apply the protocol’s rejection rules",
+        "Assume quantum physics guarantees security anyway"
+      ],
+      "answer": "Treat the key as potentially compromised and apply the protocol’s rejection rules",
+      "accepted_answers": [
+        "Treat the key as potentially compromised and apply the protocol’s rejection rules"
+      ],
+      "alternate_explanation": "Statistical checks are part of the protocol; implementation and channel disturbance matter."
+    },
+    {
+      "id": "9D-M02",
+      "prompt": "Can perfect copies of every arbitrary unknown qubit be made by one universal copying operation?",
+      "choices": [
+        "Yes",
+        "No"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "alternate_explanation": "The no-cloning principle excludes a universal perfect copier for arbitrary unknown states."
+    },
+    {
+      "id": "9D-M03",
+      "prompt": "Does a secure quantum channel remove the need to authenticate the public discussion?",
+      "choices": [
+        "No",
+        "Yes"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "alternate_explanation": "Authentication prevents impersonation in the classical part of key establishment."
+    },
+    {
+      "id": "9D-M04",
+      "prompt": "Can one party encode controllable faster-than-light messages merely by choosing local measurements on entangled particles?",
+      "choices": [
+        "Yes",
+        "No"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "alternate_explanation": "Entanglement correlations do not enable controllable superluminal signaling."
+    },
+    {
+      "id": "9D-M05",
+      "prompt": "A quantum sensor performs well in a quiet laboratory. Is the same advantage guaranteed under arbitrary environmental noise?",
+      "choices": [
+        "No",
+        "Yes"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "alternate_explanation": "Coherence, noise, preparation, and readout determine the practical sensing advantage."
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "9D-P01",
+        "prompt": "Can an arbitrary unknown quantum state be copied perfectly?",
+        "choices": [
+          "No, the no-cloning principle forbids this generally",
+          "Yes, like a classical file"
+        ],
+        "answer": "No, the no-cloning principle forbids this generally",
+        "accepted_answers": [
+          "No, the no-cloning principle forbids this generally"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+        "alternate_explanation_steps": [
+          "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9D-Q05",
+          "prompt": "Does entanglement allow usable messages faster than light by measurement alone?",
+          "choices": [
+            "No",
+            "Yes"
+          ],
+          "answer": "No",
+          "accepted_answers": [
+            "No"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+          "alternate_explanation_steps": [
+            "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "9D-P02",
+        "prompt": "What contributes to quantum sensing advantages?",
+        "choices": [
+          "A guarantee of unlimited precision",
+          "Controlled quantum coherence and measurement"
+        ],
+        "answer": "Controlled quantum coherence and measurement",
+        "accepted_answers": [
+          "Controlled quantum coherence and measurement"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+        "alternate_explanation_steps": [
+          "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9D-Q01",
+          "prompt": "Why can quantum key distribution reveal some eavesdropping?",
+          "choices": [
+            "Measurements can disturb nonorthogonal signal states",
+            "All measurements are invisible"
+          ],
+          "answer": "Measurements can disturb nonorthogonal signal states",
+          "accepted_answers": [
+            "Measurements can disturb nonorthogonal signal states"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+          "alternate_explanation_steps": [
+            "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "9D-P03",
+        "prompt": "Does entanglement allow usable messages faster than light by measurement alone?",
+        "choices": [
+          "No",
+          "Yes"
+        ],
+        "answer": "No",
+        "accepted_answers": [
+          "No"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+        "alternate_explanation_steps": [
+          "Entangled outcomes show correlations, but local measurement outcomes do not provide controllable faster-than-light signaling. Classical communication is needed to compare results.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9D-Q02",
+          "prompt": "Does quantum key distribution by itself secure an unauthenticated classical channel?",
+          "choices": [
+            "Yes, physics removes every security requirement",
+            "No, authentication is still needed"
+          ],
+          "answer": "No, authentication is still needed",
+          "accepted_answers": [
+            "No, authentication is still needed"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+          "alternate_explanation_steps": [
+            "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "9D-G01",
+        "prompt": "Why can quantum key distribution reveal some eavesdropping?",
+        "choices": [
+          "Measurements can disturb nonorthogonal signal states",
+          "All measurements are invisible"
+        ],
+        "answer": "Measurements can disturb nonorthogonal signal states",
+        "accepted_answers": [
+          "Measurements can disturb nonorthogonal signal states"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+        "alternate_explanation_steps": [
+          "An eavesdropper lacking the preparation basis cannot generally measure unknown nonorthogonal states without introducing detectable statistical disturbance.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9D-Q03",
+          "prompt": "Can an arbitrary unknown quantum state be copied perfectly?",
+          "choices": [
+            "No, the no-cloning principle forbids this generally",
+            "Yes, like a classical file"
+          ],
+          "answer": "No, the no-cloning principle forbids this generally",
+          "accepted_answers": [
+            "No, the no-cloning principle forbids this generally"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+          "alternate_explanation_steps": [
+            "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "9D-G02",
+        "prompt": "Does quantum key distribution by itself secure an unauthenticated classical channel?",
+        "choices": [
+          "Yes, physics removes every security requirement",
+          "No, authentication is still needed"
+        ],
+        "answer": "No, authentication is still needed",
+        "accepted_answers": [
+          "No, authentication is still needed"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+        "alternate_explanation_steps": [
+          "Practical protocols require authenticated classical communication and sound implementation. Quantum signaling does not eliminate device flaws or all attacks.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9D-Q04",
+          "prompt": "What contributes to quantum sensing advantages?",
+          "choices": [
+            "A guarantee of unlimited precision",
+            "Controlled quantum coherence and measurement"
+          ],
+          "answer": "Controlled quantum coherence and measurement",
+          "accepted_answers": [
+            "Controlled quantum coherence and measurement"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+          "alternate_explanation_steps": [
+            "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "9D-C01",
+      "prompt": "Can an arbitrary unknown quantum state be copied perfectly? Explain why, using your own words.",
+      "expected_ideas": [
+        "No, the no-cloning principle forbids this generally",
+        "No universal operation perfectly clones every unknown state. Known orthogonal states can be distinguished and reproduced, so the scope matters."
+      ],
+      "misconceptions": [
+        "Yes, like a classical file"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "9D-C02",
+      "prompt": "What contributes to quantum sensing advantages? Explain why, using your own words.",
+      "expected_ideas": [
+        "Controlled quantum coherence and measurement",
+        "Quantum states can enhance sensitivity under specified resources and noise conditions. Advantages depend on preparation, readout, and decoherence."
+      ],
+      "misconceptions": [
+        "A guarantee of unlimited precision"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }

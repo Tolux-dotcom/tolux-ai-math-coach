@@ -47,5 +47,747 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "A complete circuit",
+      "content": "Start at the battery's positive terminal (the long plate). Trace a conducting path through the bulbs and back to the negative terminal. Series means one loop through both bulbs. Parallel means separate branches between the same two junctions.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "comparison"
+      }
+    },
+    {
+      "title": "Series circuits",
+      "content": "In a series circuit, components share one path. The same current passes through each component, and the source voltage is divided among the components.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "series"
+      }
+    },
+    {
+      "title": "Parallel circuits",
+      "content": "In a parallel circuit, components are connected across the same two points. Each branch has the same voltage, while current splits among the branches.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "parallel"
+      }
+    },
+    {
+      "title": "Two resistors are in series in one unbranched loop. Compare their currents.",
+      "content": "In steady state charge does not accumulate between components. The same current passes through each series component."
+    },
+    {
+      "title": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
+      "content": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ."
+    },
+    {
+      "title": "What happens when a path is opened?",
+      "content": "An open switch creates a gap. In series the gap breaks the only loop, so both bulbs go out. In parallel the other branch keeps its complete path and stays on. With an ideal battery, the voltage and current in the intact branch stay the same; the battery supplies less total current.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "comparison",
+        "open": true
+      }
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "6D-W01",
+      "prompt": "In the diagram, 3 Ω and 6 Ω resistors form one series loop across an ideal 9 V battery. Why do they carry the same current?",
+      "choices": [
+        "The currents are equal",
+        "The larger resistance uses up more current"
+      ],
+      "answer": "The currents are equal",
+      "accepted_answers": [
+        "The currents are equal"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "In steady state charge does not accumulate between components. The same current passes through each series component.",
+      "alternate_explanation_steps": [
+        "In steady state charge does not accumulate between components. The same current passes through each series component.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "One loop → the same current at every point",
+          "explanation": "There is no junction where charge can split into another path, and charge does not build up between the resistors in steady state."
+        },
+        {
+          "equation": "R_total = 3 Ω + 6 Ω = 9 Ω",
+          "explanation": "Add resistances because both resistors lie along the only path."
+        },
+        {
+          "equation": "I = V/R_total = 9 V / 9 Ω = 1 A",
+          "explanation": "The battery, the 3 Ω resistor, and the 6 Ω resistor each carry 1 A."
+        },
+        {
+          "equation": "V₁ = 1 A × 3 Ω = 3 V; V₂ = 1 A × 6 Ω = 6 V",
+          "explanation": "The voltage drops add to 9 V. The current is the same, but the voltage divides according to resistance."
+        }
+      ],
+      "visual": {
+        "type": "circuit_diagram",
+        "component": "resistor",
+        "arrangement": "series",
+        "voltage": 9,
+        "r1": 3,
+        "r2": 6
+      }
+    },
+    {
+      "id": "6D-W02",
+      "prompt": "Reconnect the same 3 Ω and 6 Ω resistors in parallel across an ideal 9 V battery. Find each branch voltage and current, then the total battery current.",
+      "answer": "9 V across each branch; 3 A through 3 Ω; 1.5 A through 6 Ω; total 4.5 A",
+      "accepted_answers": [
+        "9 V across each branch; 3 A through 3 Ω; 1.5 A through 6 Ω; total 4.5 A"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+      "alternate_explanation_steps": [
+        "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "V₁ = V₂ = V_battery = 9 V",
+          "explanation": "Trace both branch ends: each branch starts at junction A and ends at junction B. Both therefore span the entire battery voltage."
+        },
+        {
+          "equation": "I₁ = 9 V / 3 Ω = 3 A",
+          "explanation": "Use the full 9 V across the upper 3 Ω branch."
+        },
+        {
+          "equation": "I₂ = 9 V / 6 Ω = 1.5 A",
+          "explanation": "The lower branch has twice the resistance, so at the same voltage it carries half the current."
+        },
+        {
+          "equation": "I_total = I₁ + I₂ = 3 A + 1.5 A = 4.5 A",
+          "explanation": "The current splits at A and recombines at B. Charge is conserved; neither branch uses up current."
+        },
+        {
+          "equation": "R_eq = V/I_total = 9 V / 4.5 A = 2 Ω",
+          "explanation": "Adding a second path lowers the equivalent resistance below either branch resistance. This is smaller than the 9 Ω series total."
+        }
+      ],
+      "visual": {
+        "type": "circuit_diagram",
+        "component": "resistor",
+        "arrangement": "parallel",
+        "voltage": 9,
+        "r1": 3,
+        "r2": 6
+      }
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "6D-G01",
+      "prompt": "Two resistors are in series in one unbranched loop. Compare their currents.",
+      "choices": [
+        "The currents are equal",
+        "The larger resistance uses up more current"
+      ],
+      "answer": "The currents are equal",
+      "accepted_answers": [
+        "The currents are equal"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "In steady state charge does not accumulate between components. The same current passes through each series component.",
+      "alternate_explanation_steps": [
+        "In steady state charge does not accumulate between components. The same current passes through each series component.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6D-Q03",
+        "prompt": "One parallel branch opens. What happens to another intact branch on an ideal voltage source?",
+        "choices": [
+          "It can still conduct",
+          "It must stop conducting"
+        ],
+        "answer": "It can still conduct",
+        "accepted_answers": [
+          "It can still conduct"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+        "alternate_explanation_steps": [
+          "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6D-G02",
+      "prompt": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
+      "choices": [
+        "Their currents must be equal",
+        "Their voltage differences are equal"
+      ],
+      "answer": "Their voltage differences are equal",
+      "accepted_answers": [
+        "Their voltage differences are equal"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+      "alternate_explanation_steps": [
+        "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6D-Q04",
+        "prompt": "What is the equivalent resistance of 2 Ω and 4 Ω in series?",
+        "choices": [
+          "4/3 Ω",
+          "6 Ω"
+        ],
+        "answer": "6 Ω",
+        "accepted_answers": [
+          "6 Ω"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+        "alternate_explanation_steps": [
+          "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "6D-P01",
+      "prompt": "One parallel branch opens. What happens to another intact branch on an ideal voltage source?",
+      "choices": [
+        "It can still conduct",
+        "It must stop conducting"
+      ],
+      "answer": "It can still conduct",
+      "accepted_answers": [
+        "It can still conduct"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+      "alternate_explanation_steps": [
+        "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6D-Q05",
+        "prompt": "What is the equivalent resistance of two 6 Ω resistors in parallel?",
+        "choices": [
+          "3 Ω",
+          "12 Ω"
+        ],
+        "answer": "3 Ω",
+        "accepted_answers": [
+          "3 Ω"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+        "alternate_explanation_steps": [
+          "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6D-P02",
+      "prompt": "What is the equivalent resistance of 2 Ω and 4 Ω in series?",
+      "choices": [
+        "4/3 Ω",
+        "6 Ω"
+      ],
+      "answer": "6 Ω",
+      "accepted_answers": [
+        "6 Ω"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+      "alternate_explanation_steps": [
+        "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6D-Q01",
+        "prompt": "Two resistors are in series in one unbranched loop. Compare their currents.",
+        "choices": [
+          "The currents are equal",
+          "The larger resistance uses up more current"
+        ],
+        "answer": "The currents are equal",
+        "accepted_answers": [
+          "The currents are equal"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "In steady state charge does not accumulate between components. The same current passes through each series component.",
+        "alternate_explanation_steps": [
+          "In steady state charge does not accumulate between components. The same current passes through each series component.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6D-P03",
+      "prompt": "What is the equivalent resistance of two 6 Ω resistors in parallel?",
+      "choices": [
+        "3 Ω",
+        "12 Ω"
+      ],
+      "answer": "3 Ω",
+      "accepted_answers": [
+        "3 Ω"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+      "alternate_explanation_steps": [
+        "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6D-Q02",
+        "prompt": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
+        "choices": [
+          "Their currents must be equal",
+          "Their voltage differences are equal"
+        ],
+        "answer": "Their voltage differences are equal",
+        "accepted_answers": [
+          "Their voltage differences are equal"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+        "alternate_explanation_steps": [
+          "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "6D-M01",
+      "prompt": "A fresh circuit has 2 Ω and 4 Ω resistors in series across an ideal 12 V battery. Find the current.",
+      "choices": [
+        "2 A",
+        "12 A"
+      ],
+      "answer": "2 A",
+      "accepted_answers": [
+        "2 A"
+      ],
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 12,
+        "resistances": [
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "6D-M02",
+      "prompt": "A fresh circuit has 3 Ω and 5 Ω resistors in series across an ideal 16 V battery. Find the current.",
+      "choices": [
+        "16 A",
+        "2 A"
+      ],
+      "answer": "2 A",
+      "accepted_answers": [
+        "2 A"
+      ],
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 16,
+        "resistances": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "id": "6D-M03",
+      "prompt": "A fresh circuit has 4 Ω and 6 Ω resistors in series across an ideal 20 V battery. Find the current.",
+      "choices": [
+        "2 A",
+        "20 A"
+      ],
+      "answer": "2 A",
+      "accepted_answers": [
+        "2 A"
+      ],
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 20,
+        "resistances": [
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "id": "6D-M04",
+      "prompt": "A fresh circuit has 5 Ω and 7 Ω resistors in series across an ideal 24 V battery. Find the current.",
+      "choices": [
+        "24 A",
+        "2 A"
+      ],
+      "answer": "2 A",
+      "accepted_answers": [
+        "2 A"
+      ],
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 24,
+        "resistances": [
+          5,
+          7
+        ]
+      }
+    },
+    {
+      "id": "6D-M05",
+      "prompt": "A fresh circuit has 6 Ω and 8 Ω resistors in series across an ideal 28 V battery. Find the current.",
+      "choices": [
+        "2 A",
+        "28 A"
+      ],
+      "answer": "2 A",
+      "accepted_answers": [
+        "2 A"
+      ],
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 28,
+        "resistances": [
+          6,
+          8
+        ]
+      }
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "6D-P01",
+        "prompt": "One parallel branch opens. What happens to another intact branch on an ideal voltage source?",
+        "choices": [
+          "It can still conduct",
+          "It must stop conducting"
+        ],
+        "answer": "It can still conduct",
+        "accepted_answers": [
+          "It can still conduct"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+        "alternate_explanation_steps": [
+          "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6D-Q05",
+          "prompt": "What is the equivalent resistance of two 6 Ω resistors in parallel?",
+          "choices": [
+            "3 Ω",
+            "12 Ω"
+          ],
+          "answer": "3 Ω",
+          "accepted_answers": [
+            "3 Ω"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+          "alternate_explanation_steps": [
+            "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6D-P02",
+        "prompt": "What is the equivalent resistance of 2 Ω and 4 Ω in series?",
+        "choices": [
+          "4/3 Ω",
+          "6 Ω"
+        ],
+        "answer": "6 Ω",
+        "accepted_answers": [
+          "6 Ω"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+        "alternate_explanation_steps": [
+          "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6D-Q01",
+          "prompt": "Two resistors are in series in one unbranched loop. Compare their currents.",
+          "choices": [
+            "The currents are equal",
+            "The larger resistance uses up more current"
+          ],
+          "answer": "The currents are equal",
+          "accepted_answers": [
+            "The currents are equal"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "In steady state charge does not accumulate between components. The same current passes through each series component.",
+          "alternate_explanation_steps": [
+            "In steady state charge does not accumulate between components. The same current passes through each series component.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6D-P03",
+        "prompt": "What is the equivalent resistance of two 6 Ω resistors in parallel?",
+        "choices": [
+          "3 Ω",
+          "12 Ω"
+        ],
+        "answer": "3 Ω",
+        "accepted_answers": [
+          "3 Ω"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+        "alternate_explanation_steps": [
+          "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6D-Q02",
+          "prompt": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
+          "choices": [
+            "Their currents must be equal",
+            "Their voltage differences are equal"
+          ],
+          "answer": "Their voltage differences are equal",
+          "accepted_answers": [
+            "Their voltage differences are equal"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+          "alternate_explanation_steps": [
+            "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "6D-G01",
+        "prompt": "Two resistors are in series in one unbranched loop. Compare their currents.",
+        "choices": [
+          "The currents are equal",
+          "The larger resistance uses up more current"
+        ],
+        "answer": "The currents are equal",
+        "accepted_answers": [
+          "The currents are equal"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "In steady state charge does not accumulate between components. The same current passes through each series component.",
+        "alternate_explanation_steps": [
+          "In steady state charge does not accumulate between components. The same current passes through each series component.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6D-Q03",
+          "prompt": "One parallel branch opens. What happens to another intact branch on an ideal voltage source?",
+          "choices": [
+            "It can still conduct",
+            "It must stop conducting"
+          ],
+          "answer": "It can still conduct",
+          "accepted_answers": [
+            "It can still conduct"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+          "alternate_explanation_steps": [
+            "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6D-G02",
+        "prompt": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
+        "choices": [
+          "Their currents must be equal",
+          "Their voltage differences are equal"
+        ],
+        "answer": "Their voltage differences are equal",
+        "accepted_answers": [
+          "Their voltage differences are equal"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+        "alternate_explanation_steps": [
+          "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6D-Q04",
+          "prompt": "What is the equivalent resistance of 2 Ω and 4 Ω in series?",
+          "choices": [
+            "4/3 Ω",
+            "6 Ω"
+          ],
+          "answer": "6 Ω",
+          "accepted_answers": [
+            "6 Ω"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+          "alternate_explanation_steps": [
+            "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "6D-C01",
+      "prompt": "One parallel branch opens. What happens to another intact branch on an ideal voltage source? Explain why, using your own words.",
+      "expected_ideas": [
+        "It can still conduct",
+        "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases."
+      ],
+      "misconceptions": [
+        "It must stop conducting"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "6D-C02",
+      "prompt": "What is the equivalent resistance of 2 Ω and 4 Ω in series? Explain why, using your own words.",
+      "expected_ideas": [
+        "6 Ω",
+        "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection."
+      ],
+      "misconceptions": [
+        "4/3 Ω"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending.",
+    "circuit_visuals": "Battery, bulb, resistor, current-path, and open-switch diagrams added; browser review pending."
   }
 }

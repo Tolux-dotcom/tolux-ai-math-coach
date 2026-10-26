@@ -52,5 +52,679 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Reflection and refraction",
+      "content": "Reflection occurs when a wave bounces from a boundary. Refraction occurs when a wave changes speed and direction as it enters a different medium.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Pulse displacement +A",
+          "Pulse displacement −A",
+          "Zero displacement on overlap"
+        ],
+        "label": "Opposite displacements cancel instantaneously, not necessarily wave energy."
+      }
+    },
+    {
+      "title": "Diffraction",
+      "content": "Diffraction is the spreading of waves around edges or through openings. It is strongest when the opening or obstacle size is comparable to the wavelength."
+    },
+    {
+      "title": "Interference and superposition",
+      "content": "When waves overlap, their displacements add. Constructive interference increases amplitude, while destructive interference reduces amplitude."
+    },
+    {
+      "title": "Standing waves and resonance",
+      "content": "Standing waves form from interference between waves traveling in opposite directions. Nodes have minimal motion and antinodes have maximum motion."
+    },
+    {
+      "title": "Doppler effect and polarization",
+      "content": "The Doppler effect is an observed frequency shift caused by relative motion between source and observer. Polarization restricts the orientation of transverse-wave oscillations."
+    },
+    {
+      "title": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?",
+      "content": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model."
+    },
+    {
+      "title": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?",
+      "content": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "8D-W01",
+      "prompt": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?",
+      "choices": [
+        "The displacements add",
+        "The pulses permanently stick"
+      ],
+      "answer": "The displacements add",
+      "accepted_answers": [
+        "The displacements add"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+      "alternate_explanation_steps": [
+        "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?"
+        },
+        {
+          "equation": "The displacements add",
+          "explanation": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Pulse displacement +A",
+          "Pulse displacement −A",
+          "Zero displacement on overlap"
+        ],
+        "label": "Opposite displacements cancel instantaneously, not necessarily wave energy."
+      }
+    },
+    {
+      "id": "8D-W02",
+      "prompt": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?",
+      "choices": [
+        "Twice either amplitude",
+        "Zero"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+      "alternate_explanation_steps": [
+        "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?"
+        },
+        {
+          "equation": "Zero",
+          "explanation": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "8D-G01",
+      "prompt": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?",
+      "choices": [
+        "The displacements add",
+        "The pulses permanently stick"
+      ],
+      "answer": "The displacements add",
+      "accepted_answers": [
+        "The displacements add"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+      "alternate_explanation_steps": [
+        "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8D-Q03",
+        "prompt": "What changes when a wave refracts into a different medium?",
+        "choices": [
+          "Speed and usually direction and wavelength",
+          "The source frequency must change"
+        ],
+        "answer": "Speed and usually direction and wavelength",
+        "accepted_answers": [
+          "Speed and usually direction and wavelength"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+        "alternate_explanation_steps": [
+          "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8D-G02",
+      "prompt": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?",
+      "choices": [
+        "Twice either amplitude",
+        "Zero"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+      "alternate_explanation_steps": [
+        "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8D-Q04",
+        "prompt": "When is diffraction especially noticeable?",
+        "choices": [
+          "Only when aperture is much larger than wavelength",
+          "When aperture size is comparable to wavelength"
+        ],
+        "answer": "When aperture size is comparable to wavelength",
+        "accepted_answers": [
+          "When aperture size is comparable to wavelength"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+        "alternate_explanation_steps": [
+          "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "8D-P01",
+      "prompt": "What changes when a wave refracts into a different medium?",
+      "choices": [
+        "Speed and usually direction and wavelength",
+        "The source frequency must change"
+      ],
+      "answer": "Speed and usually direction and wavelength",
+      "accepted_answers": [
+        "Speed and usually direction and wavelength"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+      "alternate_explanation_steps": [
+        "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8D-Q05",
+        "prompt": "What characterizes a standing-wave node?",
+        "choices": [
+          "Zero displacement at all times in the ideal pattern",
+          "Maximum displacement at all times"
+        ],
+        "answer": "Zero displacement at all times in the ideal pattern",
+        "accepted_answers": [
+          "Zero displacement at all times in the ideal pattern"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+        "alternate_explanation_steps": [
+          "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8D-P02",
+      "prompt": "When is diffraction especially noticeable?",
+      "choices": [
+        "Only when aperture is much larger than wavelength",
+        "When aperture size is comparable to wavelength"
+      ],
+      "answer": "When aperture size is comparable to wavelength",
+      "accepted_answers": [
+        "When aperture size is comparable to wavelength"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+      "alternate_explanation_steps": [
+        "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8D-Q01",
+        "prompt": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?",
+        "choices": [
+          "The displacements add",
+          "The pulses permanently stick"
+        ],
+        "answer": "The displacements add",
+        "accepted_answers": [
+          "The displacements add"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+        "alternate_explanation_steps": [
+          "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8D-P03",
+      "prompt": "What characterizes a standing-wave node?",
+      "choices": [
+        "Zero displacement at all times in the ideal pattern",
+        "Maximum displacement at all times"
+      ],
+      "answer": "Zero displacement at all times in the ideal pattern",
+      "accepted_answers": [
+        "Zero displacement at all times in the ideal pattern"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+      "alternate_explanation_steps": [
+        "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8D-Q02",
+        "prompt": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?",
+        "choices": [
+          "Twice either amplitude",
+          "Zero"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+        "alternate_explanation_steps": [
+          "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "8D-M01",
+      "prompt": "Two identical upward pulses overlap. How does peak displacement compare with one pulse in a linear medium?",
+      "choices": [
+        "Twice as large",
+        "Unchanged"
+      ],
+      "answer": "Twice as large",
+      "accepted_answers": [
+        "Twice as large"
+      ],
+      "alternate_explanation": "Superposition adds the instantaneous displacements."
+    },
+    {
+      "id": "8D-M02",
+      "prompt": "A water wave crosses a boundary straight along the normal into slower water-wave conditions. Must its direction bend?",
+      "choices": [
+        "Yes, any speed change forces bending",
+        "No, normal incidence need not bend"
+      ],
+      "answer": "No, normal incidence need not bend",
+      "accepted_answers": [
+        "No, normal incidence need not bend"
+      ],
+      "alternate_explanation": "Refraction can change wavelength and speed without changing direction at normal incidence."
+    },
+    {
+      "id": "8D-M03",
+      "prompt": "A wave passes an opening that narrows toward its wavelength. What tends to happen to spreading?",
+      "choices": [
+        "It becomes more pronounced",
+        "It vanishes"
+      ],
+      "answer": "It becomes more pronounced",
+      "accepted_answers": [
+        "It becomes more pronounced"
+      ],
+      "alternate_explanation": "Diffraction is stronger when the aperture scale is comparable to wavelength."
+    },
+    {
+      "id": "8D-M04",
+      "prompt": "At a standing-wave antinode, what oscillation amplitude occurs relative to nearby nodes?",
+      "choices": [
+        "Zero amplitude",
+        "Maximum amplitude"
+      ],
+      "answer": "Maximum amplitude",
+      "accepted_answers": [
+        "Maximum amplitude"
+      ],
+      "alternate_explanation": "Nodes are fixed zero-displacement locations; antinodes have maximum displacement amplitude."
+    },
+    {
+      "id": "8D-M05",
+      "prompt": "Two opposite pulses cancel displacement at one instant. Has all energy necessarily been destroyed?",
+      "choices": [
+        "No",
+        "Yes"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "alternate_explanation": "Interference redistributes displacement and energy; zero displacement alone does not establish zero total energy."
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "8D-P01",
+        "prompt": "What changes when a wave refracts into a different medium?",
+        "choices": [
+          "Speed and usually direction and wavelength",
+          "The source frequency must change"
+        ],
+        "answer": "Speed and usually direction and wavelength",
+        "accepted_answers": [
+          "Speed and usually direction and wavelength"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+        "alternate_explanation_steps": [
+          "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8D-Q05",
+          "prompt": "What characterizes a standing-wave node?",
+          "choices": [
+            "Zero displacement at all times in the ideal pattern",
+            "Maximum displacement at all times"
+          ],
+          "answer": "Zero displacement at all times in the ideal pattern",
+          "accepted_answers": [
+            "Zero displacement at all times in the ideal pattern"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+          "alternate_explanation_steps": [
+            "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8D-P02",
+        "prompt": "When is diffraction especially noticeable?",
+        "choices": [
+          "Only when aperture is much larger than wavelength",
+          "When aperture size is comparable to wavelength"
+        ],
+        "answer": "When aperture size is comparable to wavelength",
+        "accepted_answers": [
+          "When aperture size is comparable to wavelength"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+        "alternate_explanation_steps": [
+          "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8D-Q01",
+          "prompt": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?",
+          "choices": [
+            "The displacements add",
+            "The pulses permanently stick"
+          ],
+          "answer": "The displacements add",
+          "accepted_answers": [
+            "The displacements add"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+          "alternate_explanation_steps": [
+            "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8D-P03",
+        "prompt": "What characterizes a standing-wave node?",
+        "choices": [
+          "Zero displacement at all times in the ideal pattern",
+          "Maximum displacement at all times"
+        ],
+        "answer": "Zero displacement at all times in the ideal pattern",
+        "accepted_answers": [
+          "Zero displacement at all times in the ideal pattern"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+        "alternate_explanation_steps": [
+          "Oppositely traveling waves of matching frequency and amplitude can interfere to create fixed nodes and antinodes.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8D-Q02",
+          "prompt": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?",
+          "choices": [
+            "Twice either amplitude",
+            "Zero"
+          ],
+          "answer": "Zero",
+          "accepted_answers": [
+            "Zero"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+          "alternate_explanation_steps": [
+            "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "8D-G01",
+        "prompt": "Two upward pulses overlap on an ideal linear string. What happens to displacement during overlap?",
+        "choices": [
+          "The displacements add",
+          "The pulses permanently stick"
+        ],
+        "answer": "The displacements add",
+        "accepted_answers": [
+          "The displacements add"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+        "alternate_explanation_steps": [
+          "Superposition adds instantaneous signed displacements. After overlap, pulses continue in the ideal linear model.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8D-Q03",
+          "prompt": "What changes when a wave refracts into a different medium?",
+          "choices": [
+            "Speed and usually direction and wavelength",
+            "The source frequency must change"
+          ],
+          "answer": "Speed and usually direction and wavelength",
+          "accepted_answers": [
+            "Speed and usually direction and wavelength"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+          "alternate_explanation_steps": [
+            "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8D-G02",
+        "prompt": "An upward and equal downward pulse overlap exactly. What is the instantaneous displacement?",
+        "choices": [
+          "Twice either amplitude",
+          "Zero"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+        "alternate_explanation_steps": [
+          "Opposite displacements cancel at that instant. Zero displacement does not imply all wave energy has disappeared.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8D-Q04",
+          "prompt": "When is diffraction especially noticeable?",
+          "choices": [
+            "Only when aperture is much larger than wavelength",
+            "When aperture size is comparable to wavelength"
+          ],
+          "answer": "When aperture size is comparable to wavelength",
+          "accepted_answers": [
+            "When aperture size is comparable to wavelength"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+          "alternate_explanation_steps": [
+            "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "8D-C01",
+      "prompt": "What changes when a wave refracts into a different medium? Explain why, using your own words.",
+      "expected_ideas": [
+        "Speed and usually direction and wavelength",
+        "Frequency remains fixed by the source. Direction changes for oblique incidence when speed differs; at normal incidence it need not bend."
+      ],
+      "misconceptions": [
+        "The source frequency must change"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "8D-C02",
+      "prompt": "When is diffraction especially noticeable? Explain why, using your own words.",
+      "expected_ideas": [
+        "When aperture size is comparable to wavelength",
+        "Waves spread around edges and through openings. The ratio of opening size to wavelength controls how pronounced the spreading is."
+      ],
+      "misconceptions": [
+        "Only when aperture is much larger than wavelength"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }

@@ -47,5 +47,671 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Waves transfer energy",
+      "content": "A wave is a disturbance that transfers energy from one place to another without transporting matter overall from source to destination.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Local medium oscillation",
+          "Traveling disturbance",
+          "Energy propagation"
+        ],
+        "label": "The wave can carry energy while particles oscillate locally."
+      }
+    },
+    {
+      "title": "Transverse waves",
+      "content": "In a transverse wave, the medium or field oscillates perpendicular to the direction the wave travels. Electromagnetic waves are transverse."
+    },
+    {
+      "title": "Longitudinal waves",
+      "content": "In a longitudinal wave, particles oscillate parallel to the direction of travel, producing compressions and rarefactions. Sound in air is longitudinal."
+    },
+    {
+      "title": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+      "content": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave."
+    },
+    {
+      "title": "In a longitudinal wave, how does the medium oscillate?",
+      "content": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "8B-W01",
+      "prompt": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+      "choices": [
+        "Perpendicular",
+        "Parallel"
+      ],
+      "answer": "Perpendicular",
+      "accepted_answers": [
+        "Perpendicular"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+      "alternate_explanation_steps": [
+        "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "In a transverse wave, how is medium displacement oriented relative to wave propagation?"
+        },
+        {
+          "equation": "Perpendicular",
+          "explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Local medium oscillation",
+          "Traveling disturbance",
+          "Energy propagation"
+        ],
+        "label": "The wave can carry energy while particles oscillate locally."
+      }
+    },
+    {
+      "id": "8B-W02",
+      "prompt": "In a longitudinal wave, how does the medium oscillate?",
+      "choices": [
+        "Perpendicular to propagation",
+        "Parallel to propagation"
+      ],
+      "answer": "Parallel to propagation",
+      "accepted_answers": [
+        "Parallel to propagation"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+      "alternate_explanation_steps": [
+        "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "In a longitudinal wave, how does the medium oscillate?"
+        },
+        {
+          "equation": "Parallel to propagation",
+          "explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "8B-G01",
+      "prompt": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+      "choices": [
+        "Perpendicular",
+        "Parallel"
+      ],
+      "answer": "Perpendicular",
+      "accepted_answers": [
+        "Perpendicular"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+      "alternate_explanation_steps": [
+        "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8B-Q03",
+        "prompt": "Can ordinary sound travel through an ideal vacuum?",
+        "choices": [
+          "No, it needs a material medium",
+          "Yes, exactly like light"
+        ],
+        "answer": "No, it needs a material medium",
+        "accepted_answers": [
+          "No, it needs a material medium"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+        "alternate_explanation_steps": [
+          "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8B-G02",
+      "prompt": "In a longitudinal wave, how does the medium oscillate?",
+      "choices": [
+        "Perpendicular to propagation",
+        "Parallel to propagation"
+      ],
+      "answer": "Parallel to propagation",
+      "accepted_answers": [
+        "Parallel to propagation"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+      "alternate_explanation_steps": [
+        "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8B-Q04",
+        "prompt": "What is generally transported by a traveling wave without net transport of the medium over a cycle?",
+        "choices": [
+          "All the medium from source to receiver",
+          "Energy"
+        ],
+        "answer": "Energy",
+        "accepted_answers": [
+          "Energy"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+        "alternate_explanation_steps": [
+          "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "8B-P01",
+      "prompt": "Can ordinary sound travel through an ideal vacuum?",
+      "choices": [
+        "No, it needs a material medium",
+        "Yes, exactly like light"
+      ],
+      "answer": "No, it needs a material medium",
+      "accepted_answers": [
+        "No, it needs a material medium"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+      "alternate_explanation_steps": [
+        "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8B-Q05",
+        "prompt": "Which is an electromagnetic wave?",
+        "choices": [
+          "Visible light",
+          "Sound in air"
+        ],
+        "answer": "Visible light",
+        "accepted_answers": [
+          "Visible light"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+        "alternate_explanation_steps": [
+          "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8B-P02",
+      "prompt": "What is generally transported by a traveling wave without net transport of the medium over a cycle?",
+      "choices": [
+        "All the medium from source to receiver",
+        "Energy"
+      ],
+      "answer": "Energy",
+      "accepted_answers": [
+        "Energy"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+      "alternate_explanation_steps": [
+        "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8B-Q01",
+        "prompt": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+        "choices": [
+          "Perpendicular",
+          "Parallel"
+        ],
+        "answer": "Perpendicular",
+        "accepted_answers": [
+          "Perpendicular"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+        "alternate_explanation_steps": [
+          "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8B-P03",
+      "prompt": "Which is an electromagnetic wave?",
+      "choices": [
+        "Visible light",
+        "Sound in air"
+      ],
+      "answer": "Visible light",
+      "accepted_answers": [
+        "Visible light"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+      "alternate_explanation_steps": [
+        "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8B-Q02",
+        "prompt": "In a longitudinal wave, how does the medium oscillate?",
+        "choices": [
+          "Perpendicular to propagation",
+          "Parallel to propagation"
+        ],
+        "answer": "Parallel to propagation",
+        "accepted_answers": [
+          "Parallel to propagation"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+        "alternate_explanation_steps": [
+          "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "8B-M01",
+      "prompt": "A rope pulse travels east while a rope segment moves north and south. What kind of wave is this?",
+      "choices": [
+        "Transverse",
+        "Longitudinal"
+      ],
+      "answer": "Transverse",
+      "accepted_answers": [
+        "Transverse"
+      ],
+      "alternate_explanation": "Medium displacement is perpendicular to the propagation direction."
+    },
+    {
+      "id": "8B-M02",
+      "prompt": "Air molecules oscillate east and west while a sound wave travels east. Classify the wave.",
+      "choices": [
+        "Transverse",
+        "Longitudinal"
+      ],
+      "answer": "Longitudinal",
+      "accepted_answers": [
+        "Longitudinal"
+      ],
+      "alternate_explanation": "Particle oscillation is parallel to propagation."
+    },
+    {
+      "id": "8B-M03",
+      "prompt": "Light from the Sun crosses nearly empty space. What does this show about its medium requirement?",
+      "choices": [
+        "It does not require a material medium",
+        "It requires air all the way from the Sun"
+      ],
+      "answer": "It does not require a material medium",
+      "accepted_answers": [
+        "It does not require a material medium"
+      ],
+      "alternate_explanation": "Electromagnetic waves propagate through vacuum, unlike mechanical sound."
+    },
+    {
+      "id": "8B-M04",
+      "prompt": "A floating marker bobs as waves pass but does not travel across the whole pond. Why?",
+      "choices": [
+        "The wave carries no energy",
+        "The disturbance propagates while local material oscillates"
+      ],
+      "answer": "The disturbance propagates while local material oscillates",
+      "accepted_answers": [
+        "The disturbance propagates while local material oscillates"
+      ],
+      "alternate_explanation": "Wave propagation and medium particle motion are distinct; real water can also have smaller drift effects."
+    },
+    {
+      "id": "8B-M05",
+      "prompt": "A bell rings in an evacuated chamber. Why does the external sound fade while the bell remains visible?",
+      "choices": [
+        "Sound needs matter, while light can cross vacuum",
+        "Both sound and light require air"
+      ],
+      "answer": "Sound needs matter, while light can cross vacuum",
+      "accepted_answers": [
+        "Sound needs matter, while light can cross vacuum"
+      ],
+      "alternate_explanation": "Removing air removes the mechanical propagation path for sound, not electromagnetic propagation."
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "8B-P01",
+        "prompt": "Can ordinary sound travel through an ideal vacuum?",
+        "choices": [
+          "No, it needs a material medium",
+          "Yes, exactly like light"
+        ],
+        "answer": "No, it needs a material medium",
+        "accepted_answers": [
+          "No, it needs a material medium"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+        "alternate_explanation_steps": [
+          "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8B-Q05",
+          "prompt": "Which is an electromagnetic wave?",
+          "choices": [
+            "Visible light",
+            "Sound in air"
+          ],
+          "answer": "Visible light",
+          "accepted_answers": [
+            "Visible light"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+          "alternate_explanation_steps": [
+            "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8B-P02",
+        "prompt": "What is generally transported by a traveling wave without net transport of the medium over a cycle?",
+        "choices": [
+          "All the medium from source to receiver",
+          "Energy"
+        ],
+        "answer": "Energy",
+        "accepted_answers": [
+          "Energy"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+        "alternate_explanation_steps": [
+          "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8B-Q01",
+          "prompt": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+          "choices": [
+            "Perpendicular",
+            "Parallel"
+          ],
+          "answer": "Perpendicular",
+          "accepted_answers": [
+            "Perpendicular"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+          "alternate_explanation_steps": [
+            "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8B-P03",
+        "prompt": "Which is an electromagnetic wave?",
+        "choices": [
+          "Visible light",
+          "Sound in air"
+        ],
+        "answer": "Visible light",
+        "accepted_answers": [
+          "Visible light"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+        "alternate_explanation_steps": [
+          "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8B-Q02",
+          "prompt": "In a longitudinal wave, how does the medium oscillate?",
+          "choices": [
+            "Perpendicular to propagation",
+            "Parallel to propagation"
+          ],
+          "answer": "Parallel to propagation",
+          "accepted_answers": [
+            "Parallel to propagation"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+          "alternate_explanation_steps": [
+            "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "8B-G01",
+        "prompt": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+        "choices": [
+          "Perpendicular",
+          "Parallel"
+        ],
+        "answer": "Perpendicular",
+        "accepted_answers": [
+          "Perpendicular"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+        "alternate_explanation_steps": [
+          "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8B-Q03",
+          "prompt": "Can ordinary sound travel through an ideal vacuum?",
+          "choices": [
+            "No, it needs a material medium",
+            "Yes, exactly like light"
+          ],
+          "answer": "No, it needs a material medium",
+          "accepted_answers": [
+            "No, it needs a material medium"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+          "alternate_explanation_steps": [
+            "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8B-G02",
+        "prompt": "In a longitudinal wave, how does the medium oscillate?",
+        "choices": [
+          "Perpendicular to propagation",
+          "Parallel to propagation"
+        ],
+        "answer": "Parallel to propagation",
+        "accepted_answers": [
+          "Parallel to propagation"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+        "alternate_explanation_steps": [
+          "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8B-Q04",
+          "prompt": "What is generally transported by a traveling wave without net transport of the medium over a cycle?",
+          "choices": [
+            "All the medium from source to receiver",
+            "Energy"
+          ],
+          "answer": "Energy",
+          "accepted_answers": [
+            "Energy"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+          "alternate_explanation_steps": [
+            "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "8B-C01",
+      "prompt": "Can ordinary sound travel through an ideal vacuum? Explain why, using your own words.",
+      "expected_ideas": [
+        "No, it needs a material medium",
+        "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum."
+      ],
+      "misconceptions": [
+        "Yes, exactly like light"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "8B-C02",
+      "prompt": "What is generally transported by a traveling wave without net transport of the medium over a cycle? Explain why, using your own words.",
+      "expected_ideas": [
+        "Energy",
+        "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ."
+      ],
+      "misconceptions": [
+        "All the medium from source to receiver"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }

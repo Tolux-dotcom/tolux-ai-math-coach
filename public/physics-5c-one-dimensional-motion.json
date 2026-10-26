@@ -1,42 +1,625 @@
 {
   "lesson_id": "physics-5c-one-dimensional-motion",
   "course_id": "physics",
-  "teks": ["5C"],
+  "teks": [
+    "5C"
+  ],
   "title": "One-Dimensional Motion",
   "learning_goal": "Analyze one-dimensional motion using distance, displacement, speed, velocity, reference frames, and acceleration.",
-  "stages": [
+  "lesson_flow": [
     {
-      "id":"concept",
-      "title":"1. Describe motion precisely",
-      "content":"Distance measures the total path traveled. Displacement describes the change in position and includes direction. Speed tells how fast an object moves. Velocity tells how fast and in what direction."
+      "type": "concept",
+      "label": "Start from the beginning"
     },
     {
-      "id":"reference-frame",
-      "title":"2. Choose a reference frame",
-      "content":"Motion is described relative to a reference point or coordinate system. A car can be moving relative to the road while a passenger is at rest relative to the car."
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
     },
     {
-      "id":"worked-example",
-      "title":"3. Worked example",
-      "content":"A runner moves from x = 2 m to x = 14 m in 4 s. The displacement is Δx = 14 − 2 = 12 m. The average velocity is v = Δx/Δt = 12/4 = 3 m/s in the positive direction."
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
     },
     {
-      "id":"guided-practice",
-      "title":"4. Guided practice",
-      "prompt":"A cart moves from x = 10 m to x = 2 m in 4 s. What is its average velocity?",
-      "hint":"First find displacement: final position minus initial position. Keep the sign.",
-      "alternate_explanation":"Picture the number line. Moving from 10 m to 2 m is motion in the negative direction, so the displacement and average velocity are negative.",
-      "answer":"−2 m/s"
+      "type": "independent_practice",
+      "label": "Practice by yourself"
     },
     {
-      "id":"acceleration",
-      "title":"5. Acceleration",
-      "content":"Acceleration is the rate at which velocity changes. An object accelerates when it speeds up, slows down, or changes direction. Average acceleration is a = Δv/Δt."
+      "type": "mastery_check",
+      "label": "Check mastery"
     },
     {
-      "id":"mastery",
-      "title":"6. Mastery check",
-      "content":"To demonstrate mastery, distinguish distance from displacement, speed from velocity, identify a reference frame, calculate average velocity, and interpret positive and negative acceleration."
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Distance vs. displacement",
+      "content": "Distance is the total path traveled. Displacement is the signed change in position from start to finish.",
+      "visual": {
+        "type": "number_line",
+        "start": -2,
+        "end": 8,
+        "from": 1,
+        "to": 7,
+        "label": "Positive displacement"
+      }
+    },
+    {
+      "title": "Speed vs. velocity",
+      "content": "Speed describes how fast. Velocity describes how fast and in what direction. The sign of velocity tells direction in one-dimensional motion.",
+      "visual": {
+        "type": "velocity_arrows",
+        "left": "negative velocity",
+        "right": "positive velocity"
+      }
+    },
+    {
+      "title": "Reference frames",
+      "content": "Motion is always described relative to a reference point or coordinate system. A passenger can be at rest relative to a car but moving relative to the road."
+    },
+    {
+      "title": "Acceleration",
+      "content": "Acceleration is the rate of change of velocity. An object accelerates when velocity changes in magnitude or direction.",
+      "visual": {
+        "type": "velocity_time",
+        "points": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            6
+          ],
+          [
+            3,
+            8
+          ]
+        ],
+        "label": "Velocity increasing with time"
+      }
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "5C-W01",
+      "difficulty": "Foundational",
+      "prompt": "A runner moves from x = 2 m to x = 14 m in 4 s. Find the average velocity.",
+      "answer": "3 m/s",
+      "solution_steps": [
+        {
+          "equation": "Δx = 14 − 2 = 12 m",
+          "explanation": "Find the signed displacement."
+        },
+        {
+          "equation": "v = Δx/Δt = 12/4",
+          "explanation": "Divide displacement by elapsed time."
+        },
+        {
+          "equation": "v = 3 m/s",
+          "explanation": "The positive sign means motion in the positive direction."
+        }
+      ],
+      "visual": {
+        "type": "number_line",
+        "start": 0,
+        "end": 16,
+        "from": 2,
+        "to": 14,
+        "label": "Runner motion"
+      }
+    },
+    {
+      "id": "5C-W02",
+      "difficulty": "Grade-level",
+      "prompt": "A cart moves from x = 9 m to x = −3 m in 6 s. Find the average velocity.",
+      "answer": "−2 m/s",
+      "solution_steps": [
+        {
+          "equation": "Δx = −3 − 9 = −12 m",
+          "explanation": "Final position minus initial position gives a negative displacement."
+        },
+        {
+          "equation": "v = −12/6",
+          "explanation": "Divide signed displacement by elapsed time."
+        },
+        {
+          "equation": "v = −2 m/s",
+          "explanation": "The negative sign means motion in the negative direction."
+        }
+      ],
+      "visual": {
+        "type": "number_line",
+        "start": -5,
+        "end": 11,
+        "from": 9,
+        "to": -3,
+        "label": "Negative-direction motion"
+      }
+    },
+    {
+      "id": "5C-W03",
+      "difficulty": "Grade-level",
+      "prompt": "A train changes velocity from 4 m/s to 16 m/s in 6 s. Find the average acceleration.",
+      "answer": "2 m/s²",
+      "solution_steps": [
+        {
+          "equation": "Δv = 16 − 4 = 12 m/s",
+          "explanation": "Find the change in velocity."
+        },
+        {
+          "equation": "a = Δv/Δt = 12/6",
+          "explanation": "Divide velocity change by elapsed time."
+        },
+        {
+          "equation": "a = 2 m/s²",
+          "explanation": "Velocity increases by 2 m/s each second on average."
+        }
+      ],
+      "visual": {
+        "type": "velocity_time",
+        "points": [
+          [
+            0,
+            4
+          ],
+          [
+            6,
+            16
+          ]
+        ],
+        "label": "Velocity-time graph"
+      }
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "5C-G01",
+      "difficulty": "Foundational",
+      "prompt": "A cart moves from x = 10 m to x = 2 m in 4 s. What is its average velocity?",
+      "answer": "−2 m/s",
+      "accepted_answers": [
+        "-2",
+        "-2 m/s",
+        "−2",
+        "−2 m/s"
+      ],
+      "hint_steps": [
+        "Find displacement first: final position minus initial position.",
+        "Compute 2 − 10 and keep the negative sign.",
+        "Divide the signed displacement by 4 s."
+      ],
+      "alternate_explanation": "Use the number line: the cart moves 8 m toward smaller x-values, so its displacement is negative before you divide by time.",
+      "similar_problem": {
+        "prompt": "A robot moves from x = 6 m to x = −6 m in 6 s. What is its average velocity?",
+        "answer": "−2 m/s",
+        "accepted_answers": [
+          "-2",
+          "-2 m/s",
+          "−2",
+          "−2 m/s"
+        ],
+        "hint_steps": [
+          "Find the signed displacement.",
+          "Compute −6 − 6.",
+          "Divide by 6 s."
+        ]
+      },
+      "visual": {
+        "type": "number_line",
+        "start": 0,
+        "end": 12,
+        "from": 10,
+        "to": 2,
+        "label": "Cart motion"
+      }
+    },
+    {
+      "id": "5C-G02",
+      "difficulty": "Grade-level",
+      "prompt": "A cyclist moves from x = −4 m to x = 20 m in 6 s. What is the average velocity?",
+      "answer": "4 m/s",
+      "accepted_answers": [
+        "4",
+        "4 m/s",
+        "+4",
+        "+4 m/s"
+      ],
+      "hint_steps": [
+        "Use Δx = x_f − x_i.",
+        "Subtracting a negative means 20 − (−4).",
+        "Divide 24 m by 6 s."
+      ],
+      "alternate_explanation": "Picture the trip in two parts: from −4 m to zero is 4 m to the right, and from zero to 20 m is another 20 m to the right. The total displacement is therefore +24 m. Average velocity tells us the signed change in position per second over the whole trip; it does not mean the cyclist kept the same velocity at every instant.",
+      "alternate_explanation_steps": [
+        "Identify the starting position xᵢ = −4 m, ending position x_f = 20 m, and elapsed time Δt = 6 s.",
+        "Find displacement: Δx = x_f − xᵢ = 20 − (−4) = 20 + 4 = +24 m. Subtracting a negative adds its magnitude.",
+        "Use average velocity = displacement ÷ elapsed time: v_avg = (+24 m) ÷ (6 s) = +4 m/s.",
+        "The positive sign means motion toward increasing x, to the right on the diagram. The answer is 4 meters per second to the right.",
+        "Check: (4 m/s)(6 s) = 24 m, and −4 m + 24 m = 20 m, the stated final position."
+      ],
+      "similar_problem": {
+        "prompt": "A runner moves from x = −5 m to x = 15 m in 5 s. What is the average velocity?",
+        "answer": "4 m/s",
+        "accepted_answers": [
+          "4",
+          "4 m/s",
+          "+4",
+          "+4 m/s"
+        ]
+      },
+      "visual": {
+        "type": "number_line",
+        "start": -6,
+        "end": 22,
+        "from": -4,
+        "to": 20,
+        "label": "Cyclist motion"
+      }
+    },
+    {
+      "id": "5C-G03",
+      "difficulty": "Grade-level",
+      "prompt": "A car's velocity changes from 3 m/s to 15 m/s in 4 s. What is its average acceleration?",
+      "answer": "3 m/s²",
+      "accepted_answers": [
+        "3",
+        "3 m/s2",
+        "3 m/s²"
+      ],
+      "hint_steps": [
+        "Find the change in velocity first.",
+        "Compute 15 − 3.",
+        "Divide the velocity change by 4 s."
+      ],
+      "alternate_explanation": "Read the velocity-time change as rise over run: velocity rises by 12 m/s over 4 seconds.",
+      "similar_problem": {
+        "prompt": "A scooter changes velocity from 2 m/s to 12 m/s in 5 s. What is its average acceleration?",
+        "answer": "2 m/s²",
+        "accepted_answers": [
+          "2",
+          "2 m/s2",
+          "2 m/s²"
+        ]
+      },
+      "visual": {
+        "type": "velocity_time",
+        "points": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            15
+          ]
+        ],
+        "label": "Velocity-time change"
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "5C-P01",
+      "difficulty": "Foundational",
+      "prompt": "A car moves from x = 5 m to x = 29 m in 8 s. What is its average velocity?",
+      "answer": "3 m/s",
+      "accepted_answers": [
+        "3",
+        "3 m/s",
+        "+3",
+        "+3 m/s"
+      ],
+      "hint_steps": [
+        "Find signed displacement first.",
+        "Compute 29 − 5.",
+        "Divide by 8 s."
+      ],
+      "alternate_explanation": "The car changes position by 24 m over 8 s, so average velocity is the position change per second.",
+      "similar_problem": {
+        "prompt": "A bus moves from x = 4 m to x = 28 m in 6 s. What is its average velocity?",
+        "answer": "4 m/s",
+        "accepted_answers": [
+          "4",
+          "4 m/s"
+        ]
+      }
+    },
+    {
+      "id": "5C-P02",
+      "difficulty": "Grade-level",
+      "prompt": "A student walks from x = 12 m to x = −6 m in 9 s. What is the average velocity?",
+      "answer": "−2 m/s",
+      "accepted_answers": [
+        "-2",
+        "-2 m/s",
+        "−2",
+        "−2 m/s"
+      ],
+      "hint_steps": [
+        "Final position is less than initial position.",
+        "Compute −6 − 12.",
+        "Divide by 9 s."
+      ],
+      "alternate_explanation": "The student moves 18 m in the negative direction over 9 seconds.",
+      "similar_problem": {
+        "prompt": "A drone moves from x = 10 m to x = −5 m in 5 s. What is its average velocity?",
+        "answer": "−3 m/s",
+        "accepted_answers": [
+          "-3",
+          "-3 m/s",
+          "−3",
+          "−3 m/s"
+        ]
+      }
+    },
+    {
+      "id": "5C-P03",
+      "difficulty": "Grade-level",
+      "prompt": "A train has an initial velocity of 4 m/s and reaches 16 m/s in 6 s. What is its average acceleration?",
+      "answer": "2 m/s²",
+      "accepted_answers": [
+        "2",
+        "2 m/s2",
+        "2 m/s²"
+      ],
+      "hint_steps": [
+        "Use change in velocity divided by elapsed time.",
+        "Velocity changes by 12 m/s.",
+        "Divide 12 by 6."
+      ],
+      "alternate_explanation": "Velocity gains 12 m/s over 6 s, which is an average gain of 2 m/s each second.",
+      "similar_problem": {
+        "prompt": "A bicycle changes velocity from 5 m/s to 14 m/s in 3 s. What is its average acceleration?",
+        "answer": "3 m/s²",
+        "accepted_answers": [
+          "3",
+          "3 m/s2",
+          "3 m/s²"
+        ]
+      }
+    },
+    {
+      "id": "5C-P04",
+      "difficulty": "Challenging",
+      "prompt": "A runner travels 30 m east, then 12 m west, in a total time of 6 s. Take east as positive. What is the runner's average velocity?",
+      "answer": "3 m/s east",
+      "accepted_answers": [
+        "3",
+        "3 m/s",
+        "3 m/s east",
+        "+3 m/s"
+      ],
+      "hint_steps": [
+        "Average velocity uses displacement, not total distance.",
+        "Net displacement is 30 − 12.",
+        "Divide the net displacement by 6 s."
+      ],
+      "alternate_explanation": "Draw the trip on a number line. Ending 18 m east of the start matters for velocity; the 42 m total path matters for distance.",
+      "similar_problem": {
+        "prompt": "A hiker walks 20 m east and 8 m west in 4 s. What is the average velocity?",
+        "answer": "3 m/s east",
+        "accepted_answers": [
+          "3",
+          "3 m/s",
+          "3 m/s east"
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "5C-M01",
+      "prompt": "A cart moves from x = −2 m to x = 18 m in 5 s. Find average velocity.",
+      "answer": "4 m/s",
+      "accepted_answers": [
+        "4",
+        "4 m/s"
+      ]
+    },
+    {
+      "id": "5C-M02",
+      "prompt": "A car moves from x = 14 m to x = −10 m in 8 s. Find average velocity.",
+      "answer": "−3 m/s",
+      "accepted_answers": [
+        "-3",
+        "-3 m/s",
+        "−3",
+        "−3 m/s"
+      ]
+    },
+    {
+      "id": "5C-M03",
+      "prompt": "Velocity changes from 6 m/s to 18 m/s in 4 s. Find average acceleration.",
+      "answer": "3 m/s²",
+      "accepted_answers": [
+        "3",
+        "3 m/s2",
+        "3 m/s²"
+      ]
+    },
+    {
+      "id": "5C-M04",
+      "prompt": "A student walks 16 m east and then 4 m west in 6 s. East is positive. Find average velocity.",
+      "answer": "2 m/s east",
+      "accepted_answers": [
+        "2",
+        "2 m/s",
+        "2 m/s east"
+      ]
+    },
+    {
+      "id": "5C-M05",
+      "prompt": "An object's velocity changes from −2 m/s to 8 m/s in 5 s. Find average acceleration.",
+      "answer": "2 m/s²",
+      "accepted_answers": [
+        "2",
+        "2 m/s2",
+        "2 m/s²"
+      ]
+    }
+  ],
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the questions you missed, use the visual representation, then try a two-question recheck.",
+    "recheck": [
+      {
+        "id": "5C-R01",
+        "prompt": "A cart moves from x = 8 m to x = −4 m in 6 s. Find average velocity.",
+        "answer": "−2 m/s",
+        "accepted_answers": [
+          "-2",
+          "-2 m/s",
+          "−2",
+          "−2 m/s"
+        ],
+        "hint_steps": [
+          "Find signed displacement first.",
+          "Compute −4 − 8.",
+          "Divide by 6 s."
+        ]
+      },
+      {
+        "id": "5C-R02",
+        "prompt": "Velocity changes from 5 m/s to 17 m/s in 6 s. Find average acceleration.",
+        "answer": "2 m/s²",
+        "accepted_answers": [
+          "2",
+          "2 m/s2",
+          "2 m/s²"
+        ],
+        "hint_steps": [
+          "Find the change in velocity.",
+          "Compute 17 − 5.",
+          "Divide by 6 s."
+        ]
+      }
+    ]
+  },
+  "practice": {
+    "intro": "Practice Mode gives you one problem at a time, records first-attempt performance, and provides help only when you request it.",
+    "problems": [
+      {
+        "id": "5C-PR01",
+        "prompt": "A car moves from x = 5 m to x = 29 m in 8 s. What is its average velocity?",
+        "answer": "3 m/s",
+        "accepted_answers": [
+          "3",
+          "3 m/s",
+          "+3",
+          "+3 m/s"
+        ],
+        "hint_steps": [
+          "Find displacement first.",
+          "Compute 29 − 5.",
+          "Divide by 8 s."
+        ],
+        "alternate_explanation": "The car changes position by 24 m over 8 seconds.",
+        "similar_problem": {
+          "prompt": "A van moves from x = 2 m to x = 22 m in 5 s. Find average velocity.",
+          "answer": "4 m/s",
+          "accepted_answers": [
+            "4",
+            "4 m/s"
+          ]
+        }
+      },
+      {
+        "id": "5C-PR02",
+        "prompt": "A student walks from x = 12 m to x = −6 m in 9 s. What is the average velocity?",
+        "answer": "−2 m/s",
+        "accepted_answers": [
+          "-2",
+          "-2 m/s",
+          "−2",
+          "−2 m/s"
+        ],
+        "hint_steps": [
+          "Keep the sign of displacement.",
+          "Compute −6 − 12.",
+          "Divide by 9 s."
+        ],
+        "alternate_explanation": "The student moves 18 m in the negative direction over 9 seconds."
+      },
+      {
+        "id": "5C-PR03",
+        "prompt": "A train changes velocity from 4 m/s to 16 m/s in 6 s. What is its average acceleration?",
+        "answer": "2 m/s²",
+        "accepted_answers": [
+          "2",
+          "2 m/s2",
+          "2 m/s²"
+        ],
+        "hint_steps": [
+          "Find Δv.",
+          "Compute 16 − 4.",
+          "Divide by 6 s."
+        ],
+        "alternate_explanation": "Velocity increases by 12 m/s over 6 seconds."
+      },
+      {
+        "id": "5C-PR04",
+        "prompt": "A runner moves 24 m east and 9 m west in 5 s. What is average velocity?",
+        "answer": "3 m/s east",
+        "accepted_answers": [
+          "3",
+          "3 m/s",
+          "3 m/s east"
+        ],
+        "hint_steps": [
+          "Use net displacement.",
+          "Compute 24 − 9.",
+          "Divide by 5 s."
+        ]
+      },
+      {
+        "id": "5C-PR05",
+        "prompt": "Velocity changes from −4 m/s to 6 m/s in 5 s. What is average acceleration?",
+        "answer": "2 m/s²",
+        "accepted_answers": [
+          "2",
+          "2 m/s2",
+          "2 m/s²"
+        ],
+        "hint_steps": [
+          "Subtract initial velocity from final velocity.",
+          "Compute 6 − (−4).",
+          "Divide by 5 s."
+        ]
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "5C-C01",
+      "prompt": "A runner returns to the starting point after a trip. Explain why average velocity can be zero while average speed is positive.",
+      "expected_ideas": [
+        "Net displacement is zero because final and initial positions are equal.",
+        "Average velocity uses displacement divided by elapsed time; average speed uses total path length divided by elapsed time."
+      ],
+      "misconceptions": [
+        "Returning to the start means no distance was traveled."
+      ],
+      "follow_up": "Which quantity uses the path and which uses only the endpoints?"
+    },
+    {
+      "id": "5C-C02",
+      "prompt": "A car moves in the negative direction and has positive acceleration. Explain whether it is initially speeding up or slowing down.",
+      "expected_ideas": [
+        "Velocity and acceleration initially have opposite signs.",
+        "Speed initially decreases until velocity reaches zero; continued positive acceleration can then increase speed in the positive direction."
+      ],
+      "misconceptions": [
+        "Positive acceleration always increases speed."
+      ],
+      "follow_up": "What happens to a negative velocity when positive changes are added?"
     }
   ],
   "coach_rules": {
@@ -44,6 +627,7 @@
     "smallest_useful_hint_first": true,
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
-    "use_proper_math_notation": true
+    "use_proper_math_notation": true,
+    "render_math_symbols_cleanly": true
   }
 }
