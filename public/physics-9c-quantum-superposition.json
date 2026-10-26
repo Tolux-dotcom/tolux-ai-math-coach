@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-9c-quantum-superposition",
+  "course_id": "physics",
+  "teks": [
+    "9C"
+  ],
+  "title": "Superposition and Wave-Particle Duality",
+  "learning_goal": "Compare quantum superposition with wave-particle duality and explain the basic meaning of each idea.",
+  "stages": [
+    {
+      "id": "duality",
+      "title": "1. Wave-particle duality",
+      "content": "Quantum objects such as photons and electrons can display wave-like behavior in some experiments and particle-like behavior in others."
+    },
+    {
+      "id": "superposition",
+      "title": "2. Quantum superposition",
+      "content": "Before measurement, a quantum system can be represented as a combination of possible states. Measurement produces a definite outcome from those possibilities."
+    },
+    {
+      "id": "comparison",
+      "title": "3. Do not confuse the ideas",
+      "content": "Wave-particle duality describes how quantum objects can exhibit both wave-like and particle-like properties. Superposition describes a quantum state containing multiple possible outcomes before measurement."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "An electron can form an interference pattern, showing wave-like behavior, yet arrive at a detector as a localized event, showing particle-like behavior."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A photon produces an interference pattern but is detected at one specific location. Which quantum idea does this illustrate most directly?",
+      "hint": "Think about showing both wave-like and particle-like behavior.",
+      "alternate_explanation": "Interference is a wave effect, while a single localized detection is particle-like.",
+      "answer": "Wave-particle duality."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, describe wave-particle duality, describe superposition in plain language, and distinguish the two concepts without claiming that measurement outcomes can be predicted with certainty."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
