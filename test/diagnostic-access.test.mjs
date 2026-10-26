@@ -45,7 +45,7 @@ test("lesson usage grants free diagnostic access before authentication or databa
 
   const accessIndex = routeSource.indexOf("getFreeDiagnosticAccess(body?.itemId)");
   const authIndex = routeSource.indexOf("getAuthenticatedUser(req)");
-  const usageIndex = routeSource.indexOf("getStudentUsage(user.id)");
+  const usageIndex = routeSource.indexOf("getStudentLearningUsage(user.id)");
 
   assert.ok(accessIndex >= 0, "diagnostic access check must exist");
   assert.ok(authIndex > accessIndex, "diagnostic access must not depend on authentication");

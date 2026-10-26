@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import {createAdministratorLearningAccess, hasUnlimitedLearningAccess, buildLearningTrialStatus} from '../administrator-learning-access.mjs';
 import {buildTrialStatus, TRIAL_SECONDS} from '../trial-access.mjs';
 import {resolveFullSimulationAccess} from '../test-prep-access.mjs';
+import {getFreeDiagnosticAccess} from '../diagnostic-access.mjs';
 
 function database(result) {
   return {from(name){assert.equal(name,'growth_admins');return {select(){return this;},eq(field,id){assert.equal(field,'user_id');assert.equal(id,'verified-user');return this;},async maybeSingle(){return result;}};}};
@@ -83,4 +84,13 @@ test('Student Plan checkout refuses a known administrator before creating a Stri
    send:(_res,status,body)=>{result={status,body};},console});
  await vm.runInContext('(async()=>{'+source.slice(begin,end)+'})()',context);
  assert.equal(result.status,409);assert.equal(result.body.isAdministrator,true);assert.equal(stripeCalls,0);
+});
+
+test('authored free diagnostic returns before any sign-in or database lookup',async()=>{
+ let result;
+ const blocked=()=>{throw Error('Free diagnostic must not reach authentication or usage storage');};
+ const c=vm.createContext({req:{method:'POST',url:'/api/lesson-usage'},res:{},readJson:async()=>({itemId:'A5A-D01'}),getFreeDiagnosticAccess,
+   getAuthenticatedUser:blocked,getStudentLearningUsage:blocked,send:(_res,status,body)=>{result={status,body};},console});
+ await vm.runInContext('(async()=>{'+routes.lesson+'})()',c);
+ assert.equal(result.status,200);assert.equal(result.body.allowed,true);assert.equal(result.body.isFreeDiagnostic,true);
 });
