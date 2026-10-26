@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Energy of motion and position",
+      "content": "Mechanical energy includes kinetic energy, the energy of motion, and potential energy, energy stored because of position or configuration.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Greater speed",
+          "Speed squared",
+          "Kinetic energy ½mv²"
+        ],
+        "label": "At fixed mass, doubling speed multiplies kinetic energy by four."
+      }
+    },
+    {
+      "title": "Kinetic energy",
+      "content": "Kinetic energy is KE = ½mv². It increases with mass and increases strongly with speed because speed is squared."
+    },
+    {
+      "title": "Gravitational potential energy",
+      "content": "Near Earth's surface, gravitational potential energy is PE = mgh, where h is measured relative to a chosen reference level."
+    },
+    {
+      "title": "A mass doubles its speed. What happens to its kinetic energy?",
+      "content": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed."
+    },
+    {
+      "title": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+      "content": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "7B-W01",
+      "prompt": "A mass doubles its speed. What happens to its kinetic energy?",
+      "choices": [
+        "It quadruples",
+        "It doubles"
+      ],
+      "answer": "It quadruples",
+      "accepted_answers": [
+        "It quadruples"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+      "alternate_explanation_steps": [
+        "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A mass doubles its speed. What happens to its kinetic energy?"
+        },
+        {
+          "equation": "It quadruples",
+          "explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Greater speed",
+          "Speed squared",
+          "Kinetic energy ½mv²"
+        ],
+        "label": "At fixed mass, doubling speed multiplies kinetic energy by four."
+      }
+    },
+    {
+      "id": "7B-W02",
+      "prompt": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+      "choices": [
+        "6 J",
+        "9 J"
+      ],
+      "answer": "9 J",
+      "accepted_answers": [
+        "9 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+      "alternate_explanation_steps": [
+        "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A 2 kg object moves at 3 m/s. What is its kinetic energy?"
+        },
+        {
+          "equation": "9 J",
+          "explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "7B-G01",
+      "prompt": "A mass doubles its speed. What happens to its kinetic energy?",
+      "choices": [
+        "It quadruples",
+        "It doubles"
+      ],
+      "answer": "It quadruples",
+      "accepted_answers": [
+        "It quadruples"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+      "alternate_explanation_steps": [
+        "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7B-Q03",
+        "prompt": "Near Earth, an object rises while the reference level stays fixed. How does gravitational potential energy change?",
+        "choices": [
+          "It increases",
+          "It decreases"
+        ],
+        "answer": "It increases",
+        "accepted_answers": [
+          "It increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+        "alternate_explanation_steps": [
+          "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7B-G02",
+      "prompt": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+      "choices": [
+        "6 J",
+        "9 J"
+      ],
+      "answer": "9 J",
+      "accepted_answers": [
+        "9 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+      "alternate_explanation_steps": [
+        "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7B-Q04",
+        "prompt": "A spring is compressed twice as far within its linear range. How does elastic potential energy change?",
+        "choices": [
+          "It doubles",
+          "It quadruples"
+        ],
+        "answer": "It quadruples",
+        "accepted_answers": [
+          "It quadruples"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+        "alternate_explanation_steps": [
+          "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "7B-P01",
+      "prompt": "Near Earth, an object rises while the reference level stays fixed. How does gravitational potential energy change?",
+      "choices": [
+        "It increases",
+        "It decreases"
+      ],
+      "answer": "It increases",
+      "accepted_answers": [
+        "It increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+      "alternate_explanation_steps": [
+        "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7B-Q05",
+        "prompt": "Can gravitational potential energy be negative?",
+        "choices": [
+          "Yes, depending on the chosen zero",
+          "No, energy must always be positive"
+        ],
+        "answer": "Yes, depending on the chosen zero",
+        "accepted_answers": [
+          "Yes, depending on the chosen zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+        "alternate_explanation_steps": [
+          "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7B-P02",
+      "prompt": "A spring is compressed twice as far within its linear range. How does elastic potential energy change?",
+      "choices": [
+        "It doubles",
+        "It quadruples"
+      ],
+      "answer": "It quadruples",
+      "accepted_answers": [
+        "It quadruples"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+      "alternate_explanation_steps": [
+        "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7B-Q01",
+        "prompt": "A mass doubles its speed. What happens to its kinetic energy?",
+        "choices": [
+          "It quadruples",
+          "It doubles"
+        ],
+        "answer": "It quadruples",
+        "accepted_answers": [
+          "It quadruples"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+        "alternate_explanation_steps": [
+          "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7B-P03",
+      "prompt": "Can gravitational potential energy be negative?",
+      "choices": [
+        "Yes, depending on the chosen zero",
+        "No, energy must always be positive"
+      ],
+      "answer": "Yes, depending on the chosen zero",
+      "accepted_answers": [
+        "Yes, depending on the chosen zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+      "alternate_explanation_steps": [
+        "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7B-Q02",
+        "prompt": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+        "choices": [
+          "6 J",
+          "9 J"
+        ],
+        "answer": "9 J",
+        "accepted_answers": [
+          "9 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+        "alternate_explanation_steps": [
+          "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "7B-M01",
+      "prompt": "A mass doubles its speed. What happens to its kinetic energy?",
+      "choices": [
+        "It quadruples",
+        "It doubles"
+      ],
+      "answer": "It quadruples",
+      "accepted_answers": [
+        "It quadruples"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+      "alternate_explanation_steps": [
+        "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7B-M02",
+      "prompt": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+      "choices": [
+        "6 J",
+        "9 J"
+      ],
+      "answer": "9 J",
+      "accepted_answers": [
+        "9 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+      "alternate_explanation_steps": [
+        "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7B-M03",
+      "prompt": "Near Earth, an object rises while the reference level stays fixed. How does gravitational potential energy change?",
+      "choices": [
+        "It increases",
+        "It decreases"
+      ],
+      "answer": "It increases",
+      "accepted_answers": [
+        "It increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+      "alternate_explanation_steps": [
+        "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7B-M04",
+      "prompt": "A spring is compressed twice as far within its linear range. How does elastic potential energy change?",
+      "choices": [
+        "It doubles",
+        "It quadruples"
+      ],
+      "answer": "It quadruples",
+      "accepted_answers": [
+        "It quadruples"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+      "alternate_explanation_steps": [
+        "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7B-M05",
+      "prompt": "Can gravitational potential energy be negative?",
+      "choices": [
+        "Yes, depending on the chosen zero",
+        "No, energy must always be positive"
+      ],
+      "answer": "Yes, depending on the chosen zero",
+      "accepted_answers": [
+        "Yes, depending on the chosen zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+      "alternate_explanation_steps": [
+        "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "7B-P01",
+        "prompt": "Near Earth, an object rises while the reference level stays fixed. How does gravitational potential energy change?",
+        "choices": [
+          "It increases",
+          "It decreases"
+        ],
+        "answer": "It increases",
+        "accepted_answers": [
+          "It increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+        "alternate_explanation_steps": [
+          "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7B-Q05",
+          "prompt": "Can gravitational potential energy be negative?",
+          "choices": [
+            "Yes, depending on the chosen zero",
+            "No, energy must always be positive"
+          ],
+          "answer": "Yes, depending on the chosen zero",
+          "accepted_answers": [
+            "Yes, depending on the chosen zero"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+          "alternate_explanation_steps": [
+            "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7B-P02",
+        "prompt": "A spring is compressed twice as far within its linear range. How does elastic potential energy change?",
+        "choices": [
+          "It doubles",
+          "It quadruples"
+        ],
+        "answer": "It quadruples",
+        "accepted_answers": [
+          "It quadruples"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+        "alternate_explanation_steps": [
+          "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7B-Q01",
+          "prompt": "A mass doubles its speed. What happens to its kinetic energy?",
+          "choices": [
+            "It quadruples",
+            "It doubles"
+          ],
+          "answer": "It quadruples",
+          "accepted_answers": [
+            "It quadruples"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+          "alternate_explanation_steps": [
+            "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7B-P03",
+        "prompt": "Can gravitational potential energy be negative?",
+        "choices": [
+          "Yes, depending on the chosen zero",
+          "No, energy must always be positive"
+        ],
+        "answer": "Yes, depending on the chosen zero",
+        "accepted_answers": [
+          "Yes, depending on the chosen zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+        "alternate_explanation_steps": [
+          "Potential energy values depend on the reference. For example U = mgh is negative below a chosen zero height; energy differences determine the transfer.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7B-Q02",
+          "prompt": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+          "choices": [
+            "6 J",
+            "9 J"
+          ],
+          "answer": "9 J",
+          "accepted_answers": [
+            "9 J"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+          "alternate_explanation_steps": [
+            "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "7B-G01",
+        "prompt": "A mass doubles its speed. What happens to its kinetic energy?",
+        "choices": [
+          "It quadruples",
+          "It doubles"
+        ],
+        "answer": "It quadruples",
+        "accepted_answers": [
+          "It quadruples"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+        "alternate_explanation_steps": [
+          "K = ½mv². At fixed mass, kinetic energy depends on the square of speed.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7B-Q03",
+          "prompt": "Near Earth, an object rises while the reference level stays fixed. How does gravitational potential energy change?",
+          "choices": [
+            "It increases",
+            "It decreases"
+          ],
+          "answer": "It increases",
+          "accepted_answers": [
+            "It increases"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+          "alternate_explanation_steps": [
+            "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7B-G02",
+        "prompt": "A 2 kg object moves at 3 m/s. What is its kinetic energy?",
+        "choices": [
+          "6 J",
+          "9 J"
+        ],
+        "answer": "9 J",
+        "accepted_answers": [
+          "9 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+        "alternate_explanation_steps": [
+          "K = ½ × 2 × 3² = 9 J. Kinetic energy is a nonnegative scalar.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7B-Q04",
+          "prompt": "A spring is compressed twice as far within its linear range. How does elastic potential energy change?",
+          "choices": [
+            "It doubles",
+            "It quadruples"
+          ],
+          "answer": "It quadruples",
+          "accepted_answers": [
+            "It quadruples"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+          "alternate_explanation_steps": [
+            "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "7B-C01",
+      "prompt": "Near Earth, an object rises while the reference level stays fixed. How does gravitational potential energy change? Explain why, using your own words.",
+      "expected_ideas": [
+        "It increases",
+        "ΔU = mgΔh for approximately constant g. The zero of potential energy is a choice; changes have physical significance."
+      ],
+      "misconceptions": [
+        "It decreases"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "7B-C02",
+      "prompt": "A spring is compressed twice as far within its linear range. How does elastic potential energy change? Explain why, using your own words.",
+      "expected_ideas": [
+        "It quadruples",
+        "U_s = ½kx². This model assumes an ideal spring obeying Hooke’s law within its elastic range."
+      ],
+      "misconceptions": [
+        "It doubles"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
