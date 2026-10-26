@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/physics.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.js"></script>
 </head>
 <body class="physics-body">
   <aside class="physics-sidebar">
@@ -109,6 +110,7 @@
   </main>
 
 <script type="module">
+import { assessReflection } from "/physics-reasoning.js";
 const unitsEl = document.querySelector('#physicsUnits');
 const coverageEl = document.querySelector('#coverage');
 const lessonWorkspace = document.querySelector('#lessonWorkspace');
@@ -419,11 +421,15 @@ function nextStage() {
 function renderConcept() {
   const cards=(activeLesson.concept_cards||[]).map(card=>`<article class="physics-concept-card"><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.content)}</p>${renderVisual(card.visual)}</article>`).join('');
   lessonStages.innerHTML=`<article class="physics-active-card"><span class="eyebrow">Start from the beginning</span><h2>Build the idea before solving</h2><p>Connect the words, equations, and visual representations before moving into worked examples.</p><div class="physics-concept-grid">${cards}</div>${renderConceptualReflections()}<button class="physics-primary" id="continuePhysics">Continue to Worked Examples →</button></article>`;
+  document.querySelectorAll('[data-reasoning-index]').forEach(button=>button.addEventListener('click',()=>{
+    const i=Number(button.dataset.reasoningIndex),q=activeLesson.conceptual_questions[i];
+    assessReflection({lessonId:activeLesson.lesson_id,questionId:q.id,response:document.querySelector(`#physicsReflection${i}`).value,output:document.querySelector(`#physicsReasoningFeedback${i}`),button});
+  }));
   document.querySelector('#continuePhysics').addEventListener('click',nextStage);
 }
 
 function renderConceptualReflections() {
-  return (activeLesson.conceptual_questions||[]).map((q,i)=>`<section class="physics-stage-card"><h3>Explain the physics ${i+1}</h3><p>${escapeHtml(q.prompt)}</p>${renderVisual(q.visual)}<label for="physicsReflection${i}">Explain your thinking in your own words</label><textarea id="physicsReflection${i}" rows="4" style="width:100%;box-sizing:border-box;padding:12px;font:inherit" placeholder="Describe what happens and why."></textarea><p>Reflection practice: compare your reasoning below. This response is not automatically scored.</p><details><summary>Compare with the key ideas</summary><ul>${(q.expected_ideas||[]).map(idea=>`<li>${escapeHtml(idea)}</li>`).join('')}</ul><p><strong>Think further:</strong> ${escapeHtml(q.follow_up||'')}</p></details></section>`).join('');
+  return (activeLesson.conceptual_questions||[]).map((q,i)=>`<section class="physics-stage-card"><h3>Explain the physics ${i+1}</h3><p>${escapeHtml(q.prompt)}</p>${renderVisual(q.visual)}<label for="physicsReflection${i}">Explain your thinking in your own words</label><textarea id="physicsReflection${i}" rows="4" style="width:100%;box-sizing:border-box;padding:12px;font:inherit" maxlength="4000" placeholder="Describe what happens and why."></textarea><button type="button" class="physics-primary" data-reasoning-index="${i}">Check my explanation</button><div id="physicsReasoningFeedback${i}" aria-live="polite"></div><p>AI feedback supports practice and does not award mastery credit. You can also compare with the key ideas below.</p><details><summary>Compare with the key ideas</summary><ul>${(q.expected_ideas||[]).map(idea=>`<li>${escapeHtml(idea)}</li>`).join('')}</ul><p><strong>Think further:</strong> ${escapeHtml(q.follow_up||'')}</p></details></section>`).join('');
 }
 
 function solutionSteps(item) {
