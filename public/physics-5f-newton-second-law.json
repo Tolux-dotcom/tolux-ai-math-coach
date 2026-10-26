@@ -1,42 +1,44 @@
 {
   "lesson_id": "physics-5f-newton-second-law",
   "course_id": "physics",
-  "teks": ["5F"],
+  "teks": [
+    "5F"
+  ],
   "title": "Forces and Newton's Second Law",
   "learning_goal": "Calculate the effects of tension, friction, normal force, gravity, centripetal force, and applied forces using free-body diagrams and Newton's Second Law.",
   "stages": [
     {
-      "id":"concept",
-      "title":"1. Net force changes motion",
-      "content":"Newton's Second Law connects net force, mass, and acceleration. The acceleration of an object depends on the net force acting on it and its mass."
+      "id": "concept",
+      "title": "1. Net force changes motion",
+      "content": "Newton's Second Law connects net force, mass, and acceleration. The acceleration of an object depends on the net force acting on it and its mass."
     },
     {
-      "id":"free-body",
-      "title":"2. Build a free-body diagram",
-      "content":"A free-body diagram shows the forces acting on one object. Draw each force as an arrow pointing in the force direction. Common forces include weight, normal force, friction, tension, applied force, and centripetal force."
+      "id": "free-body",
+      "title": "2. Build a free-body diagram",
+      "content": "A free-body diagram shows the forces acting on one object. Draw each force as an arrow pointing in the force direction. Common forces include weight, normal force, friction, tension, applied force, and centripetal force."
     },
     {
-      "id":"worked-example",
-      "title":"3. Worked example",
-      "content":"A 5 kg cart experiences a net force of 20 N to the right. Using F = ma, the acceleration is a = F/m = 20/5 = 4 m/s² to the right."
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "A 5 kg cart experiences a net force of 20 N to the right. Using F = ma, the acceleration is a = F/m = 20/5 = 4 m/s² to the right."
     },
     {
-      "id":"balanced-unbalanced",
-      "title":"4. Balanced and unbalanced forces",
-      "content":"If opposite forces cancel, the net force is zero and there is no acceleration. If they do not cancel, add forces with direction signs to find the net force before using F = ma."
+      "id": "balanced-unbalanced",
+      "title": "4. Balanced and unbalanced forces",
+      "content": "If opposite forces cancel, the net force is zero and there is no acceleration. If they do not cancel, add forces with direction signs to find the net force before using F = ma."
     },
     {
-      "id":"guided-practice",
-      "title":"5. Guided practice",
-      "prompt":"A 10 kg box is pushed with 50 N to the right while friction exerts 20 N to the left. What is the box's acceleration?",
-      "hint":"Find the net force first: rightward force minus leftward friction.",
-      "alternate_explanation":"Imagine the force arrows on a free-body diagram. The 50 N arrow is longer than the 20 N arrow, leaving 30 N unbalanced to the right.",
-      "answer":"3 m/s² to the right"
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A 10 kg box is pushed with 50 N to the right while friction exerts 20 N to the left. What is the box's acceleration?",
+      "hint": "Find the net force first: rightward force minus leftward friction.",
+      "alternate_explanation": "Imagine the force arrows on a free-body diagram. The 50 N arrow is longer than the 20 N arrow, leaving 30 N unbalanced to the right.",
+      "answer": "3 m/s² to the right"
     },
     {
-      "id":"mastery",
-      "title":"6. Mastery check",
-      "content":"To demonstrate mastery, draw and interpret free-body diagrams, calculate net force, apply F = ma, and analyze normal force, friction, tension, gravity, applied force, and centripetal force."
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, draw and interpret free-body diagrams, calculate net force, apply F = ma, and analyze normal force, friction, tension, gravity, applied force, and centripetal force."
     }
   ],
   "coach_rules": {
@@ -45,5 +47,1047 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
-  }
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Net force is the vector sum",
+      "content": "Newton’s second law is ΣF = ma for a constant-mass object in an inertial frame. Acceleration follows net force, not necessarily velocity or the largest individual force. Choose signs and combine forces on one object first.",
+      "visual": {
+        "type": "force_comparison",
+        "right": 50,
+        "left": 20
+      }
+    },
+    {
+      "title": "Identify interactions on one object",
+      "content": "Draw weight from Earth, the normal force from a supporting surface, friction, tension, and any applied forces that exist. Label the agent of each force. Centripetal force is the net inward component supplied by these interactions, not an extra force to add."
+    },
+    {
+      "title": "Normal force and tension depend on conditions",
+      "content": "On a horizontal surface with no vertical acceleration and no other vertical force, N = mg. In an accelerating elevator or with angled pulls this equality need not hold. For an upward-accelerating hanging mass, T − mg = ma."
+    },
+    {
+      "title": "Friction has two models",
+      "content": "Kinetic friction has magnitude approximately μ_k N and opposes sliding. Static friction adjusts up to a maximum μ_s N; it is not always equal to that maximum. Friction opposes relative slipping or its tendency, which need not be opposite the object’s motion relative to the road."
+    },
+    {
+      "title": "Compare force and mass",
+      "content": "At fixed mass, twice the net force gives twice the acceleration. At fixed net force, twice the mass gives half the acceleration. A negative acceleration can either slow or speed an object depending on its velocity direction."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "5F-W01",
+      "prompt": "A 5 kg box has an applied horizontal force of 30 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "4 m/s²",
+      "accepted_answers": [
+        "4 m/s²",
+        "4"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 30 − 10 N.",
+        "Divide the net force by 5 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 30 − 10 = 20 N. Use a = F_net/m = 20/5 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 30 − 10 = 20 N. Use a = F_net/m = 20/5 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 30,
+        "left": 10
+      },
+      "solution_steps": [
+        {
+          "equation": "Identify the interaction and relationship",
+          "explanation": "A 5 kg box has an applied horizontal force of 30 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration."
+        },
+        {
+          "equation": "4 m/s²",
+          "explanation": "Choose right as positive. Net force = 30 − 10 = 20 N. Use a = F_net/m = 20/5 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model."
+        }
+      ]
+    },
+    {
+      "id": "5F-W02",
+      "prompt": "A 10 kg box has an applied horizontal force of 50 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "3 m/s²",
+      "accepted_answers": [
+        "3 m/s²",
+        "3"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 50 − 20 N.",
+        "Divide the net force by 10 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 50,
+        "left": 20
+      },
+      "solution_steps": [
+        {
+          "equation": "Identify the interaction and relationship",
+          "explanation": "A 10 kg box has an applied horizontal force of 50 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration."
+        },
+        {
+          "equation": "3 m/s²",
+          "explanation": "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model."
+        }
+      ]
+    },
+    {
+      "id": "5F-W03",
+      "prompt": "A 4 kg box has an applied horizontal force of 12 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "-2 m/s²",
+      "accepted_answers": [
+        "-2 m/s²",
+        "-2"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 12 − 20 N.",
+        "Divide the net force by 4 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 12,
+        "left": 20
+      },
+      "solution_steps": [
+        {
+          "equation": "Identify the interaction and relationship",
+          "explanation": "A 4 kg box has an applied horizontal force of 12 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration."
+        },
+        {
+          "equation": "-2 m/s²",
+          "explanation": "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "5F-G01",
+      "prompt": "A 10 kg box has an applied horizontal force of 50 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "3 m/s²",
+      "accepted_answers": [
+        "3 m/s²",
+        "3"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 50 − 20 N.",
+        "Divide the net force by 10 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 50,
+        "left": 20
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "5 m/s²",
+        "accepted_answers": [
+          "5 m/s²",
+          "5"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 21 − 6 N.",
+          "Divide the net force by 3 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 21,
+          "left": 6
+        }
+      }
+    },
+    {
+      "id": "5F-G02",
+      "prompt": "A 4 kg box has an applied horizontal force of 12 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "-2 m/s²",
+      "accepted_answers": [
+        "-2 m/s²",
+        "-2"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 12 − 20 N.",
+        "Divide the net force by 4 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 12,
+        "left": 20
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "6 m/s²",
+        "accepted_answers": [
+          "6 m/s²",
+          "6"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 32 − 8 N.",
+          "Divide the net force by 4 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 32,
+          "left": 8
+        }
+      }
+    },
+    {
+      "id": "5F-G03",
+      "prompt": "A 6 kg box has an applied horizontal force of 36 N right and friction of 12 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "4 m/s²",
+      "accepted_answers": [
+        "4 m/s²",
+        "4"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 36 − 12 N.",
+        "Divide the net force by 6 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 36 − 12 = 24 N. Use a = F_net/m = 24/6 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 36 − 12 = 24 N. Use a = F_net/m = 24/6 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 36,
+        "left": 12
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 10 kg box has an applied horizontal force of 20 N right and friction of 40 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "-2 m/s²",
+        "accepted_answers": [
+          "-2 m/s²",
+          "-2"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 20 − 40 N.",
+          "Divide the net force by 10 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 20,
+          "left": 40
+        }
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "5F-P01",
+      "prompt": "A 6 kg box has an applied horizontal force of 36 N right and friction of 12 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "4 m/s²",
+      "accepted_answers": [
+        "4 m/s²",
+        "4"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 36 − 12 N.",
+        "Divide the net force by 6 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 36 − 12 = 24 N. Use a = F_net/m = 24/6 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 36 − 12 = 24 N. Use a = F_net/m = 24/6 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 36,
+        "left": 12
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 2 kg box has an applied horizontal force of 18 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "6 m/s²",
+        "accepted_answers": [
+          "6 m/s²",
+          "6"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 18 − 6 N.",
+          "Divide the net force by 2 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 18,
+          "left": 6
+        }
+      }
+    },
+    {
+      "id": "5F-P02",
+      "prompt": "A 8 kg box has an applied horizontal force of 40 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "4 m/s²",
+      "accepted_answers": [
+        "4 m/s²",
+        "4"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 40 − 8 N.",
+        "Divide the net force by 8 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 40 − 8 = 32 N. Use a = F_net/m = 32/8 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 40 − 8 = 32 N. Use a = F_net/m = 32/8 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 40,
+        "left": 8
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 5 kg box has an applied horizontal force of 45 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "7 m/s²",
+        "accepted_answers": [
+          "7 m/s²",
+          "7"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 45 − 10 N.",
+          "Divide the net force by 5 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 45,
+          "left": 10
+        }
+      }
+    },
+    {
+      "id": "5F-P03",
+      "prompt": "A 5 kg box has an applied horizontal force of 10 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "0 m/s²",
+      "accepted_answers": [
+        "0 m/s²",
+        "0"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 10 − 10 N.",
+        "Divide the net force by 5 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 10 − 10 = 0 N. Use a = F_net/m = 0/5 = 0 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 10 − 10 = 0 N. Use a = F_net/m = 0/5 = 0 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 10,
+        "left": 10
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "5 m/s²",
+        "accepted_answers": [
+          "5 m/s²",
+          "5"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 21 − 6 N.",
+          "Divide the net force by 3 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 21,
+          "left": 6
+        }
+      }
+    },
+    {
+      "id": "5F-P04",
+      "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "5 m/s²",
+      "accepted_answers": [
+        "5 m/s²",
+        "5"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 21 − 6 N.",
+        "Divide the net force by 3 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 21,
+        "left": 6
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "6 m/s²",
+        "accepted_answers": [
+          "6 m/s²",
+          "6"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 32 − 8 N.",
+          "Divide the net force by 4 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 32,
+          "left": 8
+        }
+      }
+    },
+    {
+      "id": "5F-P05",
+      "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "6 m/s²",
+      "accepted_answers": [
+        "6 m/s²",
+        "6"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 32 − 8 N.",
+        "Divide the net force by 4 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 32,
+        "left": 8
+      },
+      "similar_problem": {
+        "id": "",
+        "prompt": "A 10 kg box has an applied horizontal force of 20 N right and friction of 40 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "-2 m/s²",
+        "accepted_answers": [
+          "-2 m/s²",
+          "-2"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 20 − 40 N.",
+          "Divide the net force by 10 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 20,
+          "left": 40
+        }
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "5F-M01",
+      "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "5 m/s²",
+      "accepted_answers": [
+        "5 m/s²",
+        "5"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 21 − 6 N.",
+        "Divide the net force by 3 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 21,
+        "left": 6
+      }
+    },
+    {
+      "id": "5F-M02",
+      "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "6 m/s²",
+      "accepted_answers": [
+        "6 m/s²",
+        "6"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 32 − 8 N.",
+        "Divide the net force by 4 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 32,
+        "left": 8
+      }
+    },
+    {
+      "id": "5F-M03",
+      "prompt": "A 10 kg box has an applied horizontal force of 20 N right and friction of 40 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "-2 m/s²",
+      "accepted_answers": [
+        "-2 m/s²",
+        "-2"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 20 − 40 N.",
+        "Divide the net force by 10 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 20,
+        "left": 40
+      }
+    },
+    {
+      "id": "5F-M04",
+      "prompt": "A 2 kg box has an applied horizontal force of 18 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "6 m/s²",
+      "accepted_answers": [
+        "6 m/s²",
+        "6"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 18 − 6 N.",
+        "Divide the net force by 2 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 18,
+        "left": 6
+      }
+    },
+    {
+      "id": "5F-M05",
+      "prompt": "A 5 kg box has an applied horizontal force of 45 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "7 m/s²",
+      "accepted_answers": [
+        "7 m/s²",
+        "7"
+      ],
+      "hint_steps": [
+        "Add horizontal forces with signs first.",
+        "F_net = 45 − 10 N.",
+        "Divide the net force by 5 kg."
+      ],
+      "alternate_explanation": "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+      "alternate_explanation_steps": [
+        "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "visual": {
+        "type": "force_comparison",
+        "right": 45,
+        "left": 10
+      }
+    }
+  ],
+  "practice": {
+    "intro": "Apply the physical principle and use the visual before choosing or calculating an answer.",
+    "problems": [
+      {
+        "id": "5F-P01",
+        "prompt": "A 6 kg box has an applied horizontal force of 36 N right and friction of 12 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "4 m/s²",
+        "accepted_answers": [
+          "4 m/s²",
+          "4"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 36 − 12 N.",
+          "Divide the net force by 6 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 36 − 12 = 24 N. Use a = F_net/m = 24/6 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 36 − 12 = 24 N. Use a = F_net/m = 24/6 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 36,
+          "left": 12
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 2 kg box has an applied horizontal force of 18 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "6 m/s²",
+          "accepted_answers": [
+            "6 m/s²",
+            "6"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 18 − 6 N.",
+            "Divide the net force by 2 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 18,
+            "left": 6
+          }
+        }
+      },
+      {
+        "id": "5F-P02",
+        "prompt": "A 8 kg box has an applied horizontal force of 40 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "4 m/s²",
+        "accepted_answers": [
+          "4 m/s²",
+          "4"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 40 − 8 N.",
+          "Divide the net force by 8 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 40 − 8 = 32 N. Use a = F_net/m = 32/8 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 40 − 8 = 32 N. Use a = F_net/m = 32/8 = 4 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 40,
+          "left": 8
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 5 kg box has an applied horizontal force of 45 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "7 m/s²",
+          "accepted_answers": [
+            "7 m/s²",
+            "7"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 45 − 10 N.",
+            "Divide the net force by 5 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 45,
+            "left": 10
+          }
+        }
+      },
+      {
+        "id": "5F-P03",
+        "prompt": "A 5 kg box has an applied horizontal force of 10 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "0 m/s²",
+        "accepted_answers": [
+          "0 m/s²",
+          "0"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 10 − 10 N.",
+          "Divide the net force by 5 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 10 − 10 = 0 N. Use a = F_net/m = 0/5 = 0 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 10 − 10 = 0 N. Use a = F_net/m = 0/5 = 0 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 10,
+          "left": 10
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "5 m/s²",
+          "accepted_answers": [
+            "5 m/s²",
+            "5"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 21 − 6 N.",
+            "Divide the net force by 3 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 21,
+            "left": 6
+          }
+        }
+      },
+      {
+        "id": "5F-P04",
+        "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "5 m/s²",
+        "accepted_answers": [
+          "5 m/s²",
+          "5"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 21 − 6 N.",
+          "Divide the net force by 3 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 21,
+          "left": 6
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "6 m/s²",
+          "accepted_answers": [
+            "6 m/s²",
+            "6"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 32 − 8 N.",
+            "Divide the net force by 4 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 32,
+            "left": 8
+          }
+        }
+      },
+      {
+        "id": "5F-P05",
+        "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "6 m/s²",
+        "accepted_answers": [
+          "6 m/s²",
+          "6"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 32 − 8 N.",
+          "Divide the net force by 4 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 32,
+          "left": 8
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 10 kg box has an applied horizontal force of 20 N right and friction of 40 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "-2 m/s²",
+          "accepted_answers": [
+            "-2 m/s²",
+            "-2"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 20 − 40 N.",
+            "Divide the net force by 10 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 20,
+            "left": 40
+          }
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the force model, identify the object, then retry with the relationship explained in words.",
+    "recheck": [
+      {
+        "id": "5F-G01",
+        "prompt": "A 10 kg box has an applied horizontal force of 50 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "3 m/s²",
+        "accepted_answers": [
+          "3 m/s²",
+          "3"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 50 − 20 N.",
+          "Divide the net force by 10 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 50 − 20 = 30 N. Use a = F_net/m = 30/10 = 3 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 50,
+          "left": 20
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "5 m/s²",
+          "accepted_answers": [
+            "5 m/s²",
+            "5"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 21 − 6 N.",
+            "Divide the net force by 3 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 21,
+            "left": 6
+          }
+        }
+      },
+      {
+        "id": "5F-G02",
+        "prompt": "A 4 kg box has an applied horizontal force of 12 N right and friction of 20 N left. Take right as positive. Find its signed horizontal acceleration.",
+        "answer": "-2 m/s²",
+        "accepted_answers": [
+          "-2 m/s²",
+          "-2"
+        ],
+        "hint_steps": [
+          "Add horizontal forces with signs first.",
+          "F_net = 12 − 20 N.",
+          "Divide the net force by 4 kg."
+        ],
+        "alternate_explanation": "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+        "alternate_explanation_steps": [
+          "Choose right as positive. Net force = 12 − 20 = -8 N. Use a = F_net/m = -8/4 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "visual": {
+          "type": "force_comparison",
+          "right": 12,
+          "left": 20
+        },
+        "similar_problem": {
+          "id": "",
+          "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+          "answer": "6 m/s²",
+          "accepted_answers": [
+            "6 m/s²",
+            "6"
+          ],
+          "hint_steps": [
+            "Add horizontal forces with signs first.",
+            "F_net = 32 − 8 N.",
+            "Divide the net force by 4 kg."
+          ],
+          "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+          "alternate_explanation_steps": [
+            "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "visual": {
+            "type": "force_comparison",
+            "right": 32,
+            "left": 8
+          }
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "5F-C01",
+      "prompt": "Two carts experience the same net force. One has twice the mass. Compare their accelerations and explain.",
+      "expected_ideas": [
+        "Acceleration is net force divided by mass.",
+        "The heavier cart has half the acceleration."
+      ],
+      "misconceptions": [
+        "Equal force always gives equal acceleration."
+      ],
+      "follow_up": "What is held constant in a = F_net/m?"
+    },
+    {
+      "id": "5F-C02",
+      "prompt": "Why should “centripetal force” not be added as another arrow if tension already supplies the inward net force?",
+      "expected_ideas": [
+        "Centripetal describes the role of the net inward force.",
+        "Adding a second identical force would double-count the interaction."
+      ],
+      "misconceptions": [
+        "Centripetal force is always an extra interaction."
+      ],
+      "follow_up": "Which object actually exerts each force?"
+    }
+  ]
 }
