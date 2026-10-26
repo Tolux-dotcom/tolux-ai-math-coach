@@ -395,108 +395,93 @@
   "mastery_check": [
     {
       "id": "6E-M01",
-      "prompt": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+      "prompt": "An ideal heater of resistance 2 Ω has 4 V across it. Find the power transferred.",
       "choices": [
-        "3 A",
-        "48 A"
+        "8 W",
+        "4 W"
       ],
-      "answer": "3 A",
+      "answer": "8 W",
       "accepted_answers": [
-        "3 A"
+        "8 W"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
-      "alternate_explanation_steps": [
-        "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 4,
+        "resistance": 2
+      }
     },
     {
       "id": "6E-M02",
-      "prompt": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+      "prompt": "An ideal heater of resistance 3 Ω has 6 V across it. Find the power transferred.",
       "choices": [
-        "3 W",
+        "6 W",
         "12 W"
       ],
       "answer": "12 W",
       "accepted_answers": [
         "12 W"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
-      "alternate_explanation_steps": [
-        "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 6,
+        "resistance": 3
+      }
     },
     {
       "id": "6E-M03",
-      "prompt": "At fixed resistance, doubling voltage changes power by what factor?",
+      "prompt": "An ideal heater of resistance 4 Ω has 8 V across it. Find the power transferred.",
       "choices": [
-        "Four",
-        "Two"
+        "16 W",
+        "8 W"
       ],
-      "answer": "Four",
+      "answer": "16 W",
       "accepted_answers": [
-        "Four"
+        "16 W"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
-      "alternate_explanation_steps": [
-        "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 8,
+        "resistance": 4
+      }
     },
     {
       "id": "6E-M04",
-      "prompt": "Why is current not consumed as it passes through a resistor?",
+      "prompt": "An ideal heater of resistance 5 Ω has 10 V across it. Find the power transferred.",
       "choices": [
-        "Current turns into heat and disappears",
-        "Charge is conserved while energy is transferred"
+        "10 W",
+        "20 W"
       ],
-      "answer": "Charge is conserved while energy is transferred",
+      "answer": "20 W",
       "accepted_answers": [
-        "Charge is conserved while energy is transferred"
+        "20 W"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
-      "alternate_explanation_steps": [
-        "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 10,
+        "resistance": 5
+      }
     },
     {
       "id": "6E-M05",
-      "prompt": "A 10 W lamp runs for 5 s. How much energy is transferred?",
+      "prompt": "An ideal heater of resistance 6 Ω has 12 V across it. Find the power transferred.",
       "choices": [
-        "50 J",
-        "2 J"
+        "24 W",
+        "12 W"
       ],
-      "answer": "50 J",
+      "answer": "24 W",
       "accepted_answers": [
-        "50 J"
+        "24 W"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
-      "alternate_explanation_steps": [
-        "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 12,
+        "resistance": 6
+      }
     }
   ],
   "practice": {
@@ -752,6 +737,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
