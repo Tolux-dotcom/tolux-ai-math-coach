@@ -6,96 +6,195 @@
   <title>Tolux AI Physics Coach</title>
   <meta name="description" content="TEKS-aligned Texas Physics coaching with step-by-step lessons, guided practice, and mastery support." />
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/physics.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </head>
-<body>
-  <main style="max-width:1100px;margin:0 auto;padding:32px 20px;">
-    <header class="panel">
-      <span class="eyebrow">Texas Physics • TEKS-aligned</span>
-      <h1>Tolux AI Physics Coach</h1>
-      <p>Learn the concept, understand the why, practice with guidance, and demonstrate mastery.</p>
-      <p><a href="/">← Back to Math Coach</a></p>
-    </header>
+<body class="physics-body">
+  <aside class="physics-sidebar">
+    <div class="physics-brand">
+      <div class="physics-mark">Φ</div>
+      <div><strong>TOLUX</strong><span>AI PHYSICS COACH</span></div>
+    </div>
+    <p class="physics-tagline">Learn it. Understand it. Master it.</p>
+    <nav class="physics-nav">
+      <button class="active" type="button" data-scroll="top">⌂ Dashboard</button>
+      <button type="button" data-scroll="modes">▦ Learning Modes</button>
+      <button type="button" data-scroll="course">◎ Physics TEKS</button>
+      <button type="button" data-scroll="lesson">▤ Current Lesson</button>
+      <a href="/">← Math Coach</a>
+      <a href="/support.html">Help &amp; Support</a>
+    </nav>
+    <div class="physics-promise">
+      <strong>One step at a time.</strong>
+      <span>We teach the physics, reasoning, and method—not just the answer.</span>
+    </div>
+  </aside>
 
-    <section class="panel">
-      <h2>How can I help you today?</h2>
-      <div class="modes">
-        <button class="mode selected" type="button"><i>🎓</i><strong>Tutor Mode</strong><small>Learn step by step</small></button>
-        <button class="mode" type="button"><i>📘</i><strong>Homework Help</strong><small>Work through a problem</small></button>
-        <button class="mode" type="button"><i>✏️</i><strong>Practice Mode</strong><small>Practice and master skills</small></button>
-        <button class="mode" type="button"><i>✓</i><strong>Check My Work</strong><small>Find the first mistake</small></button>
+  <main class="physics-main" id="top">
+    <section class="physics-hero">
+      <div>
+        <span class="eyebrow">AI Physics Tutor • Texas TEKS-aligned</span>
+        <h1>Learn Physics step by step with Tolux AI Physics Coach.</h1>
+        <p>Build understanding from motion and forces through electricity, energy, waves, optics, and quantum physics with guided explanations and mastery support.</p>
+        <div class="hero-actions">
+          <button type="button" id="startPhysicsBtn">Start a Physics Lesson</button>
+          <a class="button-link" href="/">Back to Math Coach</a>
+        </div>
+      </div>
+      <div class="physics-hero-card">
+        <strong>What students receive</strong>
+        <ul>
+          <li>29 Texas Physics content TEKS mapped</li>
+          <li>Clear concept teaching and worked examples</li>
+          <li>Guided practice with small hints</li>
+          <li>Alternate explanations and mastery checks</li>
+        </ul>
       </div>
     </section>
 
-    <section class="panel">
-      <h2>Physics TEKS Course Map</h2>
-      <p id="coverage">Loading 29 Physics content standards…</p>
-      <div id="physicsUnits"></div>
+    <div class="physics-topbar">
+      <div>
+        <h2>Welcome to Tolux AI Physics Coach 👋</h2>
+        <p>Choose how you want to learn, then select a Physics TEKS lesson.</p>
+      </div>
+      <div class="physics-status">
+        <span>29 TEKS lessons</span>
+        <span>5 strands</span>
+      </div>
+    </div>
+
+    <section class="panel" id="modes">
+      <h2>1. How can I help you today?</h2>
+      <div class="physics-mode-grid">
+        <button class="physics-mode selected" type="button" data-mode="Tutor Mode"><i>🎓</i><strong>Tutor Mode</strong><small>Learn step by step</small></button>
+        <button class="physics-mode" type="button" data-mode="Homework Help"><i>📘</i><strong>Homework Help</strong><small>Work through a problem</small></button>
+        <button class="physics-mode" type="button" data-mode="Practice Mode"><i>✏️</i><strong>Practice Mode</strong><small>Practice and master skills</small></button>
+        <button class="physics-mode" type="button" data-mode="Check My Work"><i>✓</i><strong>Check My Work</strong><small>Find the first mistake</small></button>
+      </div>
     </section>
 
-    <section class="panel" id="lessonPanel" hidden>
-      <h2 id="lessonTitle"></h2>
-      <div id="lessonStages"></div>
-      <div class="quick">
-        <button type="button" id="stuckBtn">❓ I'm stuck</button>
-        <button type="button" id="anotherWayBtn">↻ Explain another way</button>
-        <button type="button" id="similarBtn">🧩 Similar problem</button>
+    <section id="course">
+      <div class="physics-section-heading">
+        <div>
+          <h2>2. Choose your Physics TEKS lesson</h2>
+          <p>All five Texas Physics content strands are organized below.</p>
+        </div>
+        <span class="physics-coverage" id="coverage">Loading course map…</span>
       </div>
-      <p id="coachHelp" aria-live="polite"></p>
+      <div class="physics-unit-grid" id="physicsUnits"></div>
+    </section>
+
+    <section class="panel" id="lesson">
+      <div class="physics-section-heading">
+        <div>
+          <span class="eyebrow">Current lesson</span>
+          <h2 id="lessonTitle">Select a TEKS lesson to begin</h2>
+          <p id="lessonSubtitle">Your lesson will open here without leaving the dashboard.</p>
+        </div>
+      </div>
+      <div id="lessonEmpty" class="physics-empty">Choose any lesson above. Tolux will show the concept, example, guided practice, and mastery sequence here.</div>
+      <div class="physics-workspace" id="lessonWorkspace" hidden>
+        <div class="physics-stage-list" id="lessonStages"></div>
+        <aside class="physics-help">
+          <h3>Need help?</h3>
+          <p>Use the same support pattern as Math Coach. Tolux gives the smallest useful help first.</p>
+          <div class="physics-help-actions">
+            <button type="button" id="stuckBtn">❓ I'm stuck</button>
+            <button type="button" id="anotherWayBtn">↻ Explain another way</button>
+            <button type="button" id="similarBtn">🧩 Similar problem</button>
+          </div>
+          <div id="coachHelp" aria-live="polite"></div>
+        </aside>
+      </div>
     </section>
   </main>
+
 <script type="module">
 const unitsEl = document.querySelector('#physicsUnits');
 const coverageEl = document.querySelector('#coverage');
-const lessonPanel = document.querySelector('#lessonPanel');
+const lessonWorkspace = document.querySelector('#lessonWorkspace');
+const lessonEmpty = document.querySelector('#lessonEmpty');
 const lessonTitle = document.querySelector('#lessonTitle');
+const lessonSubtitle = document.querySelector('#lessonSubtitle');
 const lessonStages = document.querySelector('#lessonStages');
 const coachHelp = document.querySelector('#coachHelp');
 let activeLesson = null;
+let activeModuleButton = null;
+let activeMode = 'Tutor Mode';
+
+document.querySelectorAll('.physics-mode').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.physics-mode').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    activeMode = btn.dataset.mode;
+    lessonSubtitle.textContent = activeLesson
+      ? `${activeMode} • TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`
+      : `${activeMode} selected. Choose a TEKS lesson to begin.`;
+  });
+});
+
+document.querySelectorAll('[data-scroll]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.scroll;
+    document.querySelector(id === 'top' ? '#top' : `#${id}`)?.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+document.querySelector('#startPhysicsBtn').addEventListener('click', () => {
+  document.querySelector('#course').scrollIntoView({behavior:'smooth'});
+});
 
 const catalog = await fetch('/physics-course.json').then(r => r.json());
-const moduleCount = catalog.units.flatMap(u => u.modules).length;
-coverageEl.textContent = `${moduleCount} Physics content TEKS mapped across ${catalog.units.length} strands. TEKS 5A is available as the first structured lesson; the remaining modules are staged for authoring.`;
+const modules = catalog.units.flatMap(u => u.modules);
+coverageEl.textContent = `${modules.length} of ${catalog.content_standard_count} TEKS lessons available`;
 
 for (const unit of catalog.units) {
   const section = document.createElement('section');
-  section.style.marginBottom = '24px';
-  const h = document.createElement('h3');
-  h.textContent = `Strand ${unit.sequence}: ${unit.title}`;
-  section.appendChild(h);
+  section.className = 'physics-unit';
+
+  const head = document.createElement('div');
+  head.className = 'physics-unit-head';
+  head.innerHTML = `<div><h3>Strand ${unit.sequence}: ${unit.title}</h3></div><span>${unit.modules.length}</span>`;
+  section.appendChild(head);
+
   const list = document.createElement('div');
-  list.className = 'courses';
+  list.className = 'physics-lessons';
+
   for (const mod of unit.modules) {
     const btn = document.createElement('button');
-    btn.className = 'course';
+    btn.className = 'physics-lesson';
     btn.type = 'button';
-    btn.innerHTML = `<span><strong>TEKS ${mod.teks[0]} • ${mod.title}</strong><small>${mod.summary}</small></span>`;
-    if (mod.available_modes.includes('lesson')) {
-      btn.addEventListener('click', () => openLesson(mod));
-    } else {
-      btn.disabled = true;
-      btn.setAttribute('aria-disabled','true');
-    }
+    btn.innerHTML = `<span class="physics-lesson-code">${mod.teks[0]}</span><span><strong>${mod.title}</strong><small>${mod.summary}</small></span>`;
+    btn.addEventListener('click', () => openLesson(mod, btn));
     list.appendChild(btn);
   }
   section.appendChild(list);
   unitsEl.appendChild(section);
 }
 
-async function openLesson(mod) {
+async function openLesson(mod, btn) {
   activeLesson = await fetch(mod.lesson_path).then(r => r.json());
+  if (activeModuleButton) activeModuleButton.classList.remove('active');
+  activeModuleButton = btn;
+  activeModuleButton.classList.add('active');
+
   lessonTitle.textContent = `TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`;
+  lessonSubtitle.textContent = `${activeMode} • ${activeLesson.learning_goal}`;
   lessonStages.innerHTML = '';
+
   for (const stage of activeLesson.stages) {
     const article = document.createElement('article');
-    article.style.margin = '18px 0';
-    article.innerHTML = `<h3>${stage.title}</h3><p>${stage.content || stage.prompt || ''}</p>`;
+    article.className = `physics-stage-card${stage.id === 'guided-practice' ? ' physics-guided' : ''}`;
+    const body = stage.content || stage.prompt || '';
+    article.innerHTML = `<h3>${stage.title}</h3><p>${body}</p>`;
     lessonStages.appendChild(article);
   }
-  lessonPanel.hidden = false;
+
+  lessonEmpty.hidden = true;
+  lessonWorkspace.hidden = false;
   coachHelp.textContent = '';
-  lessonPanel.scrollIntoView({behavior:'smooth'});
-  if (window.MathJax?.typesetPromise) await window.MathJax.typesetPromise([lessonPanel]);
+  document.querySelector('#lesson').scrollIntoView({behavior:'smooth',block:'start'});
+  if (window.MathJax?.typesetPromise) await window.MathJax.typesetPromise([document.querySelector('#lesson')]);
 }
 
 document.querySelector('#stuckBtn').addEventListener('click', () => {
@@ -107,7 +206,10 @@ document.querySelector('#anotherWayBtn').addEventListener('click', () => {
   coachHelp.textContent = guided?.alternate_explanation || 'Let’s connect the idea to a graph, diagram, or everyday example.';
 });
 document.querySelector('#similarBtn').addEventListener('click', () => {
-  coachHelp.textContent = 'Similar problem: A bicycle moves from 10 m to 34 m in 6 s. What is its average velocity?';
+  const guided = activeLesson?.stages.find(s => s.id === 'guided-practice');
+  coachHelp.textContent = guided?.prompt
+    ? `Try this one again without looking at the answer: ${guided.prompt}`
+    : 'Try a similar example using the same relationship with different values.';
 });
 </script>
 </body>
