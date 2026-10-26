@@ -47,12 +47,12 @@ test("Every Physics lesson follows the coaching contract", () => {
     assert.deepEqual(lesson.teks, module.teks);
     assert.ok(lesson.title);
     assert.ok(lesson.learning_goal);
-    assert.ok(Array.isArray(lesson.stages) && lesson.stages.length >= 6, `${module.module_id} needs a complete staged lesson`);
+    assert.ok(Array.isArray(lesson.lesson_flow) && lesson.lesson_flow.length >= 6, `${module.module_id} needs a complete staged lesson`);
 
-    const guided = lesson.stages.find(stage => stage.id === "guided-practice");
+    const guided = lesson.guided_practice?.[0];
     assert.ok(guided, `${module.module_id} needs guided practice`);
     assert.ok(guided.prompt, `${module.module_id} guided practice needs a prompt`);
-    assert.ok(guided.hint, `${module.module_id} guided practice needs a hint`);
+    assert.ok(guided.hint_steps?.length, `${module.module_id} guided practice needs a hint`);
     assert.ok(guided.alternate_explanation, `${module.module_id} needs Explain Another Way content`);
     assert.ok(guided.answer, `${module.module_id} guided practice needs an answer key`);
 
@@ -71,9 +71,9 @@ test("Physics preview is wired without replacing the Math Coach shell", () => {
   const indexHtml = readFileSync(join(publicDir, "index.html"), "utf8");
   assert.match(physicsHtml, /Tolux AI Physics Coach/);
   assert.match(physicsHtml, /physics-course\.json/);
-  assert.match(physicsHtml, /I'm stuck/);
-  assert.match(physicsHtml, /Explain another way/);
-  assert.match(physicsHtml, /Similar problem/);
+  assert.match(physicsHtml, /I'm stuck/i);
+  assert.match(physicsHtml, /Explain another way/i);
+  assert.match(physicsHtml, /Similar problem/i);
   assert.match(indexHtml, /Tolux AI Math Coach/);
   assert.match(indexHtml, /Open Physics Coach Preview/);
   assert.match(indexHtml, /href="\/physics\.html"/);
