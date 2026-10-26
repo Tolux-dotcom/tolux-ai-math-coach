@@ -47,5 +47,969 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
-  }
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Universal attraction",
+      "content": "Every pair of masses attracts. Newton’s law gives F = Gm₁m₂/r², with G approximately 6.674 × 10⁻¹¹ N·m²/kg². Use kilograms and meters to obtain newtons. Force acts along the line joining the masses."
+    },
+    {
+      "title": "Distance means center-to-center separation",
+      "content": "For point masses, r is their separation. For nonoverlapping spherically symmetric bodies, external gravitational interactions can be calculated using their centers. Do not substitute only the surface gap."
+    },
+    {
+      "title": "Inverse-square reasoning",
+      "content": "At fixed masses, tripling r reduces force to one ninth. Halving r increases force fourfold. More generally, F_new/F_old = (m₁_new/m₁_old)(m₂_new/m₂_old)/(r_new/r_old)²."
+    },
+    {
+      "title": "Orbits are free fall",
+      "content": "In a circular orbit, gravity provides the net inward force while velocity is tangent to the orbit. A satellite keeps missing the surface as it falls. Gravity is not zero in orbit.",
+      "visual": {
+        "type": "circular_motion"
+      }
+    },
+    {
+      "title": "Organize scientific notation",
+      "content": "Multiply coefficients and add powers when multiplying. Divide coefficients and subtract powers when dividing. Square both the coefficient and the power of ten in r². Normalize the final coefficient to at least 1 and less than 10."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "5H-W01",
+      "prompt": "If center-to-center distance doubles with both masses fixed, how does gravitational force change?",
+      "answer": "One fourth as large",
+      "accepted_answers": [
+        "One fourth as large"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4.",
+      "alternate_explanation_steps": [
+        "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "One fourth as large",
+        "One half as large",
+        "Twice as large"
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify the interaction and relationship",
+          "explanation": "If center-to-center distance doubles with both masses fixed, how does gravitational force change?"
+        },
+        {
+          "equation": "One fourth as large",
+          "explanation": "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4."
+        }
+      ]
+    },
+    {
+      "id": "5H-W02",
+      "prompt": "If one mass triples while the other mass and separation stay fixed, how does force change?",
+      "answer": "Three times as large",
+      "accepted_answers": [
+        "Three times as large"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3.",
+      "alternate_explanation_steps": [
+        "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Three times as large",
+        "Nine times as large",
+        "One third as large"
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify the interaction and relationship",
+          "explanation": "If one mass triples while the other mass and separation stay fixed, how does force change?"
+        },
+        {
+          "equation": "Three times as large",
+          "explanation": "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3."
+        }
+      ]
+    },
+    {
+      "id": "5H-W03",
+      "prompt": "Both masses double and separation doubles. Compare the new gravitational force with the original.",
+      "answer": "Unchanged",
+      "accepted_answers": [
+        "Unchanged"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Mass factors multiply to 2 × 2 = 4. The squared separation factor is 2² = 4. The ratio is 4/4 = 1.",
+      "alternate_explanation_steps": [
+        "Mass factors multiply to 2 × 2 = 4. The squared separation factor is 2² = 4. The ratio is 4/4 = 1.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Unchanged",
+        "Four times as large",
+        "One fourth as large"
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify the interaction and relationship",
+          "explanation": "Both masses double and separation doubles. Compare the new gravitational force with the original."
+        },
+        {
+          "equation": "Unchanged",
+          "explanation": "Mass factors multiply to 2 × 2 = 4. The squared separation factor is 2² = 4. The ratio is 4/4 = 1."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "5H-G01",
+      "prompt": "If center-to-center distance doubles with both masses fixed, how does gravitational force change?",
+      "answer": "One fourth as large",
+      "accepted_answers": [
+        "One fourth as large"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4.",
+      "alternate_explanation_steps": [
+        "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "One fourth as large",
+        "One half as large",
+        "Twice as large"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "At fixed distance, one mass doubles and the other triples. What is the force multiplier?",
+        "answer": "6",
+        "accepted_answers": [
+          "6"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+        "alternate_explanation_steps": [
+          "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "6",
+          "5",
+          "1/6"
+        ]
+      }
+    },
+    {
+      "id": "5H-G02",
+      "prompt": "If one mass triples while the other mass and separation stay fixed, how does force change?",
+      "answer": "Three times as large",
+      "accepted_answers": [
+        "Three times as large"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3.",
+      "alternate_explanation_steps": [
+        "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Three times as large",
+        "Nine times as large",
+        "One third as large"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "Which equals (2 × 10³)(3 × 10⁴)?",
+        "answer": "6 × 10⁷",
+        "accepted_answers": [
+          "6 × 10⁷"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+        "alternate_explanation_steps": [
+          "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "6 × 10⁷",
+          "5 × 10⁷",
+          "6 × 10¹²"
+        ]
+      }
+    },
+    {
+      "id": "5H-G03",
+      "prompt": "Both masses double and separation doubles. Compare the new gravitational force with the original.",
+      "answer": "Unchanged",
+      "accepted_answers": [
+        "Unchanged"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Mass factors multiply to 2 × 2 = 4. The squared separation factor is 2² = 4. The ratio is 4/4 = 1.",
+      "alternate_explanation_steps": [
+        "Mass factors multiply to 2 × 2 = 4. The squared separation factor is 2² = 4. The ratio is 4/4 = 1.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Unchanged",
+        "Four times as large",
+        "One fourth as large"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
+        "answer": "1/9",
+        "accepted_answers": [
+          "1/9"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+        "alternate_explanation_steps": [
+          "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "1/9",
+          "1/3",
+          "9"
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "5H-P01",
+      "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
+      "answer": "1/9",
+      "accepted_answers": [
+        "1/9"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+      "alternate_explanation_steps": [
+        "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "1/9",
+        "1/3",
+        "9"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "Center-to-center separation is halved with masses fixed. What happens to force?",
+        "answer": "Four times as large",
+        "accepted_answers": [
+          "Four times as large"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+        "alternate_explanation_steps": [
+          "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Four times as large",
+          "Twice as large",
+          "One fourth as large"
+        ]
+      }
+    },
+    {
+      "id": "5H-P02",
+      "prompt": "Center-to-center separation is halved with masses fixed. What happens to force?",
+      "answer": "Four times as large",
+      "accepted_answers": [
+        "Four times as large"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+      "alternate_explanation_steps": [
+        "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Four times as large",
+        "Twice as large",
+        "One fourth as large"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "Earth attracts a satellite. Compare the satellite’s gravitational force on Earth.",
+        "answer": "Equal magnitude, opposite direction",
+        "accepted_answers": [
+          "Equal magnitude, opposite direction"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+        "alternate_explanation_steps": [
+          "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Equal magnitude, opposite direction",
+          "Smaller because the satellite is lighter",
+          "Zero"
+        ]
+      }
+    },
+    {
+      "id": "5H-P03",
+      "prompt": "Which distance belongs in F = Gm₁m₂/r² for two nonoverlapping spherically symmetric bodies?",
+      "answer": "Center-to-center separation",
+      "accepted_answers": [
+        "Center-to-center separation"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Under spherical symmetry, the external field acts as if each mass were concentrated at its center. Surface gap generally differs from r.",
+      "alternate_explanation_steps": [
+        "Under spherical symmetry, the external field acts as if each mass were concentrated at its center. Surface gap generally differs from r.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Center-to-center separation",
+        "Gap between their surfaces",
+        "Either distance"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "At fixed distance, one mass doubles and the other triples. What is the force multiplier?",
+        "answer": "6",
+        "accepted_answers": [
+          "6"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+        "alternate_explanation_steps": [
+          "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "6",
+          "5",
+          "1/6"
+        ]
+      }
+    },
+    {
+      "id": "5H-P04",
+      "prompt": "Earth attracts a satellite. Compare the satellite’s gravitational force on Earth.",
+      "answer": "Equal magnitude, opposite direction",
+      "accepted_answers": [
+        "Equal magnitude, opposite direction"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+      "alternate_explanation_steps": [
+        "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Equal magnitude, opposite direction",
+        "Smaller because the satellite is lighter",
+        "Zero"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "Which equals (2 × 10³)(3 × 10⁴)?",
+        "answer": "6 × 10⁷",
+        "accepted_answers": [
+          "6 × 10⁷"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+        "alternate_explanation_steps": [
+          "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "6 × 10⁷",
+          "5 × 10⁷",
+          "6 × 10¹²"
+        ]
+      }
+    },
+    {
+      "id": "5H-P05",
+      "prompt": "Why does an orbiting satellite accelerate even if its orbital speed is constant?",
+      "answer": "Gravity changes the direction of velocity",
+      "accepted_answers": [
+        "Gravity changes the direction of velocity"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "For a circular orbit, gravity supplies inward acceleration that continuously turns velocity. The satellite is in free fall, not beyond gravity.",
+      "alternate_explanation_steps": [
+        "For a circular orbit, gravity supplies inward acceleration that continuously turns velocity. The satellite is in free fall, not beyond gravity.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Gravity changes the direction of velocity",
+        "Gravity vanishes in orbit",
+        "Constant speed means no acceleration"
+      ],
+      "similar_problem": {
+        "id": "",
+        "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
+        "answer": "1/9",
+        "accepted_answers": [
+          "1/9"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+        "alternate_explanation_steps": [
+          "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "1/9",
+          "1/3",
+          "9"
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "5H-M01",
+      "prompt": "At fixed distance, one mass doubles and the other triples. What is the force multiplier?",
+      "answer": "6",
+      "accepted_answers": [
+        "6"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+      "alternate_explanation_steps": [
+        "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "6",
+        "5",
+        "1/6"
+      ]
+    },
+    {
+      "id": "5H-M02",
+      "prompt": "Which equals (2 × 10³)(3 × 10⁴)?",
+      "answer": "6 × 10⁷",
+      "accepted_answers": [
+        "6 × 10⁷"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+      "alternate_explanation_steps": [
+        "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "6 × 10⁷",
+        "5 × 10⁷",
+        "6 × 10¹²"
+      ]
+    },
+    {
+      "id": "5H-M03",
+      "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
+      "answer": "1/9",
+      "accepted_answers": [
+        "1/9"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+      "alternate_explanation_steps": [
+        "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "1/9",
+        "1/3",
+        "9"
+      ]
+    },
+    {
+      "id": "5H-M04",
+      "prompt": "Center-to-center separation is halved with masses fixed. What happens to force?",
+      "answer": "Four times as large",
+      "accepted_answers": [
+        "Four times as large"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+      "alternate_explanation_steps": [
+        "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Four times as large",
+        "Twice as large",
+        "One fourth as large"
+      ]
+    },
+    {
+      "id": "5H-M05",
+      "prompt": "Earth attracts a satellite. Compare the satellite’s gravitational force on Earth.",
+      "answer": "Equal magnitude, opposite direction",
+      "accepted_answers": [
+        "Equal magnitude, opposite direction"
+      ],
+      "hint_steps": [
+        "Identify the object or interacting pair and list what is given.",
+        "Choose the physical relationship before substituting or comparing quantities."
+      ],
+      "alternate_explanation": "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+      "alternate_explanation_steps": [
+        "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+      ],
+      "choices": [
+        "Equal magnitude, opposite direction",
+        "Smaller because the satellite is lighter",
+        "Zero"
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Apply the physical principle and use the visual before choosing or calculating an answer.",
+    "problems": [
+      {
+        "id": "5H-P01",
+        "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
+        "answer": "1/9",
+        "accepted_answers": [
+          "1/9"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+        "alternate_explanation_steps": [
+          "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "1/9",
+          "1/3",
+          "9"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "Center-to-center separation is halved with masses fixed. What happens to force?",
+          "answer": "Four times as large",
+          "accepted_answers": [
+            "Four times as large"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+          "alternate_explanation_steps": [
+            "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "Four times as large",
+            "Twice as large",
+            "One fourth as large"
+          ]
+        }
+      },
+      {
+        "id": "5H-P02",
+        "prompt": "Center-to-center separation is halved with masses fixed. What happens to force?",
+        "answer": "Four times as large",
+        "accepted_answers": [
+          "Four times as large"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+        "alternate_explanation_steps": [
+          "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Four times as large",
+          "Twice as large",
+          "One fourth as large"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "Earth attracts a satellite. Compare the satellite’s gravitational force on Earth.",
+          "answer": "Equal magnitude, opposite direction",
+          "accepted_answers": [
+            "Equal magnitude, opposite direction"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+          "alternate_explanation_steps": [
+            "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "Equal magnitude, opposite direction",
+            "Smaller because the satellite is lighter",
+            "Zero"
+          ]
+        }
+      },
+      {
+        "id": "5H-P03",
+        "prompt": "Which distance belongs in F = Gm₁m₂/r² for two nonoverlapping spherically symmetric bodies?",
+        "answer": "Center-to-center separation",
+        "accepted_answers": [
+          "Center-to-center separation"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Under spherical symmetry, the external field acts as if each mass were concentrated at its center. Surface gap generally differs from r.",
+        "alternate_explanation_steps": [
+          "Under spherical symmetry, the external field acts as if each mass were concentrated at its center. Surface gap generally differs from r.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Center-to-center separation",
+          "Gap between their surfaces",
+          "Either distance"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "At fixed distance, one mass doubles and the other triples. What is the force multiplier?",
+          "answer": "6",
+          "accepted_answers": [
+            "6"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+          "alternate_explanation_steps": [
+            "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "6",
+            "5",
+            "1/6"
+          ]
+        }
+      },
+      {
+        "id": "5H-P04",
+        "prompt": "Earth attracts a satellite. Compare the satellite’s gravitational force on Earth.",
+        "answer": "Equal magnitude, opposite direction",
+        "accepted_answers": [
+          "Equal magnitude, opposite direction"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+        "alternate_explanation_steps": [
+          "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Equal magnitude, opposite direction",
+          "Smaller because the satellite is lighter",
+          "Zero"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "Which equals (2 × 10³)(3 × 10⁴)?",
+          "answer": "6 × 10⁷",
+          "accepted_answers": [
+            "6 × 10⁷"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+          "alternate_explanation_steps": [
+            "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "6 × 10⁷",
+            "5 × 10⁷",
+            "6 × 10¹²"
+          ]
+        }
+      },
+      {
+        "id": "5H-P05",
+        "prompt": "Why does an orbiting satellite accelerate even if its orbital speed is constant?",
+        "answer": "Gravity changes the direction of velocity",
+        "accepted_answers": [
+          "Gravity changes the direction of velocity"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "For a circular orbit, gravity supplies inward acceleration that continuously turns velocity. The satellite is in free fall, not beyond gravity.",
+        "alternate_explanation_steps": [
+          "For a circular orbit, gravity supplies inward acceleration that continuously turns velocity. The satellite is in free fall, not beyond gravity.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Gravity changes the direction of velocity",
+          "Gravity vanishes in orbit",
+          "Constant speed means no acceleration"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
+          "answer": "1/9",
+          "accepted_answers": [
+            "1/9"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+          "alternate_explanation_steps": [
+            "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "1/9",
+            "1/3",
+            "9"
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the force model, identify the object, then retry with the relationship explained in words.",
+    "recheck": [
+      {
+        "id": "5H-G01",
+        "prompt": "If center-to-center distance doubles with both masses fixed, how does gravitational force change?",
+        "answer": "One fourth as large",
+        "accepted_answers": [
+          "One fourth as large"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4.",
+        "alternate_explanation_steps": [
+          "F is proportional to 1/r². Replacing r by 2r multiplies force by 1/2² = 1/4.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "One fourth as large",
+          "One half as large",
+          "Twice as large"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "At fixed distance, one mass doubles and the other triples. What is the force multiplier?",
+          "answer": "6",
+          "accepted_answers": [
+            "6"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+          "alternate_explanation_steps": [
+            "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "6",
+            "5",
+            "1/6"
+          ]
+        }
+      },
+      {
+        "id": "5H-G02",
+        "prompt": "If one mass triples while the other mass and separation stay fixed, how does force change?",
+        "answer": "Three times as large",
+        "accepted_answers": [
+          "Three times as large"
+        ],
+        "hint_steps": [
+          "Identify the object or interacting pair and list what is given.",
+          "Choose the physical relationship before substituting or comparing quantities."
+        ],
+        "alternate_explanation": "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3.",
+        "alternate_explanation_steps": [
+          "The numerator contains each mass to the first power. Multiplying one mass by 3 multiplies force by 3.",
+          "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+        ],
+        "choices": [
+          "Three times as large",
+          "Nine times as large",
+          "One third as large"
+        ],
+        "similar_problem": {
+          "id": "",
+          "prompt": "Which equals (2 × 10³)(3 × 10⁴)?",
+          "answer": "6 × 10⁷",
+          "accepted_answers": [
+            "6 × 10⁷"
+          ],
+          "hint_steps": [
+            "Identify the object or interacting pair and list what is given.",
+            "Choose the physical relationship before substituting or comparing quantities."
+          ],
+          "alternate_explanation": "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+          "alternate_explanation_steps": [
+            "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
+            "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
+          ],
+          "choices": [
+            "6 × 10⁷",
+            "5 × 10⁷",
+            "6 × 10¹²"
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "5H-C01",
+      "prompt": "Explain why doubling the distance reduces gravity by a factor of four rather than two.",
+      "expected_ideas": [
+        "Force is inversely proportional to squared separation.",
+        "Doubling separation multiplies the denominator by four."
+      ],
+      "misconceptions": [
+        "The inverse-square law is an inverse linear law."
+      ],
+      "follow_up": "What happens to r² when r becomes 2r?"
+    },
+    {
+      "id": "5H-C02",
+      "prompt": "Why does a satellite remain in orbit instead of requiring gravity to disappear?",
+      "expected_ideas": [
+        "Gravity supplies inward acceleration.",
+        "Its tangential velocity and falling motion combine into an orbit under suitable conditions."
+      ],
+      "misconceptions": [
+        "Satellites orbit because there is no gravity."
+      ],
+      "follow_up": "What changes the direction of its velocity?"
+    }
+  ]
 }
