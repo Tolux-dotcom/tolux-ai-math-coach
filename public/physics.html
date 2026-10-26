@@ -224,13 +224,14 @@ function normalizeAnswer(value) {
     .replace(/meters?\s+per\s+second/g,'m/s')
     .replace(/m\s*\/\s*sec(?:ond)?s?/g,'m/s')
     .replace(/m\s*\/\s*s/g,'m/s')
-    .replace(/([0-9])\s*(m\/s2?)/g,'$1 $2')
+    .replace(/([0-9])\s*(m\/s2?|m)(?=$|\s)/g,'$1 $2')
     .replace(/\s+/g,' ');
 }
 function requiredUnit(item) {
   const canonical = normalizeAnswer(item?.answer || '');
   if (canonical.includes('m/s2')) return 'm/s2';
   if (canonical.includes('m/s')) return 'm/s';
+  if (/^-?\d+(?:\.\d+)? m$/.test(canonical)) return 'm';
   return '';
 }
 function gradeAnswer(item,value) {
@@ -262,6 +263,27 @@ function escapeHtml(value='') {
 
 function renderVisual(visual) {
   if (!visual) return '';
+  if (visual.type === 'motion_graph') {
+    const labels={position:'position (m)',velocity:'velocity (m/s)',acceleration:'acceleration (m/s²)'};
+    const pts=visual.points||[];
+    if(!pts.length || !labels[visual.quantity]) return '';
+    const left=75,right=590,top=30,bottom=190;
+    const xs=pts.map(p=>Number(p[0])),ys=pts.map(p=>Number(p[1]));
+    const xmin=Math.min(0,...xs),xmax=Math.max(1,...xs);
+    const ymin=Math.min(0,...ys)-1,ymax=Math.max(0,...ys)+1;
+    const px=x=>left+(x-xmin)/(xmax-xmin)*(right-left);
+    const py=y=>bottom-(y-ymin)/(ymax-ymin)*(bottom-top);
+    const xTicks=[...new Set(xs)],yTicks=[...new Set([0,...ys])];
+    return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Motion graph')}</figcaption><svg viewBox="0 0 640 245" role="img" aria-label="${escapeHtml(visual.label||'Motion graph')}">
+      <line x1="${left}" y1="${py(0)}" x2="${right}" y2="${py(0)}" class="v-axis"/>
+      <line x1="${left}" y1="${top}" x2="${left}" y2="${bottom}" class="v-axis"/>
+      ${xTicks.map(x=>`<line x1="${px(x)}" y1="${top}" x2="${px(x)}" y2="${bottom}" stroke="#dbe5f1"/><text x="${px(x)}" y="211" text-anchor="middle">${x}</text>`).join('')}
+      ${yTicks.map(y=>`<line x1="${left}" y1="${py(y)}" x2="${right}" y2="${py(y)}" stroke="#dbe5f1"/><text x="65" y="${py(y)+5}" text-anchor="end">${y}</text>`).join('')}
+      <polyline points="${pts.map(([x,y])=>`${px(x)},${py(y)}`).join(' ')}" fill="none" class="v-graph"/>
+      ${pts.map(([x,y])=>`<circle cx="${px(x)}" cy="${py(y)}" r="5" class="v-start"/>`).join('')}
+      <text x="330" y="237" text-anchor="middle">time (s)</text><text x="18" y="110" transform="rotate(-90 18 110)" text-anchor="middle">${labels[visual.quantity]}</text>
+    </svg><details><summary>Graph data in words</summary><p>${escapeHtml(pts.map(([x,y])=>`At ${x} s: ${y} ${labels[visual.quantity].match(/\((.*)\)/)[1]}`).join('; '))}.</p></details></figure>`;
+  }
   if (visual.type === 'number_line') {
     const min=Number(visual.start), max=Number(visual.end), from=Number(visual.from), to=Number(visual.to);
     const width=640, left=42, right=598, y=70;
@@ -364,8 +386,12 @@ function nextStage() {
 
 function renderConcept() {
   const cards=(activeLesson.concept_cards||[]).map(card=>`<article class="physics-concept-card"><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.content)}</p>${renderVisual(card.visual)}</article>`).join('');
-  lessonStages.innerHTML=`<article class="physics-active-card"><span class="eyebrow">Start from the beginning</span><h2>Build the idea before solving</h2><p>Connect the words, equations, and visual representations before moving into worked examples.</p><div class="physics-concept-grid">${cards}</div><button class="physics-primary" id="continuePhysics">Continue to Worked Examples →</button></article>`;
+  lessonStages.innerHTML=`<article class="physics-active-card"><span class="eyebrow">Start from the beginning</span><h2>Build the idea before solving</h2><p>Connect the words, equations, and visual representations before moving into worked examples.</p><div class="physics-concept-grid">${cards}</div>${renderConceptualReflections()}<button class="physics-primary" id="continuePhysics">Continue to Worked Examples →</button></article>`;
   document.querySelector('#continuePhysics').addEventListener('click',nextStage);
+}
+
+function renderConceptualReflections() {
+  return (activeLesson.conceptual_questions||[]).map((q,i)=>`<section class="physics-stage-card"><h3>Explain the physics ${i+1}</h3><p>${escapeHtml(q.prompt)}</p>${renderVisual(q.visual)}<label for="physicsReflection${i}">Explain your thinking in your own words</label><textarea id="physicsReflection${i}" rows="4" style="width:100%;box-sizing:border-box;padding:12px;font:inherit" placeholder="Describe what happens and why."></textarea><p>Reflection practice: compare your reasoning below. This response is not automatically scored.</p><details><summary>Compare with the key ideas</summary><ul>${(q.expected_ideas||[]).map(idea=>`<li>${escapeHtml(idea)}</li>`).join('')}</ul><p><strong>Think further:</strong> ${escapeHtml(q.follow_up||'')}</p></details></section>`).join('');
 }
 
 function solutionSteps(item) {
@@ -419,7 +445,7 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
       next.hidden=false;
       next.textContent = isSimilar ? 'Return to Original Question →' : (itemIndex===currentItems.length-1 ? 'Continue →' : 'Next Question →');
     } else if (grade.missingUnit) {
-      const unitLabel = grade.requiredUnit === 'm/s2' ? 'm/s²' : 'm/s';
+      const unitLabel = grade.requiredUnit === 'm/s2' ? 'm/s²' : grade.requiredUnit;
       feedback.innerHTML=`<div class="physics-warning"><strong>Your number is right, but the unit is missing.</strong><p>Physics answers need the quantity and its unit. Add ${unitLabel} and check again.</p></div>`;
     } else {
       feedback.innerHTML='<div class="physics-warning"><strong>Not quite yet.</strong><p>Check both the numerical value and the unit, or use one of the help buttons for this question.</p></div>';
