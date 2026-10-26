@@ -399,108 +399,68 @@
   "mastery_check": [
     {
       "id": "6C-M01",
-      "prompt": "What moves between ordinary solid objects during charging by rubbing?",
-      "choices": [
-        "Electrons",
-        "Protons leaving nuclei"
-      ],
-      "answer": "Electrons",
-      "accepted_answers": [
-        "Electrons"
-      ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Electrons can be transferred between materials. Protons remain bound in nuclei under ordinary charging conditions.",
-      "alternate_explanation_steps": [
-        "Electrons can be transferred between materials. Protons remain bound in nuclei under ordinary charging conditions.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
-    },
-    {
-      "id": "6C-M02",
-      "prompt": "A neutral object gains electrons. What is its net charge?",
+      "prompt": "An isolated neutral metal sphere loses some electrons. What sign does it acquire?",
       "choices": [
         "Positive",
         "Negative"
       ],
-      "answer": "Negative",
+      "answer": "Positive",
       "accepted_answers": [
-        "Negative"
+        "Positive"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
+      "alternate_explanation": "Removing negative charge leaves an excess of positive charge."
+    },
+    {
+      "id": "6C-M02",
+      "prompt": "A charged comb attracts tiny neutral paper pieces. Must electrons first transfer to every paper piece?",
+      "choices": [
+        "Yes, attraction always requires net opposite charges",
+        "No, polarization can produce attraction"
       ],
-      "alternate_explanation": "Gaining negative carriers creates an excess of electrons relative to positive charge. Charge is conserved across the whole interacting system.",
-      "alternate_explanation_steps": [
-        "Gaining negative carriers creates an excess of electrons relative to positive charge. Charge is conserved across the whole interacting system.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "answer": "No, polarization can produce attraction",
+      "accepted_answers": [
+        "No, polarization can produce attraction"
+      ],
+      "alternate_explanation": "A neutral object can polarize; the nearer opposite charge can experience a stronger attraction."
     },
     {
       "id": "6C-M03",
-      "prompt": "A charged rod attracts a neutral conductor without touching it. Why?",
+      "prompt": "An electron moves from body A to body B in an otherwise isolated pair. What happens to their combined charge?",
       "choices": [
-        "Charges redistribute by polarization",
-        "The conductor must already have net opposite charge"
+        "It is unchanged",
+        "It increases by one electron charge magnitude"
       ],
-      "answer": "Charges redistribute by polarization",
+      "answer": "It is unchanged",
       "accepted_answers": [
-        "Charges redistribute by polarization"
+        "It is unchanged"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Electrons shift within the conductor. Attraction of nearer opposite charge can exceed repulsion of farther like charge; neutrality need not be lost.",
-      "alternate_explanation_steps": [
-        "Electrons shift within the conductor. Attraction of nearer opposite charge can exceed repulsion of farther like charge; neutrality need not be lost.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The electron transfers existing charge within the pair; total charge is conserved."
     },
     {
       "id": "6C-M04",
-      "prompt": "Can induction charge a conductor without direct contact with the charged rod?",
+      "prompt": "During induction charging, why disconnect the ground before removing the inducing rod?",
       "choices": [
-        "No, the rod must touch it",
-        "Yes, with appropriate grounding and sequence"
+        "To let protons leave the conductor",
+        "To prevent charge from flowing back as polarization relaxes"
       ],
-      "answer": "Yes, with appropriate grounding and sequence",
+      "answer": "To prevent charge from flowing back as polarization relaxes",
       "accepted_answers": [
-        "Yes, with appropriate grounding and sequence"
+        "To prevent charge from flowing back as polarization relaxes"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "A nearby rod polarizes the conductor; grounding permits electron exchange with Earth. Remove the ground before removing the rod to retain induced net charge.",
-      "alternate_explanation_steps": [
-        "A nearby rod polarizes the conductor; grounding permits electron exchange with Earth. Remove the ground before removing the rod to retain induced net charge.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The rod’s field and ground permit redistribution; removing the ground traps the net transferred charge."
     },
     {
       "id": "6C-M05",
-      "prompt": "What remains conserved when two isolated objects exchange electrons?",
+      "prompt": "Why does rubbing a plastic object not create electric charge from nothing?",
       "choices": [
-        "Their combined electric charge",
-        "Each object’s individual charge"
+        "It transfers electrons between materials",
+        "It creates equal new protons and electrons"
       ],
-      "answer": "Their combined electric charge",
+      "answer": "It transfers electrons between materials",
       "accepted_answers": [
-        "Their combined electric charge"
+        "It transfers electrons between materials"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Charge transfers between objects; it is not created by friction. Individual net charges change while total charge stays constant.",
-      "alternate_explanation_steps": [
-        "Charge transfers between objects; it is not created by friction. Individual net charges change while total charge stays constant.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Total charge is conserved even though individual objects gain or lose electrons."
     }
   ],
   "practice": {
@@ -756,6 +716,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
