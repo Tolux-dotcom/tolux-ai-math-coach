@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-7d-impulse-momentum",
+  "course_id": "physics",
+  "teks": [
+    "7D"
+  ],
+  "title": "Impulse and Momentum",
+  "learning_goal": "Calculate and describe momentum and impulse and connect impulse to changes in momentum.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Momentum",
+      "content": "Linear momentum describes motion and is given by p = mv. Momentum is a vector, so direction matters."
+    },
+    {
+      "id": "impulse",
+      "title": "2. Impulse",
+      "content": "Impulse is the product of force and time interval, J = FΔt, for a constant force. Impulse equals the change in momentum: J = Δp."
+    },
+    {
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "A 2 kg ball moving at 6 m/s has momentum p = mv = 12 kg·m/s in its direction of motion."
+    },
+    {
+      "id": "force-time",
+      "title": "4. Why contact time matters",
+      "content": "For the same change in momentum, increasing the collision time reduces the average force. This is why airbags, padding, and crumple zones can reduce injury."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A constant 10 N force acts on an object for 3 s. What impulse is delivered?",
+      "hint": "Use J = FΔt.",
+      "alternate_explanation": "Impulse measures force acting over time, so multiply the force by how long it acts.",
+      "answer": "30 N·s"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, calculate p = mv, calculate J = FΔt, use J = Δp, and explain how changing collision time affects force."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
