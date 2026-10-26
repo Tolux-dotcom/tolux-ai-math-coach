@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-8a-simple-harmonic-motion",
+  "course_id": "physics",
+  "teks": [
+    "8A"
+  ],
+  "title": "Simple Harmonic Motion",
+  "learning_goal": "Examine simple harmonic motion and wave-energy propagation using springs, pendulums, and related systems.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Repeating motion",
+      "content": "Simple harmonic motion is repetitive motion around an equilibrium position caused by a restoring force. Springs and small-angle pendulums are common examples."
+    },
+    {
+      "id": "equilibrium",
+      "title": "2. Equilibrium and restoring force",
+      "content": "At equilibrium, the system has no displacement from its balance position. When displaced, a restoring force acts toward equilibrium."
+    },
+    {
+      "id": "energy",
+      "title": "3. Energy changes during oscillation",
+      "content": "In an ideal oscillator, energy continually transforms between kinetic energy and potential energy while total mechanical energy remains constant."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "A mass on a spring moves fastest as it passes equilibrium because potential energy is lowest and kinetic energy is highest there."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "At the maximum displacement of a mass on a spring, is its speed maximum or minimum?",
+      "hint": "Think about what happens at the turning point before the mass reverses direction.",
+      "alternate_explanation": "At the extreme position the mass pauses momentarily, so kinetic energy is smallest there.",
+      "answer": "Its speed is minimum, momentarily zero."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, identify equilibrium, describe restoring force, compare kinetic and potential energy during oscillation, and connect oscillations to wave-energy propagation."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
