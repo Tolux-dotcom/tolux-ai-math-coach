@@ -2,9 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import vm from 'node:vm';
+import {renderCircuitVisual} from '../public/physics-circuits.mjs';
 const dir=new URL('../public/',import.meta.url);
 const all=readdirSync(dir).filter(f=>/^physics-.*\.json$/.test(f)&&f!=='physics-course.json').map(f=>JSON.parse(readFileSync(new URL(f,dir),'utf8')));
-const h=readFileSync(new URL('physics.html',dir),'utf8');const c=vm.createContext({});vm.runInContext(h.slice(h.indexOf('function normalizeAnswer('),h.indexOf('function updatePath(')),c);
+const h=readFileSync(new URL('physics.html',dir),'utf8');const c=vm.createContext({renderCircuitVisual});vm.runInContext(h.slice(h.indexOf('function normalizeAnswer('),h.indexOf('function updatePath(')),c);
 test('all 29 lessons have interactive phases, questions and nonempty mastery sets',()=>{
  assert.equal(all.length,29);
  for(const d of all){assert.equal(d.lesson_flow.length,6,d.lesson_id);for(const key of ['concept_cards','worked_examples','guided_practice','independent_practice','mastery_check'])assert.ok(d[key]?.length,d.lesson_id+' '+key);}

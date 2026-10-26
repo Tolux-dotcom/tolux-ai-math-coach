@@ -111,6 +111,7 @@
 
 <script type="module">
 import { assessReflection } from "/physics-reasoning.js";
+import { renderCircuitVisual } from "/physics-circuits.mjs";
 const unitsEl = document.querySelector('#physicsUnits');
 const coverageEl = document.querySelector('#coverage');
 const lessonWorkspace = document.querySelector('#lessonWorkspace');
@@ -265,6 +266,7 @@ function escapeHtml(value='') {
 
 function renderVisual(visual) {
   if (!visual) return '';
+  if (visual.type === 'circuit_diagram') return renderCircuitVisual(visual);
   if (visual.type === 'concept_sequence') {
     const labels=(visual.labels||[]).slice(0,3);
     return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Concept relationship')}</figcaption><svg viewBox="0 0 640 280" role="img" aria-label="${escapeHtml(labels.join('; '))}">${labels.map((label,i)=>`<rect x="30" y="${15+i*85}" width="580" height="55" rx="8" fill="#eaf1ff" stroke="#85a8df"/><text x="320" y="${48+i*85}" text-anchor="middle" font-size="16">${escapeHtml(label)}</text>${i<2?`<line x1="320" y1="${70+i*85}" x2="320" y2="${95+i*85}" stroke="#7145d6" stroke-width="3"/><polygon points="320,${95+i*85} 314,${85+i*85} 326,${85+i*85}" fill="#7145d6"/>`:''}`).join('')}</svg><p>${escapeHtml(visual.label||'')}</p></figure>`;

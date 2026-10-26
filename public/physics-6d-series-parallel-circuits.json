@@ -77,24 +77,27 @@
   "concept_cards": [
     {
       "title": "A complete circuit",
-      "content": "Electric current flows only when there is a closed conducting path and a source of potential difference. Circuit diagrams use standard symbols to represent batteries, resistors, switches, and other components.",
+      "content": "Start at the battery's positive terminal (the long plate). Trace a conducting path through the bulbs and back to the negative terminal. Series means one loop through both bulbs. Parallel means separate branches between the same two junctions.",
       "visual": {
-        "type": "concept_sequence",
-        "labels": [
-          "Same pair of nodes",
-          "Parallel branches",
-          "Equal branch voltage"
-        ],
-        "label": "Different branch resistances can carry different currents at the same voltage."
+        "type": "circuit_diagram",
+        "arrangement": "comparison"
       }
     },
     {
       "title": "Series circuits",
-      "content": "In a series circuit, components share one path. The same current passes through each component, and the source voltage is divided among the components."
+      "content": "In a series circuit, components share one path. The same current passes through each component, and the source voltage is divided among the components.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "series"
+      }
     },
     {
       "title": "Parallel circuits",
-      "content": "In a parallel circuit, components are connected across the same two points. Each branch has the same voltage, while current splits among the branches."
+      "content": "In a parallel circuit, components are connected across the same two points. Each branch has the same voltage, while current splits among the branches.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "parallel"
+      }
     },
     {
       "title": "Two resistors are in series in one unbranched loop. Compare their currents.",
@@ -103,12 +106,21 @@
     {
       "title": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
       "content": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ."
+    },
+    {
+      "title": "What happens when a path is opened?",
+      "content": "An open switch creates a gap. In series the gap breaks the only loop, so both bulbs go out. In parallel the other branch keeps its complete path and stays on. With an ideal battery, the voltage and current in the intact branch stay the same; the battery supplies less total current.",
+      "visual": {
+        "type": "circuit_diagram",
+        "arrangement": "comparison",
+        "open": true
+      }
     }
   ],
   "worked_examples": [
     {
       "id": "6D-W01",
-      "prompt": "Two resistors are in series in one unbranched loop. Compare their currents.",
+      "prompt": "In the diagram, 3 Ω and 6 Ω resistors form one series loop across an ideal 9 V battery. Why do they carry the same current?",
       "choices": [
         "The currents are equal",
         "The larger resistance uses up more current"
@@ -128,34 +140,37 @@
       ],
       "solution_steps": [
         {
-          "equation": "Identify what the question asks",
-          "explanation": "Two resistors are in series in one unbranched loop. Compare their currents."
+          "equation": "One loop → the same current at every point",
+          "explanation": "There is no junction where charge can split into another path, and charge does not build up between the resistors in steady state."
         },
         {
-          "equation": "The currents are equal",
-          "explanation": "In steady state charge does not accumulate between components. The same current passes through each series component."
+          "equation": "R_total = 3 Ω + 6 Ω = 9 Ω",
+          "explanation": "Add resistances because both resistors lie along the only path."
+        },
+        {
+          "equation": "I = V/R_total = 9 V / 9 Ω = 1 A",
+          "explanation": "The battery, the 3 Ω resistor, and the 6 Ω resistor each carry 1 A."
+        },
+        {
+          "equation": "V₁ = 1 A × 3 Ω = 3 V; V₂ = 1 A × 6 Ω = 6 V",
+          "explanation": "The voltage drops add to 9 V. The current is the same, but the voltage divides according to resistance."
         }
       ],
       "visual": {
-        "type": "concept_sequence",
-        "labels": [
-          "Same pair of nodes",
-          "Parallel branches",
-          "Equal branch voltage"
-        ],
-        "label": "Different branch resistances can carry different currents at the same voltage."
+        "type": "circuit_diagram",
+        "component": "resistor",
+        "arrangement": "series",
+        "voltage": 9,
+        "r1": 3,
+        "r2": 6
       }
     },
     {
       "id": "6D-W02",
-      "prompt": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
-      "choices": [
-        "Their currents must be equal",
-        "Their voltage differences are equal"
-      ],
-      "answer": "Their voltage differences are equal",
+      "prompt": "Reconnect the same 3 Ω and 6 Ω resistors in parallel across an ideal 9 V battery. Find each branch voltage and current, then the total battery current.",
+      "answer": "9 V across each branch; 3 A through 3 Ω; 1.5 A through 6 Ω; total 4.5 A",
       "accepted_answers": [
-        "Their voltage differences are equal"
+        "9 V across each branch; 3 A through 3 Ω; 1.5 A through 6 Ω; total 4.5 A"
       ],
       "hint_steps": [
         "Identify the physical quantities, interactions, or model named in the question.",
@@ -168,14 +183,34 @@
       ],
       "solution_steps": [
         {
-          "equation": "Identify what the question asks",
-          "explanation": "Two resistors are connected in parallel across an ideal battery. Compare their voltages."
+          "equation": "V₁ = V₂ = V_battery = 9 V",
+          "explanation": "Trace both branch ends: each branch starts at junction A and ends at junction B. Both therefore span the entire battery voltage."
         },
         {
-          "equation": "Their voltage differences are equal",
-          "explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ."
+          "equation": "I₁ = 9 V / 3 Ω = 3 A",
+          "explanation": "Use the full 9 V across the upper 3 Ω branch."
+        },
+        {
+          "equation": "I₂ = 9 V / 6 Ω = 1.5 A",
+          "explanation": "The lower branch has twice the resistance, so at the same voltage it carries half the current."
+        },
+        {
+          "equation": "I_total = I₁ + I₂ = 3 A + 1.5 A = 4.5 A",
+          "explanation": "The current splits at A and recombines at B. Charge is conserved; neither branch uses up current."
+        },
+        {
+          "equation": "R_eq = V/I_total = 9 V / 4.5 A = 2 Ω",
+          "explanation": "Adding a second path lowers the equivalent resistance below either branch resistance. This is smaller than the 9 Ω series total."
         }
-      ]
+      ],
+      "visual": {
+        "type": "circuit_diagram",
+        "component": "resistor",
+        "arrangement": "parallel",
+        "voltage": 9,
+        "r1": 3,
+        "r2": 6
+      }
     }
   ],
   "guided_practice": [
@@ -752,6 +787,7 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending.",
+    "circuit_visuals": "Battery, bulb, resistor, current-path, and open-switch diagrams added; browser review pending."
   }
 }
