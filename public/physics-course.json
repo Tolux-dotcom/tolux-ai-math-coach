@@ -403,8 +403,11 @@
           ],
           "title": "Photons and the Photoelectric Effect",
           "summary": "Describe the photoelectric effect and emission spectra using the photon model.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-9a-photons-photoelectric.json"
         },
         {
           "module_id": "phy-9b-malus-law",
@@ -414,8 +417,11 @@
           ],
           "title": "Polarization and Malus's Law",
           "summary": "Investigate polarization and applications using Malus's Law.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-9b-malus-law.json"
         },
         {
           "module_id": "phy-9c-quantum-superposition",
@@ -425,8 +431,11 @@
           ],
           "title": "Superposition and Wave-Particle Duality",
           "summary": "Compare quantum superposition with wave-particle duality.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-9c-quantum-superposition.json"
         },
         {
           "module_id": "phy-9d-quantum-applications",
@@ -436,8 +445,11 @@
           ],
           "title": "Quantum Applications",
           "summary": "Explore uncertainty, quantum computing, and cybersecurity applications.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-9d-quantum-applications.json"
         }
       ]
     }
