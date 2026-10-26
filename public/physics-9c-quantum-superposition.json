@@ -395,108 +395,68 @@
   "mastery_check": [
     {
       "id": "9C-M01",
-      "prompt": "What distinguishes a coherent quantum superposition from an ordinary classical mixture?",
+      "prompt": "Two paths are indistinguishable and retain a controlled relative phase. Which calculation predicts detection probabilities?",
       "choices": [
-        "Relative phase can produce interference",
-        "It is merely ignorance of a pre-existing classical alternative"
+        "Add amplitudes, then take the squared magnitude",
+        "Add classical probabilities only"
       ],
-      "answer": "Relative phase can produce interference",
+      "answer": "Add amplitudes, then take the squared magnitude",
       "accepted_answers": [
-        "Relative phase can produce interference"
+        "Add amplitudes, then take the squared magnitude"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Superposition combines probability amplitudes with phase relationships. A mixture averages probabilities without those coherent cross terms.",
-      "alternate_explanation_steps": [
-        "Superposition combines probability amplitudes with phase relationships. A mixture averages probabilities without those coherent cross terms.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Coherent amplitude cross terms permit interference."
     },
     {
       "id": "9C-M02",
-      "prompt": "In a two-path interference experiment, what can distinguishable which-path information do?",
+      "prompt": "A path-marking device stores distinguishable which-path information. What can happen to interference?",
       "choices": [
-        "Always strengthen interference",
-        "Reduce or remove interference"
+        "Visibility must increase",
+        "Visibility can decrease"
       ],
-      "answer": "Reduce or remove interference",
+      "answer": "Visibility can decrease",
       "accepted_answers": [
-        "Reduce or remove interference"
+        "Visibility can decrease"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Entanglement with a path record can destroy observable coherence between paths even without a person reading the record.",
-      "alternate_explanation_steps": [
-        "Entanglement with a path record can destroy observable coherence between paths even without a person reading the record.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Entanglement with distinguishable path records can suppress observable coherence."
     },
     {
       "id": "9C-M03",
-      "prompt": "Can a single photon produce a localized detector event while many trials form an interference pattern?",
+      "prompt": "A detector records one photon in each trial. Does that alone rule out interference across many trials?",
       "choices": [
-        "Yes",
-        "No, those observations are incompatible"
-      ],
-      "answer": "Yes",
-      "accepted_answers": [
+        "No",
         "Yes"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
+      "answer": "No",
+      "accepted_answers": [
+        "No"
       ],
-      "alternate_explanation": "Each detection is localized. The distribution across many identically prepared trials can show interference predicted by probability amplitudes.",
-      "alternate_explanation_steps": [
-        "Each detection is localized. The distribution across many identically prepared trials can show interference predicted by probability amplitudes.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Localized detections and a statistical interference distribution can coexist."
     },
     {
       "id": "9C-M04",
-      "prompt": "What is combined first to predict coherent alternatives?",
+      "prompt": "Changing relative phase shifts interference fringes without changing each path’s individual probability. Why?",
       "choices": [
-        "Classical probabilities only",
-        "Probability amplitudes"
+        "Phase never affects measurable probabilities",
+        "The combined amplitudes depend on relative phase"
       ],
-      "answer": "Probability amplitudes",
+      "answer": "The combined amplitudes depend on relative phase",
       "accepted_answers": [
-        "Probability amplitudes"
+        "The combined amplitudes depend on relative phase"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Add amplitudes for indistinguishable alternatives, then take the squared magnitude. This allows constructive and destructive interference.",
-      "alternate_explanation_steps": [
-        "Add amplitudes for indistinguishable alternatives, then take the squared magnitude. This allows constructive and destructive interference.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Cross terms depend on phase and alter the resulting spatial probabilities."
     },
     {
       "id": "9C-M05",
-      "prompt": "Does a superposition mean a detector records every possible outcome at once?",
+      "prompt": "Is an unknown classical choice between two paths automatically the same as their coherent superposition?",
       "choices": [
-        "No, each measurement gives an allowed outcome",
-        "Yes, every outcome appears in each reading"
+        "No",
+        "Yes"
       ],
-      "answer": "No, each measurement gives an allowed outcome",
+      "answer": "No",
       "accepted_answers": [
-        "No, each measurement gives an allowed outcome"
+        "No"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The prepared state determines probabilities. Measurement outcomes and superposition should not be confused with a literal collection of simultaneous classical readings.",
-      "alternate_explanation_steps": [
-        "The prepared state determines probabilities. Measurement outcomes and superposition should not be confused with a literal collection of simultaneous classical readings.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "A mixture lacks the phase coherence that permits interference between the alternatives."
     }
   ],
   "practice": {
@@ -752,6 +712,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
