@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-6b-electric-magnetic-fields",
+  "course_id": "physics",
+  "teks": [
+    "6B"
+  ],
+  "title": "Electric and Magnetic Fields",
+  "learning_goal": "Identify and describe electric and magnetic forces and fields and connect them to everyday devices.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Fields describe forces at a distance",
+      "content": "Electric and magnetic fields describe regions where charges or magnets can experience forces without direct contact. Field direction shows the direction a positive test charge or north magnetic pole would tend to move."
+    },
+    {
+      "id": "electric",
+      "title": "2. Electric fields",
+      "content": "Electric fields are produced by electric charges. Field lines point away from positive charges and toward negative charges. Stronger fields are represented by more closely spaced field lines."
+    },
+    {
+      "id": "magnetic",
+      "title": "3. Magnetic fields",
+      "content": "Magnetic fields are produced by magnets and moving electric charges. Outside a bar magnet, field lines emerge from the north pole and enter the south pole."
+    },
+    {
+      "id": "devices",
+      "title": "4. Everyday applications",
+      "content": "Motors use magnetic forces on current-carrying wires. Generators use changing magnetic fields to produce electric current. Transformers use changing magnetic fields to transfer electrical energy between coils."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A wire carrying current is placed in a magnetic field and experiences a force. What does this show about electricity and magnetism?",
+      "hint": "Think about what produces magnetic fields and what can experience magnetic forces.",
+      "alternate_explanation": "Moving charges create magnetic effects, so a current-carrying wire can interact with an external magnetic field.",
+      "answer": "Electric current and magnetic fields interact to produce force."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, identify electric and magnetic fields, describe field direction, compare electric and magnetic interactions, and explain how motors, generators, and transformers use those interactions."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
