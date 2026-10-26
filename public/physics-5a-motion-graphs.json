@@ -1,47 +1,49 @@
 {
   "lesson_id": "physics-5a-motion-graphs",
   "course_id": "physics",
-  "teks": ["5A"],
+  "teks": [
+    "5A"
+  ],
   "title": "Motion Graphs",
   "learning_goal": "Interpret position-time, velocity-time, and acceleration-time graphs and connect each graph to an object's motion.",
   "stages": [
     {
-      "id":"concept",
-      "title":"1. Understand the idea",
-      "content":"Motion describes how an object's position changes over time. On a position-time graph, time is on the horizontal axis and position is on the vertical axis. The slope tells how quickly position changes."
+      "id": "concept",
+      "title": "1. Understand the idea",
+      "content": "Motion describes how an object's position changes over time. On a position-time graph, time is on the horizontal axis and position is on the vertical axis. The slope tells how quickly position changes."
     },
     {
-      "id":"position-time",
-      "title":"2. Read a position-time graph",
-      "content":"A horizontal line means the object is at rest. A straight line sloping upward means constant positive velocity. A straight line sloping downward means constant negative velocity. A steeper line means a greater speed."
+      "id": "position-time",
+      "title": "2. Read a position-time graph",
+      "content": "A horizontal line means the object is at rest. A straight line sloping upward means constant positive velocity. A straight line sloping downward means constant negative velocity. A steeper line means a greater speed."
     },
     {
-      "id":"worked-example",
-      "title":"3. Worked example",
-      "content":"A student moves from 0 m to 12 m in 4 s. Change in position = 12 m. Change in time = 4 s. Average velocity = Δx/Δt = 12/4 = 3 m/s."
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "A student moves from 0 m to 12 m in 4 s. Change in position = 12 m. Change in time = 4 s. Average velocity = Δx/Δt = 12/4 = 3 m/s."
     },
     {
-      "id":"guided-practice",
-      "title":"4. Guided practice",
-      "prompt":"A car moves from 5 m to 25 m in 5 s. What is its average velocity?",
-      "hint":"Start by finding the change in position: 25 − 5.",
-      "alternate_explanation":"Think of velocity as the slope of a position-time graph: rise over run, or change in position divided by change in time.",
-      "answer":"4 m/s"
+      "id": "guided-practice",
+      "title": "4. Guided practice",
+      "prompt": "A car moves from 5 m to 25 m in 5 s. What is its average velocity?",
+      "hint": "Start by finding the change in position: 25 − 5.",
+      "alternate_explanation": "Think of velocity as the slope of a position-time graph: rise over run, or change in position divided by change in time.",
+      "answer": "4 m/s"
     },
     {
-      "id":"velocity-time",
-      "title":"5. Velocity-time graphs",
-      "content":"The slope of a velocity-time graph represents acceleration. A horizontal line means constant velocity. An upward slope means positive acceleration. A downward slope means velocity is decreasing."
+      "id": "velocity-time",
+      "title": "5. Velocity-time graphs",
+      "content": "The slope of a velocity-time graph represents acceleration. A horizontal line means constant velocity. An upward slope means positive acceleration. A downward slope means velocity is decreasing."
     },
     {
-      "id":"acceleration-time",
-      "title":"6. Acceleration-time graphs",
-      "content":"A horizontal line above zero means constant positive acceleration. A horizontal line below zero means constant negative acceleration. A line at zero means no acceleration, even though the object may still be moving."
+      "id": "acceleration-time",
+      "title": "6. Acceleration-time graphs",
+      "content": "A horizontal line above zero means constant positive acceleration. A horizontal line below zero means constant negative acceleration. A line at zero means no acceleration, even though the object may still be moving."
     },
     {
-      "id":"mastery",
-      "title":"7. Mastery check",
-      "content":"To demonstrate mastery, explain motion from all three graph types, calculate velocity from position-time slope, calculate acceleration from velocity change, and match a motion description to the correct graph."
+      "id": "mastery",
+      "title": "7. Mastery check",
+      "content": "To demonstrate mastery, explain motion from all three graph types, calculate velocity from position-time slope, calculate acceleration from velocity change, and match a motion description to the correct graph."
     }
   ],
   "coach_rules": {
@@ -50,6 +52,6 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true,
-    "never_use_raw_sqrt_or_caret_when_renderable": true
+    "render_math_symbols_cleanly": true
   }
 }
