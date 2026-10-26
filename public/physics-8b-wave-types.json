@@ -395,108 +395,68 @@
   "mastery_check": [
     {
       "id": "8B-M01",
-      "prompt": "In a transverse wave, how is medium displacement oriented relative to wave propagation?",
+      "prompt": "A rope pulse travels east while a rope segment moves north and south. What kind of wave is this?",
       "choices": [
-        "Perpendicular",
-        "Parallel"
+        "Transverse",
+        "Longitudinal"
       ],
-      "answer": "Perpendicular",
+      "answer": "Transverse",
       "accepted_answers": [
-        "Perpendicular"
+        "Transverse"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
-      "alternate_explanation_steps": [
-        "A string can move up and down while the disturbance travels horizontally. The medium oscillates locally rather than traveling with the wave.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Medium displacement is perpendicular to the propagation direction."
     },
     {
       "id": "8B-M02",
-      "prompt": "In a longitudinal wave, how does the medium oscillate?",
+      "prompt": "Air molecules oscillate east and west while a sound wave travels east. Classify the wave.",
       "choices": [
-        "Perpendicular to propagation",
-        "Parallel to propagation"
+        "Transverse",
+        "Longitudinal"
       ],
-      "answer": "Parallel to propagation",
+      "answer": "Longitudinal",
       "accepted_answers": [
-        "Parallel to propagation"
+        "Longitudinal"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
-      "alternate_explanation_steps": [
-        "Compressions and rarefactions travel while particles oscillate back and forth along the propagation direction.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Particle oscillation is parallel to propagation."
     },
     {
       "id": "8B-M03",
-      "prompt": "Can ordinary sound travel through an ideal vacuum?",
+      "prompt": "Light from the Sun crosses nearly empty space. What does this show about its medium requirement?",
       "choices": [
-        "No, it needs a material medium",
-        "Yes, exactly like light"
+        "It does not require a material medium",
+        "It requires air all the way from the Sun"
       ],
-      "answer": "No, it needs a material medium",
+      "answer": "It does not require a material medium",
       "accepted_answers": [
-        "No, it needs a material medium"
+        "It does not require a material medium"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
-      "alternate_explanation_steps": [
-        "Sound is a mechanical wave requiring interacting particles. Electromagnetic waves can propagate through vacuum.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Electromagnetic waves propagate through vacuum, unlike mechanical sound."
     },
     {
       "id": "8B-M04",
-      "prompt": "What is generally transported by a traveling wave without net transport of the medium over a cycle?",
+      "prompt": "A floating marker bobs as waves pass but does not travel across the whole pond. Why?",
       "choices": [
-        "All the medium from source to receiver",
-        "Energy"
+        "The wave carries no energy",
+        "The disturbance propagates while local material oscillates"
       ],
-      "answer": "Energy",
+      "answer": "The disturbance propagates while local material oscillates",
       "accepted_answers": [
-        "Energy"
+        "The disturbance propagates while local material oscillates"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
-      "alternate_explanation_steps": [
-        "Medium particles undergo local oscillation. The disturbance and its energy propagate; particle motion and wave motion differ.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Wave propagation and medium particle motion are distinct; real water can also have smaller drift effects."
     },
     {
       "id": "8B-M05",
-      "prompt": "Which is an electromagnetic wave?",
+      "prompt": "A bell rings in an evacuated chamber. Why does the external sound fade while the bell remains visible?",
       "choices": [
-        "Visible light",
-        "Sound in air"
+        "Sound needs matter, while light can cross vacuum",
+        "Both sound and light require air"
       ],
-      "answer": "Visible light",
+      "answer": "Sound needs matter, while light can cross vacuum",
       "accepted_answers": [
-        "Visible light"
+        "Sound needs matter, while light can cross vacuum"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
-      "alternate_explanation_steps": [
-        "Electromagnetic waves involve electric and magnetic fields. They do not require an air or other material medium.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Removing air removes the mechanical propagation path for sound, not electromagnetic propagation."
     }
   ],
   "practice": {
@@ -752,6 +712,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
