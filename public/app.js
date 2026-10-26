@@ -11,7 +11,7 @@ let dashboardProgressSource = "empty";
 let progressRefreshSequence = 0;
 let coachTrialHeartbeatTimer = null;
 let coachTrialActive = false;
-let coachIsSubscriber = false;
+let coachHasUnlimitedAccess = false;
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -761,7 +761,7 @@ function appendUpgradeOffer(message) {
 async function sendCoachTrialHeartbeat() {
   if (
     !coachTrialActive ||
-    coachIsSubscriber ||
+    coachHasUnlimitedAccess ||
     document.visibilityState !== "visible"
   ) {
     return;
@@ -971,11 +971,11 @@ const r = await fetch("/api/coach", {method:"POST", headers:{
     clearTimeout(timeout);
     thinking.remove();
     if(r.ok && data.reply){
-      apiStatus.textContent = "AI Live";
+      apiStatus.textContent = data.isAdministrator ? "Administrator access" : "AI Live";
       apiStatus.className = "badge live";
       addMessage("assistant", data.reply);
-      coachIsSubscriber = Boolean(data.isSubscriber);
-      if (!coachIsSubscriber && !data.qaMode) startCoachTrialHeartbeat();
+      coachHasUnlimitedAccess = Boolean(data.isSubscriber || data.isAdministrator);
+      if (!coachHasUnlimitedAccess && !data.qaMode) startCoachTrialHeartbeat();
     } else if (data.limitReached) {
   apiStatus.textContent = "Free Trial Complete";
   apiStatus.className = "badge";

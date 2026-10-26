@@ -218,7 +218,7 @@ test("server verifies the browser token and database entitlement", () => {
   assert.match(serverSource, /resolveSupabaseServerConfig\(/);
   assert.match(serverSource, /supabaseServerConfig\.ready/);
   assert.match(routeSource, /if \(!supabaseAdmin\)/);
-  assert.match(routeSource, /getStudentUsage\(user\.id\)/);
+  assert.match(routeSource, /getStudentLearningUsage\(user\.id\)/);
   assert.match(routeSource, /isSubscriber:\s*Boolean\(usage\?\.is_subscriber\)/);
   assert.doesNotMatch(routeSource, /user_metadata|localStorage/);
 });

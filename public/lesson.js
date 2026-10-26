@@ -61,6 +61,7 @@ let recheckResults = [];
 let recheckUsageKeys = new Map();
 let lessonLocked = false;
 let isSubscriber = false;
+let isAdministrator = false;
 let includeDiagnostic = false;
 let completionReport = null;
 let completionSavePromise = null;
@@ -274,6 +275,7 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
     if (response.ok && data.allowed) {
       countedLessonInteractions.add(key);
       isSubscriber = Boolean(data.isSubscriber);
+      isAdministrator = Boolean(data.isAdministrator);
       return true;
     }
 
@@ -306,7 +308,7 @@ async function ensureLessonAccess(item, interactionKey = item?.id) {
 async function sendTrialHeartbeat() {
   if (
     lessonLocked ||
-    isSubscriber ||
+    isSubscriber || isAdministrator ||
     document.visibilityState !== "visible" ||
     currentStageType === "prerequisite_diagnostic"
   ) {

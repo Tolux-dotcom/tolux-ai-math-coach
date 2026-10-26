@@ -1,7 +1,8 @@
 export function resolveFullSimulationAccess({
   authenticated = false,
   entitlementAvailable = false,
-  isSubscriber = false
+  isSubscriber = false,
+  isAdministrator = false
 } = {}) {
   if (!authenticated) {
     return {
@@ -23,7 +24,7 @@ export function resolveFullSimulationAccess({
     };
   }
 
-  if (!isSubscriber) {
+  if (!isSubscriber && !isAdministrator) {
     return {
       status: 403,
       body: {
@@ -38,7 +39,8 @@ export function resolveFullSimulationAccess({
     status: 200,
     body: {
       allowed: true,
-      isSubscriber: true
+      isSubscriber: Boolean(isSubscriber),
+      ...(isAdministrator ? {isAdministrator:true} : {})
     }
   };
 }
