@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-6d-series-parallel-circuits",
+  "course_id": "physics",
+  "teks": [
+    "6D"
+  ],
+  "title": "Series and Parallel Circuits",
+  "learning_goal": "Analyze, design, and construct series and parallel circuits and explain how current and voltage behave in each arrangement.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. A complete circuit",
+      "content": "Electric current flows only when there is a closed conducting path and a source of potential difference. Circuit diagrams use standard symbols to represent batteries, resistors, switches, and other components."
+    },
+    {
+      "id": "series",
+      "title": "2. Series circuits",
+      "content": "In a series circuit, components share one path. The same current passes through each component, and the source voltage is divided among the components."
+    },
+    {
+      "id": "parallel",
+      "title": "3. Parallel circuits",
+      "content": "In a parallel circuit, components are connected across the same two points. Each branch has the same voltage, while current splits among the branches."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked comparison",
+      "content": "If one bulb is removed from a simple series circuit, the only path is broken and all bulbs go out. In a parallel circuit, other branches can still conduct current when one branch is opened."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Three bulbs are connected in parallel to the same battery. One bulb burns out. What happens to the other two bulbs?",
+      "hint": "Each parallel branch has its own path to the battery.",
+      "alternate_explanation": "Removing one branch does not break the complete paths through the other branches.",
+      "answer": "The other two bulbs remain on."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, read circuit diagrams, distinguish series from parallel connections, predict what happens when a component is removed, and explain current and voltage behavior in each type."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
