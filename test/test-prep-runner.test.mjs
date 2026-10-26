@@ -128,3 +128,13 @@ test('the page loads one unified runner with one control-listener set', () => {
   assert.equal((runnerSource.match(/retakeButton\?\.addEventListener/g) || []).length, 1);
   assert.doesNotMatch(runnerSource, /fullActive/);
 });
+
+test('Test Prep exposes a same-attempt retry with truthful save states', () => {
+  assert.match(html, /data-test-prep-retry-save/);
+  assert.match(html, /Retry Progress Save/);
+  assert.match(runnerSource, /lastSaveInput/);
+  assert.match(runnerSource, /Retrying this Test Prep result/);
+  assert.match(runnerSource, /Progress could not be saved to your account or this device/);
+  assert.match(runnerSource, /const input = lastSaveInput/);
+  assert.match(runnerSource, /window\.toluxTestPrepProgress\.save\(input\)/);
+});

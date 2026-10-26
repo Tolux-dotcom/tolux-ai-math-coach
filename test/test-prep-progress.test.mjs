@@ -16,7 +16,8 @@ function fixture({
     user: { id: 'student-1' }
   },
   responses = [],
-  storageData = new Map()
+  storageData = new Map(),
+  storageFailure = false
 } = {}) {
   const requests = [];
   let responseIndex = 0;
@@ -26,6 +27,7 @@ function fixture({
       return storageData.get(key) || null;
     },
     setItem(key, value) {
+      if (storageFailure) throw new Error('Storage unavailable');
       storageData.set(key, String(value));
     }
   };
@@ -177,6 +179,45 @@ test('queues an owned result before the request settles and clears it only after
   assert.equal((await pending).status, 'synced');
   assert.equal(state.api.readPending('student-1', state.storage).length, 0);
   assert.ok(state.storageData.has(`toluxTestPrepProgress:${queued[0].completion_id}`));
+});
+
+test('does not claim an offline Test Prep result was queued when device storage failed', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-token', user: { id: 'student-1' } },
+    storageFailure: true
+  });
+
+  const outcome = await state.api.save(baseInput, {
+    fetchImpl: async () => { throw new Error('Offline'); }
+  });
+
+  assert.equal(outcome.status, 'unsaved');
+  assert.equal(outcome.localSaved, false);
+  assert.equal(outcome.pendingSaved, false);
+  assert.equal(state.storageData.size, 0);
+});
+
+test('same-page retry reuses the original Test Prep completion instead of creating a duplicate', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-token', user: { id: 'student-1' } },
+    responses: [503, 200]
+  });
+
+  const first = await state.api.save(baseInput);
+  assert.equal(first.status, 'queued');
+  const retry = await state.api.save({
+    ...baseInput,
+    completionId: first.report.completion_id,
+    completedAt: first.report.completed_at
+  });
+
+  assert.equal(retry.status, 'synced');
+  assert.equal(state.requests.length, 2);
+  assert.deepEqual(
+    JSON.parse(state.requests[1].options.body),
+    JSON.parse(state.requests[0].options.body)
+  );
+  assert.equal(state.api.readPending('student-1', state.storage).length, 0);
 });
 
 test('a reloaded page replays an interrupted Quick Check only for its original owner', async () => {

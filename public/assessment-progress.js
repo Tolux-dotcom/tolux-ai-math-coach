@@ -41,12 +41,15 @@
   }
 
   function writePending(ownerId, reports, storage = safeStorage()) {
-    if (!storage) return;
+    if (!storage) return false;
     const key = pendingKey(ownerId);
-    if (!key) return;
+    if (!key) return false;
     try {
       storage.setItem(key, JSON.stringify(reports));
-    } catch {}
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   function queuePending(ownerId, report, storage = safeStorage()) {
@@ -54,7 +57,7 @@
       item => item?.completion_id !== report.completion_id
     );
     pending.push(report);
-    writePending(ownerId, pending.slice(-20), storage);
+    return writePending(ownerId, pending.slice(-20), storage);
   }
 
   function removePending(ownerId, completionId, storage = safeStorage()) {
@@ -181,19 +184,27 @@
     const fetchImpl = dependencies.fetchImpl ?? window.fetch.bind(window);
     const report = buildReport(input);
 
+    let localSaved = false;
     try {
       storage?.setItem(`${LOCAL_PREFIX}${report.completion_id}`, JSON.stringify(report));
+      localSaved = Boolean(storage);
     } catch {}
 
     const session = await sessionForSave(client);
     const ownerId = String(session?.user?.id || '').trim();
     if (!session?.access_token || !ownerId) {
-      return { status: 'local-only', report };
+      return {
+        status: localSaved ? 'local-only' : 'unsaved',
+        report,
+        localSaved,
+        pendingSaved: false,
+        accountAvailable: false
+      };
     }
 
     // Persist ownership and the retry record before starting the request.
     // A page close/reload may prevent the request's failure handler from running.
-    queuePending(ownerId, report, storage);
+    const pendingSaved = queuePending(ownerId, report, storage);
     try {
       const response = await postReport(
         report,
@@ -204,9 +215,22 @@
       );
       if (!response.ok) throw new Error(`Progress save failed with ${response.status}.`);
       removePending(ownerId, report.completion_id, storage);
-      return { status: 'synced', report };
+      return {
+        status: 'synced',
+        report,
+        localSaved,
+        pendingSaved: false,
+        accountAvailable: true
+      };
     } catch (error) {
-      return { status: 'queued', report, error };
+      return {
+        status: pendingSaved ? 'queued' : localSaved ? 'local-only' : 'unsaved',
+        report,
+        error,
+        localSaved,
+        pendingSaved,
+        accountAvailable: true
+      };
     }
   }
 
