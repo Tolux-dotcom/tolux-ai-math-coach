@@ -33,5 +33,5 @@ test('5A includes distinct conceptual reasoning tasks and all lesson phases',()=
  assert.equal(lesson.mastery_check.length,5);
  assert.equal(lesson.conceptual_questions.length,4);
  for(const q of lesson.conceptual_questions){ assert.ok(q.expected_ideas.length>=2); assert.ok(q.misconceptions.length); assert.ok(q.follow_up); }
- assert.ok(html.includes('not automatically scored'));
+ assert.ok(html.includes('does not award mastery credit'));
 });
