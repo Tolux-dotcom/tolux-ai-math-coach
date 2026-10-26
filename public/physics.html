@@ -263,6 +263,12 @@ function escapeHtml(value='') {
 
 function renderVisual(visual) {
   if (!visual) return '';
+  if (visual.type === 'circular_motion') {
+    return `<figure class="physics-visual"><figcaption>Uniform circular motion, viewed from above</figcaption><svg viewBox="0 0 640 260" role="img" aria-label="At the rightmost point on a circle, velocity points upward along the tangent and acceleration points left toward the center."><circle cx="240" cy="140" r="85" fill="none" stroke="#9ab0cd" stroke-width="2"/><circle cx="240" cy="140" r="5" class="v-start"/><circle cx="325" cy="140" r="7" class="v-start"/><line x1="325" y1="140" x2="325" y2="35" stroke="#1261df" stroke-width="4"/><polygon points="325,35 318,49 332,49" fill="#1261df"/><line x1="325" y1="140" x2="250" y2="140" stroke="#7145d6" stroke-width="4"/><polygon points="250,140 264,133 264,147" fill="#7145d6"/><text x="345" y="55">Velocity: tangent</text><text x="340" y="165">Acceleration: inward</text><text x="215" y="165">Center</text></svg><p>Blue shows instantaneous velocity; purple shows acceleration. Their directions differ.</p></figure>`;
+  }
+  if (visual.type === 'projectile_motion') {
+    return `<figure class="physics-visual"><figcaption>Horizontal launch with negligible air resistance</figcaption><svg viewBox="0 0 640 260" role="img" aria-label="Successive projectile positions at equal time intervals have equal horizontal spacing and increasing downward spacing."><path d="M 80 50 Q 280 50 480 220" fill="none" stroke="#9ab0cd" stroke-width="2"/>${[0,1,2,3,4].map(i=>`<circle cx="${80+100*i}" cy="${50+10.625*i*i}" r="6" class="v-start"/>`).join('')}<line x1="80" y1="50" x2="165" y2="50" stroke="#1261df" stroke-width="4"/><polygon points="165,50 151,43 151,57" fill="#1261df"/><text x="85" y="30">Horizontal launch</text><line x1="550" y1="65" x2="550" y2="145" stroke="#7145d6" stroke-width="4"/><polygon points="550,145 543,131 557,131" fill="#7145d6"/><text x="525" y="170">Gravity</text><text x="80" y="250">Dots show equal time intervals, not equal distances.</text></svg><p>Horizontal velocity stays constant. Vertical velocity becomes increasingly downward. Diagram is schematic.</p></figure>`;
+  }
   if (visual.type === 'vector_triangle') {
     const x=Number(visual.x),y=Number(visual.y);
     if(!(x>0 && y>0)) return '';
