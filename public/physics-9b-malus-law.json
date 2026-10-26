@@ -395,108 +395,93 @@
   "mastery_check": [
     {
       "id": "9B-M01",
-      "prompt": "Unpolarized light passes through one ideal linear polarizer. What is its transmitted average intensity?",
+      "prompt": "Already linearly polarized light of intensity 8 W/m² reaches an ideal analyzer at 60° to its polarization. Find transmitted intensity.",
       "choices": [
-        "Half the incident intensity",
-        "All the incident intensity"
+        "2 W/m²",
+        "4 W/m²"
       ],
-      "answer": "Half the incident intensity",
+      "answer": "2 W/m²",
       "accepted_answers": [
-        "Half the incident intensity"
+        "2 W/m²"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "An ideal polarizer passes one polarization component. Averaging all initial orientations gives I = I₀/2.",
-      "alternate_explanation_steps": [
-        "An ideal polarizer passes one polarization component. Averaging all initial orientations gives I = I₀/2.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Malus’s law gives I_out = I_in cos²60° = I_in/4. No first-polarizer factor applies to already polarized input.",
+      "calculation_check": {
+        "operation": "polarizer",
+        "input": 8,
+        "cosine": 0.5
+      }
     },
     {
       "id": "9B-M02",
-      "prompt": "Linearly polarized light meets an ideal analyzer aligned with its polarization. What fraction passes?",
+      "prompt": "Already linearly polarized light of intensity 12 W/m² reaches an ideal analyzer at 60° to its polarization. Find transmitted intensity.",
       "choices": [
-        "Half",
-        "All"
+        "6 W/m²",
+        "3 W/m²"
       ],
-      "answer": "All",
+      "answer": "3 W/m²",
       "accepted_answers": [
-        "All"
+        "3 W/m²"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Malus’s law is I = I_in cos²θ. At θ = 0°, cos²θ = 1; this assumes already polarized input.",
-      "alternate_explanation_steps": [
-        "Malus’s law is I = I_in cos²θ. At θ = 0°, cos²θ = 1; this assumes already polarized input.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Malus’s law gives I_out = I_in cos²60° = I_in/4. No first-polarizer factor applies to already polarized input.",
+      "calculation_check": {
+        "operation": "polarizer",
+        "input": 12,
+        "cosine": 0.5
+      }
     },
     {
       "id": "9B-M03",
-      "prompt": "Polarized light meets an analyzer at 90°. What passes ideally?",
+      "prompt": "Already linearly polarized light of intensity 16 W/m² reaches an ideal analyzer at 60° to its polarization. Find transmitted intensity.",
       "choices": [
-        "Zero intensity",
-        "Half the intensity"
+        "4 W/m²",
+        "8 W/m²"
       ],
-      "answer": "Zero intensity",
+      "answer": "4 W/m²",
       "accepted_answers": [
-        "Zero intensity"
+        "4 W/m²"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Crossed axes give cos²90° = 0. Real polarizers can have leakage, but the ideal law predicts extinction.",
-      "alternate_explanation_steps": [
-        "Crossed axes give cos²90° = 0. Real polarizers can have leakage, but the ideal law predicts extinction.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Malus’s law gives I_out = I_in cos²60° = I_in/4. No first-polarizer factor applies to already polarized input.",
+      "calculation_check": {
+        "operation": "polarizer",
+        "input": 16,
+        "cosine": 0.5
+      }
     },
     {
       "id": "9B-M04",
-      "prompt": "Polarized light meets an analyzer at 45°. What fraction of incident intensity passes?",
+      "prompt": "Already linearly polarized light of intensity 20 W/m² reaches an ideal analyzer at 60° to its polarization. Find transmitted intensity.",
       "choices": [
-        "One quarter",
-        "One half"
+        "10 W/m²",
+        "5 W/m²"
       ],
-      "answer": "One half",
+      "answer": "5 W/m²",
       "accepted_answers": [
-        "One half"
+        "5 W/m²"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "cos²45° = 1/2. Do not apply an extra factor of 1/2 unless an earlier polarizer is acting on initially unpolarized light.",
-      "alternate_explanation_steps": [
-        "cos²45° = 1/2. Do not apply an extra factor of 1/2 unless an earlier polarizer is acting on initially unpolarized light.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Malus’s law gives I_out = I_in cos²60° = I_in/4. No first-polarizer factor applies to already polarized input.",
+      "calculation_check": {
+        "operation": "polarizer",
+        "input": 20,
+        "cosine": 0.5
+      }
     },
     {
       "id": "9B-M05",
-      "prompt": "Why can a middle polarizer permit transmission between crossed outer polarizers?",
+      "prompt": "Already linearly polarized light of intensity 24 W/m² reaches an ideal analyzer at 60° to its polarization. Find transmitted intensity.",
       "choices": [
-        "It projects polarization into a new intermediate direction",
-        "It creates light energy"
+        "6 W/m²",
+        "12 W/m²"
       ],
-      "answer": "It projects polarization into a new intermediate direction",
+      "answer": "6 W/m²",
       "accepted_answers": [
-        "It projects polarization into a new intermediate direction"
+        "6 W/m²"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Each projection changes polarization and reduces intensity. Apply Malus’s law successively to each stage; the intermediate direction permits nonzero projections.",
-      "alternate_explanation_steps": [
-        "Each projection changes polarization and reduces intensity. Apply Malus’s law successively to each stage; the intermediate direction permits nonzero projections.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Malus’s law gives I_out = I_in cos²60° = I_in/4. No first-polarizer factor applies to already polarized input.",
+      "calculation_check": {
+        "operation": "polarizer",
+        "input": 24,
+        "cosine": 0.5
+      }
     }
   ],
   "practice": {
@@ -752,6 +737,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
