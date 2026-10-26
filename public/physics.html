@@ -263,6 +263,10 @@ function escapeHtml(value='') {
 
 function renderVisual(visual) {
   if (!visual) return '';
+  if (visual.type === 'concept_sequence') {
+    const labels=(visual.labels||[]).slice(0,3);
+    return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Concept relationship')}</figcaption><svg viewBox="0 0 640 280" role="img" aria-label="${escapeHtml(labels.join('; '))}">${labels.map((label,i)=>`<rect x="30" y="${15+i*85}" width="580" height="55" rx="8" fill="#eaf1ff" stroke="#85a8df"/><text x="320" y="${48+i*85}" text-anchor="middle" font-size="16">${escapeHtml(label)}</text>${i<2?`<line x1="320" y1="${70+i*85}" x2="320" y2="${95+i*85}" stroke="#7145d6" stroke-width="3"/><polygon points="320,${95+i*85} 314,${85+i*85} 326,${85+i*85}" fill="#7145d6"/>`:''}`).join('')}</svg><p>${escapeHtml(visual.label||'')}</p></figure>`;
+  }
   if (visual.type === 'force_comparison') {
     const r=Number(visual.right),l=Number(visual.left),scale=180/Math.max(r,l,1);
     return `<figure class="physics-visual"><figcaption>Horizontal forces on one box; right is positive</figcaption><svg viewBox="0 0 640 180" role="img" aria-label="Applied force ${r} newtons right; friction ${l} newtons left. Arrow lengths are proportional."><rect x="285" y="65" width="70" height="60" fill="#dce8fc" stroke="#405c87"/><text x="320" y="100" text-anchor="middle">Box</text><line x1="355" y1="85" x2="${355+r*scale}" y2="85" stroke="#1261df" stroke-width="4"/><polygon points="${355+r*scale},85 ${343+r*scale},78 ${343+r*scale},92" fill="#1261df"/><line x1="285" y1="105" x2="${285-l*scale}" y2="105" stroke="#7145d6" stroke-width="4"/><polygon points="${285-l*scale},105 ${297-l*scale},98 ${297-l*scale},112" fill="#7145d6"/><text x="415" y="60">${r} N applied</text><text x="90" y="145">${l} N friction</text></svg><p>Vertical forces are balanced and omitted from this horizontal component diagram.</p></figure>`;
