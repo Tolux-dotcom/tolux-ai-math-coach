@@ -1,0 +1,49 @@
+{
+  "lesson_id": "physics-5f-newton-second-law",
+  "course_id": "physics",
+  "teks": ["5F"],
+  "title": "Forces and Newton's Second Law",
+  "learning_goal": "Calculate the effects of tension, friction, normal force, gravity, centripetal force, and applied forces using free-body diagrams and Newton's Second Law.",
+  "stages": [
+    {
+      "id":"concept",
+      "title":"1. Net force changes motion",
+      "content":"Newton's Second Law connects net force, mass, and acceleration. The acceleration of an object depends on the net force acting on it and its mass."
+    },
+    {
+      "id":"free-body",
+      "title":"2. Build a free-body diagram",
+      "content":"A free-body diagram shows the forces acting on one object. Draw each force as an arrow pointing in the force direction. Common forces include weight, normal force, friction, tension, applied force, and centripetal force."
+    },
+    {
+      "id":"worked-example",
+      "title":"3. Worked example",
+      "content":"A 5 kg cart experiences a net force of 20 N to the right. Using F = ma, the acceleration is a = F/m = 20/5 = 4 m/s² to the right."
+    },
+    {
+      "id":"balanced-unbalanced",
+      "title":"4. Balanced and unbalanced forces",
+      "content":"If opposite forces cancel, the net force is zero and there is no acceleration. If they do not cancel, add forces with direction signs to find the net force before using F = ma."
+    },
+    {
+      "id":"guided-practice",
+      "title":"5. Guided practice",
+      "prompt":"A 10 kg box is pushed with 50 N to the right while friction exerts 20 N to the left. What is the box's acceleration?",
+      "hint":"Find the net force first: rightward force minus leftward friction.",
+      "alternate_explanation":"Imagine the force arrows on a free-body diagram. The 50 N arrow is longer than the 20 N arrow, leaving 30 N unbalanced to the right.",
+      "answer":"3 m/s² to the right"
+    },
+    {
+      "id":"mastery",
+      "title":"6. Mastery check",
+      "content":"To demonstrate mastery, draw and interpret free-body diagrams, calculate net force, apply F = ma, and analyze normal force, friction, tension, gravity, applied force, and centripetal force."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
