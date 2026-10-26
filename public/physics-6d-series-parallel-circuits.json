@@ -395,108 +395,108 @@
   "mastery_check": [
     {
       "id": "6D-M01",
-      "prompt": "Two resistors are in series in one unbranched loop. Compare their currents.",
+      "prompt": "A fresh circuit has 2 Ω and 4 Ω resistors in series across an ideal 12 V battery. Find the current.",
       "choices": [
-        "The currents are equal",
-        "The larger resistance uses up more current"
+        "2 A",
+        "12 A"
       ],
-      "answer": "The currents are equal",
+      "answer": "2 A",
       "accepted_answers": [
-        "The currents are equal"
+        "2 A"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "In steady state charge does not accumulate between components. The same current passes through each series component.",
-      "alternate_explanation_steps": [
-        "In steady state charge does not accumulate between components. The same current passes through each series component.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 12,
+        "resistances": [
+          2,
+          4
+        ]
+      }
     },
     {
       "id": "6D-M02",
-      "prompt": "Two resistors are connected in parallel across an ideal battery. Compare their voltages.",
+      "prompt": "A fresh circuit has 3 Ω and 5 Ω resistors in series across an ideal 16 V battery. Find the current.",
       "choices": [
-        "Their currents must be equal",
-        "Their voltage differences are equal"
+        "16 A",
+        "2 A"
       ],
-      "answer": "Their voltage differences are equal",
+      "answer": "2 A",
       "accepted_answers": [
-        "Their voltage differences are equal"
+        "2 A"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
-      "alternate_explanation_steps": [
-        "Both branches connect the same two circuit nodes. Equal voltage does not imply equal currents when resistances differ.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 16,
+        "resistances": [
+          3,
+          5
+        ]
+      }
     },
     {
       "id": "6D-M03",
-      "prompt": "One parallel branch opens. What happens to another intact branch on an ideal voltage source?",
+      "prompt": "A fresh circuit has 4 Ω and 6 Ω resistors in series across an ideal 20 V battery. Find the current.",
       "choices": [
-        "It can still conduct",
-        "It must stop conducting"
+        "2 A",
+        "20 A"
       ],
-      "answer": "It can still conduct",
+      "answer": "2 A",
       "accepted_answers": [
-        "It can still conduct"
+        "2 A"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
-      "alternate_explanation_steps": [
-        "The other branch retains a closed path and the same source voltage in the ideal model. Total source current decreases.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 20,
+        "resistances": [
+          4,
+          6
+        ]
+      }
     },
     {
       "id": "6D-M04",
-      "prompt": "What is the equivalent resistance of 2 Ω and 4 Ω in series?",
+      "prompt": "A fresh circuit has 5 Ω and 7 Ω resistors in series across an ideal 24 V battery. Find the current.",
       "choices": [
-        "4/3 Ω",
-        "6 Ω"
+        "24 A",
+        "2 A"
       ],
-      "answer": "6 Ω",
+      "answer": "2 A",
       "accepted_answers": [
-        "6 Ω"
+        "2 A"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
-      "alternate_explanation_steps": [
-        "Series resistances add: R_eq = 2 + 4 = 6 Ω. This rule assumes an unbranched series connection.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 24,
+        "resistances": [
+          5,
+          7
+        ]
+      }
     },
     {
       "id": "6D-M05",
-      "prompt": "What is the equivalent resistance of two 6 Ω resistors in parallel?",
+      "prompt": "A fresh circuit has 6 Ω and 8 Ω resistors in series across an ideal 28 V battery. Find the current.",
       "choices": [
-        "3 Ω",
-        "12 Ω"
+        "2 A",
+        "28 A"
       ],
-      "answer": "3 Ω",
+      "answer": "2 A",
       "accepted_answers": [
-        "3 Ω"
+        "2 A"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
-      "alternate_explanation_steps": [
-        "1/R_eq = 1/6 + 1/6 = 1/3. Parallel equivalent resistance is smaller than either branch resistance.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The equivalent series resistance is 2n + 2 ohms. Divide source voltage by that total resistance.",
+      "calculation_check": {
+        "operation": "series_current",
+        "voltage": 28,
+        "resistances": [
+          6,
+          8
+        ]
+      }
     }
   ],
   "practice": {
@@ -752,6 +752,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
