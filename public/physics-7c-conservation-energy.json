@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Energy changes form",
+      "content": "Energy can transfer between objects and transform from one form to another, but the total energy of an isolated system remains constant.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Gravitational potential",
+          "Kinetic energy",
+          "Thermal energy if friction acts"
+        ],
+        "label": "Total energy is conserved; mechanical energy alone need not be."
+      }
+    },
+    {
+      "title": "Mechanical energy",
+      "content": "When nonconservative effects such as friction are negligible, kinetic and potential energy can trade back and forth while total mechanical energy remains constant."
+    },
+    {
+      "title": "Work-energy theorem",
+      "content": "The net work done on an object equals the change in its kinetic energy: Wnet = ΔKE."
+    },
+    {
+      "title": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+      "content": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it."
+    },
+    {
+      "title": "A sliding block stops because of friction. Has total energy vanished?",
+      "content": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "7C-W01",
+      "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+      "choices": [
+        "It remains constant",
+        "It decreases because potential energy decreases"
+      ],
+      "answer": "It remains constant",
+      "accepted_answers": [
+        "It remains constant"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+      "alternate_explanation_steps": [
+        "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A ball falls with negligible air resistance. What happens to its mechanical energy?"
+        },
+        {
+          "equation": "It remains constant",
+          "explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Gravitational potential",
+          "Kinetic energy",
+          "Thermal energy if friction acts"
+        ],
+        "label": "Total energy is conserved; mechanical energy alone need not be."
+      }
+    },
+    {
+      "id": "7C-W02",
+      "prompt": "A sliding block stops because of friction. Has total energy vanished?",
+      "choices": [
+        "Yes, friction destroys energy",
+        "No, mechanical energy becomes thermal energy"
+      ],
+      "answer": "No, mechanical energy becomes thermal energy",
+      "accepted_answers": [
+        "No, mechanical energy becomes thermal energy"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+      "alternate_explanation_steps": [
+        "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A sliding block stops because of friction. Has total energy vanished?"
+        },
+        {
+          "equation": "No, mechanical energy becomes thermal energy",
+          "explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "7C-G01",
+      "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+      "choices": [
+        "It remains constant",
+        "It decreases because potential energy decreases"
+      ],
+      "answer": "It remains constant",
+      "accepted_answers": [
+        "It remains constant"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+      "alternate_explanation_steps": [
+        "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7C-Q03",
+        "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point?",
+        "choices": [
+          "Kinetic is lower and potential is higher",
+          "Both are higher"
+        ],
+        "answer": "Kinetic is lower and potential is higher",
+        "accepted_answers": [
+          "Kinetic is lower and potential is higher"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+        "alternate_explanation_steps": [
+          "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7C-G02",
+      "prompt": "A sliding block stops because of friction. Has total energy vanished?",
+      "choices": [
+        "Yes, friction destroys energy",
+        "No, mechanical energy becomes thermal energy"
+      ],
+      "answer": "No, mechanical energy becomes thermal energy",
+      "accepted_answers": [
+        "No, mechanical energy becomes thermal energy"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+      "alternate_explanation_steps": [
+        "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7C-Q04",
+        "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have?",
+        "choices": [
+          "50 J",
+          "30 J"
+        ],
+        "answer": "30 J",
+        "accepted_answers": [
+          "30 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+        "alternate_explanation_steps": [
+          "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "7C-P01",
+      "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point?",
+      "choices": [
+        "Kinetic is lower and potential is higher",
+        "Both are higher"
+      ],
+      "answer": "Kinetic is lower and potential is higher",
+      "accepted_answers": [
+        "Kinetic is lower and potential is higher"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+      "alternate_explanation_steps": [
+        "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7C-Q05",
+        "prompt": "Why must the system boundary be specified in energy analysis?",
+        "choices": [
+          "Transfers across the boundary affect the system balance",
+          "Energy conservation works only for single objects"
+        ],
+        "answer": "Transfers across the boundary affect the system balance",
+        "accepted_answers": [
+          "Transfers across the boundary affect the system balance"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+        "alternate_explanation_steps": [
+          "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7C-P02",
+      "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have?",
+      "choices": [
+        "50 J",
+        "30 J"
+      ],
+      "answer": "30 J",
+      "accepted_answers": [
+        "30 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+      "alternate_explanation_steps": [
+        "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7C-Q01",
+        "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+        "choices": [
+          "It remains constant",
+          "It decreases because potential energy decreases"
+        ],
+        "answer": "It remains constant",
+        "accepted_answers": [
+          "It remains constant"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+        "alternate_explanation_steps": [
+          "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7C-P03",
+      "prompt": "Why must the system boundary be specified in energy analysis?",
+      "choices": [
+        "Transfers across the boundary affect the system balance",
+        "Energy conservation works only for single objects"
+      ],
+      "answer": "Transfers across the boundary affect the system balance",
+      "accepted_answers": [
+        "Transfers across the boundary affect the system balance"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+      "alternate_explanation_steps": [
+        "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7C-Q02",
+        "prompt": "A sliding block stops because of friction. Has total energy vanished?",
+        "choices": [
+          "Yes, friction destroys energy",
+          "No, mechanical energy becomes thermal energy"
+        ],
+        "answer": "No, mechanical energy becomes thermal energy",
+        "accepted_answers": [
+          "No, mechanical energy becomes thermal energy"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+        "alternate_explanation_steps": [
+          "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "7C-M01",
+      "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+      "choices": [
+        "It remains constant",
+        "It decreases because potential energy decreases"
+      ],
+      "answer": "It remains constant",
+      "accepted_answers": [
+        "It remains constant"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+      "alternate_explanation_steps": [
+        "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7C-M02",
+      "prompt": "A sliding block stops because of friction. Has total energy vanished?",
+      "choices": [
+        "Yes, friction destroys energy",
+        "No, mechanical energy becomes thermal energy"
+      ],
+      "answer": "No, mechanical energy becomes thermal energy",
+      "accepted_answers": [
+        "No, mechanical energy becomes thermal energy"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+      "alternate_explanation_steps": [
+        "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7C-M03",
+      "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point?",
+      "choices": [
+        "Kinetic is lower and potential is higher",
+        "Both are higher"
+      ],
+      "answer": "Kinetic is lower and potential is higher",
+      "accepted_answers": [
+        "Kinetic is lower and potential is higher"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+      "alternate_explanation_steps": [
+        "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7C-M04",
+      "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have?",
+      "choices": [
+        "50 J",
+        "30 J"
+      ],
+      "answer": "30 J",
+      "accepted_answers": [
+        "30 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+      "alternate_explanation_steps": [
+        "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7C-M05",
+      "prompt": "Why must the system boundary be specified in energy analysis?",
+      "choices": [
+        "Transfers across the boundary affect the system balance",
+        "Energy conservation works only for single objects"
+      ],
+      "answer": "Transfers across the boundary affect the system balance",
+      "accepted_answers": [
+        "Transfers across the boundary affect the system balance"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+      "alternate_explanation_steps": [
+        "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "7C-P01",
+        "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point?",
+        "choices": [
+          "Kinetic is lower and potential is higher",
+          "Both are higher"
+        ],
+        "answer": "Kinetic is lower and potential is higher",
+        "accepted_answers": [
+          "Kinetic is lower and potential is higher"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+        "alternate_explanation_steps": [
+          "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7C-Q05",
+          "prompt": "Why must the system boundary be specified in energy analysis?",
+          "choices": [
+            "Transfers across the boundary affect the system balance",
+            "Energy conservation works only for single objects"
+          ],
+          "answer": "Transfers across the boundary affect the system balance",
+          "accepted_answers": [
+            "Transfers across the boundary affect the system balance"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+          "alternate_explanation_steps": [
+            "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7C-P02",
+        "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have?",
+        "choices": [
+          "50 J",
+          "30 J"
+        ],
+        "answer": "30 J",
+        "accepted_answers": [
+          "30 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+        "alternate_explanation_steps": [
+          "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7C-Q01",
+          "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+          "choices": [
+            "It remains constant",
+            "It decreases because potential energy decreases"
+          ],
+          "answer": "It remains constant",
+          "accepted_answers": [
+            "It remains constant"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+          "alternate_explanation_steps": [
+            "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7C-P03",
+        "prompt": "Why must the system boundary be specified in energy analysis?",
+        "choices": [
+          "Transfers across the boundary affect the system balance",
+          "Energy conservation works only for single objects"
+        ],
+        "answer": "Transfers across the boundary affect the system balance",
+        "accepted_answers": [
+          "Transfers across the boundary affect the system balance"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+        "alternate_explanation_steps": [
+          "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7C-Q02",
+          "prompt": "A sliding block stops because of friction. Has total energy vanished?",
+          "choices": [
+            "Yes, friction destroys energy",
+            "No, mechanical energy becomes thermal energy"
+          ],
+          "answer": "No, mechanical energy becomes thermal energy",
+          "accepted_answers": [
+            "No, mechanical energy becomes thermal energy"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+          "alternate_explanation_steps": [
+            "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "7C-G01",
+        "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+        "choices": [
+          "It remains constant",
+          "It decreases because potential energy decreases"
+        ],
+        "answer": "It remains constant",
+        "accepted_answers": [
+          "It remains constant"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+        "alternate_explanation_steps": [
+          "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7C-Q03",
+          "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point?",
+          "choices": [
+            "Kinetic is lower and potential is higher",
+            "Both are higher"
+          ],
+          "answer": "Kinetic is lower and potential is higher",
+          "accepted_answers": [
+            "Kinetic is lower and potential is higher"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+          "alternate_explanation_steps": [
+            "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7C-G02",
+        "prompt": "A sliding block stops because of friction. Has total energy vanished?",
+        "choices": [
+          "Yes, friction destroys energy",
+          "No, mechanical energy becomes thermal energy"
+        ],
+        "answer": "No, mechanical energy becomes thermal energy",
+        "accepted_answers": [
+          "No, mechanical energy becomes thermal energy"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+        "alternate_explanation_steps": [
+          "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7C-Q04",
+          "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have?",
+          "choices": [
+            "50 J",
+            "30 J"
+          ],
+          "answer": "30 J",
+          "accepted_answers": [
+            "30 J"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+          "alternate_explanation_steps": [
+            "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "7C-C01",
+      "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point? Explain why, using your own words.",
+      "expected_ideas": [
+        "Kinetic is lower and potential is higher",
+        "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero."
+      ],
+      "misconceptions": [
+        "Both are higher"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "7C-C02",
+      "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have? Explain why, using your own words.",
+      "expected_ideas": [
+        "30 J",
+        "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J."
+      ],
+      "misconceptions": [
+        "50 J"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
