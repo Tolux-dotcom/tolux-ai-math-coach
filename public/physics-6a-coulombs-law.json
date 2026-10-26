@@ -395,108 +395,93 @@
   "mastery_check": [
     {
       "id": "6A-M01",
-      "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+      "prompt": "Two fixed point charges initially have force magnitude 72 N. Their center separation increases by a factor of 2. Find the new force magnitude.",
       "choices": [
-        "It becomes one fourth",
-        "It becomes one half"
+        "18 N",
+        "36 N"
       ],
-      "answer": "It becomes one fourth",
+      "answer": "18 N",
       "accepted_answers": [
-        "It becomes one fourth"
+        "18 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
-      "alternate_explanation_steps": [
-        "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Only separation changes, so divide force by the square of the separation multiplier.",
+      "calculation_check": {
+        "operation": "inverse_square",
+        "initial": 72,
+        "factor": 2
+      }
     },
     {
       "id": "6A-M02",
-      "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+      "prompt": "Two fixed point charges initially have force magnitude 72 N. Their center separation increases by a factor of 3. Find the new force magnitude.",
       "choices": [
-        "They repel",
-        "They attract along the line joining them"
+        "24 N",
+        "8 N"
       ],
-      "answer": "They attract along the line joining them",
+      "answer": "8 N",
       "accepted_answers": [
-        "They attract along the line joining them"
+        "8 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
-      "alternate_explanation_steps": [
-        "The force on each charge points toward the other. Equal-sign charges instead repel.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Only separation changes, so divide force by the square of the separation multiplier.",
+      "calculation_check": {
+        "operation": "inverse_square",
+        "initial": 72,
+        "factor": 3
+      }
     },
     {
       "id": "6A-M03",
-      "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude?",
+      "prompt": "Two fixed point charges initially have force magnitude 72 N. Their center separation increases by a factor of 4. Find the new force magnitude.",
       "choices": [
-        "It doubles",
-        "It quadruples"
+        "4.5 N",
+        "18 N"
       ],
-      "answer": "It doubles",
+      "answer": "4.5 N",
       "accepted_answers": [
-        "It doubles"
+        "4.5 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Force is proportional to each charge separately; only distance is squared in the denominator.",
-      "alternate_explanation_steps": [
-        "Force is proportional to each charge separately; only distance is squared in the denominator.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Only separation changes, so divide force by the square of the separation multiplier.",
+      "calculation_check": {
+        "operation": "inverse_square",
+        "initial": 72,
+        "factor": 4
+      }
     },
     {
       "id": "6A-M04",
-      "prompt": "Why does a positive test charge accelerate in the direction of the electric field?",
+      "prompt": "Two fixed point charges initially have force magnitude 72 N. Their center separation increases by a factor of 5. Find the new force magnitude.",
       "choices": [
-        "All charges always accelerate with the field",
-        "Its electric force is qE with q positive"
+        "14.4 N",
+        "2.88 N"
       ],
-      "answer": "Its electric force is qE with q positive",
+      "answer": "2.88 N",
       "accepted_answers": [
-        "Its electric force is qE with q positive"
+        "2.88 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
-      "alternate_explanation_steps": [
-        "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Only separation changes, so divide force by the square of the separation multiplier.",
+      "calculation_check": {
+        "operation": "inverse_square",
+        "initial": 72,
+        "factor": 5
+      }
     },
     {
       "id": "6A-M05",
-      "prompt": "A large charge and a small charge interact. Compare their force magnitudes.",
+      "prompt": "Two fixed point charges initially have force magnitude 72 N. Their center separation increases by a factor of 6. Find the new force magnitude.",
       "choices": [
-        "They are equal",
-        "The large charge exerts a larger force"
+        "2 N",
+        "12 N"
       ],
-      "answer": "They are equal",
+      "answer": "2 N",
       "accepted_answers": [
-        "They are equal"
+        "2 N"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
-      "alternate_explanation_steps": [
-        "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Only separation changes, so divide force by the square of the separation multiplier.",
+      "calculation_check": {
+        "operation": "inverse_square",
+        "initial": 72,
+        "factor": 6
+      }
     }
   ],
   "practice": {
@@ -752,6 +737,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
