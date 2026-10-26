@@ -556,113 +556,68 @@
   "mastery_check": [
     {
       "id": "5H-M01",
-      "prompt": "At fixed distance, one mass doubles and the other triples. What is the force multiplier?",
-      "answer": "6",
-      "accepted_answers": [
-        "6"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
-      "alternate_explanation_steps": [
-        "The mass product multiplies by 2 × 3 = 6. Add exponents for powers of ten in scientific notation, but multiply these mass factors.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "The center separation of two spherically symmetric nonoverlapping bodies is multiplied by 2, and one mass is multiplied by 4. The other mass stays fixed. What is F_new/F_old?",
       "choices": [
-        "6",
-        "5",
-        "1/6"
-      ]
+        "1",
+        "2"
+      ],
+      "answer": "1",
+      "accepted_answers": [
+        "1"
+      ],
+      "alternate_explanation": "The mass factor n² cancels the squared separation factor n², leaving unchanged force."
     },
     {
       "id": "5H-M02",
-      "prompt": "Which equals (2 × 10³)(3 × 10⁴)?",
-      "answer": "6 × 10⁷",
-      "accepted_answers": [
-        "6 × 10⁷"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
-      "alternate_explanation_steps": [
-        "Multiply coefficients: 2 × 3 = 6. Add exponents: 3 + 4 = 7. This product pattern is used when multiplying masses in the gravitational law.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "The center separation of two spherically symmetric nonoverlapping bodies is multiplied by 3, and one mass is multiplied by 9. The other mass stays fixed. What is F_new/F_old?",
       "choices": [
-        "6 × 10⁷",
-        "5 × 10⁷",
-        "6 × 10¹²"
-      ]
+        "3",
+        "1"
+      ],
+      "answer": "1",
+      "accepted_answers": [
+        "1"
+      ],
+      "alternate_explanation": "The mass factor n² cancels the squared separation factor n², leaving unchanged force."
     },
     {
       "id": "5H-M03",
-      "prompt": "Distance becomes three times as large with masses fixed. What is the force ratio F_new/F_old?",
-      "answer": "1/9",
-      "accepted_answers": [
-        "1/9"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
-      "alternate_explanation_steps": [
-        "Use the inverse square: 1/(3²) = 1/9. The ratio has no units because it compares two forces.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "The center separation of two spherically symmetric nonoverlapping bodies is multiplied by 4, and one mass is multiplied by 16. The other mass stays fixed. What is F_new/F_old?",
       "choices": [
-        "1/9",
-        "1/3",
-        "9"
-      ]
+        "1",
+        "4"
+      ],
+      "answer": "1",
+      "accepted_answers": [
+        "1"
+      ],
+      "alternate_explanation": "The mass factor n² cancels the squared separation factor n², leaving unchanged force."
     },
     {
       "id": "5H-M04",
-      "prompt": "Center-to-center separation is halved with masses fixed. What happens to force?",
-      "answer": "Four times as large",
-      "accepted_answers": [
-        "Four times as large"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
-      "alternate_explanation_steps": [
-        "The distance ratio is 1/2, so force is multiplied by 1/(1/2)² = 4.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "The center separation of two spherically symmetric nonoverlapping bodies is multiplied by 5, and one mass is multiplied by 25. The other mass stays fixed. What is F_new/F_old?",
       "choices": [
-        "Four times as large",
-        "Twice as large",
-        "One fourth as large"
-      ]
+        "5",
+        "1"
+      ],
+      "answer": "1",
+      "accepted_answers": [
+        "1"
+      ],
+      "alternate_explanation": "The mass factor n² cancels the squared separation factor n², leaving unchanged force."
     },
     {
       "id": "5H-M05",
-      "prompt": "Earth attracts a satellite. Compare the satellite’s gravitational force on Earth.",
-      "answer": "Equal magnitude, opposite direction",
-      "accepted_answers": [
-        "Equal magnitude, opposite direction"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
-      "alternate_explanation_steps": [
-        "Gravity is a mutual interaction satisfying Newton’s third law. Earth’s much greater mass makes its acceleration much smaller, not its force.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "The center separation of two spherically symmetric nonoverlapping bodies is multiplied by 6, and one mass is multiplied by 36. The other mass stays fixed. What is F_new/F_old?",
       "choices": [
-        "Equal magnitude, opposite direction",
-        "Smaller because the satellite is lighter",
-        "Zero"
-      ]
+        "1",
+        "6"
+      ],
+      "answer": "1",
+      "accepted_answers": [
+        "1"
+      ],
+      "alternate_explanation": "The mass factor n² cancels the squared separation factor n², leaving unchanged force."
     }
   ],
   "practice": {
