@@ -1,3 +1,4 @@
+import {createAdministratorLearningAccess, hasUnlimitedLearningAccess, buildLearningTrialStatus} from './administrator-learning-access.mjs';
 import { resolveCheckoutReturnConfig } from "./checkout-return-config.mjs";
 import { resolvePublicAuthConfig, publicAuthConfigScript } from "./public-auth-config.mjs";
 import "./growth-server-hooks.mjs";
@@ -80,6 +81,11 @@ const supabaseAdmin =
       )
     : null;
 
+const learningAdministrators = createAdministratorLearningAccess({
+  client: supabaseAdmin,
+  userIds: process.env.GROWTH_ADMIN_USER_IDS
+});
+
 if (supabaseServerConfig.reason === "missing-server-key") {
   console.error("[auth] Supabase server client is not configured", {
     hasUrl: Boolean(process.env.SUPABASE_URL),
@@ -153,6 +159,12 @@ async function getStudentUsage(userId) {
   }
 
   return created;
+}
+
+async function getStudentLearningUsage(userId) {
+  const usage = await getStudentUsage(userId);
+  if (!usage) return null;
+  return {...usage, is_administrator: await learningAdministrators.isAdministrator(userId)};
 }
 
 async function getStudentTrialAccess(userId) {
@@ -546,7 +558,7 @@ const server = http.createServer(async (req, res) => {
       let isSubscriber = false;
 
       if (!qaSession) {
-        const usage = await getStudentUsage(user.id);
+        const usage = await getStudentLearningUsage(user.id);
         if (!usage) {
           return send(res, 500, {
             error: "Unable to verify the student account right now."
@@ -633,11 +645,12 @@ const server = http.createServer(async (req, res) => {
         return send(res, decision.status, decision.body);
       }
 
-      const usage = await getStudentUsage(user.id);
+      const usage = await getStudentLearningUsage(user.id);
       const decision = resolveFullSimulationAccess({
         authenticated: true,
         entitlementAvailable: Boolean(usage),
-        isSubscriber: Boolean(usage?.is_subscriber)
+        isSubscriber: Boolean(usage?.is_subscriber),
+        isAdministrator: usage?.is_administrator === true
       });
 
       return send(res, decision.status, decision.body);
@@ -804,6 +817,12 @@ if (event.type === "invoice.payment_failed") {
     }
 
     const { plan } = await readJson(req);
+    if (plan === 'student' && await learningAdministrators.isAdministrator(user.id)) {
+      return send(res, 409, {
+        error: 'Your administrator account already has free learning access. No Student Plan subscription is required.',
+        isAdministrator: true
+      });
+    }
     const priceId = STRIPE_PLAN_PRICE_IDS[plan];
 
     if (!priceId) {
@@ -991,7 +1010,7 @@ const usage = qaSession
       questions_used: qaSession.questionsUsed,
       is_subscriber: false
     }
-  : await getStudentUsage(user.id);
+  : await getStudentLearningUsage(user.id);
 
 if (!usage) {
   return send(res, 500, {
@@ -1000,27 +1019,24 @@ if (!usage) {
 }
 
 const dailyFreeState =
-  !usage.is_subscriber && !qaSession && dailyFreeAccess.configured
+  !hasUnlimitedLearningAccess(usage) && !qaSession && dailyFreeAccess.configured
     ? dailyFreeAccess.read(req.headers.cookie, user.id)
     : null;
 const dailyFreeStatus = dailyFreeState
   ? dailyFreeAccess.status(dailyFreeState)
   : null;
 
-const trial = usage.is_subscriber || qaSession || dailyFreeStatus
+const trial = hasUnlimitedLearningAccess(usage) || qaSession || dailyFreeStatus
   ? null
   : await getStudentTrialAccess(user.id);
 
-if (!usage.is_subscriber && !qaSession && !dailyFreeStatus && !trial) {
+if (!hasUnlimitedLearningAccess(usage) && !qaSession && !dailyFreeStatus && !trial) {
   return send(res, 500, {
     error: "Unable to verify your free learning time right now."
   });
 }
 
-const trialStatus = buildTrialStatus(
-  trial?.trial_seconds_used || 0,
-  usage.is_subscriber
-);
+const trialStatus = buildLearningTrialStatus(trial?.trial_seconds_used || 0, usage);
 
 if (dailyFreeStatus?.exhausted) {
   return send(res, 403, {
@@ -1082,7 +1098,7 @@ if (!qaSession && !dailyFreeStatus && trialStatus.trialExpired) {
       if (qaSession) {
         const advancedQa = internalQa.advance(qaSession);
         responseHeaders = { "Set-Cookie": advancedQa.cookie };
-      } else if (dailyFreeState && !usage.is_subscriber) {
+      } else if (dailyFreeState && !hasUnlimitedLearningAccess(usage)) {
         const advancedDaily = dailyFreeAccess.advance(dailyFreeState);
         if (advancedDaily) {
           responseHeaders = { "Set-Cookie": advancedDaily.cookie };
@@ -1097,6 +1113,7 @@ if (!qaSession && !dailyFreeStatus && trialStatus.trialExpired) {
           reply: response.output_text || "I could not generate a response.",
           qaMode: Boolean(qaSession),
           isSubscriber: usage.is_subscriber,
+          isAdministrator: usage.is_administrator === true,
           dailyFreeMode: Boolean(dailyFreeResponse),
           dailyFreeUsed: dailyFreeResponse?.used,
           dailyFreeRemaining: dailyFreeResponse?.remaining,
@@ -1138,7 +1155,7 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
           questions_used: qaSession.questionsUsed,
           is_subscriber: false
         }
-      : await getStudentUsage(user.id);
+      : await getStudentLearningUsage(user.id);
 
     if (!usage) {
       return send(res, 500, {
@@ -1146,20 +1163,17 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
       });
     }
 
-    const trial = usage.is_subscriber
+    const trial = hasUnlimitedLearningAccess(usage)
       ? null
       : await getStudentTrialAccess(user.id);
 
-    if (!usage.is_subscriber && !trial) {
+    if (!hasUnlimitedLearningAccess(usage) && !trial) {
       return send(res, 500, {
         error: "Unable to verify your free learning time right now."
       });
     }
 
-    const trialStatus = buildTrialStatus(
-      trial?.trial_seconds_used || 0,
-      usage.is_subscriber
-    );
+    const trialStatus = buildLearningTrialStatus(trial?.trial_seconds_used || 0, usage);
 
     if (trialStatus.trialExpired) {
       return send(res, 403, {
@@ -1192,6 +1206,7 @@ if (req.method === "POST" && req.url === "/api/lesson-usage") {
     return send(res, 200, {
       allowed: true,
       isSubscriber: usage.is_subscriber,
+      isAdministrator: usage.is_administrator === true,
       qaMode: false,
       isFreeDiagnostic: false,
       trialSecondsUsed: trialStatus.trialSecondsUsed,
@@ -1218,15 +1233,15 @@ if (
       return send(res, 401, { error: "Please sign in to continue." });
     }
 
-    const usage = await getStudentUsage(user.id);
+    const usage = await getStudentLearningUsage(user.id);
     if (!usage) {
       return send(res, 500, { error: "Unable to verify your learning access." });
     }
 
-    if (usage.is_subscriber) {
+    if (hasUnlimitedLearningAccess(usage)) {
       return send(res, 200, {
         allowed: true,
-        ...buildTrialStatus(0, true)
+        ...buildLearningTrialStatus(0, usage)
       });
     }
 
