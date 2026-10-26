@@ -395,108 +395,93 @@
   "mastery_check": [
     {
       "id": "7C-M01",
-      "prompt": "A ball falls with negligible air resistance. What happens to its mechanical energy?",
+      "prompt": "A closed frictionless cart-Earth system has 40 J initial mechanical energy. At a later point its gravitational potential energy is 10 J. Find kinetic energy there.",
       "choices": [
-        "It remains constant",
-        "It decreases because potential energy decreases"
-      ],
-      "answer": "It remains constant",
-      "accepted_answers": [
-        "It remains constant"
-      ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
-      "alternate_explanation_steps": [
-        "Gravitational potential energy becomes kinetic energy. For a system including Earth and ball, K + U is conserved when no nonconservative transfer changes it.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
-    },
-    {
-      "id": "7C-M02",
-      "prompt": "A sliding block stops because of friction. Has total energy vanished?",
-      "choices": [
-        "Yes, friction destroys energy",
-        "No, mechanical energy becomes thermal energy"
-      ],
-      "answer": "No, mechanical energy becomes thermal energy",
-      "accepted_answers": [
-        "No, mechanical energy becomes thermal energy"
-      ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
-      "alternate_explanation_steps": [
-        "Enlarge the system to include block and surface. Total energy is conserved, though mechanical energy alone decreases.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
-    },
-    {
-      "id": "7C-M03",
-      "prompt": "A frictionless pendulum reaches its highest point. How do kinetic and gravitational potential energy compare with the lowest point?",
-      "choices": [
-        "Kinetic is lower and potential is higher",
-        "Both are higher"
-      ],
-      "answer": "Kinetic is lower and potential is higher",
-      "accepted_answers": [
-        "Kinetic is lower and potential is higher"
-      ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
-      "alternate_explanation_steps": [
-        "Energy shifts between K and U. At an extreme turning point, instantaneous speed is zero, but acceleration need not be zero.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
-    },
-    {
-      "id": "7C-M04",
-      "prompt": "A frictionless cart starts from rest with 40 J potential energy and reaches a point with 10 J potential energy. What kinetic energy does it have?",
-      "choices": [
-        "50 J",
-        "30 J"
+        "30 J",
+        "50 J"
       ],
       "answer": "30 J",
       "accepted_answers": [
         "30 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
+      "alternate_explanation": "The total K + U remains constant, so subtract final potential energy from total energy.",
+      "calculation_check": {
+        "operation": "energy_balance",
+        "total": 40,
+        "potential": 10
+      }
+    },
+    {
+      "id": "7C-M02",
+      "prompt": "A closed frictionless cart-Earth system has 60 J initial mechanical energy. At a later point its gravitational potential energy is 15 J. Find kinetic energy there.",
+      "choices": [
+        "75 J",
+        "45 J"
       ],
-      "alternate_explanation": "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
-      "alternate_explanation_steps": [
-        "Initial total mechanical energy is 40 J. Conservation gives K_final = 40 − 10 = 30 J.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "answer": "45 J",
+      "accepted_answers": [
+        "45 J"
+      ],
+      "alternate_explanation": "The total K + U remains constant, so subtract final potential energy from total energy.",
+      "calculation_check": {
+        "operation": "energy_balance",
+        "total": 60,
+        "potential": 15
+      }
+    },
+    {
+      "id": "7C-M03",
+      "prompt": "A closed frictionless cart-Earth system has 80 J initial mechanical energy. At a later point its gravitational potential energy is 20 J. Find kinetic energy there.",
+      "choices": [
+        "60 J",
+        "100 J"
+      ],
+      "answer": "60 J",
+      "accepted_answers": [
+        "60 J"
+      ],
+      "alternate_explanation": "The total K + U remains constant, so subtract final potential energy from total energy.",
+      "calculation_check": {
+        "operation": "energy_balance",
+        "total": 80,
+        "potential": 20
+      }
+    },
+    {
+      "id": "7C-M04",
+      "prompt": "A closed frictionless cart-Earth system has 100 J initial mechanical energy. At a later point its gravitational potential energy is 25 J. Find kinetic energy there.",
+      "choices": [
+        "125 J",
+        "75 J"
+      ],
+      "answer": "75 J",
+      "accepted_answers": [
+        "75 J"
+      ],
+      "alternate_explanation": "The total K + U remains constant, so subtract final potential energy from total energy.",
+      "calculation_check": {
+        "operation": "energy_balance",
+        "total": 100,
+        "potential": 25
+      }
     },
     {
       "id": "7C-M05",
-      "prompt": "Why must the system boundary be specified in energy analysis?",
+      "prompt": "A closed frictionless cart-Earth system has 120 J initial mechanical energy. At a later point its gravitational potential energy is 30 J. Find kinetic energy there.",
       "choices": [
-        "Transfers across the boundary affect the system balance",
-        "Energy conservation works only for single objects"
+        "90 J",
+        "150 J"
       ],
-      "answer": "Transfers across the boundary affect the system balance",
+      "answer": "90 J",
       "accepted_answers": [
-        "Transfers across the boundary affect the system balance"
+        "90 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
-      "alternate_explanation_steps": [
-        "Energy can enter or leave through work, heating, or other transfers. A larger closed system can conserve total energy while one part gains or loses it.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "The total K + U remains constant, so subtract final potential energy from total energy.",
+      "calculation_check": {
+        "operation": "energy_balance",
+        "total": 120,
+        "potential": 30
+      }
     }
   ],
   "practice": {
@@ -752,6 +737,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
