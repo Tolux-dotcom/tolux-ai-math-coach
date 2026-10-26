@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Repeating motion",
+      "content": "Simple harmonic motion is repetitive motion around an equilibrium position caused by a restoring force. Springs and small-angle pendulums are common examples.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Maximum displacement",
+          "Equilibrium crossing",
+          "Opposite maximum displacement"
+        ],
+        "label": "At extremes speed is zero; at equilibrium speed is greatest for an ideal oscillator."
+      }
+    },
+    {
+      "title": "Equilibrium and restoring force",
+      "content": "At equilibrium, the system has no displacement from its balance position. When displaced, a restoring force acts toward equilibrium."
+    },
+    {
+      "title": "Energy changes during oscillation",
+      "content": "In an ideal oscillator, energy continually transforms between kinetic energy and potential energy while total mechanical energy remains constant."
+    },
+    {
+      "title": "What defines an ideal simple harmonic restoring force?",
+      "content": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium."
+    },
+    {
+      "title": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+      "content": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "8A-W01",
+      "prompt": "What defines an ideal simple harmonic restoring force?",
+      "choices": [
+        "It is opposite displacement and proportional to it",
+        "It is constant in the motion direction"
+      ],
+      "answer": "It is opposite displacement and proportional to it",
+      "accepted_answers": [
+        "It is opposite displacement and proportional to it"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+      "alternate_explanation_steps": [
+        "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "What defines an ideal simple harmonic restoring force?"
+        },
+        {
+          "equation": "It is opposite displacement and proportional to it",
+          "explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Maximum displacement",
+          "Equilibrium crossing",
+          "Opposite maximum displacement"
+        ],
+        "label": "At extremes speed is zero; at equilibrium speed is greatest for an ideal oscillator."
+      }
+    },
+    {
+      "id": "8A-W02",
+      "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+      "choices": [
+        "Maximum",
+        "Zero at that instant"
+      ],
+      "answer": "Zero at that instant",
+      "accepted_answers": [
+        "Zero at that instant"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+      "alternate_explanation_steps": [
+        "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?"
+        },
+        {
+          "equation": "Zero at that instant",
+          "explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "8A-G01",
+      "prompt": "What defines an ideal simple harmonic restoring force?",
+      "choices": [
+        "It is opposite displacement and proportional to it",
+        "It is constant in the motion direction"
+      ],
+      "answer": "It is opposite displacement and proportional to it",
+      "accepted_answers": [
+        "It is opposite displacement and proportional to it"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+      "alternate_explanation_steps": [
+        "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8A-Q03",
+        "prompt": "At equilibrium in ideal mass-spring motion, what is maximum?",
+        "choices": [
+          "Speed",
+          "Restoring-force magnitude"
+        ],
+        "answer": "Speed",
+        "accepted_answers": [
+          "Speed"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+        "alternate_explanation_steps": [
+          "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8A-G02",
+      "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+      "choices": [
+        "Maximum",
+        "Zero at that instant"
+      ],
+      "answer": "Zero at that instant",
+      "accepted_answers": [
+        "Zero at that instant"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+      "alternate_explanation_steps": [
+        "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8A-Q04",
+        "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how?",
+        "choices": [
+          "It decreases",
+          "It increases"
+        ],
+        "answer": "It increases",
+        "accepted_answers": [
+          "It increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+        "alternate_explanation_steps": [
+          "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "8A-P01",
+      "prompt": "At equilibrium in ideal mass-spring motion, what is maximum?",
+      "choices": [
+        "Speed",
+        "Restoring-force magnitude"
+      ],
+      "answer": "Speed",
+      "accepted_answers": [
+        "Speed"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+      "alternate_explanation_steps": [
+        "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8A-Q05",
+        "prompt": "For a small-angle ideal pendulum, does changing bob mass change period?",
+        "choices": [
+          "No, in this model",
+          "Yes, heavier always means longer period"
+        ],
+        "answer": "No, in this model",
+        "accepted_answers": [
+          "No, in this model"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+        "alternate_explanation_steps": [
+          "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8A-P02",
+      "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how?",
+      "choices": [
+        "It decreases",
+        "It increases"
+      ],
+      "answer": "It increases",
+      "accepted_answers": [
+        "It increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+      "alternate_explanation_steps": [
+        "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8A-Q01",
+        "prompt": "What defines an ideal simple harmonic restoring force?",
+        "choices": [
+          "It is opposite displacement and proportional to it",
+          "It is constant in the motion direction"
+        ],
+        "answer": "It is opposite displacement and proportional to it",
+        "accepted_answers": [
+          "It is opposite displacement and proportional to it"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+        "alternate_explanation_steps": [
+          "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8A-P03",
+      "prompt": "For a small-angle ideal pendulum, does changing bob mass change period?",
+      "choices": [
+        "No, in this model",
+        "Yes, heavier always means longer period"
+      ],
+      "answer": "No, in this model",
+      "accepted_answers": [
+        "No, in this model"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+      "alternate_explanation_steps": [
+        "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8A-Q02",
+        "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+        "choices": [
+          "Maximum",
+          "Zero at that instant"
+        ],
+        "answer": "Zero at that instant",
+        "accepted_answers": [
+          "Zero at that instant"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+        "alternate_explanation_steps": [
+          "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "8A-M01",
+      "prompt": "What defines an ideal simple harmonic restoring force?",
+      "choices": [
+        "It is opposite displacement and proportional to it",
+        "It is constant in the motion direction"
+      ],
+      "answer": "It is opposite displacement and proportional to it",
+      "accepted_answers": [
+        "It is opposite displacement and proportional to it"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+      "alternate_explanation_steps": [
+        "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8A-M02",
+      "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+      "choices": [
+        "Maximum",
+        "Zero at that instant"
+      ],
+      "answer": "Zero at that instant",
+      "accepted_answers": [
+        "Zero at that instant"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+      "alternate_explanation_steps": [
+        "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8A-M03",
+      "prompt": "At equilibrium in ideal mass-spring motion, what is maximum?",
+      "choices": [
+        "Speed",
+        "Restoring-force magnitude"
+      ],
+      "answer": "Speed",
+      "accepted_answers": [
+        "Speed"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+      "alternate_explanation_steps": [
+        "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8A-M04",
+      "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how?",
+      "choices": [
+        "It decreases",
+        "It increases"
+      ],
+      "answer": "It increases",
+      "accepted_answers": [
+        "It increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+      "alternate_explanation_steps": [
+        "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "8A-M05",
+      "prompt": "For a small-angle ideal pendulum, does changing bob mass change period?",
+      "choices": [
+        "No, in this model",
+        "Yes, heavier always means longer period"
+      ],
+      "answer": "No, in this model",
+      "accepted_answers": [
+        "No, in this model"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+      "alternate_explanation_steps": [
+        "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "8A-P01",
+        "prompt": "At equilibrium in ideal mass-spring motion, what is maximum?",
+        "choices": [
+          "Speed",
+          "Restoring-force magnitude"
+        ],
+        "answer": "Speed",
+        "accepted_answers": [
+          "Speed"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+        "alternate_explanation_steps": [
+          "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8A-Q05",
+          "prompt": "For a small-angle ideal pendulum, does changing bob mass change period?",
+          "choices": [
+            "No, in this model",
+            "Yes, heavier always means longer period"
+          ],
+          "answer": "No, in this model",
+          "accepted_answers": [
+            "No, in this model"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+          "alternate_explanation_steps": [
+            "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8A-P02",
+        "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how?",
+        "choices": [
+          "It decreases",
+          "It increases"
+        ],
+        "answer": "It increases",
+        "accepted_answers": [
+          "It increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+        "alternate_explanation_steps": [
+          "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8A-Q01",
+          "prompt": "What defines an ideal simple harmonic restoring force?",
+          "choices": [
+            "It is opposite displacement and proportional to it",
+            "It is constant in the motion direction"
+          ],
+          "answer": "It is opposite displacement and proportional to it",
+          "accepted_answers": [
+            "It is opposite displacement and proportional to it"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+          "alternate_explanation_steps": [
+            "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8A-P03",
+        "prompt": "For a small-angle ideal pendulum, does changing bob mass change period?",
+        "choices": [
+          "No, in this model",
+          "Yes, heavier always means longer period"
+        ],
+        "answer": "No, in this model",
+        "accepted_answers": [
+          "No, in this model"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+        "alternate_explanation_steps": [
+          "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8A-Q02",
+          "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+          "choices": [
+            "Maximum",
+            "Zero at that instant"
+          ],
+          "answer": "Zero at that instant",
+          "accepted_answers": [
+            "Zero at that instant"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+          "alternate_explanation_steps": [
+            "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "8A-G01",
+        "prompt": "What defines an ideal simple harmonic restoring force?",
+        "choices": [
+          "It is opposite displacement and proportional to it",
+          "It is constant in the motion direction"
+        ],
+        "answer": "It is opposite displacement and proportional to it",
+        "accepted_answers": [
+          "It is opposite displacement and proportional to it"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+        "alternate_explanation_steps": [
+          "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8A-Q03",
+          "prompt": "At equilibrium in ideal mass-spring motion, what is maximum?",
+          "choices": [
+            "Speed",
+            "Restoring-force magnitude"
+          ],
+          "answer": "Speed",
+          "accepted_answers": [
+            "Speed"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+          "alternate_explanation_steps": [
+            "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8A-G02",
+        "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+        "choices": [
+          "Maximum",
+          "Zero at that instant"
+        ],
+        "answer": "Zero at that instant",
+        "accepted_answers": [
+          "Zero at that instant"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+        "alternate_explanation_steps": [
+          "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8A-Q04",
+          "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how?",
+          "choices": [
+            "It decreases",
+            "It increases"
+          ],
+          "answer": "It increases",
+          "accepted_answers": [
+            "It increases"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+          "alternate_explanation_steps": [
+            "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "8A-C01",
+      "prompt": "At equilibrium in ideal mass-spring motion, what is maximum? Explain why, using your own words.",
+      "expected_ideas": [
+        "Speed",
+        "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum."
+      ],
+      "misconceptions": [
+        "Restoring-force magnitude"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "8A-C02",
+      "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how? Explain why, using your own words.",
+      "expected_ideas": [
+        "It increases",
+        "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness."
+      ],
+      "misconceptions": [
+        "It decreases"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
