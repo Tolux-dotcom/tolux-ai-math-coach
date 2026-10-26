@@ -219,8 +219,11 @@
           ],
           "title": "Work and Power",
           "summary": "Calculate and explain work and power in one dimension.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-7a-work-power.json"
         },
         {
           "module_id": "phy-7b-mechanical-energy",
@@ -230,8 +233,11 @@
           ],
           "title": "Mechanical Energy",
           "summary": "Calculate kinetic and potential energy.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-7b-mechanical-energy.json"
         },
         {
           "module_id": "phy-7c-conservation-energy",
@@ -241,8 +247,11 @@
           ],
           "title": "Conservation of Energy",
           "summary": "Apply the work-energy theorem and track energy transformations.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-7c-conservation-energy.json"
         },
         {
           "module_id": "phy-7d-impulse-momentum",
@@ -252,8 +261,11 @@
           ],
           "title": "Impulse and Momentum",
           "summary": "Calculate and describe impulse and momentum.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-7d-impulse-momentum.json"
         },
         {
           "module_id": "phy-7e-collisions",
@@ -263,8 +275,11 @@
           ],
           "title": "Conservation of Momentum",
           "summary": "Analyze one-dimensional elastic and inelastic collisions.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-7e-collisions.json"
         }
       ]
     },
