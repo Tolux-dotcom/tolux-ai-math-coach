@@ -399,108 +399,68 @@
   "mastery_check": [
     {
       "id": "8E-M01",
-      "prompt": "In vacuum, which travels faster: radio waves or visible light?",
+      "prompt": "Wave B has 2 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
       "choices": [
-        "They have the same speed",
-        "Visible light"
+        "1/2 as long",
+        "2 times as long"
       ],
-      "answer": "They have the same speed",
+      "answer": "1/2 as long",
       "accepted_answers": [
-        "They have the same speed"
+        "1/2 as long"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
-      "alternate_explanation_steps": [
-        "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
     },
     {
       "id": "8E-M02",
-      "prompt": "Which has higher frequency: ultraviolet or infrared?",
+      "prompt": "Wave B has 3 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
       "choices": [
-        "Infrared",
-        "Ultraviolet"
+        "3 times as long",
+        "1/3 as long"
       ],
-      "answer": "Ultraviolet",
+      "answer": "1/3 as long",
       "accepted_answers": [
-        "Ultraviolet"
+        "1/3 as long"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
-      "alternate_explanation_steps": [
-        "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
     },
     {
       "id": "8E-M03",
-      "prompt": "What happens to vacuum wavelength as electromagnetic frequency increases?",
+      "prompt": "Wave B has 4 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
       "choices": [
-        "It decreases",
-        "It increases"
+        "1/4 as long",
+        "4 times as long"
       ],
-      "answer": "It decreases",
+      "answer": "1/4 as long",
       "accepted_answers": [
-        "It decreases"
+        "1/4 as long"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
-      "alternate_explanation_steps": [
-        "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
     },
     {
       "id": "8E-M04",
-      "prompt": "Which photons have greater individual energy: blue or red visible light?",
+      "prompt": "Wave B has 5 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
       "choices": [
-        "Red",
-        "Blue"
+        "5 times as long",
+        "1/5 as long"
       ],
-      "answer": "Blue",
+      "answer": "1/5 as long",
       "accepted_answers": [
-        "Blue"
+        "1/5 as long"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
-      "alternate_explanation_steps": [
-        "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
     },
     {
       "id": "8E-M05",
-      "prompt": "Does a higher-frequency electromagnetic wave always travel faster in vacuum?",
+      "prompt": "Wave B has 6 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
       "choices": [
-        "No",
-        "Yes"
+        "1/6 as long",
+        "6 times as long"
       ],
-      "answer": "No",
+      "answer": "1/6 as long",
       "accepted_answers": [
-        "No"
+        "1/6 as long"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
-      "alternate_explanation_steps": [
-        "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
     }
   ],
   "practice": {
@@ -756,6 +716,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
