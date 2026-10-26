@@ -121,6 +121,8 @@ const coachHelp = document.querySelector('#coachHelp');
 let activeLesson = null;
 let activeModuleButton = null;
 let activeMode = 'Tutor Mode';
+let activeSupportItem = null;
+let practiceIndex = 0;
 
 document.querySelectorAll('.physics-mode').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -130,6 +132,10 @@ document.querySelectorAll('.physics-mode').forEach(btn => {
     lessonSubtitle.textContent = activeLesson
       ? `${activeMode} • TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`
       : `${activeMode} selected. Choose a TEKS lesson to begin.`;
+    if (activeLesson) {
+      practiceIndex = 0;
+      renderLesson();
+    }
   });
 });
 
@@ -177,38 +183,123 @@ async function openLesson(mod, btn) {
   if (activeModuleButton) activeModuleButton.classList.remove('active');
   activeModuleButton = btn;
   activeModuleButton.classList.add('active');
+  practiceIndex = 0;
+  renderLesson();
+  document.querySelector('#lesson').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
+function normalizeAnswer(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replaceAll('−', '-')
+    .replaceAll('²', '2')
+    .replace(/\s+/g, ' ');
+}
+
+function isAnswerCorrect(item, value) {
+  const accepted = item?.accepted_answers?.length ? item.accepted_answers : [item?.answer];
+  return accepted.filter(Boolean).some(answer => normalizeAnswer(answer) === normalizeAnswer(value));
+}
+
+function createProblemCard(item, title, afterCorrect) {
+  activeSupportItem = item;
+  const article = document.createElement('article');
+  article.className = 'physics-stage-card physics-guided';
+  article.innerHTML = `
+    <h3>${title}</h3>
+    <p>${item.prompt}</p>
+    <div class="physics-answer-row">
+      <label>My answer <input class="physics-answer-input" type="text" autocomplete="off" placeholder="Enter your answer" /></label>
+      <button type="button" class="physics-check-answer">Check answer</button>
+    </div>
+    <p class="physics-answer-feedback" aria-live="polite"></p>`;
+  const input = article.querySelector('.physics-answer-input');
+  const feedback = article.querySelector('.physics-answer-feedback');
+  const check = () => {
+    if (!input.value.trim()) {
+      feedback.textContent = 'Enter an answer first.';
+      return;
+    }
+    if (isAnswerCorrect(item, input.value)) {
+      feedback.textContent = 'You got it. ' + (item.answer ? `Answer: ${item.answer}.` : '');
+      if (afterCorrect) afterCorrect(article);
+    } else {
+      feedback.textContent = 'Not yet. Try again, or use “I’m stuck” for a small hint.';
+    }
+  };
+  article.querySelector('.physics-check-answer').addEventListener('click', check);
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter') check();
+  });
+  article.addEventListener('click', () => {
+    activeSupportItem = item;
+  });
+  return article;
+}
+
+async function renderLesson() {
   lessonTitle.textContent = `TEKS ${activeLesson.teks[0]} • ${activeLesson.title}`;
   lessonSubtitle.textContent = `${activeMode} • ${activeLesson.learning_goal}`;
   lessonStages.innerHTML = '';
+  coachHelp.textContent = '';
+  activeSupportItem = null;
 
-  for (const stage of activeLesson.stages) {
-    const article = document.createElement('article');
-    article.className = `physics-stage-card${stage.id === 'guided-practice' ? ' physics-guided' : ''}`;
-    const body = stage.content || stage.prompt || '';
-    article.innerHTML = `<h3>${stage.title}</h3><p>${body}</p>`;
-    lessonStages.appendChild(article);
+  if (activeMode === 'Practice Mode' && activeLesson.practice?.problems?.length) {
+    const intro = document.createElement('article');
+    intro.className = 'physics-stage-card';
+    intro.innerHTML = `<h3>Practice by yourself</h3><p>${activeLesson.practice.intro || 'Solve one problem at a time and check your answer.'}</p>`;
+    lessonStages.appendChild(intro);
+
+    const problems = activeLesson.practice.problems;
+    const item = problems[practiceIndex % problems.length];
+    const card = createProblemCard(item, `Question ${practiceIndex + 1}`, article => {
+      if (article.querySelector('.physics-next-problem')) return;
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'physics-next-problem';
+      next.textContent = 'Next problem';
+      next.addEventListener('click', () => {
+        practiceIndex = (practiceIndex + 1) % problems.length;
+        renderLesson();
+      });
+      article.appendChild(next);
+    });
+    lessonStages.appendChild(card);
+  } else {
+    for (const stage of activeLesson.stages) {
+      if (stage.prompt) {
+        lessonStages.appendChild(createProblemCard(stage, stage.title));
+      } else {
+        const article = document.createElement('article');
+        article.className = 'physics-stage-card';
+        article.innerHTML = `<h3>${stage.title}</h3><p>${stage.content || ''}</p>`;
+        lessonStages.appendChild(article);
+      }
+    }
   }
 
   lessonEmpty.hidden = true;
   lessonWorkspace.hidden = false;
-  coachHelp.textContent = '';
-  document.querySelector('#lesson').scrollIntoView({behavior:'smooth',block:'start'});
   if (window.MathJax?.typesetPromise) await window.MathJax.typesetPromise([document.querySelector('#lesson')]);
 }
 
 document.querySelector('#stuckBtn').addEventListener('click', () => {
-  const guided = activeLesson?.stages.find(s => s.id === 'guided-practice');
-  coachHelp.textContent = guided?.hint || 'Start by identifying what the problem gives you and what it asks you to find.';
+  coachHelp.textContent = activeSupportItem?.hint || 'Start by identifying what the problem gives you and what it asks you to find.';
 });
 document.querySelector('#anotherWayBtn').addEventListener('click', () => {
-  const guided = activeLesson?.stages.find(s => s.id === 'guided-practice');
-  coachHelp.textContent = guided?.alternate_explanation || 'Let’s connect the idea to a graph, diagram, or everyday example.';
+  coachHelp.textContent = activeSupportItem?.alternate_explanation || 'Let’s connect the idea to a number line, graph, diagram, or everyday example.';
 });
 document.querySelector('#similarBtn').addEventListener('click', () => {
-  const guided = activeLesson?.stages.find(s => s.id === 'guided-practice');
-  coachHelp.textContent = guided?.prompt
-    ? `Try this one again without looking at the answer: ${guided.prompt}`
+  if (activeMode === 'Practice Mode' && activeLesson?.practice?.problems?.length) {
+    practiceIndex = (practiceIndex + 1) % activeLesson.practice.problems.length;
+    renderLesson();
+    coachHelp.textContent = 'Here is a new problem on the same skill.';
+    return;
+  }
+  const independent = activeLesson?.stages.find(s => s.id === 'independent-practice');
+  coachHelp.textContent = independent?.prompt
+    ? `Try this related problem: ${independent.prompt}`
     : 'Try a similar example using the same relationship with different values.';
 });
 </script>
