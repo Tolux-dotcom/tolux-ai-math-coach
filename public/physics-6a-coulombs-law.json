@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Electric charges exert forces",
+      "content": "Like charges repel and opposite charges attract. The electric force acts along the line connecting the two charges.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Charge product ×2",
+          "Distance fixed",
+          "Force magnitude ×2"
+        ],
+        "label": "Coulomb force at fixed separation is proportional to the charge product."
+      }
+    },
+    {
+      "title": "Coulomb's law",
+      "content": "The magnitude of electric force is F = k|q₁q₂|/r², where k is Coulomb's constant, q₁ and q₂ are the charges, and r is the distance between them."
+    },
+    {
+      "title": "Determine attraction or repulsion",
+      "content": "Use the signs of the charges to determine direction. Same signs repel. Opposite signs attract. Use the equation for magnitude and the charge signs for direction."
+    },
+    {
+      "title": "How does doubling the separation of fixed point charges change force magnitude?",
+      "content": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four."
+    },
+    {
+      "title": "Two charges have opposite signs. What is the direction of their electric interaction?",
+      "content": "The force on each charge points toward the other. Equal-sign charges instead repel."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "6A-W01",
+      "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+      "choices": [
+        "It becomes one fourth",
+        "It becomes one half"
+      ],
+      "answer": "It becomes one fourth",
+      "accepted_answers": [
+        "It becomes one fourth"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+      "alternate_explanation_steps": [
+        "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "How does doubling the separation of fixed point charges change force magnitude?"
+        },
+        {
+          "equation": "It becomes one fourth",
+          "explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Charge product ×2",
+          "Distance fixed",
+          "Force magnitude ×2"
+        ],
+        "label": "Coulomb force at fixed separation is proportional to the charge product."
+      }
+    },
+    {
+      "id": "6A-W02",
+      "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+      "choices": [
+        "They repel",
+        "They attract along the line joining them"
+      ],
+      "answer": "They attract along the line joining them",
+      "accepted_answers": [
+        "They attract along the line joining them"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
+      "alternate_explanation_steps": [
+        "The force on each charge points toward the other. Equal-sign charges instead repel.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Two charges have opposite signs. What is the direction of their electric interaction?"
+        },
+        {
+          "equation": "They attract along the line joining them",
+          "explanation": "The force on each charge points toward the other. Equal-sign charges instead repel."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "6A-G01",
+      "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+      "choices": [
+        "It becomes one fourth",
+        "It becomes one half"
+      ],
+      "answer": "It becomes one fourth",
+      "accepted_answers": [
+        "It becomes one fourth"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+      "alternate_explanation_steps": [
+        "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6A-Q03",
+        "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude?",
+        "choices": [
+          "It doubles",
+          "It quadruples"
+        ],
+        "answer": "It doubles",
+        "accepted_answers": [
+          "It doubles"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Force is proportional to each charge separately; only distance is squared in the denominator.",
+        "alternate_explanation_steps": [
+          "Force is proportional to each charge separately; only distance is squared in the denominator.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6A-G02",
+      "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+      "choices": [
+        "They repel",
+        "They attract along the line joining them"
+      ],
+      "answer": "They attract along the line joining them",
+      "accepted_answers": [
+        "They attract along the line joining them"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
+      "alternate_explanation_steps": [
+        "The force on each charge points toward the other. Equal-sign charges instead repel.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6A-Q04",
+        "prompt": "Why does a positive test charge accelerate in the direction of the electric field?",
+        "choices": [
+          "All charges always accelerate with the field",
+          "Its electric force is qE with q positive"
+        ],
+        "answer": "Its electric force is qE with q positive",
+        "accepted_answers": [
+          "Its electric force is qE with q positive"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+        "alternate_explanation_steps": [
+          "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "6A-P01",
+      "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude?",
+      "choices": [
+        "It doubles",
+        "It quadruples"
+      ],
+      "answer": "It doubles",
+      "accepted_answers": [
+        "It doubles"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Force is proportional to each charge separately; only distance is squared in the denominator.",
+      "alternate_explanation_steps": [
+        "Force is proportional to each charge separately; only distance is squared in the denominator.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6A-Q05",
+        "prompt": "A large charge and a small charge interact. Compare their force magnitudes.",
+        "choices": [
+          "They are equal",
+          "The large charge exerts a larger force"
+        ],
+        "answer": "They are equal",
+        "accepted_answers": [
+          "They are equal"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+        "alternate_explanation_steps": [
+          "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6A-P02",
+      "prompt": "Why does a positive test charge accelerate in the direction of the electric field?",
+      "choices": [
+        "All charges always accelerate with the field",
+        "Its electric force is qE with q positive"
+      ],
+      "answer": "Its electric force is qE with q positive",
+      "accepted_answers": [
+        "Its electric force is qE with q positive"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+      "alternate_explanation_steps": [
+        "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6A-Q01",
+        "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+        "choices": [
+          "It becomes one fourth",
+          "It becomes one half"
+        ],
+        "answer": "It becomes one fourth",
+        "accepted_answers": [
+          "It becomes one fourth"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+        "alternate_explanation_steps": [
+          "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6A-P03",
+      "prompt": "A large charge and a small charge interact. Compare their force magnitudes.",
+      "choices": [
+        "They are equal",
+        "The large charge exerts a larger force"
+      ],
+      "answer": "They are equal",
+      "accepted_answers": [
+        "They are equal"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+      "alternate_explanation_steps": [
+        "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6A-Q02",
+        "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+        "choices": [
+          "They repel",
+          "They attract along the line joining them"
+        ],
+        "answer": "They attract along the line joining them",
+        "accepted_answers": [
+          "They attract along the line joining them"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
+        "alternate_explanation_steps": [
+          "The force on each charge points toward the other. Equal-sign charges instead repel.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "6A-M01",
+      "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+      "choices": [
+        "It becomes one fourth",
+        "It becomes one half"
+      ],
+      "answer": "It becomes one fourth",
+      "accepted_answers": [
+        "It becomes one fourth"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+      "alternate_explanation_steps": [
+        "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6A-M02",
+      "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+      "choices": [
+        "They repel",
+        "They attract along the line joining them"
+      ],
+      "answer": "They attract along the line joining them",
+      "accepted_answers": [
+        "They attract along the line joining them"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
+      "alternate_explanation_steps": [
+        "The force on each charge points toward the other. Equal-sign charges instead repel.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6A-M03",
+      "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude?",
+      "choices": [
+        "It doubles",
+        "It quadruples"
+      ],
+      "answer": "It doubles",
+      "accepted_answers": [
+        "It doubles"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Force is proportional to each charge separately; only distance is squared in the denominator.",
+      "alternate_explanation_steps": [
+        "Force is proportional to each charge separately; only distance is squared in the denominator.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6A-M04",
+      "prompt": "Why does a positive test charge accelerate in the direction of the electric field?",
+      "choices": [
+        "All charges always accelerate with the field",
+        "Its electric force is qE with q positive"
+      ],
+      "answer": "Its electric force is qE with q positive",
+      "accepted_answers": [
+        "Its electric force is qE with q positive"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+      "alternate_explanation_steps": [
+        "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "6A-M05",
+      "prompt": "A large charge and a small charge interact. Compare their force magnitudes.",
+      "choices": [
+        "They are equal",
+        "The large charge exerts a larger force"
+      ],
+      "answer": "They are equal",
+      "accepted_answers": [
+        "They are equal"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+      "alternate_explanation_steps": [
+        "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "6A-P01",
+        "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude?",
+        "choices": [
+          "It doubles",
+          "It quadruples"
+        ],
+        "answer": "It doubles",
+        "accepted_answers": [
+          "It doubles"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Force is proportional to each charge separately; only distance is squared in the denominator.",
+        "alternate_explanation_steps": [
+          "Force is proportional to each charge separately; only distance is squared in the denominator.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6A-Q05",
+          "prompt": "A large charge and a small charge interact. Compare their force magnitudes.",
+          "choices": [
+            "They are equal",
+            "The large charge exerts a larger force"
+          ],
+          "answer": "They are equal",
+          "accepted_answers": [
+            "They are equal"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+          "alternate_explanation_steps": [
+            "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6A-P02",
+        "prompt": "Why does a positive test charge accelerate in the direction of the electric field?",
+        "choices": [
+          "All charges always accelerate with the field",
+          "Its electric force is qE with q positive"
+        ],
+        "answer": "Its electric force is qE with q positive",
+        "accepted_answers": [
+          "Its electric force is qE with q positive"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+        "alternate_explanation_steps": [
+          "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6A-Q01",
+          "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+          "choices": [
+            "It becomes one fourth",
+            "It becomes one half"
+          ],
+          "answer": "It becomes one fourth",
+          "accepted_answers": [
+            "It becomes one fourth"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+          "alternate_explanation_steps": [
+            "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6A-P03",
+        "prompt": "A large charge and a small charge interact. Compare their force magnitudes.",
+        "choices": [
+          "They are equal",
+          "The large charge exerts a larger force"
+        ],
+        "answer": "They are equal",
+        "accepted_answers": [
+          "They are equal"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+        "alternate_explanation_steps": [
+          "The force is a third-law pair. Different charge magnitudes or masses do not break force equality; accelerations may differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6A-Q02",
+          "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+          "choices": [
+            "They repel",
+            "They attract along the line joining them"
+          ],
+          "answer": "They attract along the line joining them",
+          "accepted_answers": [
+            "They attract along the line joining them"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
+          "alternate_explanation_steps": [
+            "The force on each charge points toward the other. Equal-sign charges instead repel.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "6A-G01",
+        "prompt": "How does doubling the separation of fixed point charges change force magnitude?",
+        "choices": [
+          "It becomes one fourth",
+          "It becomes one half"
+        ],
+        "answer": "It becomes one fourth",
+        "accepted_answers": [
+          "It becomes one fourth"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+        "alternate_explanation_steps": [
+          "Coulomb’s law is F = k|q₁q₂|/r². Doubling r multiplies r² by four.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6A-Q03",
+          "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude?",
+          "choices": [
+            "It doubles",
+            "It quadruples"
+          ],
+          "answer": "It doubles",
+          "accepted_answers": [
+            "It doubles"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Force is proportional to each charge separately; only distance is squared in the denominator.",
+          "alternate_explanation_steps": [
+            "Force is proportional to each charge separately; only distance is squared in the denominator.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6A-G02",
+        "prompt": "Two charges have opposite signs. What is the direction of their electric interaction?",
+        "choices": [
+          "They repel",
+          "They attract along the line joining them"
+        ],
+        "answer": "They attract along the line joining them",
+        "accepted_answers": [
+          "They attract along the line joining them"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The force on each charge points toward the other. Equal-sign charges instead repel.",
+        "alternate_explanation_steps": [
+          "The force on each charge points toward the other. Equal-sign charges instead repel.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6A-Q04",
+          "prompt": "Why does a positive test charge accelerate in the direction of the electric field?",
+          "choices": [
+            "All charges always accelerate with the field",
+            "Its electric force is qE with q positive"
+          ],
+          "answer": "Its electric force is qE with q positive",
+          "accepted_answers": [
+            "Its electric force is qE with q positive"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+          "alternate_explanation_steps": [
+            "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "6A-C01",
+      "prompt": "One point charge is doubled with the other charge and distance fixed. What happens to force magnitude? Explain why, using your own words.",
+      "expected_ideas": [
+        "It doubles",
+        "Force is proportional to each charge separately; only distance is squared in the denominator."
+      ],
+      "misconceptions": [
+        "It quadruples"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "6A-C02",
+      "prompt": "Why does a positive test charge accelerate in the direction of the electric field? Explain why, using your own words.",
+      "expected_ideas": [
+        "Its electric force is qE with q positive",
+        "Electric field direction is defined by force on a positive test charge. For a negative charge, force is opposite E."
+      ],
+      "misconceptions": [
+        "All charges always accelerate with the field"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
