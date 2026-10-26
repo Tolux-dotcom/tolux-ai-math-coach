@@ -395,108 +395,93 @@
   "mastery_check": [
     {
       "id": "9A-M01",
-      "prompt": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+      "prompt": "A material has work function 2 eV. A photon of energy 5 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
       "choices": [
-        "No",
-        "Yes, any brightness is enough"
+        "3 eV",
+        "7 eV"
       ],
-      "answer": "No",
+      "answer": "3 eV",
       "accepted_answers": [
-        "No"
+        "3 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
-      "alternate_explanation_steps": [
-        "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 5,
+        "cost": 2
+      }
     },
     {
       "id": "9A-M02",
-      "prompt": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+      "prompt": "A material has work function 2 eV. A photon of energy 6 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
       "choices": [
-        "Only the photon count changes",
-        "Maximum kinetic energy increases"
+        "8 eV",
+        "4 eV"
       ],
-      "answer": "Maximum kinetic energy increases",
+      "answer": "4 eV",
       "accepted_answers": [
-        "Maximum kinetic energy increases"
+        "4 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
-      "alternate_explanation_steps": [
-        "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 6,
+        "cost": 2
+      }
     },
     {
       "id": "9A-M03",
-      "prompt": "At fixed above-threshold frequency, increasing intensity usually changes what?",
+      "prompt": "A material has work function 2 eV. A photon of energy 7 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
       "choices": [
-        "The emission rate increases",
-        "Each electron’s maximum kinetic energy increases"
+        "5 eV",
+        "9 eV"
       ],
-      "answer": "The emission rate increases",
+      "answer": "5 eV",
       "accepted_answers": [
-        "The emission rate increases"
+        "5 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
-      "alternate_explanation_steps": [
-        "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 7,
+        "cost": 2
+      }
     },
     {
       "id": "9A-M04",
-      "prompt": "What is the work function?",
+      "prompt": "A material has work function 2 eV. A photon of energy 8 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
       "choices": [
-        "Total kinetic energy of every electron",
-        "Minimum energy needed to liberate an electron from a surface"
+        "10 eV",
+        "6 eV"
       ],
-      "answer": "Minimum energy needed to liberate an electron from a surface",
+      "answer": "6 eV",
       "accepted_answers": [
-        "Minimum energy needed to liberate an electron from a surface"
+        "6 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
-      "alternate_explanation_steps": [
-        "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 8,
+        "cost": 2
+      }
     },
     {
       "id": "9A-M05",
-      "prompt": "What relation describes photon energy?",
+      "prompt": "A material has work function 2 eV. A photon of energy 9 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
       "choices": [
-        "E = hf",
-        "E = h/f"
+        "7 eV",
+        "11 eV"
       ],
-      "answer": "E = hf",
+      "answer": "7 eV",
       "accepted_answers": [
-        "E = hf"
+        "7 eV"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
-      "alternate_explanation_steps": [
-        "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 9,
+        "cost": 2
+      }
     }
   ],
   "practice": {
@@ -752,6 +737,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
