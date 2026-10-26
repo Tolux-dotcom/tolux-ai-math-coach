@@ -596,122 +596,97 @@
   "mastery_check": [
     {
       "id": "5F-M01",
-      "prompt": "A 3 kg box has an applied horizontal force of 21 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
-      "answer": "5 m/s²",
+      "prompt": "A 2 kg box has an applied horizontal force of 11 N right and friction of 7 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "2 m/s²",
       "accepted_answers": [
-        "5 m/s²",
-        "5"
+        "2",
+        "2 m/s²"
       ],
       "hint_steps": [
-        "Add horizontal forces with signs first.",
-        "F_net = 21 − 6 N.",
-        "Divide the net force by 3 kg."
+        "Add forces with signs, then divide by mass."
       ],
-      "alternate_explanation": "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-      "alternate_explanation_steps": [
-        "Choose right as positive. Net force = 21 − 6 = 15 N. Use a = F_net/m = 15/3 = 5 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "alternate_explanation": "F_net = 11 − 7 = 4 N. Dividing by 2 kg gives 2 m/s² to the right.",
+      "alternate_explanation_steps": [],
       "visual": {
         "type": "force_comparison",
-        "right": 21,
-        "left": 6
+        "right": 11,
+        "left": 7
       }
     },
     {
       "id": "5F-M02",
-      "prompt": "A 4 kg box has an applied horizontal force of 32 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
-      "answer": "6 m/s²",
+      "prompt": "A 3 kg box has an applied horizontal force of 17 N right and friction of 8 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "3 m/s²",
       "accepted_answers": [
-        "6 m/s²",
-        "6"
+        "3",
+        "3 m/s²"
       ],
       "hint_steps": [
-        "Add horizontal forces with signs first.",
-        "F_net = 32 − 8 N.",
-        "Divide the net force by 4 kg."
+        "Add forces with signs, then divide by mass."
       ],
-      "alternate_explanation": "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-      "alternate_explanation_steps": [
-        "Choose right as positive. Net force = 32 − 8 = 24 N. Use a = F_net/m = 24/4 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "alternate_explanation": "F_net = 17 − 8 = 9 N. Dividing by 3 kg gives 3 m/s² to the right.",
+      "alternate_explanation_steps": [],
       "visual": {
         "type": "force_comparison",
-        "right": 32,
+        "right": 17,
         "left": 8
       }
     },
     {
       "id": "5F-M03",
-      "prompt": "A 10 kg box has an applied horizontal force of 20 N right and friction of 40 N left. Take right as positive. Find its signed horizontal acceleration.",
-      "answer": "-2 m/s²",
+      "prompt": "A 4 kg box has an applied horizontal force of 25 N right and friction of 9 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "4 m/s²",
       "accepted_answers": [
-        "-2 m/s²",
-        "-2"
+        "4",
+        "4 m/s²"
       ],
       "hint_steps": [
-        "Add horizontal forces with signs first.",
-        "F_net = 20 − 40 N.",
-        "Divide the net force by 10 kg."
+        "Add forces with signs, then divide by mass."
       ],
-      "alternate_explanation": "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-      "alternate_explanation_steps": [
-        "Choose right as positive. Net force = 20 − 40 = -20 N. Use a = F_net/m = -20/10 = -2 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "alternate_explanation": "F_net = 25 − 9 = 16 N. Dividing by 4 kg gives 4 m/s² to the right.",
+      "alternate_explanation_steps": [],
       "visual": {
         "type": "force_comparison",
-        "right": 20,
-        "left": 40
+        "right": 25,
+        "left": 9
       }
     },
     {
       "id": "5F-M04",
-      "prompt": "A 2 kg box has an applied horizontal force of 18 N right and friction of 6 N left. Take right as positive. Find its signed horizontal acceleration.",
-      "answer": "6 m/s²",
+      "prompt": "A 5 kg box has an applied horizontal force of 35 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "5 m/s²",
       "accepted_answers": [
-        "6 m/s²",
-        "6"
+        "5",
+        "5 m/s²"
       ],
       "hint_steps": [
-        "Add horizontal forces with signs first.",
-        "F_net = 18 − 6 N.",
-        "Divide the net force by 2 kg."
+        "Add forces with signs, then divide by mass."
       ],
-      "alternate_explanation": "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-      "alternate_explanation_steps": [
-        "Choose right as positive. Net force = 18 − 6 = 12 N. Use a = F_net/m = 12/2 = 6 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "alternate_explanation": "F_net = 35 − 10 = 25 N. Dividing by 5 kg gives 5 m/s² to the right.",
+      "alternate_explanation_steps": [],
       "visual": {
         "type": "force_comparison",
-        "right": 18,
-        "left": 6
+        "right": 35,
+        "left": 10
       }
     },
     {
       "id": "5F-M05",
-      "prompt": "A 5 kg box has an applied horizontal force of 45 N right and friction of 10 N left. Take right as positive. Find its signed horizontal acceleration.",
-      "answer": "7 m/s²",
+      "prompt": "A 6 kg box has an applied horizontal force of 47 N right and friction of 11 N left. Take right as positive. Find its signed horizontal acceleration.",
+      "answer": "6 m/s²",
       "accepted_answers": [
-        "7 m/s²",
-        "7"
+        "6",
+        "6 m/s²"
       ],
       "hint_steps": [
-        "Add horizontal forces with signs first.",
-        "F_net = 45 − 10 N.",
-        "Divide the net force by 5 kg."
+        "Add forces with signs, then divide by mass."
       ],
-      "alternate_explanation": "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-      "alternate_explanation_steps": [
-        "Choose right as positive. Net force = 45 − 10 = 35 N. Use a = F_net/m = 35/5 = 7 m/s². The sign specifies direction. Vertical forces balance in this horizontal model.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "alternate_explanation": "F_net = 47 − 11 = 36 N. Dividing by 6 kg gives 6 m/s² to the right.",
+      "alternate_explanation_steps": [],
       "visual": {
         "type": "force_comparison",
-        "right": 45,
-        "left": 10
+        "right": 47,
+        "left": 11
       }
     }
   ],
