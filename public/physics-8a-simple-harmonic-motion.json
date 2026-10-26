@@ -395,108 +395,88 @@
   "mastery_check": [
     {
       "id": "8A-M01",
-      "prompt": "What defines an ideal simple harmonic restoring force?",
+      "prompt": "The mass on an ideal spring is changed from m to 4m while stiffness is fixed. By what factor does its period change?",
       "choices": [
-        "It is opposite displacement and proportional to it",
-        "It is constant in the motion direction"
+        "2",
+        "4"
       ],
-      "answer": "It is opposite displacement and proportional to it",
+      "answer": "2",
       "accepted_answers": [
-        "It is opposite displacement and proportional to it"
+        "2"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
-      "alternate_explanation_steps": [
-        "F = −kx gives acceleration a = −(k/m)x. The negative sign means the force points toward equilibrium.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "T = 2π√(m/k), so the period multiplier is the square root of the mass multiplier.",
+      "calculation_check": {
+        "operation": "square_root",
+        "value": 4
+      }
     },
     {
       "id": "8A-M02",
-      "prompt": "At the extreme displacement of an ideal mass-spring oscillator, what is its speed?",
+      "prompt": "The mass on an ideal spring is changed from m to 9m while stiffness is fixed. By what factor does its period change?",
       "choices": [
-        "Maximum",
-        "Zero at that instant"
+        "9",
+        "3"
       ],
-      "answer": "Zero at that instant",
+      "answer": "3",
       "accepted_answers": [
-        "Zero at that instant"
+        "3"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
-      "alternate_explanation_steps": [
-        "The mass reverses direction there. Spring potential energy is maximum and kinetic energy is zero; restoring acceleration is greatest in magnitude.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "T = 2π√(m/k), so the period multiplier is the square root of the mass multiplier.",
+      "calculation_check": {
+        "operation": "square_root",
+        "value": 9
+      }
     },
     {
       "id": "8A-M03",
-      "prompt": "At equilibrium in ideal mass-spring motion, what is maximum?",
+      "prompt": "The mass on an ideal spring is changed from m to 16m while stiffness is fixed. By what factor does its period change?",
       "choices": [
-        "Speed",
-        "Restoring-force magnitude"
+        "4",
+        "16"
       ],
-      "answer": "Speed",
+      "answer": "4",
       "accepted_answers": [
-        "Speed"
+        "4"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
-      "alternate_explanation_steps": [
-        "At x = 0 the spring restoring force and acceleration are zero, while kinetic energy and speed are maximum.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "T = 2π√(m/k), so the period multiplier is the square root of the mass multiplier.",
+      "calculation_check": {
+        "operation": "square_root",
+        "value": 16
+      }
     },
     {
       "id": "8A-M04",
-      "prompt": "For an ideal mass-spring oscillator, increasing mass with spring stiffness fixed changes period how?",
+      "prompt": "The mass on an ideal spring is changed from m to 25m while stiffness is fixed. By what factor does its period change?",
       "choices": [
-        "It decreases",
-        "It increases"
+        "25",
+        "5"
       ],
-      "answer": "It increases",
+      "answer": "5",
       "accepted_answers": [
-        "It increases"
+        "5"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
-      "alternate_explanation_steps": [
-        "T = 2π√(m/k). A larger mass responds more slowly to the same spring stiffness.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "T = 2π√(m/k), so the period multiplier is the square root of the mass multiplier.",
+      "calculation_check": {
+        "operation": "square_root",
+        "value": 25
+      }
     },
     {
       "id": "8A-M05",
-      "prompt": "For a small-angle ideal pendulum, does changing bob mass change period?",
+      "prompt": "The mass on an ideal spring is changed from m to 36m while stiffness is fixed. By what factor does its period change?",
       "choices": [
-        "No, in this model",
-        "Yes, heavier always means longer period"
+        "6",
+        "36"
       ],
-      "answer": "No, in this model",
+      "answer": "6",
       "accepted_answers": [
-        "No, in this model"
+        "6"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
-      "alternate_explanation_steps": [
-        "T ≈ 2π√(L/g) for small angles. Mass cancels; length and gravitational field determine this approximate period.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "T = 2π√(m/k), so the period multiplier is the square root of the mass multiplier.",
+      "calculation_check": {
+        "operation": "square_root",
+        "value": 36
+      }
     }
   ],
   "practice": {
@@ -752,6 +732,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
