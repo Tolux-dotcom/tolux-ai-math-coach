@@ -395,108 +395,98 @@
   "mastery_check": [
     {
       "id": "7A-M01",
-      "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+      "prompt": "A constant 2 N horizontal pull moves a trolley 3 m at an angle of 60° to the force. Find the work done by this force.",
       "choices": [
-        "Zero",
-        "Force times distance"
+        "3 J",
+        "6 J"
       ],
-      "answer": "Zero",
+      "answer": "3 J",
       "accepted_answers": [
-        "Zero"
+        "3 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
-      "alternate_explanation_steps": [
-        "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use W = Fd cos60°; only the force component along displacement contributes.",
+      "calculation_check": {
+        "operation": "work",
+        "force": 2,
+        "distance": 3,
+        "cosine": 0.5
+      }
     },
     {
       "id": "7A-M02",
-      "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+      "prompt": "A constant 3 N horizontal pull moves a trolley 4 m at an angle of 60° to the force. Find the work done by this force.",
       "choices": [
-        "10/3 J",
-        "30 J"
+        "12 J",
+        "6 J"
       ],
-      "answer": "30 J",
+      "answer": "6 J",
       "accepted_answers": [
-        "30 J"
+        "6 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
-      "alternate_explanation_steps": [
-        "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use W = Fd cos60°; only the force component along displacement contributes.",
+      "calculation_check": {
+        "operation": "work",
+        "force": 3,
+        "distance": 4,
+        "cosine": 0.5
+      }
     },
     {
       "id": "7A-M03",
-      "prompt": "The same work is completed in half the time. How does average power change?",
+      "prompt": "A constant 4 N horizontal pull moves a trolley 5 m at an angle of 60° to the force. Find the work done by this force.",
       "choices": [
-        "It doubles",
-        "It stays the same"
+        "10 J",
+        "20 J"
       ],
-      "answer": "It doubles",
+      "answer": "10 J",
       "accepted_answers": [
-        "It doubles"
+        "10 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
-      "alternate_explanation_steps": [
-        "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use W = Fd cos60°; only the force component along displacement contributes.",
+      "calculation_check": {
+        "operation": "work",
+        "force": 4,
+        "distance": 5,
+        "cosine": 0.5
+      }
     },
     {
       "id": "7A-M04",
-      "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object?",
+      "prompt": "A constant 5 N horizontal pull moves a trolley 6 m at an angle of 60° to the force. Find the work done by this force.",
       "choices": [
-        "Always positive",
-        "Negative"
+        "30 J",
+        "15 J"
       ],
-      "answer": "Negative",
+      "answer": "15 J",
       "accepted_answers": [
-        "Negative"
+        "15 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
-      "alternate_explanation_steps": [
-        "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use W = Fd cos60°; only the force component along displacement contributes.",
+      "calculation_check": {
+        "operation": "work",
+        "force": 5,
+        "distance": 6,
+        "cosine": 0.5
+      }
     },
     {
       "id": "7A-M05",
-      "prompt": "A person holds a heavy bag stationary. What mechanical work does the holding force do on the bag?",
+      "prompt": "A constant 6 N horizontal pull moves a trolley 7 m at an angle of 60° to the force. Find the work done by this force.",
       "choices": [
-        "Zero while displacement is zero",
-        "Positive because muscles tire"
+        "21 J",
+        "42 J"
       ],
-      "answer": "Zero while displacement is zero",
+      "answer": "21 J",
       "accepted_answers": [
-        "Zero while displacement is zero"
+        "21 J"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
-      "alternate_explanation_steps": [
-        "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Use W = Fd cos60°; only the force component along displacement contributes.",
+      "calculation_check": {
+        "operation": "work",
+        "force": 6,
+        "distance": 7,
+        "cosine": 0.5
+      }
     }
   ],
   "practice": {
@@ -752,6 +742,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
