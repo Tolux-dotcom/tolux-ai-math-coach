@@ -395,108 +395,93 @@
   "mastery_check": [
     {
       "id": "7D-M01",
-      "prompt": "A constant net force of 6 N acts for 2 s. What impulse does it deliver?",
+      "prompt": "A constant signed net force of −2 N acts on a cart for 3 s. Find its signed impulse.",
       "choices": [
-        "12 N·s",
-        "3 N·s"
+        "−6 N·s",
+        "6 N·s"
       ],
-      "answer": "12 N·s",
+      "answer": "−6 N·s",
       "accepted_answers": [
-        "12 N·s"
+        "−6 N·s"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
-      "alternate_explanation_steps": [
-        "J = F_net Δt = 12 N·s. Impulse equals the vector change in momentum, measured equivalently in kg·m/s.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -2,
+        "time": 3
+      }
     },
     {
       "id": "7D-M02",
-      "prompt": "For the same momentum change, increasing stopping time changes average force how?",
+      "prompt": "A constant signed net force of −3 N acts on a cart for 4 s. Find its signed impulse.",
       "choices": [
-        "It increases",
-        "It decreases"
+        "12 N·s",
+        "−12 N·s"
       ],
-      "answer": "It decreases",
+      "answer": "−12 N·s",
       "accepted_answers": [
-        "It decreases"
+        "−12 N·s"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
-      "alternate_explanation_steps": [
-        "F_avg = Δp/Δt. Airbags and padding can reduce average force by increasing stopping time for comparable momentum change.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -3,
+        "time": 4
+      }
     },
     {
       "id": "7D-M03",
-      "prompt": "A ball reverses direction after hitting a wall. Why must signs be included in momentum change?",
+      "prompt": "A constant signed net force of −4 N acts on a cart for 5 s. Find its signed impulse.",
       "choices": [
-        "Momentum is a vector",
-        "Momentum is always positive"
+        "−20 N·s",
+        "20 N·s"
       ],
-      "answer": "Momentum is a vector",
+      "answer": "−20 N·s",
       "accepted_answers": [
-        "Momentum is a vector"
+        "−20 N·s"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
-      "alternate_explanation_steps": [
-        "Δp = p_final − p_initial. A reversal can produce a larger magnitude change than a stop; treating momenta as unsigned misses the direction change.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -4,
+        "time": 5
+      }
     },
     {
       "id": "7D-M04",
-      "prompt": "A 2 kg cart moves at 3 m/s east. What is its momentum?",
+      "prompt": "A constant signed net force of −5 N acts on a cart for 6 s. Find its signed impulse.",
       "choices": [
-        "9 kg·m/s east",
-        "6 kg·m/s east"
+        "30 N·s",
+        "−30 N·s"
       ],
-      "answer": "6 kg·m/s east",
+      "answer": "−30 N·s",
       "accepted_answers": [
-        "6 kg·m/s east"
+        "−30 N·s"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
-      "alternate_explanation_steps": [
-        "p = mv = 2 × 3 = 6 kg·m/s east. Momentum has direction; kinetic energy is a different quantity.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -5,
+        "time": 6
+      }
     },
     {
       "id": "7D-M05",
-      "prompt": "What does signed area under a force-time graph represent?",
+      "prompt": "A constant signed net force of −6 N acts on a cart for 7 s. Find its signed impulse.",
       "choices": [
-        "Impulse",
-        "Kinetic energy"
+        "−42 N·s",
+        "42 N·s"
       ],
-      "answer": "Impulse",
+      "answer": "−42 N·s",
       "accepted_answers": [
-        "Impulse"
+        "−42 N·s"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
-      "alternate_explanation_steps": [
-        "Integrating force over time gives impulse. Regions with opposite signs contribute opposite momentum changes.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Impulse is signed force multiplied by duration. The negative sign carries the momentum-change direction.",
+      "calculation_check": {
+        "operation": "impulse",
+        "force": -6,
+        "time": 7
+      }
     }
   ],
   "practice": {
@@ -752,6 +737,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
