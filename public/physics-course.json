@@ -1,0 +1,80 @@
+{
+  "catalog_version": "2026.10",
+  "course_id": "physics",
+  "course": "Physics",
+  "jurisdiction": "Texas",
+  "standards_framework": "19 TAC §112.45",
+  "content_standard_count": 29,
+  "curriculum_commitment": "Every Physics content expectation from 5A through 9D is mapped to one teachable module. Scientific and engineering practices are embedded across instruction, practice, feedback, labs, and mastery checks.",
+  "units": [
+    {
+      "unit_id": "motion-and-forces",
+      "sequence": 1,
+      "title": "Motion and Forces",
+      "description": "Analyze motion, vectors, Newton's laws, circular motion, projectiles, and gravitation.",
+      "modules": [
+        {"module_id":"phy-5a-motion-graphs","sequence":1,"teks":["5A"],"title":"Motion Graphs","summary":"Generate and interpret position-time, velocity-time, and acceleration-time graphs.","status":"available","available_modes":["lesson"],"lesson_path":"/physics-5a-motion-graphs.json"},
+        {"module_id":"phy-5b-scalars-vectors","sequence":2,"teks":["5B"],"title":"Scalars and Vectors","summary":"Distinguish scalar and vector quantities and combine perpendicular vectors.","status":"planned","available_modes":[]},
+        {"module_id":"phy-5c-one-dimensional-motion","sequence":3,"teks":["5C"],"title":"One-Dimensional Motion","summary":"Analyze distance, displacement, speed, velocity, reference frames, and acceleration.","status":"planned","available_modes":[]},
+        {"module_id":"phy-5d-circular-projectile","sequence":4,"teks":["5D"],"title":"Circular and Projectile Motion","summary":"Analyze uniform circular motion and horizontal projectile motion.","status":"planned","available_modes":[]},
+        {"module_id":"phy-5e-newton-first-law","sequence":5,"teks":["5E"],"title":"Newton's First Law","summary":"Explain equilibrium and inertia using Newton's First Law.","status":"planned","available_modes":[]},
+        {"module_id":"phy-5f-newton-second-law","sequence":6,"teks":["5F"],"title":"Forces and Newton's Second Law","summary":"Use free-body diagrams and F = ma to analyze common forces.","status":"planned","available_modes":[]},
+        {"module_id":"phy-5g-newton-third-law","sequence":7,"teks":["5G"],"title":"Newton's Third Law","summary":"Analyze simultaneous forces between interacting objects.","status":"planned","available_modes":[]},
+        {"module_id":"phy-5h-gravitation","sequence":8,"teks":["5H"],"title":"Universal Gravitation","summary":"Use Newton's law of universal gravitation and scientific notation.","status":"planned","available_modes":[]}
+      ]
+    },
+    {
+      "unit_id": "electricity-and-magnetism",
+      "sequence": 2,
+      "title": "Electricity and Magnetism",
+      "description": "Study electric forces, charge, circuits, magnetic fields, and electromagnetic devices.",
+      "modules": [
+        {"module_id":"phy-6a-coulombs-law","sequence":1,"teks":["6A"],"title":"Coulomb's Law","summary":"Predict electric force from charge and separation distance.","status":"planned","available_modes":[]},
+        {"module_id":"phy-6b-electric-magnetic-fields","sequence":2,"teks":["6B"],"title":"Electric and Magnetic Fields","summary":"Connect electric and magnetic forces and fields to everyday devices.","status":"planned","available_modes":[]},
+        {"module_id":"phy-6c-charge-transfer","sequence":3,"teks":["6C"],"title":"Charge Transfer","summary":"Investigate induction, conduction, polarization, and conservation of charge.","status":"planned","available_modes":[]},
+        {"module_id":"phy-6d-series-parallel-circuits","sequence":4,"teks":["6D"],"title":"Series and Parallel Circuits","summary":"Analyze, design, and construct series and parallel circuits.","status":"planned","available_modes":[]},
+        {"module_id":"phy-6e-ohms-law-power","sequence":5,"teks":["6E"],"title":"Ohm's Law and Electric Power","summary":"Calculate current, voltage, resistance, and power in circuits.","status":"planned","available_modes":[]}
+      ]
+    },
+    {
+      "unit_id": "energy-and-momentum",
+      "sequence": 3,
+      "title": "Work, Energy, and Momentum",
+      "description": "Connect forces and motion to work, energy, impulse, momentum, and collisions.",
+      "modules": [
+        {"module_id":"phy-7a-work-power","sequence":1,"teks":["7A"],"title":"Work and Power","summary":"Calculate and explain work and power in one dimension.","status":"planned","available_modes":[]},
+        {"module_id":"phy-7b-mechanical-energy","sequence":2,"teks":["7B"],"title":"Mechanical Energy","summary":"Calculate kinetic and potential energy.","status":"planned","available_modes":[]},
+        {"module_id":"phy-7c-conservation-energy","sequence":3,"teks":["7C"],"title":"Conservation of Energy","summary":"Apply the work-energy theorem and track energy transformations.","status":"planned","available_modes":[]},
+        {"module_id":"phy-7d-impulse-momentum","sequence":4,"teks":["7D"],"title":"Impulse and Momentum","summary":"Calculate and describe impulse and momentum.","status":"planned","available_modes":[]},
+        {"module_id":"phy-7e-collisions","sequence":5,"teks":["7E"],"title":"Conservation of Momentum","summary":"Analyze one-dimensional elastic and inelastic collisions.","status":"planned","available_modes":[]}
+      ]
+    },
+    {
+      "unit_id": "waves-and-optics",
+      "sequence": 4,
+      "title": "Waves and Optics",
+      "description": "Study wave motion, behavior, the electromagnetic spectrum, spectra, and image formation.",
+      "modules": [
+        {"module_id":"phy-8a-simple-harmonic-motion","sequence":1,"teks":["8A"],"title":"Simple Harmonic Motion","summary":"Examine oscillations and wave-energy propagation.","status":"planned","available_modes":[]},
+        {"module_id":"phy-8b-wave-types","sequence":2,"teks":["8B"],"title":"Transverse and Longitudinal Waves","summary":"Compare mechanical, electromagnetic, and sound waves.","status":"planned","available_modes":[]},
+        {"module_id":"phy-8c-wave-properties","sequence":3,"teks":["8C"],"title":"Wave Properties","summary":"Relate velocity, frequency, amplitude, and wavelength using v = fλ.","status":"planned","available_modes":[]},
+        {"module_id":"phy-8d-wave-behavior","sequence":4,"teks":["8D"],"title":"Wave Behavior","summary":"Investigate reflection, refraction, diffraction, interference, standing waves, Doppler effect, polarization, and superposition.","status":"planned","available_modes":[]},
+        {"module_id":"phy-8e-electromagnetic-spectrum","sequence":5,"teks":["8E"],"title":"Electromagnetic Spectrum","summary":"Compare applications across the electromagnetic spectrum.","status":"planned","available_modes":[]},
+        {"module_id":"phy-8f-atomic-spectra","sequence":6,"teks":["8F"],"title":"Atomic Emission Spectra","summary":"Connect atomic emission spectra to the electromagnetic spectrum.","status":"planned","available_modes":[]},
+        {"module_id":"phy-8g-image-formation","sequence":7,"teks":["8G"],"title":"Mirrors and Lenses","summary":"Describe and predict image formation using plane mirrors and thin convex lenses.","status":"planned","available_modes":[]}
+      ]
+    },
+    {
+      "unit_id": "quantum-physics",
+      "sequence": 5,
+      "title": "Quantum Physics",
+      "description": "Introduce photons, polarization, superposition, wave-particle duality, uncertainty, and modern applications.",
+      "modules": [
+        {"module_id":"phy-9a-photons-photoelectric","sequence":1,"teks":["9A"],"title":"Photons and the Photoelectric Effect","summary":"Describe the photoelectric effect and emission spectra using the photon model.","status":"planned","available_modes":[]},
+        {"module_id":"phy-9b-malus-law","sequence":2,"teks":["9B"],"title":"Polarization and Malus's Law","summary":"Investigate polarization and applications using Malus's Law.","status":"planned","available_modes":[]},
+        {"module_id":"phy-9c-quantum-superposition","sequence":3,"teks":["9C"],"title":"Superposition and Wave-Particle Duality","summary":"Compare quantum superposition with wave-particle duality.","status":"planned","available_modes":[]},
+        {"module_id":"phy-9d-quantum-applications","sequence":4,"teks":["9D"],"title":"Quantum Applications","summary":"Explore uncertainty, quantum computing, and cybersecurity applications.","status":"planned","available_modes":[]}
+      ]
+    }
+  ]
+}
