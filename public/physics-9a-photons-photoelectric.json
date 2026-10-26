@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-9a-photons-photoelectric",
+  "course_id": "physics",
+  "teks": [
+    "9A"
+  ],
+  "title": "Photons and the Photoelectric Effect",
+  "learning_goal": "Describe the photoelectric effect and emission spectra using the photon model of light.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Light comes in photons",
+      "content": "In the photon model, light energy is carried in discrete packets called photons. A photon's energy is E = hf, so higher-frequency light has higher-energy photons."
+    },
+    {
+      "id": "photoelectric",
+      "title": "2. Photoelectric effect",
+      "content": "When light shines on some metals, electrons can be emitted if the photons have enough energy. Increasing light intensity adds more photons, but photons below the threshold frequency still cannot eject electrons."
+    },
+    {
+      "id": "threshold",
+      "title": "3. Threshold frequency",
+      "content": "Each material has a minimum photon frequency needed to release electrons. This threshold supports the idea that light energy is quantized."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "If blue light ejects electrons from a metal but lower-frequency red light does not, the red photons do not have enough energy to overcome the metal's threshold."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A metal does not emit electrons under dim ultraviolet light, but it does emit electrons when the same ultraviolet frequency is made brighter. What changed?",
+      "hint": "The photon energy stayed the same because the frequency stayed the same.",
+      "alternate_explanation": "Brighter light means more photons arriving each second, not more energy per photon.",
+      "answer": "More photons struck the metal, increasing the number of emitted electrons once the threshold was met."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, explain E = hf, describe threshold frequency, distinguish photon energy from light intensity, and connect atomic emission spectra to quantized energy changes."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

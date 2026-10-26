@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-7b-mechanical-energy",
+  "course_id": "physics",
+  "teks": [
+    "7B"
+  ],
+  "title": "Mechanical Energy",
+  "learning_goal": "Investigate and calculate kinetic energy and potential energy.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Energy of motion and position",
+      "content": "Mechanical energy includes kinetic energy, the energy of motion, and potential energy, energy stored because of position or configuration."
+    },
+    {
+      "id": "kinetic",
+      "title": "2. Kinetic energy",
+      "content": "Kinetic energy is KE = ½mv². It increases with mass and increases strongly with speed because speed is squared."
+    },
+    {
+      "id": "potential",
+      "title": "3. Gravitational potential energy",
+      "content": "Near Earth's surface, gravitational potential energy is PE = mgh, where h is measured relative to a chosen reference level."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "A 2 kg object moves at 4 m/s. Its kinetic energy is KE = ½(2)(4²) = 16 J."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A 3 kg backpack is lifted 2 m above the floor. Using g = 9.8 m/s², what is its gravitational potential energy relative to the floor?",
+      "hint": "Use PE = mgh.",
+      "alternate_explanation": "Multiply mass by gravitational field strength and height.",
+      "answer": "58.8 J"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, calculate kinetic and gravitational potential energy, compare how mass, speed, and height affect energy, and identify appropriate reference levels."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

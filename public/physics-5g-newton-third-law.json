@@ -1,0 +1,49 @@
+{
+  "lesson_id": "physics-5g-newton-third-law",
+  "course_id": "physics",
+  "teks": ["5G"],
+  "title": "Newton's Third Law",
+  "learning_goal": "Illustrate and analyze simultaneous forces between two objects using Newton's Third Law.",
+  "stages": [
+    {
+      "id":"concept",
+      "title":"1. Forces come in interaction pairs",
+      "content":"Newton's Third Law states that when object A exerts a force on object B, object B simultaneously exerts an equal-magnitude force in the opposite direction on object A."
+    },
+    {
+      "id":"different-objects",
+      "title":"2. The pair acts on different objects",
+      "content":"Third-law forces do not cancel each other because they act on different objects. When a foot pushes backward on the ground, the ground pushes forward on the foot."
+    },
+    {
+      "id":"worked-example",
+      "title":"3. Worked example",
+      "content":"A swimmer pushes water backward with a force of 120 N. The water pushes the swimmer forward with a force of 120 N. The forces are equal in magnitude, opposite in direction, and act on different objects."
+    },
+    {
+      "id":"guided-practice",
+      "title":"4. Guided practice",
+      "prompt":"A truck pushes on a stalled car with 800 N. What force does the car exert on the truck?",
+      "hint":"Third-law force pairs always have equal magnitude and opposite direction.",
+      "alternate_explanation":"Name the interaction both ways: truck on car, then car on truck.",
+      "answer":"800 N in the opposite direction"
+    },
+    {
+      "id":"common-misconception",
+      "title":"5. Avoid a common mistake",
+      "content":"The larger or heavier object does not exert a larger third-law force. The interaction forces are always equal in magnitude, even though the two objects may accelerate differently because their masses differ."
+    },
+    {
+      "id":"mastery",
+      "title":"6. Mastery check",
+      "content":"To demonstrate mastery, identify action-reaction pairs, state which object each force acts on, compare force magnitudes, and explain why the paired forces do not cancel."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

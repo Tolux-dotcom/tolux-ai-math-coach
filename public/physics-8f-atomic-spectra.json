@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-8f-atomic-spectra",
+  "course_id": "physics",
+  "teks": [
+    "8F"
+  ],
+  "title": "Atomic Emission Spectra",
+  "learning_goal": "Investigate atomic emission spectra and connect spectral lines to electromagnetic radiation and atomic energy levels.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Atoms emit specific wavelengths",
+      "content": "Excited atoms can emit electromagnetic radiation at specific wavelengths rather than every possible wavelength."
+    },
+    {
+      "id": "levels",
+      "title": "2. Energy levels",
+      "content": "Electrons in atoms occupy quantized energy levels. When an electron moves from a higher level to a lower level, the atom emits a photon with energy equal to the energy difference."
+    },
+    {
+      "id": "spectra",
+      "title": "3. Spectral fingerprints",
+      "content": "Each element has a characteristic pattern of emission lines because each element has its own allowed energy levels."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "Hydrogen produces a distinct set of visible spectral lines. Those lines correspond to specific electron transitions and therefore specific photon energies."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Why can an emission spectrum be used to identify an unknown element?",
+      "hint": "Think about whether different elements have identical or unique energy-level patterns.",
+      "alternate_explanation": "The spectral-line pattern acts like a fingerprint because each element has a unique set of allowed electron transitions.",
+      "answer": "Because each element has a characteristic set of emission lines."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, explain why atomic spectra are discrete, connect photon emission to electron transitions, and describe how spectra identify elements."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

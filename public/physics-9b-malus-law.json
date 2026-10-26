@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-9b-malus-law",
+  "course_id": "physics",
+  "teks": [
+    "9B"
+  ],
+  "title": "Polarization and Malus's Law",
+  "learning_goal": "Investigate polarization and use Malus's Law to analyze transmitted light intensity.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Polarization",
+      "content": "Polarization restricts the direction in which a transverse wave oscillates. Light can be polarized because electromagnetic waves are transverse."
+    },
+    {
+      "id": "malus",
+      "title": "2. Malus's Law",
+      "content": "For polarized light passing through an analyzer, transmitted intensity is I = I₀cos²θ, where θ is the angle between the incoming polarization direction and the analyzer axis."
+    },
+    {
+      "id": "angles",
+      "title": "3. Special angles",
+      "content": "If θ = 0°, the analyzer is aligned and the transmitted intensity is maximum. If θ = 90°, ideally no light is transmitted."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "If polarized light with intensity I₀ passes through an analyzer at 60°, then I = I₀cos²60° = 0.25I₀."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Polarized light enters an analyzer at 45°. What fraction of the original intensity is transmitted?",
+      "hint": "Use cos45° = √2/2, then square it.",
+      "alternate_explanation": "At 45°, the cosine-squared factor is one-half.",
+      "answer": "1/2 of the original intensity."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, explain polarization, use I = I₀cos²θ, identify maximum and minimum transmission orientations, and connect polarization to technologies such as LCDs and 3-D glasses."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

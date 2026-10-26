@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-7c-conservation-energy",
+  "course_id": "physics",
+  "teks": [
+    "7C"
+  ],
+  "title": "Conservation of Energy",
+  "learning_goal": "Apply conservation of energy and the work-energy theorem to analyze energy transformations.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Energy changes form",
+      "content": "Energy can transfer between objects and transform from one form to another, but the total energy of an isolated system remains constant."
+    },
+    {
+      "id": "mechanical",
+      "title": "2. Mechanical energy",
+      "content": "When nonconservative effects such as friction are negligible, kinetic and potential energy can trade back and forth while total mechanical energy remains constant."
+    },
+    {
+      "id": "work-energy",
+      "title": "3. Work-energy theorem",
+      "content": "The net work done on an object equals the change in its kinetic energy: Wnet = ΔKE."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "A falling object loses 20 J of gravitational potential energy while air resistance is negligible. Its kinetic energy increases by 20 J, so total mechanical energy remains unchanged."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A cart begins with 50 J of potential energy and 10 J of kinetic energy. If total mechanical energy is conserved and the potential energy later becomes 20 J, what is the new kinetic energy?",
+      "hint": "First find the total mechanical energy at the beginning.",
+      "alternate_explanation": "Whatever potential energy is lost must appear as kinetic energy if no energy leaves the mechanical system.",
+      "answer": "40 J"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, track kinetic and potential energy, apply conservation of mechanical energy, use Wnet = ΔKE, and explain thermal energy changes when friction is present."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

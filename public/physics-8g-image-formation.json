@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-8g-image-formation",
+  "course_id": "physics",
+  "teks": [
+    "8G"
+  ],
+  "title": "Mirrors and Convex Lenses",
+  "learning_goal": "Describe and predict image formation using plane mirrors and thin convex lenses.",
+  "stages": [
+    {
+      "id": "mirrors",
+      "title": "1. Plane mirrors",
+      "content": "A plane mirror forms a virtual image that appears behind the mirror. The image is upright, the same size as the object, and appears the same distance behind the mirror as the object is in front."
+    },
+    {
+      "id": "lens",
+      "title": "2. Convex lenses",
+      "content": "A convex lens converges parallel light rays toward a focal point. Image properties depend on the object's distance from the lens relative to the focal length."
+    },
+    {
+      "id": "real-virtual",
+      "title": "3. Real and virtual images",
+      "content": "A real image forms where light rays actually converge and can be projected on a screen. A virtual image forms where rays only appear to originate and cannot be projected on a screen."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "When an object is placed beyond twice the focal length of a convex lens, the image is real, inverted, smaller than the object, and located between one and two focal lengths on the opposite side."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A student stands 2 m in front of a plane mirror. How far behind the mirror does the image appear?",
+      "hint": "For a plane mirror, image distance equals object distance.",
+      "alternate_explanation": "The mirror makes the image appear symmetrically located on the other side of the mirror.",
+      "answer": "2 m behind the mirror."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, describe plane-mirror images, distinguish real and virtual images, and predict image orientation, size, and location for basic convex-lens positions."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

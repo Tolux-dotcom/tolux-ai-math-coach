@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-8c-wave-properties",
+  "course_id": "physics",
+  "teks": [
+    "8C"
+  ],
+  "title": "Wave Properties",
+  "learning_goal": "Investigate and calculate relationships among wave speed, frequency, wavelength, and amplitude.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Describe a wave",
+      "content": "Amplitude describes maximum displacement from equilibrium. Wavelength λ is the distance between corresponding points on successive waves. Frequency f is the number of cycles per second."
+    },
+    {
+      "id": "speed",
+      "title": "2. Wave speed relationship",
+      "content": "Wave speed is related to frequency and wavelength by v = fλ."
+    },
+    {
+      "id": "units",
+      "title": "3. Units",
+      "content": "Wave speed is measured in m/s, frequency in hertz (Hz), and wavelength in meters."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "A wave has frequency 5 Hz and wavelength 2 m. Its speed is v = fλ = 5 × 2 = 10 m/s."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A wave travels at 24 m/s with a frequency of 6 Hz. What is its wavelength?",
+      "hint": "Rearrange v = fλ to λ = v/f.",
+      "alternate_explanation": "Wavelength is how far the wave travels during one cycle, so divide speed by cycles per second.",
+      "answer": "4 m"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, define amplitude, frequency, wavelength, and wave speed, use v = fλ, rearrange the equation correctly, and interpret how changing frequency or wavelength affects wave speed in a given medium."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

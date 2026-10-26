@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-9d-quantum-applications",
+  "course_id": "physics",
+  "teks": [
+    "9D"
+  ],
+  "title": "Quantum Applications",
+  "learning_goal": "Describe examples of quantum uncertainty and modern applications including quantum computing and cybersecurity.",
+  "stages": [
+    {
+      "id": "uncertainty",
+      "title": "1. Quantum uncertainty",
+      "content": "The uncertainty principle places a fundamental limit on how precisely certain pairs of physical quantities, such as position and momentum, can be known at the same time."
+    },
+    {
+      "id": "computing",
+      "title": "2. Quantum computing",
+      "content": "Quantum computers use quantum states called qubits. Superposition and entanglement can allow some computations to be structured very differently from classical computing."
+    },
+    {
+      "id": "security",
+      "title": "3. Quantum and cybersecurity",
+      "content": "Quantum technologies can affect cybersecurity in two directions: some quantum algorithms threaten certain current encryption methods, while quantum key distribution can reveal attempts to intercept a key."
+    },
+    {
+      "id": "applications",
+      "title": "4. Other applications",
+      "content": "Quantum physics also underlies technologies such as lasers, semiconductors, LEDs, medical imaging components, atomic clocks, and precision sensors."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Why can quantum key distribution reveal eavesdropping attempts?",
+      "hint": "Think about what measurement does to a quantum state.",
+      "alternate_explanation": "Measuring an unknown quantum state can disturb it, creating detectable changes in the communication.",
+      "answer": "Because interception and measurement can disturb the quantum states and reveal that the key exchange was observed."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, explain uncertainty in plain language, identify the role of qubits in quantum computing, describe a cybersecurity application, and connect quantum physics to modern technologies."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

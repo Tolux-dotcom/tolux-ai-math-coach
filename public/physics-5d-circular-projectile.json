@@ -1,0 +1,49 @@
+{
+  "lesson_id": "physics-5d-circular-projectile",
+  "course_id": "physics",
+  "teks": ["5D"],
+  "title": "Circular and Projectile Motion",
+  "learning_goal": "Describe and analyze acceleration in uniform circular motion and horizontal projectile motion.",
+  "stages": [
+    {
+      "id":"concept",
+      "title":"1. Two kinds of accelerated motion",
+      "content":"An object can accelerate even when its speed is constant if its direction changes. In uniform circular motion, velocity continuously changes direction toward the center. In projectile motion, horizontal and vertical motions occur at the same time."
+    },
+    {
+      "id":"circular",
+      "title":"2. Uniform circular motion",
+      "content":"For an object moving in a circle at constant speed, centripetal acceleration points toward the center of the circle. Its magnitude is a = v²/r."
+    },
+    {
+      "id":"worked-example",
+      "title":"3. Worked example: circular motion",
+      "content":"A 2 kg object moves at 6 m/s in a circle of radius 3 m. The centripetal acceleration is a = v²/r = 6²/3 = 12 m/s²."
+    },
+    {
+      "id":"projectile",
+      "title":"4. Horizontal projectile motion",
+      "content":"For a horizontally launched object, horizontal velocity remains constant if air resistance is ignored, while gravity causes vertical acceleration downward at about 9.8 m/s²."
+    },
+    {
+      "id":"guided-practice",
+      "title":"5. Guided practice",
+      "prompt":"A ball moves at 8 m/s around a circular path of radius 4 m. What is its centripetal acceleration?",
+      "hint":"Use a = v²/r. Square the speed before dividing by the radius.",
+      "alternate_explanation":"Think of the object as constantly turning. The faster it moves or the tighter the circle, the greater the inward acceleration.",
+      "answer":"16 m/s²"
+    },
+    {
+      "id":"mastery",
+      "title":"6. Mastery check",
+      "content":"To demonstrate mastery, identify the direction of centripetal acceleration, calculate a = v²/r, separate horizontal and vertical projectile motion, and explain how gravity affects the vertical component."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

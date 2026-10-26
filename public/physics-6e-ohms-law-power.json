@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-6e-ohms-law-power",
+  "course_id": "physics",
+  "teks": [
+    "6E"
+  ],
+  "title": "Ohm's Law and Electric Power",
+  "learning_goal": "Calculate current, voltage, resistance, and power in series and parallel circuits using Ohm's law and power relationships.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Voltage, current, and resistance",
+      "content": "Voltage is electric potential difference, current is the rate of charge flow, and resistance opposes current. Ohm's law relates them: V = IR."
+    },
+    {
+      "id": "worked-example",
+      "title": "2. Worked example with Ohm's law",
+      "content": "A 12 V source is connected across a 4 Ω resistor. Using I = V/R, the current is I = 12/4 = 3 A."
+    },
+    {
+      "id": "power",
+      "title": "3. Electric power",
+      "content": "Electric power is the rate at which electrical energy is transferred. Use P = IV. Equivalent forms include P = I²R and P = V²/R when Ohm's law applies."
+    },
+    {
+      "id": "series-parallel",
+      "title": "4. Apply relationships in circuits",
+      "content": "In series circuits, current is the same through each resistor. In parallel circuits, voltage is the same across each branch. Use these rules before applying V = IR to individual components."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A device operates at 24 V and draws 2 A. What electrical power does it use?",
+      "hint": "Use P = IV.",
+      "alternate_explanation": "Power tells how quickly electrical energy is transferred, so multiply the potential difference by the current.",
+      "answer": "48 W"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, rearrange and use V = IR, calculate P = IV, select the correct current or voltage rule for series and parallel circuits, and check units for volts, amperes, ohms, and watts."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

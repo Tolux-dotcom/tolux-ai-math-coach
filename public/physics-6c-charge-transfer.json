@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-6c-charge-transfer",
+  "course_id": "physics",
+  "teks": [
+    "6C"
+  ],
+  "title": "Charge Transfer and Conservation",
+  "learning_goal": "Investigate conservation of charge during induction, conduction, and polarization.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Charge is conserved",
+      "content": "Electric charge can move from one object to another, but total charge is conserved. Electrons are transferred or rearranged; charge is not created or destroyed in ordinary electrostatic interactions."
+    },
+    {
+      "id": "conduction",
+      "title": "2. Charging by conduction",
+      "content": "Conduction occurs when charged objects touch and electrons transfer through direct contact. After contact, the objects may share the same type of net charge."
+    },
+    {
+      "id": "induction",
+      "title": "3. Charging by induction",
+      "content": "Induction charges an object without direct contact. A nearby charged object causes charges to rearrange. With grounding, electrons can enter or leave, producing a net charge."
+    },
+    {
+      "id": "polarization",
+      "title": "4. Polarization",
+      "content": "Polarization is the separation of positive and negative charge within a neutral object. The object remains neutral overall, but one side becomes slightly more positive and the other more negative."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A negatively charged rod is brought near a neutral metal sphere without touching it. Electrons in the sphere move away from the rod. What process is occurring?",
+      "hint": "There is no contact, and charges inside the sphere are rearranging.",
+      "alternate_explanation": "The sphere stays neutral overall, but its charges separate because of the nearby rod.",
+      "answer": "Polarization, which is the first stage of induction."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, distinguish conduction, induction, and polarization, track electron movement, and explain how each process obeys conservation of charge."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}

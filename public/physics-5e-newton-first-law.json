@@ -1,0 +1,49 @@
+{
+  "lesson_id": "physics-5e-newton-first-law",
+  "course_id": "physics",
+  "teks": ["5E"],
+  "title": "Newton's First Law",
+  "learning_goal": "Explain equilibrium and inertia using Newton's First Law.",
+  "stages": [
+    {
+      "id":"concept",
+      "title":"1. Newton's First Law",
+      "content":"An object remains at rest or continues moving at constant velocity unless acted on by a net external force. This tendency to resist a change in motion is called inertia."
+    },
+    {
+      "id":"inertia",
+      "title":"2. Inertia and mass",
+      "content":"Mass is a measure of inertia. An object with greater mass is harder to speed up, slow down, or redirect than an object with less mass."
+    },
+    {
+      "id":"equilibrium",
+      "title":"3. Equilibrium",
+      "content":"When the net force on an object is zero, the object is in equilibrium. It may be at rest or moving at constant velocity."
+    },
+    {
+      "id":"worked-example",
+      "title":"4. Worked example",
+      "content":"A book rests on a table. Gravity pulls downward while the table's normal force pushes upward with equal magnitude. The net force is zero, so the book remains at rest."
+    },
+    {
+      "id":"guided-practice",
+      "title":"5. Guided practice",
+      "prompt":"A hockey puck slides across nearly frictionless ice at constant velocity. What does Newton's First Law tell you about the net force on the puck?",
+      "hint":"Constant velocity means the motion is not changing.",
+      "alternate_explanation":"If the puck is neither speeding up, slowing down, nor turning, its acceleration is zero. Zero acceleration means the forces are balanced.",
+      "answer":"The net force is zero."
+    },
+    {
+      "id":"mastery",
+      "title":"6. Mastery check",
+      "content":"To demonstrate mastery, identify examples of inertia, distinguish balanced from unbalanced forces, explain equilibrium, and predict motion when the net force is zero."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
