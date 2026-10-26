@@ -215,12 +215,45 @@ function resetAndRender() {
 
 function normalizeAnswer(value) {
   return String(value || '').trim().toLowerCase()
-    .replaceAll('−','-').replaceAll('²','2')
+    .replaceAll('−','-')
+    .replaceAll('²','2')
+    .replace(/metres?\s+per\s+second\s+squared/g,'m/s2')
+    .replace(/meters?\s+per\s+second\s+squared/g,'m/s2')
+    .replace(/m\s*\/\s*s\s*\^?\s*2/g,'m/s2')
+    .replace(/metres?\s+per\s+second/g,'m/s')
+    .replace(/meters?\s+per\s+second/g,'m/s')
+    .replace(/m\s*\/\s*sec(?:ond)?s?/g,'m/s')
+    .replace(/m\s*\/\s*s/g,'m/s')
     .replace(/\s+/g,' ');
 }
+function requiredUnit(item) {
+  const canonical = normalizeAnswer(item?.answer || '');
+  if (canonical.includes('m/s2')) return 'm/s2';
+  if (canonical.includes('m/s')) return 'm/s';
+  return '';
+}
+function gradeAnswer(item,value) {
+  const student = normalizeAnswer(value);
+  const unit = requiredUnit(item);
+  const accepted = (item?.accepted_answers?.length ? item.accepted_answers : [item?.answer])
+    .filter(Boolean)
+    .map(normalizeAnswer);
+  if (unit) {
+    const hasUnit = student.includes(unit);
+    if (!hasUnit && accepted.includes(student)) {
+      return { correct:false, missingUnit:true, requiredUnit:unit };
+    }
+    const unitBearingAccepted = accepted.filter(answer => answer.includes(unit));
+    return {
+      correct: unitBearingAccepted.includes(student),
+      missingUnit:false,
+      requiredUnit:unit
+    };
+  }
+  return { correct: accepted.includes(student), missingUnit:false, requiredUnit:'' };
+}
 function isCorrect(item,value) {
-  const accepted = item?.accepted_answers?.length ? item.accepted_answers : [item?.answer];
-  return accepted.filter(Boolean).some(a => normalizeAnswer(a) === normalizeAnswer(value));
+  return gradeAnswer(item,value).correct;
 }
 function escapeHtml(value='') {
   return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -361,7 +394,7 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
     <h2>${isSimilar?'Similar Problem':escapeHtml(label)}</h2>
     <div class="physics-prompt">${escapeHtml(item.prompt)}</div>
     ${renderVisual(item.visual)}
-    <div class="physics-answer-row"><label>Your answer<input id="physicsAnswer" type="text" autocomplete="off" placeholder="Enter your answer"></label><button class="physics-primary" id="physicsCheck">Check Answer</button></div>
+    <div class="physics-answer-row"><label>Your answer<input id="physicsAnswer" type="text" autocomplete="off" placeholder="Enter your answer with units"></label><button class="physics-primary" id="physicsCheck">Check Answer</button></div>
     <div class="physics-question-help" ${hideHelp?'hidden':''}>
       <button id="physicsStuck" type="button">❓ I'm Stuck</button>
       <button id="physicsExplain" type="button">↻ Explain Another Way</button>
@@ -375,7 +408,8 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
   const check=()=>{
     if(!input.value.trim()){feedback.textContent='Enter an answer before checking.';return;}
     attempts+=1;
-    const correct=isCorrect(item,input.value);
+    const grade=gradeAnswer(item,input.value);
+    const correct=grade.correct;
     if(isMastery && !isSimilar) masteryResults.push({id:item.id,correct});
     if(activeMode==='Practice Mode' && attempts===1) practiceFirstAttempts.push(correct);
     if(correct){
@@ -383,8 +417,11 @@ function renderQuestion(item,label,isMastery=false,isSimilar=false) {
       input.disabled=true; document.querySelector('#physicsCheck').disabled=true;
       next.hidden=false;
       next.textContent = isSimilar ? 'Return to Original Question →' : (itemIndex===currentItems.length-1 ? 'Continue →' : 'Next Question →');
+    } else if (grade.missingUnit) {
+      const unitLabel = grade.requiredUnit === 'm/s2' ? 'm/s²' : 'm/s';
+      feedback.innerHTML=`<div class="physics-warning"><strong>Your number is right, but the unit is missing.</strong><p>Physics answers need the quantity and its unit. Add ${unitLabel} and check again.</p></div>`;
     } else {
-      feedback.innerHTML='<div class="physics-warning"><strong>Not quite yet.</strong><p>Try again, or use one of the help buttons for this question.</p></div>';
+      feedback.innerHTML='<div class="physics-warning"><strong>Not quite yet.</strong><p>Check both the numerical value and the unit, or use one of the help buttons for this question.</p></div>';
       if(isMastery && !isSimilar){ input.disabled=true; document.querySelector('#physicsCheck').disabled=true; next.hidden=false; next.textContent=itemIndex===currentItems.length-1?'Review Mastery →':'Next Mastery Question →';}
     }
   };
