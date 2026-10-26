@@ -47,5 +47,711 @@
     "offer_explain_another_way": true,
     "offer_similar_problem": true,
     "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "What counts as work?",
+      "content": "In physics, work is done when a force causes displacement in the direction of the force. For a constant force in one dimension, W = Fd when force and displacement point in the same direction.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Force component along motion",
+          "Displacement",
+          "Work W = Fd cos θ"
+        ],
+        "label": "A perpendicular force contributes zero work on that displacement."
+      }
+    },
+    {
+      "title": "Positive, negative, and zero work",
+      "content": "Work is positive when force and displacement point in the same direction, negative when they point in opposite directions, and zero when there is no displacement in the force direction."
+    },
+    {
+      "title": "Power",
+      "content": "Power is the rate at which work is done. Use P = W/t. The SI unit of power is the watt, where 1 W = 1 J/s."
+    },
+    {
+      "title": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+      "content": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work."
+    },
+    {
+      "title": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+      "content": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "7A-W01",
+      "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+      "choices": [
+        "Zero",
+        "Force times distance"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+      "alternate_explanation_steps": [
+        "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A force acts perpendicular to an object’s displacement. What work does that force do?"
+        },
+        {
+          "equation": "Zero",
+          "explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Force component along motion",
+          "Displacement",
+          "Work W = Fd cos θ"
+        ],
+        "label": "A perpendicular force contributes zero work on that displacement."
+      }
+    },
+    {
+      "id": "7A-W02",
+      "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+      "choices": [
+        "10/3 J",
+        "30 J"
+      ],
+      "answer": "30 J",
+      "accepted_answers": [
+        "30 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+      "alternate_explanation_steps": [
+        "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A constant 10 N force acts along a 3 m displacement. What work is done?"
+        },
+        {
+          "equation": "30 J",
+          "explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "7A-G01",
+      "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+      "choices": [
+        "Zero",
+        "Force times distance"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+      "alternate_explanation_steps": [
+        "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7A-Q03",
+        "prompt": "The same work is completed in half the time. How does average power change?",
+        "choices": [
+          "It doubles",
+          "It stays the same"
+        ],
+        "answer": "It doubles",
+        "accepted_answers": [
+          "It doubles"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+        "alternate_explanation_steps": [
+          "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7A-G02",
+      "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+      "choices": [
+        "10/3 J",
+        "30 J"
+      ],
+      "answer": "30 J",
+      "accepted_answers": [
+        "30 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+      "alternate_explanation_steps": [
+        "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7A-Q04",
+        "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object?",
+        "choices": [
+          "Always positive",
+          "Negative"
+        ],
+        "answer": "Negative",
+        "accepted_answers": [
+          "Negative"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+        "alternate_explanation_steps": [
+          "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "7A-P01",
+      "prompt": "The same work is completed in half the time. How does average power change?",
+      "choices": [
+        "It doubles",
+        "It stays the same"
+      ],
+      "answer": "It doubles",
+      "accepted_answers": [
+        "It doubles"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+      "alternate_explanation_steps": [
+        "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7A-Q05",
+        "prompt": "A person holds a heavy bag stationary. What mechanical work does the holding force do on the bag?",
+        "choices": [
+          "Zero while displacement is zero",
+          "Positive because muscles tire"
+        ],
+        "answer": "Zero while displacement is zero",
+        "accepted_answers": [
+          "Zero while displacement is zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+        "alternate_explanation_steps": [
+          "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7A-P02",
+      "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object?",
+      "choices": [
+        "Always positive",
+        "Negative"
+      ],
+      "answer": "Negative",
+      "accepted_answers": [
+        "Negative"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+      "alternate_explanation_steps": [
+        "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7A-Q01",
+        "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+        "choices": [
+          "Zero",
+          "Force times distance"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+        "alternate_explanation_steps": [
+          "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "7A-P03",
+      "prompt": "A person holds a heavy bag stationary. What mechanical work does the holding force do on the bag?",
+      "choices": [
+        "Zero while displacement is zero",
+        "Positive because muscles tire"
+      ],
+      "answer": "Zero while displacement is zero",
+      "accepted_answers": [
+        "Zero while displacement is zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+      "alternate_explanation_steps": [
+        "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "7A-Q02",
+        "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+        "choices": [
+          "10/3 J",
+          "30 J"
+        ],
+        "answer": "30 J",
+        "accepted_answers": [
+          "30 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+        "alternate_explanation_steps": [
+          "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "7A-M01",
+      "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+      "choices": [
+        "Zero",
+        "Force times distance"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+      "alternate_explanation_steps": [
+        "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7A-M02",
+      "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+      "choices": [
+        "10/3 J",
+        "30 J"
+      ],
+      "answer": "30 J",
+      "accepted_answers": [
+        "30 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+      "alternate_explanation_steps": [
+        "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7A-M03",
+      "prompt": "The same work is completed in half the time. How does average power change?",
+      "choices": [
+        "It doubles",
+        "It stays the same"
+      ],
+      "answer": "It doubles",
+      "accepted_answers": [
+        "It doubles"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+      "alternate_explanation_steps": [
+        "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7A-M04",
+      "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object?",
+      "choices": [
+        "Always positive",
+        "Negative"
+      ],
+      "answer": "Negative",
+      "accepted_answers": [
+        "Negative"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+      "alternate_explanation_steps": [
+        "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    },
+    {
+      "id": "7A-M05",
+      "prompt": "A person holds a heavy bag stationary. What mechanical work does the holding force do on the bag?",
+      "choices": [
+        "Zero while displacement is zero",
+        "Positive because muscles tire"
+      ],
+      "answer": "Zero while displacement is zero",
+      "accepted_answers": [
+        "Zero while displacement is zero"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+      "alternate_explanation_steps": [
+        "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "7A-P01",
+        "prompt": "The same work is completed in half the time. How does average power change?",
+        "choices": [
+          "It doubles",
+          "It stays the same"
+        ],
+        "answer": "It doubles",
+        "accepted_answers": [
+          "It doubles"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+        "alternate_explanation_steps": [
+          "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7A-Q05",
+          "prompt": "A person holds a heavy bag stationary. What mechanical work does the holding force do on the bag?",
+          "choices": [
+            "Zero while displacement is zero",
+            "Positive because muscles tire"
+          ],
+          "answer": "Zero while displacement is zero",
+          "accepted_answers": [
+            "Zero while displacement is zero"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+          "alternate_explanation_steps": [
+            "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7A-P02",
+        "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object?",
+        "choices": [
+          "Always positive",
+          "Negative"
+        ],
+        "answer": "Negative",
+        "accepted_answers": [
+          "Negative"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+        "alternate_explanation_steps": [
+          "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7A-Q01",
+          "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+          "choices": [
+            "Zero",
+            "Force times distance"
+          ],
+          "answer": "Zero",
+          "accepted_answers": [
+            "Zero"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+          "alternate_explanation_steps": [
+            "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7A-P03",
+        "prompt": "A person holds a heavy bag stationary. What mechanical work does the holding force do on the bag?",
+        "choices": [
+          "Zero while displacement is zero",
+          "Positive because muscles tire"
+        ],
+        "answer": "Zero while displacement is zero",
+        "accepted_answers": [
+          "Zero while displacement is zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+        "alternate_explanation_steps": [
+          "Mechanical work on the bag requires displacement. Human metabolic energy use can occur even when this mechanical work is zero.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7A-Q02",
+          "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+          "choices": [
+            "10/3 J",
+            "30 J"
+          ],
+          "answer": "30 J",
+          "accepted_answers": [
+            "30 J"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+          "alternate_explanation_steps": [
+            "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "7A-G01",
+        "prompt": "A force acts perpendicular to an object’s displacement. What work does that force do?",
+        "choices": [
+          "Zero",
+          "Force times distance"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+        "alternate_explanation_steps": [
+          "W = Fd cos θ for a constant force. At 90°, cos θ = 0; force can redirect motion without doing work.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7A-Q03",
+          "prompt": "The same work is completed in half the time. How does average power change?",
+          "choices": [
+            "It doubles",
+            "It stays the same"
+          ],
+          "answer": "It doubles",
+          "accepted_answers": [
+            "It doubles"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+          "alternate_explanation_steps": [
+            "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "7A-G02",
+        "prompt": "A constant 10 N force acts along a 3 m displacement. What work is done?",
+        "choices": [
+          "10/3 J",
+          "30 J"
+        ],
+        "answer": "30 J",
+        "accepted_answers": [
+          "30 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+        "alternate_explanation_steps": [
+          "W = Fd = 10 × 3 = 30 J because force and displacement have the same direction.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "7A-Q04",
+          "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object?",
+          "choices": [
+            "Always positive",
+            "Negative"
+          ],
+          "answer": "Negative",
+          "accepted_answers": [
+            "Negative"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+          "alternate_explanation_steps": [
+            "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "7A-C01",
+      "prompt": "The same work is completed in half the time. How does average power change? Explain why, using your own words.",
+      "expected_ideas": [
+        "It doubles",
+        "P_avg = W/Δt. Work measures transferred energy; power measures the rate of that transfer."
+      ],
+      "misconceptions": [
+        "It stays the same"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "7A-C02",
+      "prompt": "Friction acts opposite a sliding object’s displacement. What is its work on the object? Explain why, using your own words.",
+      "expected_ideas": [
+        "Negative",
+        "The angle between friction and displacement is 180°, so Fd cos θ is negative. Account for the chosen system when tracking thermal energy."
+      ],
+      "misconceptions": [
+        "Always positive"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
   }
 }
