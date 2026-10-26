@@ -395,108 +395,68 @@
   "mastery_check": [
     {
       "id": "8G-M01",
-      "prompt": "Where does a plane-mirror image appear relative to the mirror?",
+      "prompt": "A candle is 30 cm in front of an ideal plane mirror. Where is its image?",
       "choices": [
-        "As far behind as the object is in front",
-        "On the mirror surface"
+        "30 cm behind the mirror",
+        "15 cm behind the mirror"
       ],
-      "answer": "As far behind as the object is in front",
+      "answer": "30 cm behind the mirror",
       "accepted_answers": [
-        "As far behind as the object is in front"
+        "30 cm behind the mirror"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Reflected rays appear to originate from the virtual image behind the mirror. The image is upright and the same size in the ideal plane-mirror model.",
-      "alternate_explanation_steps": [
-        "Reflected rays appear to originate from the virtual image behind the mirror. The image is upright and the same size in the ideal plane-mirror model.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Plane-mirror virtual images appear at equal perpendicular distance behind the reflecting plane."
     },
     {
       "id": "8G-M02",
-      "prompt": "Can a virtual image be directly projected onto a screen at its apparent location?",
+      "prompt": "A converging lens makes a sharp image on a screen. What type of image is it?",
       "choices": [
-        "Yes, always",
-        "No"
+        "Virtual",
+        "Real"
       ],
-      "answer": "No",
+      "answer": "Real",
       "accepted_answers": [
-        "No"
+        "Real"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Rays only appear to meet at a virtual image. A real image forms where rays actually converge and can be intercepted by a screen.",
-      "alternate_explanation_steps": [
-        "Rays only appear to meet at a virtual image. A real image forms where rays actually converge and can be intercepted by a screen.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Rays actually converge on the screen, which distinguishes a real image."
     },
     {
       "id": "8G-M03",
-      "prompt": "A converging lens views an object beyond twice its focal length. What image forms?",
+      "prompt": "A diverging lens views a real object in front of it. In the thin ideal lens model, what image forms?",
       "choices": [
-        "Real, inverted, reduced",
-        "Virtual, upright, enlarged"
+        "Virtual, upright, reduced",
+        "Real, inverted, enlarged"
       ],
-      "answer": "Real, inverted, reduced",
+      "answer": "Virtual, upright, reduced",
       "accepted_answers": [
-        "Real, inverted, reduced"
+        "Virtual, upright, reduced"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Ray tracing locates the image between f and 2f on the opposite side of a thin ideal converging lens.",
-      "alternate_explanation_steps": [
-        "Ray tracing locates the image between f and 2f on the opposite side of a thin ideal converging lens.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Outgoing rays diverge; backward extensions locate the virtual image on the object side."
     },
     {
       "id": "8G-M04",
-      "prompt": "What happens to a ray parallel to the principal axis after passing through an ideal converging lens?",
+      "prompt": "Why do backward ray extensions help locate a virtual image?",
       "choices": [
-        "It always remains parallel",
-        "It passes through the far focal point"
+        "They show actual rays traveling backward through space",
+        "They show where diverging rays appear to originate"
       ],
-      "answer": "It passes through the far focal point",
+      "answer": "They show where diverging rays appear to originate",
       "accepted_answers": [
-        "It passes through the far focal point"
+        "They show where diverging rays appear to originate"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "This principal ray is one construction used with a central ray to locate the image.",
-      "alternate_explanation_steps": [
-        "This principal ray is one construction used with a central ray to locate the image.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Extensions are a geometric construction, not additional physical light paths."
     },
     {
       "id": "8G-M05",
-      "prompt": "A small object is inside the focal length of a converging lens. What image is expected?",
+      "prompt": "A distant object is imaged by a converging lens. Approximately where does the real image form?",
       "choices": [
-        "Virtual, upright, enlarged",
-        "Real, inverted, reduced"
+        "Near the far focal plane",
+        "At the object’s original location"
       ],
-      "answer": "Virtual, upright, enlarged",
+      "answer": "Near the far focal plane",
       "accepted_answers": [
-        "Virtual, upright, enlarged"
+        "Near the far focal plane"
       ],
-      "hint_steps": [
-        "Identify the physical quantities, interactions, or model named in the question.",
-        "Explain the cause before choosing the conclusion."
-      ],
-      "alternate_explanation": "Emerging rays diverge; backward extensions intersect on the object side, producing a magnifying-glass image.",
-      "alternate_explanation_steps": [
-        "Emerging rays diverge; backward extensions intersect on the object side, producing a magnifying-glass image.",
-        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
-      ]
+      "alternate_explanation": "Nearly parallel incident rays converge near the focal plane."
     }
   ],
   "practice": {
@@ -752,6 +712,6 @@
     "content": "expanded draft",
     "automated_written_reasoning": "pending",
     "browser_visual_review": "pending",
-    "assessment_note": "Mastery questions currently reuse teaching items; independent assessment variants required before release."
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
   }
 }
