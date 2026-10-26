@@ -549,112 +549,68 @@
   "mastery_check": [
     {
       "id": "5G-M01",
-      "prompt": "A small magnet and large magnet attract. Which magnet experiences the larger interaction force?",
-      "answer": "Neither; magnitudes are equal",
-      "accepted_answers": [
-        "Neither; magnitudes are equal"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "Unequal size does not change third-law equality. Their accelerations can differ because masses and other forces differ.",
-      "alternate_explanation_steps": [
-        "Unequal size does not change third-law equality. Their accelerations can differ because masses and other forces differ.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "A child pushes a wall with 35 N. What force does the wall exert on the child?",
       "choices": [
-        "The large magnet",
-        "The small magnet",
-        "Neither; magnitudes are equal"
-      ]
+        "35 N in the opposite direction",
+        "Zero because the wall does not move"
+      ],
+      "answer": "35 N in the opposite direction",
+      "accepted_answers": [
+        "35 N in the opposite direction"
+      ],
+      "alternate_explanation": "The equal opposite contact forces are simultaneous and act on different objects."
     },
     {
       "id": "5G-M02",
-      "prompt": "Why do third-law forces not cancel in one object’s force diagram?",
-      "answer": "They act on different objects",
-      "accepted_answers": [
-        "They act on different objects"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "A single-object diagram includes forces on that object only. The reaction partner belongs on the other object’s diagram.",
-      "alternate_explanation_steps": [
-        "A single-object diagram includes forces on that object only. The reaction partner belongs on the other object’s diagram.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "A magnet pulls a steel pin. Which interaction is the force partner?",
       "choices": [
-        "They act on different objects",
-        "They occur at different times",
-        "One force is weaker"
-      ]
+        "Gravity pulls the pin",
+        "The pin pulls the magnet"
+      ],
+      "answer": "The pin pulls the magnet",
+      "accepted_answers": [
+        "The pin pulls the magnet"
+      ],
+      "alternate_explanation": "Reverse the interacting objects to identify a third-law partner."
     },
     {
       "id": "5G-M03",
-      "prompt": "A rocket expels gas backward in space. Why can it accelerate without pushing on air?",
-      "answer": "The expelled gas pushes the rocket forward",
-      "accepted_answers": [
-        "The expelled gas pushes the rocket forward"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "Rocket and gas interact. The rocket pushes gas backward while gas exerts a forward force on the rocket. Surrounding air is not required.",
-      "alternate_explanation_steps": [
-        "Rocket and gas interact. The rocket pushes gas backward while gas exerts a forward force on the rocket. Surrounding air is not required.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "An astronaut pushes a tool away in space. Why does the astronaut recoil?",
       "choices": [
-        "The expelled gas pushes the rocket forward",
-        "It must have air",
-        "Its mass pushes it forward by inertia"
-      ]
+        "The tool exerts an opposite force during the push",
+        "Only the tool experiences force"
+      ],
+      "answer": "The tool exerts an opposite force during the push",
+      "accepted_answers": [
+        "The tool exerts an opposite force during the push"
+      ],
+      "alternate_explanation": "Both bodies participate in the contact interaction, so both can change momentum."
     },
     {
       "id": "5G-M04",
-      "prompt": "A book rests on a table. Are its weight and upward normal force a third-law pair?",
-      "answer": "No, both act on the book",
-      "accepted_answers": [
-        "No, both act on the book"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "They can balance in the book’s net force, but a third-law pair acts on two different objects. The partner of the table’s normal force is the book’s force on the table.",
-      "alternate_explanation_steps": [
-        "They can balance in the book’s net force, but a third-law pair acts on two different objects. The partner of the table’s normal force is the book’s force on the table.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "A horse pulls a cart through a harness. Why is forward acceleration possible despite the equal opposite harness forces?",
       "choices": [
-        "Yes",
-        "No, both act on the book"
-      ]
+        "The horse’s harness force exceeds the reaction force",
+        "Analyze external forces, including ground friction, on each chosen system"
+      ],
+      "answer": "Analyze external forces, including ground friction, on each chosen system",
+      "accepted_answers": [
+        "Analyze external forces, including ground friction, on each chosen system"
+      ],
+      "alternate_explanation": "Internal third-law partners do not determine the external net force on the combined system."
     },
     {
       "id": "5G-M05",
-      "prompt": "A light car and heavy truck collide. Compare the magnitudes of their contact forces at the same instant.",
-      "answer": "They are equal",
-      "accepted_answers": [
-        "They are equal"
-      ],
-      "hint_steps": [
-        "Identify the object or interacting pair and list what is given.",
-        "Choose the physical relationship before substituting or comparing quantities."
-      ],
-      "alternate_explanation": "The paired forces have equal magnitudes, even if deformation, damage, or acceleration differs. Acceleration depends on net force and mass.",
-      "alternate_explanation_steps": [
-        "The paired forces have equal magnitudes, even if deformation, damage, or acceleration differs. Acceleration depends on net force and mass.",
-        "Check which object each force acts on and whether the question asks for magnitude, direction, or a comparison."
-      ],
+      "prompt": "A resting mug feels an upward force from a shelf. Where does the partner act?",
       "choices": [
-        "The truck exerts more",
-        "The car exerts more",
-        "They are equal"
-      ]
+        "On the shelf, downward from the mug",
+        "On the mug, downward from Earth"
+      ],
+      "answer": "On the shelf, downward from the mug",
+      "accepted_answers": [
+        "On the shelf, downward from the mug"
+      ],
+      "alternate_explanation": "The partner switches agent and receiver, and remains the same contact interaction."
     }
   ],
   "practice": {
