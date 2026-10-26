@@ -90,7 +90,8 @@
       "answer":"4 m/s",
       "accepted_answers":["4","4 m/s","+4","+4 m/s"],
       "hint_steps":["Use Δx = x_f − x_i.","Subtracting a negative means 20 − (−4).","Divide 24 m by 6 s."],
-      "alternate_explanation":"Count the signed change on the number line from −4 to 20, then spread that displacement evenly across 6 seconds.",
+      "alternate_explanation":"Picture the trip in two parts: from −4 m to zero is 4 m to the right, and from zero to 20 m is another 20 m to the right. The total displacement is therefore +24 m. Average velocity tells us the signed change in position per second over the whole trip; it does not mean the cyclist kept the same velocity at every instant.",
+      "alternate_explanation_steps":["Identify the starting position xᵢ = −4 m, ending position x_f = 20 m, and elapsed time Δt = 6 s.","Find displacement: Δx = x_f − xᵢ = 20 − (−4) = 20 + 4 = +24 m. Subtracting a negative adds its magnitude.","Use average velocity = displacement ÷ elapsed time: v_avg = (+24 m) ÷ (6 s) = +4 m/s.","The positive sign means motion toward increasing x, to the right on the diagram. The answer is 4 meters per second to the right.","Check: (4 m/s)(6 s) = 24 m, and −4 m + 24 m = 20 m, the stated final position."],
       "similar_problem":{"prompt":"A runner moves from x = −5 m to x = 15 m in 5 s. What is the average velocity?","answer":"4 m/s","accepted_answers":["4","4 m/s","+4","+4 m/s"]},
       "visual":{"type":"number_line","start":-6,"end":22,"from":-4,"to":20,"label":"Cyclist motion"}
     },
