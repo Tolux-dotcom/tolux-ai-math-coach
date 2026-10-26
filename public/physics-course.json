@@ -297,8 +297,11 @@
           ],
           "title": "Simple Harmonic Motion",
           "summary": "Examine oscillations and wave-energy propagation.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8a-simple-harmonic-motion.json"
         },
         {
           "module_id": "phy-8b-wave-types",
@@ -308,8 +311,11 @@
           ],
           "title": "Transverse and Longitudinal Waves",
           "summary": "Compare mechanical, electromagnetic, and sound waves.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8b-wave-types.json"
         },
         {
           "module_id": "phy-8c-wave-properties",
@@ -319,8 +325,11 @@
           ],
           "title": "Wave Properties",
           "summary": "Relate velocity, frequency, amplitude, and wavelength using v = fλ.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8c-wave-properties.json"
         },
         {
           "module_id": "phy-8d-wave-behavior",
@@ -330,8 +339,11 @@
           ],
           "title": "Wave Behavior",
           "summary": "Investigate reflection, refraction, diffraction, interference, standing waves, Doppler effect, polarization, and superposition.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8d-wave-behavior.json"
         },
         {
           "module_id": "phy-8e-electromagnetic-spectrum",
@@ -341,8 +353,11 @@
           ],
           "title": "Electromagnetic Spectrum",
           "summary": "Compare applications across the electromagnetic spectrum.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8e-electromagnetic-spectrum.json"
         },
         {
           "module_id": "phy-8f-atomic-spectra",
@@ -352,8 +367,11 @@
           ],
           "title": "Atomic Emission Spectra",
           "summary": "Connect atomic emission spectra to the electromagnetic spectrum.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8f-atomic-spectra.json"
         },
         {
           "module_id": "phy-8g-image-formation",
@@ -363,8 +381,11 @@
           ],
           "title": "Mirrors and Lenses",
           "summary": "Describe and predict image formation using plane mirrors and thin convex lenses.",
-          "status": "planned",
-          "available_modes": []
+          "status": "available",
+          "available_modes": [
+            "lesson"
+          ],
+          "lesson_path": "/physics-8g-image-formation.json"
         }
       ]
     },
