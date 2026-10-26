@@ -263,6 +263,21 @@ function escapeHtml(value='') {
 
 function renderVisual(visual) {
   if (!visual) return '';
+  if (visual.type === 'vector_triangle') {
+    const x=Number(visual.x),y=Number(visual.y);
+    if(!(x>0 && y>0)) return '';
+    const scale=150/Math.max(x,y),x0=130,y0=205,x1=x0+x*scale,y1=y0-y*scale;
+    const arrow=(ax,ay,bx,by,color)=>{
+      const angle=Math.atan2(by-ay,bx-ax),size=12;
+      return `<line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${color}" stroke-width="4"/><polygon points="${bx},${by} ${bx-size*Math.cos(angle-.45)},${by-size*Math.sin(angle-.45)} ${bx-size*Math.cos(angle+.45)},${by-size*Math.sin(angle+.45)}" fill="${color}"/>`;
+    };
+    return `<figure class="physics-visual"><figcaption>${escapeHtml(visual.label||'Vector addition')}</figcaption><svg viewBox="0 0 640 270" role="img" aria-label="${escapeHtml(visual.label||'Perpendicular components and resultant')}">
+    ${arrow(x0,y0,x1,y0,'#1261df')}${arrow(x1,y0,x1,y1,'#1261df')}${arrow(x0,y0,x1,y1,'#7145d6')}
+    <text x="${(x0+x1)/2}" y="235" text-anchor="middle">${x} m east</text><text x="${x1+15}" y="${(y0+y1)/2}">${y} m north</text>
+    <text x="${x0-12}" y="${y0+5}" text-anchor="end">Start</text><text x="${x1}" y="${y1-15}" text-anchor="middle">Finish</text><text x="440" y="50">Purple: resultant</text>
+    <path d="M ${x1-14} ${y0} L ${x1-14} ${y0-14} L ${x1} ${y0-14}" fill="none" stroke="#52647e"/>
+    </svg><p>Blue arrows show the two legs. The purple diagonal connects start to finish. Arrow lengths use the same scale.</p></figure>`;
+  }
   if (visual.type === 'motion_graph') {
     const labels={position:'position (m)',velocity:'velocity (m/s)',acceleration:'acceleration (m/s²)'};
     const pts=visual.points||[];
