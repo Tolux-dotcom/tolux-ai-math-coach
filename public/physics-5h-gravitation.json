@@ -1,0 +1,51 @@
+{
+  "lesson_id": "physics-5h-gravitation",
+  "course_id": "physics",
+  "teks": [
+    "5H"
+  ],
+  "title": "Universal Gravitation",
+  "learning_goal": "Use Newton's law of universal gravitation and scientific notation to analyze gravitational force and predict how mass and distance affect gravitational interactions.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Gravity is a universal force",
+      "content": "Every object with mass attracts every other object with mass. The gravitational force becomes stronger when either mass increases and weaker when the distance between the objects increases."
+    },
+    {
+      "id": "law",
+      "title": "2. Newton's law of universal gravitation",
+      "content": "The gravitational force is F = Gm₁m₂/r², where G is the universal gravitational constant, m₁ and m₂ are the two masses, and r is the center-to-center distance between them."
+    },
+    {
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "If the distance between two objects doubles while their masses stay the same, the gravitational force becomes one-fourth as large because the distance is squared in the denominator: 1/(2²) = 1/4."
+    },
+    {
+      "id": "scientific-notation",
+      "title": "4. Scientific notation",
+      "content": "Gravitational calculations often involve very large or very small numbers. Keep coefficients and powers of ten organized separately, then combine them carefully."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Two objects have the same masses as before, but the distance between them becomes three times larger. What happens to the gravitational force?",
+      "hint": "The distance is squared in the denominator. Compare 1/r² with 1/(3r)².",
+      "alternate_explanation": "Imagine spreading the same gravitational interaction over a distance three times larger. Because distance is squared, the force falls by a factor of 3².",
+      "answer": "The force becomes 1/9 as large."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, identify the variables in F = Gm₁m₂/r², predict how force changes when mass or distance changes, use scientific notation accurately, and explain gravitational effects on orbital motion."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  }
+}
