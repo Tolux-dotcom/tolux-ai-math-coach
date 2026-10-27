@@ -24,6 +24,7 @@ const nextButton = document.querySelector('#nextTestQuestion');
 const submitButton = document.querySelector('#submitTest');
 const scoreSummary = document.querySelector('#scoreSummary');
 const saveStatus = document.querySelector('#testPrepSaveStatus');
+const retrySaveButton = document.querySelector('[data-test-prep-retry-save]');
 const categoryResults = document.querySelector('#categoryResults');
 const missedReview = document.querySelector('#missedReview');
 const retakeButton = document.querySelector('#retakeQuickCheck');
@@ -32,6 +33,8 @@ let blueprint;
 let banks;
 let session = null;
 let accessCheckPending = false;
+let lastSaveInput = null;
+let saveInFlight = false;
 
 function promptMarkup(question) {
   return question.prompt_html || question.prompt || '';
@@ -121,20 +124,69 @@ function renderQuestion() {
   submitButton.hidden = session.currentIndex !== session.questions.length - 1;
 }
 
-async function persistResult(percent, itemRecords) {
-  if (!saveStatus || !window.toluxTestPrepProgress || !session) return;
-  saveStatus.textContent = 'Saving this Test Prep result…';
-  const outcome = await window.toluxTestPrepProgress.save({
+function testPrepSaveMessage(outcome) {
+  if (outcome?.status === 'synced') {
+    return 'Saved to your Tolux progress dashboard.';
+  }
+  if (outcome?.status === 'queued') {
+    return 'Saved on this device for this account. Retry now or open the dashboard while signed in.';
+  }
+  if (outcome?.status === 'local-only' && outcome.accountAvailable) {
+    return 'Saved only on this device, but automatic account retry could not be queued. Keep this page open and retry.';
+  }
+  if (outcome?.status === 'local-only') {
+    return 'Saved only on this device. Sign in before starting a future session to sync that result across devices.';
+  }
+  return 'Progress could not be saved to your account or this device. Keep this page open and try again.';
+}
+
+async function saveLastResult({ retrying = false } = {}) {
+  if (
+    !saveStatus ||
+    !window.toluxTestPrepProgress ||
+    !lastSaveInput ||
+    saveInFlight
+  ) return;
+  const input = lastSaveInput;
+  saveInFlight = true;
+  if (retrySaveButton) retrySaveButton.disabled = true;
+  saveStatus.textContent = retrying
+    ? 'Retrying this Test Prep result…'
+    : 'Saving this Test Prep result…';
+  try {
+    const outcome = await window.toluxTestPrepProgress.save(input);
+    if (input !== lastSaveInput) return;
+    lastSaveInput = {
+      ...input,
+      completionId: outcome.report.completion_id,
+      completedAt: outcome.report.completed_at
+    };
+    saveStatus.textContent = testPrepSaveMessage(outcome);
+    if (retrySaveButton) {
+      retrySaveButton.hidden = outcome.status === 'synced' ||
+        (outcome.status === 'local-only' && !outcome.accountAvailable);
+    }
+  } catch (error) {
+    if (input !== lastSaveInput) return;
+    console.error('Test Prep progress save failed:', error);
+    saveStatus.textContent = testPrepSaveMessage({ status: 'unsaved' });
+    if (retrySaveButton) retrySaveButton.hidden = false;
+  } finally {
+    saveInFlight = false;
+    if (retrySaveButton) retrySaveButton.disabled = false;
+  }
+}
+
+function persistResult(percent, itemRecords) {
+  if (!session) return;
+  lastSaveInput = {
     modeId: session.modeId,
     percent,
     itemRecords,
     startedAt: session.startedAt
-  });
-  saveStatus.textContent = outcome.status === 'synced'
-    ? 'Saved to your Tolux progress dashboard.'
-    : outcome.status === 'queued'
-      ? 'Saved on this device. Tolux will retry account sync when you return.'
-      : 'Saved only on this device. Sign in before starting a future session to sync that result across devices.';
+  };
+  if (retrySaveButton) retrySaveButton.hidden = true;
+  void saveLastResult();
 }
 
 function scoreTest() {
@@ -181,7 +233,9 @@ function scoreTest() {
 
 function startMode(modeId) {
   session = createSession(modeId, assembleQuestions(modeId, banks));
+  lastSaveInput = null;
   if (saveStatus) saveStatus.textContent = '';
+  if (retrySaveButton) retrySaveButton.hidden = true;
   modeMessage.textContent = '';
   results.hidden = true;
   runner.hidden = false;
@@ -289,6 +343,7 @@ nextButton?.addEventListener('click', () => {
 });
 submitButton?.addEventListener('click', scoreTest);
 retakeButton?.addEventListener('click', () => session && startMode(session.modeId));
+retrySaveButton?.addEventListener('click', () => void saveLastResult({ retrying: true }));
 
 try {
   const [blueprintResponse, quickResponse, halfResponse, extensionResponse] = await Promise.all([
