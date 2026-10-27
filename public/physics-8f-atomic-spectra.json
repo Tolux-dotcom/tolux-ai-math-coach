@@ -1,0 +1,717 @@
+{
+  "lesson_id": "physics-8f-atomic-spectra",
+  "course_id": "physics",
+  "teks": [
+    "8F"
+  ],
+  "title": "Atomic Emission Spectra",
+  "learning_goal": "Investigate atomic emission spectra and connect spectral lines to electromagnetic radiation and atomic energy levels.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Atoms emit specific wavelengths",
+      "content": "Excited atoms can emit electromagnetic radiation at specific wavelengths rather than every possible wavelength."
+    },
+    {
+      "id": "levels",
+      "title": "2. Energy levels",
+      "content": "Electrons in atoms occupy quantized energy levels. When an electron moves from a higher level to a lower level, the atom emits a photon with energy equal to the energy difference."
+    },
+    {
+      "id": "spectra",
+      "title": "3. Spectral fingerprints",
+      "content": "Each element has a characteristic pattern of emission lines because each element has its own allowed energy levels."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "Hydrogen produces a distinct set of visible spectral lines. Those lines correspond to specific electron transitions and therefore specific photon energies."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Why can an emission spectrum be used to identify an unknown element?",
+      "hint": "Think about whether different elements have identical or unique energy-level patterns.",
+      "alternate_explanation": "The spectral-line pattern acts like a fingerprint because each element has a unique set of allowed electron transitions.",
+      "answer": "Because each element has a characteristic set of emission lines."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, explain why atomic spectra are discrete, connect photon emission to electron transitions, and describe how spectra identify elements."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Atoms emit specific wavelengths",
+      "content": "Excited atoms can emit electromagnetic radiation at specific wavelengths rather than every possible wavelength.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Higher atomic energy",
+          "Photon emitted: ΔE = hf",
+          "Lower atomic energy"
+        ],
+        "label": "Only allowed transitions produce the corresponding discrete photon energies."
+      }
+    },
+    {
+      "title": "Energy levels",
+      "content": "Electrons in atoms occupy quantized energy levels. When an electron moves from a higher level to a lower level, the atom emits a photon with energy equal to the energy difference."
+    },
+    {
+      "title": "Spectral fingerprints",
+      "content": "Each element has a characteristic pattern of emission lines because each element has its own allowed energy levels."
+    },
+    {
+      "title": "Why do isolated atoms emit distinct spectral lines?",
+      "content": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines."
+    },
+    {
+      "title": "An electron drops to a lower atomic energy level. What happens?",
+      "content": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "8F-W01",
+      "prompt": "Why do isolated atoms emit distinct spectral lines?",
+      "choices": [
+        "Allowed energy levels are discrete",
+        "Electrons can emit every possible energy equally"
+      ],
+      "answer": "Allowed energy levels are discrete",
+      "accepted_answers": [
+        "Allowed energy levels are discrete"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+      "alternate_explanation_steps": [
+        "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Why do isolated atoms emit distinct spectral lines?"
+        },
+        {
+          "equation": "Allowed energy levels are discrete",
+          "explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Higher atomic energy",
+          "Photon emitted: ΔE = hf",
+          "Lower atomic energy"
+        ],
+        "label": "Only allowed transitions produce the corresponding discrete photon energies."
+      }
+    },
+    {
+      "id": "8F-W02",
+      "prompt": "An electron drops to a lower atomic energy level. What happens?",
+      "choices": [
+        "A photon must be absorbed",
+        "A photon can be emitted"
+      ],
+      "answer": "A photon can be emitted",
+      "accepted_answers": [
+        "A photon can be emitted"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+      "alternate_explanation_steps": [
+        "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "An electron drops to a lower atomic energy level. What happens?"
+        },
+        {
+          "equation": "A photon can be emitted",
+          "explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "8F-G01",
+      "prompt": "Why do isolated atoms emit distinct spectral lines?",
+      "choices": [
+        "Allowed energy levels are discrete",
+        "Electrons can emit every possible energy equally"
+      ],
+      "answer": "Allowed energy levels are discrete",
+      "accepted_answers": [
+        "Allowed energy levels are discrete"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+      "alternate_explanation_steps": [
+        "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8F-Q03",
+        "prompt": "Why can spectral patterns help identify elements?",
+        "choices": [
+          "Elements have characteristic allowed transitions",
+          "Every element has the same energy-level spacing"
+        ],
+        "answer": "Elements have characteristic allowed transitions",
+        "accepted_answers": [
+          "Elements have characteristic allowed transitions"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+        "alternate_explanation_steps": [
+          "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8F-G02",
+      "prompt": "An electron drops to a lower atomic energy level. What happens?",
+      "choices": [
+        "A photon must be absorbed",
+        "A photon can be emitted"
+      ],
+      "answer": "A photon can be emitted",
+      "accepted_answers": [
+        "A photon can be emitted"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+      "alternate_explanation_steps": [
+        "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8F-Q04",
+        "prompt": "Which transition emits the higher-frequency photon?",
+        "choices": [
+          "The one with the smaller energy drop",
+          "The one with the larger energy drop"
+        ],
+        "answer": "The one with the larger energy drop",
+        "accepted_answers": [
+          "The one with the larger energy drop"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+        "alternate_explanation_steps": [
+          "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "8F-P01",
+      "prompt": "Why can spectral patterns help identify elements?",
+      "choices": [
+        "Elements have characteristic allowed transitions",
+        "Every element has the same energy-level spacing"
+      ],
+      "answer": "Elements have characteristic allowed transitions",
+      "accepted_answers": [
+        "Elements have characteristic allowed transitions"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+      "alternate_explanation_steps": [
+        "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8F-Q05",
+        "prompt": "Why is an arbitrary photon not necessarily absorbed by an isolated atom?",
+        "choices": [
+          "Its energy may not match an allowed transition",
+          "Atoms absorb all frequencies equally"
+        ],
+        "answer": "Its energy may not match an allowed transition",
+        "accepted_answers": [
+          "Its energy may not match an allowed transition"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+        "alternate_explanation_steps": [
+          "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8F-P02",
+      "prompt": "Which transition emits the higher-frequency photon?",
+      "choices": [
+        "The one with the smaller energy drop",
+        "The one with the larger energy drop"
+      ],
+      "answer": "The one with the larger energy drop",
+      "accepted_answers": [
+        "The one with the larger energy drop"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+      "alternate_explanation_steps": [
+        "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8F-Q01",
+        "prompt": "Why do isolated atoms emit distinct spectral lines?",
+        "choices": [
+          "Allowed energy levels are discrete",
+          "Electrons can emit every possible energy equally"
+        ],
+        "answer": "Allowed energy levels are discrete",
+        "accepted_answers": [
+          "Allowed energy levels are discrete"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+        "alternate_explanation_steps": [
+          "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8F-P03",
+      "prompt": "Why is an arbitrary photon not necessarily absorbed by an isolated atom?",
+      "choices": [
+        "Its energy may not match an allowed transition",
+        "Atoms absorb all frequencies equally"
+      ],
+      "answer": "Its energy may not match an allowed transition",
+      "accepted_answers": [
+        "Its energy may not match an allowed transition"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+      "alternate_explanation_steps": [
+        "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8F-Q02",
+        "prompt": "An electron drops to a lower atomic energy level. What happens?",
+        "choices": [
+          "A photon must be absorbed",
+          "A photon can be emitted"
+        ],
+        "answer": "A photon can be emitted",
+        "accepted_answers": [
+          "A photon can be emitted"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+        "alternate_explanation_steps": [
+          "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "8F-M01",
+      "prompt": "An atom emits a photon when dropping from energy 5 eV to 2 eV. What is the emitted photon energy?",
+      "choices": [
+        "3 eV",
+        "7 eV"
+      ],
+      "answer": "3 eV",
+      "accepted_answers": [
+        "3 eV"
+      ],
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
+    },
+    {
+      "id": "8F-M02",
+      "prompt": "An atom emits a photon when dropping from energy 6 eV to 3 eV. What is the emitted photon energy?",
+      "choices": [
+        "9 eV",
+        "3 eV"
+      ],
+      "answer": "3 eV",
+      "accepted_answers": [
+        "3 eV"
+      ],
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
+    },
+    {
+      "id": "8F-M03",
+      "prompt": "An atom emits a photon when dropping from energy 7 eV to 4 eV. What is the emitted photon energy?",
+      "choices": [
+        "3 eV",
+        "11 eV"
+      ],
+      "answer": "3 eV",
+      "accepted_answers": [
+        "3 eV"
+      ],
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
+    },
+    {
+      "id": "8F-M04",
+      "prompt": "An atom emits a photon when dropping from energy 8 eV to 5 eV. What is the emitted photon energy?",
+      "choices": [
+        "13 eV",
+        "3 eV"
+      ],
+      "answer": "3 eV",
+      "accepted_answers": [
+        "3 eV"
+      ],
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
+    },
+    {
+      "id": "8F-M05",
+      "prompt": "An atom emits a photon when dropping from energy 9 eV to 6 eV. What is the emitted photon energy?",
+      "choices": [
+        "3 eV",
+        "15 eV"
+      ],
+      "answer": "3 eV",
+      "accepted_answers": [
+        "3 eV"
+      ],
+      "alternate_explanation": "Photon energy is the difference between initial and final atomic energies, not their sum."
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "8F-P01",
+        "prompt": "Why can spectral patterns help identify elements?",
+        "choices": [
+          "Elements have characteristic allowed transitions",
+          "Every element has the same energy-level spacing"
+        ],
+        "answer": "Elements have characteristic allowed transitions",
+        "accepted_answers": [
+          "Elements have characteristic allowed transitions"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+        "alternate_explanation_steps": [
+          "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8F-Q05",
+          "prompt": "Why is an arbitrary photon not necessarily absorbed by an isolated atom?",
+          "choices": [
+            "Its energy may not match an allowed transition",
+            "Atoms absorb all frequencies equally"
+          ],
+          "answer": "Its energy may not match an allowed transition",
+          "accepted_answers": [
+            "Its energy may not match an allowed transition"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+          "alternate_explanation_steps": [
+            "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8F-P02",
+        "prompt": "Which transition emits the higher-frequency photon?",
+        "choices": [
+          "The one with the smaller energy drop",
+          "The one with the larger energy drop"
+        ],
+        "answer": "The one with the larger energy drop",
+        "accepted_answers": [
+          "The one with the larger energy drop"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+        "alternate_explanation_steps": [
+          "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8F-Q01",
+          "prompt": "Why do isolated atoms emit distinct spectral lines?",
+          "choices": [
+            "Allowed energy levels are discrete",
+            "Electrons can emit every possible energy equally"
+          ],
+          "answer": "Allowed energy levels are discrete",
+          "accepted_answers": [
+            "Allowed energy levels are discrete"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+          "alternate_explanation_steps": [
+            "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8F-P03",
+        "prompt": "Why is an arbitrary photon not necessarily absorbed by an isolated atom?",
+        "choices": [
+          "Its energy may not match an allowed transition",
+          "Atoms absorb all frequencies equally"
+        ],
+        "answer": "Its energy may not match an allowed transition",
+        "accepted_answers": [
+          "Its energy may not match an allowed transition"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+        "alternate_explanation_steps": [
+          "Absorption is constrained by allowed transitions and selection rules; matching an energy difference is essential.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8F-Q02",
+          "prompt": "An electron drops to a lower atomic energy level. What happens?",
+          "choices": [
+            "A photon must be absorbed",
+            "A photon can be emitted"
+          ],
+          "answer": "A photon can be emitted",
+          "accepted_answers": [
+            "A photon can be emitted"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+          "alternate_explanation_steps": [
+            "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "8F-G01",
+        "prompt": "Why do isolated atoms emit distinct spectral lines?",
+        "choices": [
+          "Allowed energy levels are discrete",
+          "Electrons can emit every possible energy equally"
+        ],
+        "answer": "Allowed energy levels are discrete",
+        "accepted_answers": [
+          "Allowed energy levels are discrete"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+        "alternate_explanation_steps": [
+          "A photon emitted in a transition has E_photon = E_initial − E_final. Only allowed level differences produce those lines.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8F-Q03",
+          "prompt": "Why can spectral patterns help identify elements?",
+          "choices": [
+            "Elements have characteristic allowed transitions",
+            "Every element has the same energy-level spacing"
+          ],
+          "answer": "Elements have characteristic allowed transitions",
+          "accepted_answers": [
+            "Elements have characteristic allowed transitions"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+          "alternate_explanation_steps": [
+            "Different atomic structures give distinctive sets of transition energies and wavelengths.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8F-G02",
+        "prompt": "An electron drops to a lower atomic energy level. What happens?",
+        "choices": [
+          "A photon must be absorbed",
+          "A photon can be emitted"
+        ],
+        "answer": "A photon can be emitted",
+        "accepted_answers": [
+          "A photon can be emitted"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+        "alternate_explanation_steps": [
+          "Emission transfers the energy difference to a photon. Absorption raises the atom when the photon matches an allowed transition.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8F-Q04",
+          "prompt": "Which transition emits the higher-frequency photon?",
+          "choices": [
+            "The one with the smaller energy drop",
+            "The one with the larger energy drop"
+          ],
+          "answer": "The one with the larger energy drop",
+          "accepted_answers": [
+            "The one with the larger energy drop"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+          "alternate_explanation_steps": [
+            "E = hf links frequency to the energy gap, not to the absolute starting energy alone.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "8F-C01",
+      "prompt": "Why can spectral patterns help identify elements? Explain why, using your own words.",
+      "expected_ideas": [
+        "Elements have characteristic allowed transitions",
+        "Different atomic structures give distinctive sets of transition energies and wavelengths."
+      ],
+      "misconceptions": [
+        "Every element has the same energy-level spacing"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "8F-C02",
+      "prompt": "Which transition emits the higher-frequency photon? Explain why, using your own words.",
+      "expected_ideas": [
+        "The one with the larger energy drop",
+        "E = hf links frequency to the energy gap, not to the absolute starting energy alone."
+      ],
+      "misconceptions": [
+        "The one with the smaller energy drop"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
+  }
+}

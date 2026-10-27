@@ -47,4 +47,3 @@ Use a disposable signed-in preview account before approval:
 4. repeat with an expired token and an account switch;
 5. verify the completely unsaved message in private mode or a controlled storage-failure fixture; and
 6. repeat on a physical phone.
-

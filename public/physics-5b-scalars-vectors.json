@@ -1,0 +1,1199 @@
+{
+  "lesson_id": "physics-5b-scalars-vectors",
+  "course_id": "physics",
+  "teks": [
+    "5B"
+  ],
+  "title": "Scalars and Vectors",
+  "learning_goal": "Distinguish scalar and vector quantities and combine perpendicular vectors graphically and with the Pythagorean theorem.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Scalar or vector?",
+      "content": "A scalar has magnitude only. Examples include mass, time, temperature, distance, and speed. A vector has magnitude and direction. Examples include displacement, velocity, acceleration, and force."
+    },
+    {
+      "id": "direction",
+      "title": "2. Why direction matters",
+      "content": "Two vectors can have the same magnitude but represent different physical situations if their directions differ. A velocity of 20 m/s east is not the same vector as 20 m/s west."
+    },
+    {
+      "id": "worked-example",
+      "title": "3. Worked example",
+      "content": "A student walks 3 m east and then 4 m north. The total distance traveled is 7 m, but the displacement is the straight-line vector from start to finish. Because the two legs are perpendicular, the displacement magnitude is √(3² + 4²) = 5 m, directed northeast."
+    },
+    {
+      "id": "guided-practice",
+      "title": "4. Guided practice",
+      "prompt": "A drone moves 6 m east and 8 m north. What is the magnitude of its displacement?",
+      "hint": "The east and north displacements form the two perpendicular legs of a right triangle.",
+      "alternate_explanation": "Draw a right triangle. The resultant displacement is the hypotenuse, so combine the perpendicular components using the Pythagorean theorem.",
+      "answer": "10 m"
+    },
+    {
+      "id": "components",
+      "title": "5. Combine vectors graphically",
+      "content": "To add vectors graphically, place the tail of the second vector at the head of the first. The resultant vector points from the starting tail to the final head."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, classify quantities as scalar or vector, explain why direction matters, add perpendicular vectors graphically, and calculate the magnitude of a resultant vector."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Scalars describe magnitude; vectors include direction",
+      "content": "Mass, time, temperature, distance, and speed are scalar quantities. Displacement, velocity, acceleration, and force are vectors. A negative scalar, such as a temperature below zero on a chosen scale, does not become a vector simply because it has a sign."
+    },
+    {
+      "title": "The same size can have different directions",
+      "content": "A displacement of 5 m east and one of 5 m west have equal magnitudes but are different vectors. In one dimension, choose a positive direction and use signs consistently. Vector equality requires equal magnitude and direction, not just equal arrow length.",
+      "visual": {
+        "type": "velocity_arrows"
+      }
+    },
+    {
+      "title": "Place vectors head to tail",
+      "content": "Move an arrow without rotating or resizing it so its tail starts at the previous arrow’s head. The resultant connects the initial tail to the final head. For perpendicular components, the resultant is the hypotenuse of the right triangle.",
+      "visual": {
+        "type": "vector_triangle",
+        "x": 3,
+        "y": 4,
+        "label": "Head-to-tail displacement: 3 m east, then 4 m north; resultant from start to finish."
+      }
+    },
+    {
+      "title": "Magnitude is not the complete vector",
+      "content": "For 3 m east and 4 m north, displacement magnitude is 5 m. Its direction is about 53.1° north of east. Saying only “northeast” identifies the quadrant but does not specify an exact angle. Use the direction detail the question asks for.",
+      "visual": {
+        "type": "vector_triangle",
+        "x": 3,
+        "y": 4,
+        "label": "Head-to-tail displacement: 3 m east, then 4 m north; resultant from start to finish."
+      }
+    },
+    {
+      "title": "Subtracting a vector means adding its opposite",
+      "content": "To subtract a displacement vector, reverse its direction and add head to tail. For collinear motion with east positive, 8 m east plus 3 m west gives +5 m displacement, while total distance is 11 m.",
+      "visual": {
+        "type": "number_line",
+        "start": 0,
+        "end": 12,
+        "from": 8,
+        "to": 5,
+        "label": "The second leg points west: position decreases from 8 m to 5 m."
+      }
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "5B-W01",
+      "prompt": "A student travels 3 m east, then 4 m north. Find the magnitude of the resultant displacement.",
+      "answer": "5 m",
+      "accepted_answers": [
+        "5 m",
+        "5"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 3,
+        "y": 4,
+        "label": "Head-to-tail displacement: 3 m east, then 4 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(9 + 16)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 3 m east and 4 m north.",
+        "R² = (3 m)² + (4 m)² = 25 m².",
+        "R = 5 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 7 m. It is different from displacement magnitude."
+      ],
+      "solution_steps": [
+        {
+          "equation": "R² = 3² + 4²",
+          "explanation": "The components are perpendicular, so the Pythagorean theorem applies."
+        },
+        {
+          "equation": "R = √25 = 5 m",
+          "explanation": "Take the nonnegative square root because magnitude is nonnegative."
+        },
+        {
+          "equation": "θ = tan⁻¹(4/3) ≈ 53.1° north of east",
+          "explanation": "Specify which axis the angle is measured from; the vector points from the start to the finish."
+        }
+      ]
+    },
+    {
+      "id": "5B-W02",
+      "prompt": "A student travels 6 m east, then 8 m north. Find the magnitude of the resultant displacement.",
+      "answer": "10 m",
+      "accepted_answers": [
+        "10 m",
+        "10"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 6,
+        "y": 8,
+        "label": "Head-to-tail displacement: 6 m east, then 8 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(36 + 64)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 6 m east and 8 m north.",
+        "R² = (6 m)² + (8 m)² = 100 m².",
+        "R = 10 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 14 m. It is different from displacement magnitude."
+      ],
+      "solution_steps": [
+        {
+          "equation": "R² = 6² + 8²",
+          "explanation": "The components are perpendicular, so the Pythagorean theorem applies."
+        },
+        {
+          "equation": "R = √100 = 10 m",
+          "explanation": "Take the nonnegative square root because magnitude is nonnegative."
+        },
+        {
+          "equation": "θ = tan⁻¹(8/6) ≈ 53.1° north of east",
+          "explanation": "Specify which axis the angle is measured from; the vector points from the start to the finish."
+        }
+      ]
+    },
+    {
+      "id": "5B-W03",
+      "prompt": "A student travels 5 m east, then 12 m north. Find the magnitude of the resultant displacement.",
+      "answer": "13 m",
+      "accepted_answers": [
+        "13 m",
+        "13"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 5,
+        "y": 12,
+        "label": "Head-to-tail displacement: 5 m east, then 12 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(25 + 144)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 5 m east and 12 m north.",
+        "R² = (5 m)² + (12 m)² = 169 m².",
+        "R = 13 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 17 m. It is different from displacement magnitude."
+      ],
+      "solution_steps": [
+        {
+          "equation": "R² = 5² + 12²",
+          "explanation": "The components are perpendicular, so the Pythagorean theorem applies."
+        },
+        {
+          "equation": "R = √169 = 13 m",
+          "explanation": "Take the nonnegative square root because magnitude is nonnegative."
+        },
+        {
+          "equation": "θ = tan⁻¹(12/5) ≈ 67.4° north of east",
+          "explanation": "Specify which axis the angle is measured from; the vector points from the start to the finish."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "5B-G01",
+      "prompt": "A student travels 6 m east, then 8 m north. Find the magnitude of the resultant displacement.",
+      "answer": "10 m",
+      "accepted_answers": [
+        "10 m",
+        "10"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 6,
+        "y": 8,
+        "label": "Head-to-tail displacement: 6 m east, then 8 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(36 + 64)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 6 m east and 8 m north.",
+        "R² = (6 m)² + (8 m)² = 100 m².",
+        "R = 10 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 14 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S01",
+        "prompt": "A student travels 3 m east, then 4 m north. Find the magnitude of the resultant displacement.",
+        "answer": "5 m",
+        "accepted_answers": [
+          "5 m",
+          "5"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 3,
+          "y": 4,
+          "label": "Head-to-tail displacement: 3 m east, then 4 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(9 + 16)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 3 m east and 4 m north.",
+          "R² = (3 m)² + (4 m)² = 25 m².",
+          "R = 5 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 7 m. It is different from displacement magnitude."
+        ]
+      }
+    },
+    {
+      "id": "5B-G02",
+      "prompt": "A student travels 8 m east, then 15 m north. Find the magnitude of the resultant displacement.",
+      "answer": "17 m",
+      "accepted_answers": [
+        "17 m",
+        "17"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 8,
+        "y": 15,
+        "label": "Head-to-tail displacement: 8 m east, then 15 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(64 + 225)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 8 m east and 15 m north.",
+        "R² = (8 m)² + (15 m)² = 289 m².",
+        "R = 17 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 23 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S02",
+        "prompt": "A student travels 6 m east, then 8 m north. Find the magnitude of the resultant displacement.",
+        "answer": "10 m",
+        "accepted_answers": [
+          "10 m",
+          "10"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 6,
+          "y": 8,
+          "label": "Head-to-tail displacement: 6 m east, then 8 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(36 + 64)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 6 m east and 8 m north.",
+          "R² = (6 m)² + (8 m)² = 100 m².",
+          "R = 10 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 14 m. It is different from displacement magnitude."
+        ]
+      }
+    },
+    {
+      "id": "5B-G03",
+      "prompt": "A student travels 9 m east, then 12 m north. Find the magnitude of the resultant displacement.",
+      "answer": "15 m",
+      "accepted_answers": [
+        "15 m",
+        "15"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 9,
+        "y": 12,
+        "label": "Head-to-tail displacement: 9 m east, then 12 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(81 + 144)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 9 m east and 12 m north.",
+        "R² = (9 m)² + (12 m)² = 225 m².",
+        "R = 15 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 21 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S03",
+        "prompt": "A student travels 9 m east, then 12 m north. Find the magnitude of the resultant displacement.",
+        "answer": "15 m",
+        "accepted_answers": [
+          "15 m",
+          "15"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 9,
+          "y": 12,
+          "label": "Head-to-tail displacement: 9 m east, then 12 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(81 + 144)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 9 m east and 12 m north.",
+          "R² = (9 m)² + (12 m)² = 225 m².",
+          "R = 15 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 21 m. It is different from displacement magnitude."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "5B-P01",
+      "prompt": "A student travels 5 m east, then 12 m north. Find the magnitude of the resultant displacement.",
+      "answer": "13 m",
+      "accepted_answers": [
+        "13 m",
+        "13"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 5,
+        "y": 12,
+        "label": "Head-to-tail displacement: 5 m east, then 12 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(25 + 144)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 5 m east and 12 m north.",
+        "R² = (5 m)² + (12 m)² = 169 m².",
+        "R = 13 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 17 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S04",
+        "prompt": "A student travels 12 m east, then 16 m north. Find the magnitude of the resultant displacement.",
+        "answer": "20 m",
+        "accepted_answers": [
+          "20 m",
+          "20"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 12,
+          "y": 16,
+          "label": "Head-to-tail displacement: 12 m east, then 16 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(144 + 256)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 12 m east and 16 m north.",
+          "R² = (12 m)² + (16 m)² = 400 m².",
+          "R = 20 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 28 m. It is different from displacement magnitude."
+        ]
+      }
+    },
+    {
+      "id": "5B-P02",
+      "prompt": "A student travels 7 m east, then 24 m north. Find the magnitude of the resultant displacement.",
+      "answer": "25 m",
+      "accepted_answers": [
+        "25 m",
+        "25"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 7,
+        "y": 24,
+        "label": "Head-to-tail displacement: 7 m east, then 24 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(49 + 576)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 7 m east and 24 m north.",
+        "R² = (7 m)² + (24 m)² = 625 m².",
+        "R = 25 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 31 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S05",
+        "prompt": "A student travels 15 m east, then 20 m north. Find the magnitude of the resultant displacement.",
+        "answer": "25 m",
+        "accepted_answers": [
+          "25 m",
+          "25"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 15,
+          "y": 20,
+          "label": "Head-to-tail displacement: 15 m east, then 20 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(225 + 400)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 15 m east and 20 m north.",
+          "R² = (15 m)² + (20 m)² = 625 m².",
+          "R = 25 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 35 m. It is different from displacement magnitude."
+        ]
+      }
+    },
+    {
+      "id": "5B-P03",
+      "prompt": "A student travels 12 m east, then 16 m north. Find the magnitude of the resultant displacement.",
+      "answer": "20 m",
+      "accepted_answers": [
+        "20 m",
+        "20"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 12,
+        "y": 16,
+        "label": "Head-to-tail displacement: 12 m east, then 16 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(144 + 256)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 12 m east and 16 m north.",
+        "R² = (12 m)² + (16 m)² = 400 m².",
+        "R = 20 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 28 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S06",
+        "prompt": "A student travels 18 m east, then 24 m north. Find the magnitude of the resultant displacement.",
+        "answer": "30 m",
+        "accepted_answers": [
+          "30 m",
+          "30"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 18,
+          "y": 24,
+          "label": "Head-to-tail displacement: 18 m east, then 24 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(324 + 576)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 18 m east and 24 m north.",
+          "R² = (18 m)² + (24 m)² = 900 m².",
+          "R = 30 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 42 m. It is different from displacement magnitude."
+        ]
+      }
+    },
+    {
+      "id": "5B-P04",
+      "prompt": "A student travels 15 m east, then 20 m north. Find the magnitude of the resultant displacement.",
+      "answer": "25 m",
+      "accepted_answers": [
+        "25 m",
+        "25"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 15,
+        "y": 20,
+        "label": "Head-to-tail displacement: 15 m east, then 20 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(225 + 400)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 15 m east and 20 m north.",
+        "R² = (15 m)² + (20 m)² = 625 m².",
+        "R = 25 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 35 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S07",
+        "prompt": "A student travels 21 m east, then 28 m north. Find the magnitude of the resultant displacement.",
+        "answer": "35 m",
+        "accepted_answers": [
+          "35 m",
+          "35"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 21,
+          "y": 28,
+          "label": "Head-to-tail displacement: 21 m east, then 28 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(441 + 784)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 21 m east and 28 m north.",
+          "R² = (21 m)² + (28 m)² = 1225 m².",
+          "R = 35 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 49 m. It is different from displacement magnitude."
+        ]
+      }
+    },
+    {
+      "id": "5B-P05",
+      "prompt": "A student travels 20 m east, then 21 m north. Find the magnitude of the resultant displacement.",
+      "answer": "29 m",
+      "accepted_answers": [
+        "29 m",
+        "29"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 20,
+        "y": 21,
+        "label": "Head-to-tail displacement: 20 m east, then 21 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(400 + 441)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 20 m east and 21 m north.",
+        "R² = (20 m)² + (21 m)² = 841 m².",
+        "R = 29 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 41 m. It is different from displacement magnitude."
+      ],
+      "similar_problem": {
+        "id": "5B-S08",
+        "prompt": "A student travels 24 m east, then 32 m north. Find the magnitude of the resultant displacement.",
+        "answer": "40 m",
+        "accepted_answers": [
+          "40 m",
+          "40"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 24,
+          "y": 32,
+          "label": "Head-to-tail displacement: 24 m east, then 32 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(576 + 1024)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 24 m east and 32 m north.",
+          "R² = (24 m)² + (32 m)² = 1600 m².",
+          "R = 40 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 56 m. It is different from displacement magnitude."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "5B-M01",
+      "prompt": "A student travels 33 m east, then 44 m north. Find the magnitude of the resultant displacement.",
+      "answer": "55 m",
+      "accepted_answers": [
+        "55",
+        "55 m"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 33,
+        "y": 44,
+        "label": "33 m east then 44 m north"
+      },
+      "hint_steps": [
+        "Use the perpendicular components and R² = x² + y²."
+      ],
+      "alternate_explanation": "R = √(33² + 44²) = 55 m. The diagonal is the direct displacement magnitude.",
+      "alternate_explanation_steps": []
+    },
+    {
+      "id": "5B-M02",
+      "prompt": "A student travels 12 m east, then 35 m north. Find the magnitude of the resultant displacement.",
+      "answer": "37 m",
+      "accepted_answers": [
+        "37 m",
+        "37"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 12,
+        "y": 35,
+        "label": "Head-to-tail displacement: 12 m east, then 35 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(144 + 1225)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 12 m east and 35 m north.",
+        "R² = (12 m)² + (35 m)² = 1369 m².",
+        "R = 37 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 47 m. It is different from displacement magnitude."
+      ]
+    },
+    {
+      "id": "5B-M03",
+      "prompt": "A student travels 10 m east, then 24 m north. Find the magnitude of the resultant displacement.",
+      "answer": "26 m",
+      "accepted_answers": [
+        "26 m",
+        "26"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 10,
+        "y": 24,
+        "label": "Head-to-tail displacement: 10 m east, then 24 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(100 + 576)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 10 m east and 24 m north.",
+        "R² = (10 m)² + (24 m)² = 676 m².",
+        "R = 26 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 34 m. It is different from displacement magnitude."
+      ]
+    },
+    {
+      "id": "5B-M04",
+      "prompt": "A student travels 16 m east, then 30 m north. Find the magnitude of the resultant displacement.",
+      "answer": "34 m",
+      "accepted_answers": [
+        "34 m",
+        "34"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 16,
+        "y": 30,
+        "label": "Head-to-tail displacement: 16 m east, then 30 m north; resultant from start to finish."
+      },
+      "hint_steps": [
+        "Identify the two perpendicular displacement components.",
+        "Use R² = x² + y², not x + y.",
+        "Calculate √(256 + 900)."
+      ],
+      "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+      "alternate_explanation_steps": [
+        "The perpendicular components are 16 m east and 30 m north.",
+        "R² = (16 m)² + (30 m)² = 1156 m².",
+        "R = 34 m. This is magnitude only; the complete vector also has direction, between east and north.",
+        "Distance along the route is 46 m. It is different from displacement magnitude."
+      ]
+    },
+    {
+      "id": "5B-M05",
+      "prompt": "A student travels 30 m east, then 40 m north. Find the magnitude of the resultant displacement.",
+      "answer": "50 m",
+      "accepted_answers": [
+        "50",
+        "50 m"
+      ],
+      "visual": {
+        "type": "vector_triangle",
+        "x": 30,
+        "y": 40,
+        "label": "30 m east then 40 m north"
+      },
+      "hint_steps": [
+        "Use the perpendicular components and R² = x² + y²."
+      ],
+      "alternate_explanation": "R = √(30² + 40²) = 50 m.",
+      "alternate_explanation_steps": []
+    }
+  ],
+  "practice": {
+    "intro": "Use the component diagram to distinguish traveled distance from displacement magnitude.",
+    "problems": [
+      {
+        "id": "5B-P01",
+        "prompt": "A student travels 5 m east, then 12 m north. Find the magnitude of the resultant displacement.",
+        "answer": "13 m",
+        "accepted_answers": [
+          "13 m",
+          "13"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 5,
+          "y": 12,
+          "label": "Head-to-tail displacement: 5 m east, then 12 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(25 + 144)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 5 m east and 12 m north.",
+          "R² = (5 m)² + (12 m)² = 169 m².",
+          "R = 13 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 17 m. It is different from displacement magnitude."
+        ],
+        "similar_problem": {
+          "id": "5B-S04",
+          "prompt": "A student travels 12 m east, then 16 m north. Find the magnitude of the resultant displacement.",
+          "answer": "20 m",
+          "accepted_answers": [
+            "20 m",
+            "20"
+          ],
+          "visual": {
+            "type": "vector_triangle",
+            "x": 12,
+            "y": 16,
+            "label": "Head-to-tail displacement: 12 m east, then 16 m north; resultant from start to finish."
+          },
+          "hint_steps": [
+            "Identify the two perpendicular displacement components.",
+            "Use R² = x² + y², not x + y.",
+            "Calculate √(144 + 256)."
+          ],
+          "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+          "alternate_explanation_steps": [
+            "The perpendicular components are 12 m east and 16 m north.",
+            "R² = (12 m)² + (16 m)² = 400 m².",
+            "R = 20 m. This is magnitude only; the complete vector also has direction, between east and north.",
+            "Distance along the route is 28 m. It is different from displacement magnitude."
+          ]
+        }
+      },
+      {
+        "id": "5B-P02",
+        "prompt": "A student travels 7 m east, then 24 m north. Find the magnitude of the resultant displacement.",
+        "answer": "25 m",
+        "accepted_answers": [
+          "25 m",
+          "25"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 7,
+          "y": 24,
+          "label": "Head-to-tail displacement: 7 m east, then 24 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(49 + 576)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 7 m east and 24 m north.",
+          "R² = (7 m)² + (24 m)² = 625 m².",
+          "R = 25 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 31 m. It is different from displacement magnitude."
+        ],
+        "similar_problem": {
+          "id": "5B-S05",
+          "prompt": "A student travels 15 m east, then 20 m north. Find the magnitude of the resultant displacement.",
+          "answer": "25 m",
+          "accepted_answers": [
+            "25 m",
+            "25"
+          ],
+          "visual": {
+            "type": "vector_triangle",
+            "x": 15,
+            "y": 20,
+            "label": "Head-to-tail displacement: 15 m east, then 20 m north; resultant from start to finish."
+          },
+          "hint_steps": [
+            "Identify the two perpendicular displacement components.",
+            "Use R² = x² + y², not x + y.",
+            "Calculate √(225 + 400)."
+          ],
+          "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+          "alternate_explanation_steps": [
+            "The perpendicular components are 15 m east and 20 m north.",
+            "R² = (15 m)² + (20 m)² = 625 m².",
+            "R = 25 m. This is magnitude only; the complete vector also has direction, between east and north.",
+            "Distance along the route is 35 m. It is different from displacement magnitude."
+          ]
+        }
+      },
+      {
+        "id": "5B-P03",
+        "prompt": "A student travels 12 m east, then 16 m north. Find the magnitude of the resultant displacement.",
+        "answer": "20 m",
+        "accepted_answers": [
+          "20 m",
+          "20"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 12,
+          "y": 16,
+          "label": "Head-to-tail displacement: 12 m east, then 16 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(144 + 256)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 12 m east and 16 m north.",
+          "R² = (12 m)² + (16 m)² = 400 m².",
+          "R = 20 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 28 m. It is different from displacement magnitude."
+        ],
+        "similar_problem": {
+          "id": "5B-S06",
+          "prompt": "A student travels 18 m east, then 24 m north. Find the magnitude of the resultant displacement.",
+          "answer": "30 m",
+          "accepted_answers": [
+            "30 m",
+            "30"
+          ],
+          "visual": {
+            "type": "vector_triangle",
+            "x": 18,
+            "y": 24,
+            "label": "Head-to-tail displacement: 18 m east, then 24 m north; resultant from start to finish."
+          },
+          "hint_steps": [
+            "Identify the two perpendicular displacement components.",
+            "Use R² = x² + y², not x + y.",
+            "Calculate √(324 + 576)."
+          ],
+          "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+          "alternate_explanation_steps": [
+            "The perpendicular components are 18 m east and 24 m north.",
+            "R² = (18 m)² + (24 m)² = 900 m².",
+            "R = 30 m. This is magnitude only; the complete vector also has direction, between east and north.",
+            "Distance along the route is 42 m. It is different from displacement magnitude."
+          ]
+        }
+      },
+      {
+        "id": "5B-P04",
+        "prompt": "A student travels 15 m east, then 20 m north. Find the magnitude of the resultant displacement.",
+        "answer": "25 m",
+        "accepted_answers": [
+          "25 m",
+          "25"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 15,
+          "y": 20,
+          "label": "Head-to-tail displacement: 15 m east, then 20 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(225 + 400)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 15 m east and 20 m north.",
+          "R² = (15 m)² + (20 m)² = 625 m².",
+          "R = 25 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 35 m. It is different from displacement magnitude."
+        ],
+        "similar_problem": {
+          "id": "5B-S07",
+          "prompt": "A student travels 21 m east, then 28 m north. Find the magnitude of the resultant displacement.",
+          "answer": "35 m",
+          "accepted_answers": [
+            "35 m",
+            "35"
+          ],
+          "visual": {
+            "type": "vector_triangle",
+            "x": 21,
+            "y": 28,
+            "label": "Head-to-tail displacement: 21 m east, then 28 m north; resultant from start to finish."
+          },
+          "hint_steps": [
+            "Identify the two perpendicular displacement components.",
+            "Use R² = x² + y², not x + y.",
+            "Calculate √(441 + 784)."
+          ],
+          "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+          "alternate_explanation_steps": [
+            "The perpendicular components are 21 m east and 28 m north.",
+            "R² = (21 m)² + (28 m)² = 1225 m².",
+            "R = 35 m. This is magnitude only; the complete vector also has direction, between east and north.",
+            "Distance along the route is 49 m. It is different from displacement magnitude."
+          ]
+        }
+      },
+      {
+        "id": "5B-P05",
+        "prompt": "A student travels 20 m east, then 21 m north. Find the magnitude of the resultant displacement.",
+        "answer": "29 m",
+        "accepted_answers": [
+          "29 m",
+          "29"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 20,
+          "y": 21,
+          "label": "Head-to-tail displacement: 20 m east, then 21 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(400 + 441)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 20 m east and 21 m north.",
+          "R² = (20 m)² + (21 m)² = 841 m².",
+          "R = 29 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 41 m. It is different from displacement magnitude."
+        ],
+        "similar_problem": {
+          "id": "5B-S08",
+          "prompt": "A student travels 24 m east, then 32 m north. Find the magnitude of the resultant displacement.",
+          "answer": "40 m",
+          "accepted_answers": [
+            "40 m",
+            "40"
+          ],
+          "visual": {
+            "type": "vector_triangle",
+            "x": 24,
+            "y": 32,
+            "label": "Head-to-tail displacement: 24 m east, then 32 m north; resultant from start to finish."
+          },
+          "hint_steps": [
+            "Identify the two perpendicular displacement components.",
+            "Use R² = x² + y², not x + y.",
+            "Calculate √(576 + 1024)."
+          ],
+          "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+          "alternate_explanation_steps": [
+            "The perpendicular components are 24 m east and 32 m north.",
+            "R² = (24 m)² + (32 m)² = 1600 m².",
+            "R = 40 m. This is magnitude only; the complete vector also has direction, between east and north.",
+            "Distance along the route is 56 m. It is different from displacement magnitude."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review head-to-tail arrows and identify the right triangle. Do not add perpendicular magnitudes directly; square the components, add, then take the square root.",
+    "recheck": [
+      {
+        "id": "5B-R01",
+        "prompt": "A student travels 3 m east, then 4 m north. Find the magnitude of the resultant displacement.",
+        "answer": "5 m",
+        "accepted_answers": [
+          "5 m",
+          "5"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 3,
+          "y": 4,
+          "label": "Head-to-tail displacement: 3 m east, then 4 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(9 + 16)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 3 m east and 4 m north.",
+          "R² = (3 m)² + (4 m)² = 25 m².",
+          "R = 5 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 7 m. It is different from displacement magnitude."
+        ]
+      },
+      {
+        "id": "5B-R02",
+        "prompt": "A student travels 6 m east, then 8 m north. Find the magnitude of the resultant displacement.",
+        "answer": "10 m",
+        "accepted_answers": [
+          "10 m",
+          "10"
+        ],
+        "visual": {
+          "type": "vector_triangle",
+          "x": 6,
+          "y": 8,
+          "label": "Head-to-tail displacement: 6 m east, then 8 m north; resultant from start to finish."
+        },
+        "hint_steps": [
+          "Identify the two perpendicular displacement components.",
+          "Use R² = x² + y², not x + y.",
+          "Calculate √(36 + 64)."
+        ],
+        "alternate_explanation": "The traveled route follows two sides of a right triangle. Displacement connects the starting point directly to the ending point, making it the hypotenuse.",
+        "alternate_explanation_steps": [
+          "The perpendicular components are 6 m east and 8 m north.",
+          "R² = (6 m)² + (8 m)² = 100 m².",
+          "R = 10 m. This is magnitude only; the complete vector also has direction, between east and north.",
+          "Distance along the route is 14 m. It is different from displacement magnitude."
+        ]
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "5B-C01",
+      "prompt": "Two cars have equal speeds but travel in opposite directions. Do they have the same velocity? Explain.",
+      "expected_ideas": [
+        "Speed is magnitude only, so equal speeds can describe both cars.",
+        "Velocity includes direction, so opposite directions mean different velocities."
+      ],
+      "misconceptions": [
+        "Equal speed always means equal velocity."
+      ],
+      "follow_up": "What additional information does velocity include?"
+    },
+    {
+      "id": "5B-C02",
+      "prompt": "A student walks east and then north. Why is the displacement magnitude smaller than the distance walked?",
+      "expected_ideas": [
+        "Distance adds the lengths along the traveled route.",
+        "Displacement connects the endpoints directly; for two nonzero perpendicular legs, that diagonal is shorter than their sum."
+      ],
+      "misconceptions": [
+        "Displacement magnitude is always the sum of component magnitudes."
+      ],
+      "follow_up": "Which line joins the initial point directly to the final point?",
+      "visual": {
+        "type": "vector_triangle",
+        "x": 3,
+        "y": 4,
+        "label": "Head-to-tail displacement: 3 m east, then 4 m north; resultant from start to finish."
+      }
+    },
+    {
+      "id": "5B-C03",
+      "prompt": "Two equal displacement arrows point in opposite directions. Explain their resultant and why it can vanish.",
+      "expected_ideas": [
+        "Opposite vectors have components with opposite signs.",
+        "Equal opposite displacements cancel, giving zero resultant displacement; zero magnitude has no defined direction."
+      ],
+      "misconceptions": [
+        "Equal magnitudes always add regardless of direction."
+      ],
+      "follow_up": "Where does a head-to-tail journey end if the second leg exactly reverses the first?"
+    },
+    {
+      "id": "5B-C04",
+      "prompt": "A student says a negative temperature must be a vector. Explain why that reasoning is incorrect.",
+      "expected_ideas": [
+        "A sign relative to a scale does not by itself specify spatial direction.",
+        "Temperature is scalar; vector quantities require magnitude and direction."
+      ],
+      "misconceptions": [
+        "Any negative quantity is a vector."
+      ],
+      "follow_up": "Does the temperature specify a direction in space?"
+    }
+  ]
+}

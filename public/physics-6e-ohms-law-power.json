@@ -1,0 +1,742 @@
+{
+  "lesson_id": "physics-6e-ohms-law-power",
+  "course_id": "physics",
+  "teks": [
+    "6E"
+  ],
+  "title": "Ohm's Law and Electric Power",
+  "learning_goal": "Calculate current, voltage, resistance, and power in series and parallel circuits using Ohm's law and power relationships.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Voltage, current, and resistance",
+      "content": "Voltage is electric potential difference, current is the rate of charge flow, and resistance opposes current. Ohm's law relates them: V = IR."
+    },
+    {
+      "id": "worked-example",
+      "title": "2. Worked example with Ohm's law",
+      "content": "A 12 V source is connected across a 4 Ω resistor. Using I = V/R, the current is I = 12/4 = 3 A."
+    },
+    {
+      "id": "power",
+      "title": "3. Electric power",
+      "content": "Electric power is the rate at which electrical energy is transferred. Use P = IV. Equivalent forms include P = I²R and P = V²/R when Ohm's law applies."
+    },
+    {
+      "id": "series-parallel",
+      "title": "4. Apply relationships in circuits",
+      "content": "In series circuits, current is the same through each resistor. In parallel circuits, voltage is the same across each branch. Use these rules before applying V = IR to individual components."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A device operates at 24 V and draws 2 A. What electrical power does it use?",
+      "hint": "Use P = IV.",
+      "alternate_explanation": "Power tells how quickly electrical energy is transferred, so multiply the potential difference by the current.",
+      "answer": "48 W"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, rearrange and use V = IR, calculate P = IV, select the correct current or voltage rule for series and parallel circuits, and check units for volts, amperes, ohms, and watts."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Voltage, current, and resistance",
+      "content": "Voltage is electric potential difference, current is the rate of charge flow, and resistance opposes current. Ohm's law relates them: V = IR.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Voltage V",
+          "Current I = V/R",
+          "Power P = VI"
+        ],
+        "label": "The resistor transfers energy; charge is conserved in steady current."
+      }
+    },
+    {
+      "title": "Electric power",
+      "content": "Electric power is the rate at which electrical energy is transferred. Use P = IV. Equivalent forms include P = I²R and P = V²/R when Ohm's law applies."
+    },
+    {
+      "title": "Apply relationships in circuits",
+      "content": "In series circuits, current is the same through each resistor. In parallel circuits, voltage is the same across each branch. Use these rules before applying V = IR to individual components."
+    },
+    {
+      "title": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+      "content": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions."
+    },
+    {
+      "title": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+      "content": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "6E-W01",
+      "prompt": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+      "choices": [
+        "3 A",
+        "48 A"
+      ],
+      "answer": "3 A",
+      "accepted_answers": [
+        "3 A"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+      "alternate_explanation_steps": [
+        "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "An ohmic resistor has 12 V across 4 Ω. What current flows?"
+        },
+        {
+          "equation": "3 A",
+          "explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Voltage V",
+          "Current I = V/R",
+          "Power P = VI"
+        ],
+        "label": "The resistor transfers energy; charge is conserved in steady current."
+      }
+    },
+    {
+      "id": "6E-W02",
+      "prompt": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+      "choices": [
+        "3 W",
+        "12 W"
+      ],
+      "answer": "12 W",
+      "accepted_answers": [
+        "12 W"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+      "alternate_explanation_steps": [
+        "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?"
+        },
+        {
+          "equation": "12 W",
+          "explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "6E-G01",
+      "prompt": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+      "choices": [
+        "3 A",
+        "48 A"
+      ],
+      "answer": "3 A",
+      "accepted_answers": [
+        "3 A"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+      "alternate_explanation_steps": [
+        "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6E-Q03",
+        "prompt": "At fixed resistance, doubling voltage changes power by what factor?",
+        "choices": [
+          "Four",
+          "Two"
+        ],
+        "answer": "Four",
+        "accepted_answers": [
+          "Four"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+        "alternate_explanation_steps": [
+          "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6E-G02",
+      "prompt": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+      "choices": [
+        "3 W",
+        "12 W"
+      ],
+      "answer": "12 W",
+      "accepted_answers": [
+        "12 W"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+      "alternate_explanation_steps": [
+        "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6E-Q04",
+        "prompt": "Why is current not consumed as it passes through a resistor?",
+        "choices": [
+          "Current turns into heat and disappears",
+          "Charge is conserved while energy is transferred"
+        ],
+        "answer": "Charge is conserved while energy is transferred",
+        "accepted_answers": [
+          "Charge is conserved while energy is transferred"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+        "alternate_explanation_steps": [
+          "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "6E-P01",
+      "prompt": "At fixed resistance, doubling voltage changes power by what factor?",
+      "choices": [
+        "Four",
+        "Two"
+      ],
+      "answer": "Four",
+      "accepted_answers": [
+        "Four"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+      "alternate_explanation_steps": [
+        "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6E-Q05",
+        "prompt": "A 10 W lamp runs for 5 s. How much energy is transferred?",
+        "choices": [
+          "50 J",
+          "2 J"
+        ],
+        "answer": "50 J",
+        "accepted_answers": [
+          "50 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+        "alternate_explanation_steps": [
+          "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6E-P02",
+      "prompt": "Why is current not consumed as it passes through a resistor?",
+      "choices": [
+        "Current turns into heat and disappears",
+        "Charge is conserved while energy is transferred"
+      ],
+      "answer": "Charge is conserved while energy is transferred",
+      "accepted_answers": [
+        "Charge is conserved while energy is transferred"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+      "alternate_explanation_steps": [
+        "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6E-Q01",
+        "prompt": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+        "choices": [
+          "3 A",
+          "48 A"
+        ],
+        "answer": "3 A",
+        "accepted_answers": [
+          "3 A"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+        "alternate_explanation_steps": [
+          "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "6E-P03",
+      "prompt": "A 10 W lamp runs for 5 s. How much energy is transferred?",
+      "choices": [
+        "50 J",
+        "2 J"
+      ],
+      "answer": "50 J",
+      "accepted_answers": [
+        "50 J"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+      "alternate_explanation_steps": [
+        "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "6E-Q02",
+        "prompt": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+        "choices": [
+          "3 W",
+          "12 W"
+        ],
+        "answer": "12 W",
+        "accepted_answers": [
+          "12 W"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+        "alternate_explanation_steps": [
+          "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "6E-M01",
+      "prompt": "An ideal heater of resistance 2 Ω has 4 V across it. Find the power transferred.",
+      "choices": [
+        "8 W",
+        "4 W"
+      ],
+      "answer": "8 W",
+      "accepted_answers": [
+        "8 W"
+      ],
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 4,
+        "resistance": 2
+      }
+    },
+    {
+      "id": "6E-M02",
+      "prompt": "An ideal heater of resistance 3 Ω has 6 V across it. Find the power transferred.",
+      "choices": [
+        "6 W",
+        "12 W"
+      ],
+      "answer": "12 W",
+      "accepted_answers": [
+        "12 W"
+      ],
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 6,
+        "resistance": 3
+      }
+    },
+    {
+      "id": "6E-M03",
+      "prompt": "An ideal heater of resistance 4 Ω has 8 V across it. Find the power transferred.",
+      "choices": [
+        "16 W",
+        "8 W"
+      ],
+      "answer": "16 W",
+      "accepted_answers": [
+        "16 W"
+      ],
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 8,
+        "resistance": 4
+      }
+    },
+    {
+      "id": "6E-M04",
+      "prompt": "An ideal heater of resistance 5 Ω has 10 V across it. Find the power transferred.",
+      "choices": [
+        "10 W",
+        "20 W"
+      ],
+      "answer": "20 W",
+      "accepted_answers": [
+        "20 W"
+      ],
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 10,
+        "resistance": 5
+      }
+    },
+    {
+      "id": "6E-M05",
+      "prompt": "An ideal heater of resistance 6 Ω has 12 V across it. Find the power transferred.",
+      "choices": [
+        "24 W",
+        "12 W"
+      ],
+      "answer": "24 W",
+      "accepted_answers": [
+        "24 W"
+      ],
+      "alternate_explanation": "Use P = V²/R. Power depends on the squared voltage at fixed resistance.",
+      "calculation_check": {
+        "operation": "electric_power",
+        "voltage": 12,
+        "resistance": 6
+      }
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "6E-P01",
+        "prompt": "At fixed resistance, doubling voltage changes power by what factor?",
+        "choices": [
+          "Four",
+          "Two"
+        ],
+        "answer": "Four",
+        "accepted_answers": [
+          "Four"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+        "alternate_explanation_steps": [
+          "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6E-Q05",
+          "prompt": "A 10 W lamp runs for 5 s. How much energy is transferred?",
+          "choices": [
+            "50 J",
+            "2 J"
+          ],
+          "answer": "50 J",
+          "accepted_answers": [
+            "50 J"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+          "alternate_explanation_steps": [
+            "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6E-P02",
+        "prompt": "Why is current not consumed as it passes through a resistor?",
+        "choices": [
+          "Current turns into heat and disappears",
+          "Charge is conserved while energy is transferred"
+        ],
+        "answer": "Charge is conserved while energy is transferred",
+        "accepted_answers": [
+          "Charge is conserved while energy is transferred"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+        "alternate_explanation_steps": [
+          "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6E-Q01",
+          "prompt": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+          "choices": [
+            "3 A",
+            "48 A"
+          ],
+          "answer": "3 A",
+          "accepted_answers": [
+            "3 A"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+          "alternate_explanation_steps": [
+            "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6E-P03",
+        "prompt": "A 10 W lamp runs for 5 s. How much energy is transferred?",
+        "choices": [
+          "50 J",
+          "2 J"
+        ],
+        "answer": "50 J",
+        "accepted_answers": [
+          "50 J"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+        "alternate_explanation_steps": [
+          "E = Pt = 10 × 5 = 50 J. Watt is joule per second, so multiplying by seconds gives joules.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6E-Q02",
+          "prompt": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+          "choices": [
+            "3 W",
+            "12 W"
+          ],
+          "answer": "12 W",
+          "accepted_answers": [
+            "12 W"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+          "alternate_explanation_steps": [
+            "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "6E-G01",
+        "prompt": "An ohmic resistor has 12 V across 4 Ω. What current flows?",
+        "choices": [
+          "3 A",
+          "48 A"
+        ],
+        "answer": "3 A",
+        "accepted_answers": [
+          "3 A"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+        "alternate_explanation_steps": [
+          "Use I = V/R = 12/4 = 3 A. Ohm’s law assumes the resistor’s resistance is fixed under the stated conditions.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6E-Q03",
+          "prompt": "At fixed resistance, doubling voltage changes power by what factor?",
+          "choices": [
+            "Four",
+            "Two"
+          ],
+          "answer": "Four",
+          "accepted_answers": [
+            "Four"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+          "alternate_explanation_steps": [
+            "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "6E-G02",
+        "prompt": "A component carries 2 A at a potential difference of 6 V. What electric power is transferred?",
+        "choices": [
+          "3 W",
+          "12 W"
+        ],
+        "answer": "12 W",
+        "accepted_answers": [
+          "12 W"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+        "alternate_explanation_steps": [
+          "P = VI = 6 × 2 = 12 W. Power is energy transfer per unit time, not the total energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "6E-Q04",
+          "prompt": "Why is current not consumed as it passes through a resistor?",
+          "choices": [
+            "Current turns into heat and disappears",
+            "Charge is conserved while energy is transferred"
+          ],
+          "answer": "Charge is conserved while energy is transferred",
+          "accepted_answers": [
+            "Charge is conserved while energy is transferred"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+          "alternate_explanation_steps": [
+            "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "6E-C01",
+      "prompt": "At fixed resistance, doubling voltage changes power by what factor? Explain why, using your own words.",
+      "expected_ideas": [
+        "Four",
+        "Combine P = VI and I = V/R to get P = V²/R. Doubling V squares the voltage factor."
+      ],
+      "misconceptions": [
+        "Two"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "6E-C02",
+      "prompt": "Why is current not consumed as it passes through a resistor? Explain why, using your own words.",
+      "expected_ideas": [
+        "Charge is conserved while energy is transferred",
+        "A resistor transfers electrical energy to other forms; steady current entering and leaving a single component is equal."
+      ],
+      "misconceptions": [
+        "Current turns into heat and disappears"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
+  }
+}

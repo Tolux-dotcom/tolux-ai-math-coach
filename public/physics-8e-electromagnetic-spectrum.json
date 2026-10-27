@@ -1,0 +1,721 @@
+{
+  "lesson_id": "physics-8e-electromagnetic-spectrum",
+  "course_id": "physics",
+  "teks": [
+    "8E"
+  ],
+  "title": "Electromagnetic Spectrum",
+  "learning_goal": "Compare applications of different regions of the electromagnetic spectrum.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. One family of waves",
+      "content": "All electromagnetic waves are transverse waves that travel through a vacuum at the same speed, approximately 3.0 × 10⁸ m/s, but they differ in frequency, wavelength, and photon energy."
+    },
+    {
+      "id": "order",
+      "title": "2. Spectrum order",
+      "content": "From lowest frequency to highest: radio, microwave, infrared, visible, ultraviolet, X-ray, gamma ray."
+    },
+    {
+      "id": "relationship",
+      "title": "3. Frequency and wavelength",
+      "content": "Because c = fλ in a vacuum, higher frequency means shorter wavelength."
+    },
+    {
+      "id": "applications",
+      "title": "4. Applications",
+      "content": "Radio waves are used in communication, microwaves in communication and heating, infrared in thermal imaging, visible light in vision, ultraviolet in sterilization, X-rays in imaging, and gamma rays in some medical treatments."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "Which has the higher frequency: infrared radiation or ultraviolet radiation?",
+      "hint": "Recall the spectrum order around visible light.",
+      "alternate_explanation": "Infrared lies below visible light in frequency, while ultraviolet lies above visible light.",
+      "answer": "Ultraviolet radiation."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, order spectrum regions, compare frequency and wavelength, connect each region to common applications, and explain that all electromagnetic waves travel at the same speed in vacuum."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "One family of waves",
+      "content": "All electromagnetic waves are transverse waves that travel through a vacuum at the same speed, approximately 3.0 × 10⁸ m/s, but they differ in frequency, wavelength, and photon energy.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Radio → infrared",
+          "Visible → ultraviolet",
+          "X-ray → gamma"
+        ],
+        "label": "Frequency increases across these labels; vacuum wavelength decreases, and speed remains c."
+      }
+    },
+    {
+      "title": "Spectrum order",
+      "content": "From lowest frequency to highest: radio, microwave, infrared, visible, ultraviolet, X-ray, gamma ray."
+    },
+    {
+      "title": "Frequency and wavelength",
+      "content": "Because c = fλ in a vacuum, higher frequency means shorter wavelength."
+    },
+    {
+      "title": "Applications",
+      "content": "Radio waves are used in communication, microwaves in communication and heating, infrared in thermal imaging, visible light in vision, ultraviolet in sterilization, X-rays in imaging, and gamma rays in some medical treatments."
+    },
+    {
+      "title": "In vacuum, which travels faster: radio waves or visible light?",
+      "content": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ."
+    },
+    {
+      "title": "Which has higher frequency: ultraviolet or infrared?",
+      "content": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "8E-W01",
+      "prompt": "In vacuum, which travels faster: radio waves or visible light?",
+      "choices": [
+        "They have the same speed",
+        "Visible light"
+      ],
+      "answer": "They have the same speed",
+      "accepted_answers": [
+        "They have the same speed"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+      "alternate_explanation_steps": [
+        "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "In vacuum, which travels faster: radio waves or visible light?"
+        },
+        {
+          "equation": "They have the same speed",
+          "explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Radio → infrared",
+          "Visible → ultraviolet",
+          "X-ray → gamma"
+        ],
+        "label": "Frequency increases across these labels; vacuum wavelength decreases, and speed remains c."
+      }
+    },
+    {
+      "id": "8E-W02",
+      "prompt": "Which has higher frequency: ultraviolet or infrared?",
+      "choices": [
+        "Infrared",
+        "Ultraviolet"
+      ],
+      "answer": "Ultraviolet",
+      "accepted_answers": [
+        "Ultraviolet"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+      "alternate_explanation_steps": [
+        "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Which has higher frequency: ultraviolet or infrared?"
+        },
+        {
+          "equation": "Ultraviolet",
+          "explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "8E-G01",
+      "prompt": "In vacuum, which travels faster: radio waves or visible light?",
+      "choices": [
+        "They have the same speed",
+        "Visible light"
+      ],
+      "answer": "They have the same speed",
+      "accepted_answers": [
+        "They have the same speed"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+      "alternate_explanation_steps": [
+        "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8E-Q03",
+        "prompt": "What happens to vacuum wavelength as electromagnetic frequency increases?",
+        "choices": [
+          "It decreases",
+          "It increases"
+        ],
+        "answer": "It decreases",
+        "accepted_answers": [
+          "It decreases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+        "alternate_explanation_steps": [
+          "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8E-G02",
+      "prompt": "Which has higher frequency: ultraviolet or infrared?",
+      "choices": [
+        "Infrared",
+        "Ultraviolet"
+      ],
+      "answer": "Ultraviolet",
+      "accepted_answers": [
+        "Ultraviolet"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+      "alternate_explanation_steps": [
+        "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8E-Q04",
+        "prompt": "Which photons have greater individual energy: blue or red visible light?",
+        "choices": [
+          "Red",
+          "Blue"
+        ],
+        "answer": "Blue",
+        "accepted_answers": [
+          "Blue"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+        "alternate_explanation_steps": [
+          "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "8E-P01",
+      "prompt": "What happens to vacuum wavelength as electromagnetic frequency increases?",
+      "choices": [
+        "It decreases",
+        "It increases"
+      ],
+      "answer": "It decreases",
+      "accepted_answers": [
+        "It decreases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+      "alternate_explanation_steps": [
+        "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8E-Q05",
+        "prompt": "Does a higher-frequency electromagnetic wave always travel faster in vacuum?",
+        "choices": [
+          "No",
+          "Yes"
+        ],
+        "answer": "No",
+        "accepted_answers": [
+          "No"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+        "alternate_explanation_steps": [
+          "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8E-P02",
+      "prompt": "Which photons have greater individual energy: blue or red visible light?",
+      "choices": [
+        "Red",
+        "Blue"
+      ],
+      "answer": "Blue",
+      "accepted_answers": [
+        "Blue"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+      "alternate_explanation_steps": [
+        "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8E-Q01",
+        "prompt": "In vacuum, which travels faster: radio waves or visible light?",
+        "choices": [
+          "They have the same speed",
+          "Visible light"
+        ],
+        "answer": "They have the same speed",
+        "accepted_answers": [
+          "They have the same speed"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+        "alternate_explanation_steps": [
+          "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "8E-P03",
+      "prompt": "Does a higher-frequency electromagnetic wave always travel faster in vacuum?",
+      "choices": [
+        "No",
+        "Yes"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+      "alternate_explanation_steps": [
+        "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "8E-Q02",
+        "prompt": "Which has higher frequency: ultraviolet or infrared?",
+        "choices": [
+          "Infrared",
+          "Ultraviolet"
+        ],
+        "answer": "Ultraviolet",
+        "accepted_answers": [
+          "Ultraviolet"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+        "alternate_explanation_steps": [
+          "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "8E-M01",
+      "prompt": "Wave B has 2 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
+      "choices": [
+        "1/2 as long",
+        "2 times as long"
+      ],
+      "answer": "1/2 as long",
+      "accepted_answers": [
+        "1/2 as long"
+      ],
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
+    },
+    {
+      "id": "8E-M02",
+      "prompt": "Wave B has 3 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
+      "choices": [
+        "3 times as long",
+        "1/3 as long"
+      ],
+      "answer": "1/3 as long",
+      "accepted_answers": [
+        "1/3 as long"
+      ],
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
+    },
+    {
+      "id": "8E-M03",
+      "prompt": "Wave B has 4 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
+      "choices": [
+        "1/4 as long",
+        "4 times as long"
+      ],
+      "answer": "1/4 as long",
+      "accepted_answers": [
+        "1/4 as long"
+      ],
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
+    },
+    {
+      "id": "8E-M04",
+      "prompt": "Wave B has 5 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
+      "choices": [
+        "5 times as long",
+        "1/5 as long"
+      ],
+      "answer": "1/5 as long",
+      "accepted_answers": [
+        "1/5 as long"
+      ],
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
+    },
+    {
+      "id": "8E-M05",
+      "prompt": "Wave B has 6 times the vacuum frequency of electromagnetic wave A. Compare wavelength B with wavelength A.",
+      "choices": [
+        "1/6 as long",
+        "6 times as long"
+      ],
+      "answer": "1/6 as long",
+      "accepted_answers": [
+        "1/6 as long"
+      ],
+      "alternate_explanation": "All electromagnetic waves have the same vacuum speed; λ = c/f, so wavelength decreases by the frequency multiplier."
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "8E-P01",
+        "prompt": "What happens to vacuum wavelength as electromagnetic frequency increases?",
+        "choices": [
+          "It decreases",
+          "It increases"
+        ],
+        "answer": "It decreases",
+        "accepted_answers": [
+          "It decreases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+        "alternate_explanation_steps": [
+          "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8E-Q05",
+          "prompt": "Does a higher-frequency electromagnetic wave always travel faster in vacuum?",
+          "choices": [
+            "No",
+            "Yes"
+          ],
+          "answer": "No",
+          "accepted_answers": [
+            "No"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+          "alternate_explanation_steps": [
+            "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8E-P02",
+        "prompt": "Which photons have greater individual energy: blue or red visible light?",
+        "choices": [
+          "Red",
+          "Blue"
+        ],
+        "answer": "Blue",
+        "accepted_answers": [
+          "Blue"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+        "alternate_explanation_steps": [
+          "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8E-Q01",
+          "prompt": "In vacuum, which travels faster: radio waves or visible light?",
+          "choices": [
+            "They have the same speed",
+            "Visible light"
+          ],
+          "answer": "They have the same speed",
+          "accepted_answers": [
+            "They have the same speed"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+          "alternate_explanation_steps": [
+            "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8E-P03",
+        "prompt": "Does a higher-frequency electromagnetic wave always travel faster in vacuum?",
+        "choices": [
+          "No",
+          "Yes"
+        ],
+        "answer": "No",
+        "accepted_answers": [
+          "No"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+        "alternate_explanation_steps": [
+          "Frequency changes photon energy and wavelength, not vacuum propagation speed.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8E-Q02",
+          "prompt": "Which has higher frequency: ultraviolet or infrared?",
+          "choices": [
+            "Infrared",
+            "Ultraviolet"
+          ],
+          "answer": "Ultraviolet",
+          "accepted_answers": [
+            "Ultraviolet"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+          "alternate_explanation_steps": [
+            "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "8E-G01",
+        "prompt": "In vacuum, which travels faster: radio waves or visible light?",
+        "choices": [
+          "They have the same speed",
+          "Visible light"
+        ],
+        "answer": "They have the same speed",
+        "accepted_answers": [
+          "They have the same speed"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+        "alternate_explanation_steps": [
+          "All electromagnetic waves propagate at c in vacuum. Their frequencies and wavelengths differ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8E-Q03",
+          "prompt": "What happens to vacuum wavelength as electromagnetic frequency increases?",
+          "choices": [
+            "It decreases",
+            "It increases"
+          ],
+          "answer": "It decreases",
+          "accepted_answers": [
+            "It decreases"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+          "alternate_explanation_steps": [
+            "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "8E-G02",
+        "prompt": "Which has higher frequency: ultraviolet or infrared?",
+        "choices": [
+          "Infrared",
+          "Ultraviolet"
+        ],
+        "answer": "Ultraviolet",
+        "accepted_answers": [
+          "Ultraviolet"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+        "alternate_explanation_steps": [
+          "Across the spectrum, frequency increases from radio through microwave, infrared, visible, ultraviolet, X-ray, and gamma ray.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "8E-Q04",
+          "prompt": "Which photons have greater individual energy: blue or red visible light?",
+          "choices": [
+            "Red",
+            "Blue"
+          ],
+          "answer": "Blue",
+          "accepted_answers": [
+            "Blue"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+          "alternate_explanation_steps": [
+            "Photon energy E = hf increases with frequency. Blue has a higher frequency than red.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "8E-C01",
+      "prompt": "What happens to vacuum wavelength as electromagnetic frequency increases? Explain why, using your own words.",
+      "expected_ideas": [
+        "It decreases",
+        "c = fλ. Because c is fixed in vacuum, wavelength is inversely proportional to frequency."
+      ],
+      "misconceptions": [
+        "It increases"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "8E-C02",
+      "prompt": "Which photons have greater individual energy: blue or red visible light? Explain why, using your own words.",
+      "expected_ideas": [
+        "Blue",
+        "Photon energy E = hf increases with frequency. Blue has a higher frequency than red."
+      ],
+      "misconceptions": [
+        "Red"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
+  }
+}
