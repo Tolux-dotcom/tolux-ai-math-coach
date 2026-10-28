@@ -179,4 +179,3 @@ for (const skill of ['A.6A', 'A.6B', 'A.6C', 'A.7A', 'A.7B', 'A.7C', 'A.8A', 'A.
     assert.deepEqual(f.requests.filter(r => r.url === '/api/lesson-progress').map(r => JSON.parse(r.options.body).completion_id), [id, id]);
   });
 }
-

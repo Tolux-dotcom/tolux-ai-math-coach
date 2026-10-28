@@ -1,0 +1,742 @@
+{
+  "lesson_id": "physics-9a-photons-photoelectric",
+  "course_id": "physics",
+  "teks": [
+    "9A"
+  ],
+  "title": "Photons and the Photoelectric Effect",
+  "learning_goal": "Describe the photoelectric effect and emission spectra using the photon model of light.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Light comes in photons",
+      "content": "In the photon model, light energy is carried in discrete packets called photons. A photon's energy is E = hf, so higher-frequency light has higher-energy photons."
+    },
+    {
+      "id": "photoelectric",
+      "title": "2. Photoelectric effect",
+      "content": "When light shines on some metals, electrons can be emitted if the photons have enough energy. Increasing light intensity adds more photons, but photons below the threshold frequency still cannot eject electrons."
+    },
+    {
+      "id": "threshold",
+      "title": "3. Threshold frequency",
+      "content": "Each material has a minimum photon frequency needed to release electrons. This threshold supports the idea that light energy is quantized."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "If blue light ejects electrons from a metal but lower-frequency red light does not, the red photons do not have enough energy to overcome the metal's threshold."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A metal does not emit electrons under dim ultraviolet light, but it does emit electrons when the same ultraviolet frequency is made brighter. What changed?",
+      "hint": "The photon energy stayed the same because the frequency stayed the same.",
+      "alternate_explanation": "Brighter light means more photons arriving each second, not more energy per photon.",
+      "answer": "More photons struck the metal, increasing the number of emitted electrons once the threshold was met."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, explain E = hf, describe threshold frequency, distinguish photon energy from light intensity, and connect atomic emission spectra to quantized energy changes."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Light comes in photons",
+      "content": "In the photon model, light energy is carried in discrete packets called photons. A photon's energy is E = hf, so higher-frequency light has higher-energy photons.",
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Incident photon hf",
+          "Surface work function φ",
+          "K_max = hf − φ"
+        ],
+        "label": "In the one-photon model, emission requires hf at least equal to the threshold energy."
+      }
+    },
+    {
+      "title": "Photoelectric effect",
+      "content": "When light shines on some metals, electrons can be emitted if the photons have enough energy. Increasing light intensity adds more photons, but photons below the threshold frequency still cannot eject electrons."
+    },
+    {
+      "title": "Threshold frequency",
+      "content": "Each material has a minimum photon frequency needed to release electrons. This threshold supports the idea that light energy is quantized."
+    },
+    {
+      "title": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+      "content": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy."
+    },
+    {
+      "title": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+      "content": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "9A-W01",
+      "prompt": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+      "choices": [
+        "No",
+        "Yes, any brightness is enough"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+      "alternate_explanation_steps": [
+        "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?"
+        },
+        {
+          "equation": "No",
+          "explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy."
+        }
+      ],
+      "visual": {
+        "type": "concept_sequence",
+        "labels": [
+          "Incident photon hf",
+          "Surface work function φ",
+          "K_max = hf − φ"
+        ],
+        "label": "In the one-photon model, emission requires hf at least equal to the threshold energy."
+      }
+    },
+    {
+      "id": "9A-W02",
+      "prompt": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+      "choices": [
+        "Only the photon count changes",
+        "Maximum kinetic energy increases"
+      ],
+      "answer": "Maximum kinetic energy increases",
+      "accepted_answers": [
+        "Maximum kinetic energy increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+      "alternate_explanation_steps": [
+        "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify what the question asks",
+          "explanation": "Above threshold, what does increasing frequency primarily change for photoelectrons?"
+        },
+        {
+          "equation": "Maximum kinetic energy increases",
+          "explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "9A-G01",
+      "prompt": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+      "choices": [
+        "No",
+        "Yes, any brightness is enough"
+      ],
+      "answer": "No",
+      "accepted_answers": [
+        "No"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+      "alternate_explanation_steps": [
+        "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9A-Q03",
+        "prompt": "At fixed above-threshold frequency, increasing intensity usually changes what?",
+        "choices": [
+          "The emission rate increases",
+          "Each electron’s maximum kinetic energy increases"
+        ],
+        "answer": "The emission rate increases",
+        "accepted_answers": [
+          "The emission rate increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+        "alternate_explanation_steps": [
+          "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "9A-G02",
+      "prompt": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+      "choices": [
+        "Only the photon count changes",
+        "Maximum kinetic energy increases"
+      ],
+      "answer": "Maximum kinetic energy increases",
+      "accepted_answers": [
+        "Maximum kinetic energy increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+      "alternate_explanation_steps": [
+        "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9A-Q04",
+        "prompt": "What is the work function?",
+        "choices": [
+          "Total kinetic energy of every electron",
+          "Minimum energy needed to liberate an electron from a surface"
+        ],
+        "answer": "Minimum energy needed to liberate an electron from a surface",
+        "accepted_answers": [
+          "Minimum energy needed to liberate an electron from a surface"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+        "alternate_explanation_steps": [
+          "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "9A-P01",
+      "prompt": "At fixed above-threshold frequency, increasing intensity usually changes what?",
+      "choices": [
+        "The emission rate increases",
+        "Each electron’s maximum kinetic energy increases"
+      ],
+      "answer": "The emission rate increases",
+      "accepted_answers": [
+        "The emission rate increases"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+      "alternate_explanation_steps": [
+        "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9A-Q05",
+        "prompt": "What relation describes photon energy?",
+        "choices": [
+          "E = hf",
+          "E = h/f"
+        ],
+        "answer": "E = hf",
+        "accepted_answers": [
+          "E = hf"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+        "alternate_explanation_steps": [
+          "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "9A-P02",
+      "prompt": "What is the work function?",
+      "choices": [
+        "Total kinetic energy of every electron",
+        "Minimum energy needed to liberate an electron from a surface"
+      ],
+      "answer": "Minimum energy needed to liberate an electron from a surface",
+      "accepted_answers": [
+        "Minimum energy needed to liberate an electron from a surface"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+      "alternate_explanation_steps": [
+        "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9A-Q01",
+        "prompt": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+        "choices": [
+          "No",
+          "Yes, any brightness is enough"
+        ],
+        "answer": "No",
+        "accepted_answers": [
+          "No"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+        "alternate_explanation_steps": [
+          "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    },
+    {
+      "id": "9A-P03",
+      "prompt": "What relation describes photon energy?",
+      "choices": [
+        "E = hf",
+        "E = h/f"
+      ],
+      "answer": "E = hf",
+      "accepted_answers": [
+        "E = hf"
+      ],
+      "hint_steps": [
+        "Identify the physical quantities, interactions, or model named in the question.",
+        "Explain the cause before choosing the conclusion."
+      ],
+      "alternate_explanation": "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+      "alternate_explanation_steps": [
+        "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+        "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+      ],
+      "similar_problem": {
+        "id": "9A-Q02",
+        "prompt": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+        "choices": [
+          "Only the photon count changes",
+          "Maximum kinetic energy increases"
+        ],
+        "answer": "Maximum kinetic energy increases",
+        "accepted_answers": [
+          "Maximum kinetic energy increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+        "alternate_explanation_steps": [
+          "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "9A-M01",
+      "prompt": "A material has work function 2 eV. A photon of energy 5 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
+      "choices": [
+        "3 eV",
+        "7 eV"
+      ],
+      "answer": "3 eV",
+      "accepted_answers": [
+        "3 eV"
+      ],
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 5,
+        "cost": 2
+      }
+    },
+    {
+      "id": "9A-M02",
+      "prompt": "A material has work function 2 eV. A photon of energy 6 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
+      "choices": [
+        "8 eV",
+        "4 eV"
+      ],
+      "answer": "4 eV",
+      "accepted_answers": [
+        "4 eV"
+      ],
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 6,
+        "cost": 2
+      }
+    },
+    {
+      "id": "9A-M03",
+      "prompt": "A material has work function 2 eV. A photon of energy 7 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
+      "choices": [
+        "5 eV",
+        "9 eV"
+      ],
+      "answer": "5 eV",
+      "accepted_answers": [
+        "5 eV"
+      ],
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 7,
+        "cost": 2
+      }
+    },
+    {
+      "id": "9A-M04",
+      "prompt": "A material has work function 2 eV. A photon of energy 8 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
+      "choices": [
+        "10 eV",
+        "6 eV"
+      ],
+      "answer": "6 eV",
+      "accepted_answers": [
+        "6 eV"
+      ],
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 8,
+        "cost": 2
+      }
+    },
+    {
+      "id": "9A-M05",
+      "prompt": "A material has work function 2 eV. A photon of energy 9 eV releases an electron in the one-photon model. Find maximum electron kinetic energy.",
+      "choices": [
+        "7 eV",
+        "11 eV"
+      ],
+      "answer": "7 eV",
+      "accepted_answers": [
+        "7 eV"
+      ],
+      "alternate_explanation": "Use K_max = E_photon − work function. Any energy beyond liberation is available as kinetic energy.",
+      "calculation_check": {
+        "operation": "subtract",
+        "initial": 9,
+        "cost": 2
+      }
+    }
+  ],
+  "practice": {
+    "intro": "Interpret the situation, choose an answer, and use the explanation to check your physical reasoning.",
+    "problems": [
+      {
+        "id": "9A-P01",
+        "prompt": "At fixed above-threshold frequency, increasing intensity usually changes what?",
+        "choices": [
+          "The emission rate increases",
+          "Each electron’s maximum kinetic energy increases"
+        ],
+        "answer": "The emission rate increases",
+        "accepted_answers": [
+          "The emission rate increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+        "alternate_explanation_steps": [
+          "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9A-Q05",
+          "prompt": "What relation describes photon energy?",
+          "choices": [
+            "E = hf",
+            "E = h/f"
+          ],
+          "answer": "E = hf",
+          "accepted_answers": [
+            "E = hf"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+          "alternate_explanation_steps": [
+            "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "9A-P02",
+        "prompt": "What is the work function?",
+        "choices": [
+          "Total kinetic energy of every electron",
+          "Minimum energy needed to liberate an electron from a surface"
+        ],
+        "answer": "Minimum energy needed to liberate an electron from a surface",
+        "accepted_answers": [
+          "Minimum energy needed to liberate an electron from a surface"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+        "alternate_explanation_steps": [
+          "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9A-Q01",
+          "prompt": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+          "choices": [
+            "No",
+            "Yes, any brightness is enough"
+          ],
+          "answer": "No",
+          "accepted_answers": [
+            "No"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+          "alternate_explanation_steps": [
+            "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "9A-P03",
+        "prompt": "What relation describes photon energy?",
+        "choices": [
+          "E = hf",
+          "E = h/f"
+        ],
+        "answer": "E = hf",
+        "accepted_answers": [
+          "E = hf"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+        "alternate_explanation_steps": [
+          "Energy is proportional to frequency. With vacuum light c = fλ, photon energy also equals hc/λ.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9A-Q02",
+          "prompt": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+          "choices": [
+            "Only the photon count changes",
+            "Maximum kinetic energy increases"
+          ],
+          "answer": "Maximum kinetic energy increases",
+          "accepted_answers": [
+            "Maximum kinetic energy increases"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+          "alternate_explanation_steps": [
+            "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review the causal explanation and the model assumptions, then retry these questions.",
+    "recheck": [
+      {
+        "id": "9A-G01",
+        "prompt": "Below threshold frequency, can brighter light eject photoelectrons in the basic one-photon model?",
+        "choices": [
+          "No",
+          "Yes, any brightness is enough"
+        ],
+        "answer": "No",
+        "accepted_answers": [
+          "No"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+        "alternate_explanation_steps": [
+          "Each photon must supply at least the work function. Increasing intensity adds more photons but does not increase each photon’s energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9A-Q03",
+          "prompt": "At fixed above-threshold frequency, increasing intensity usually changes what?",
+          "choices": [
+            "The emission rate increases",
+            "Each electron’s maximum kinetic energy increases"
+          ],
+          "answer": "The emission rate increases",
+          "accepted_answers": [
+            "The emission rate increases"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+          "alternate_explanation_steps": [
+            "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      },
+      {
+        "id": "9A-G02",
+        "prompt": "Above threshold, what does increasing frequency primarily change for photoelectrons?",
+        "choices": [
+          "Only the photon count changes",
+          "Maximum kinetic energy increases"
+        ],
+        "answer": "Maximum kinetic energy increases",
+        "accepted_answers": [
+          "Maximum kinetic energy increases"
+        ],
+        "hint_steps": [
+          "Identify the physical quantities, interactions, or model named in the question.",
+          "Explain the cause before choosing the conclusion."
+        ],
+        "alternate_explanation": "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+        "alternate_explanation_steps": [
+          "K_max = hf − φ. Frequency controls energy per photon and therefore available maximum electron kinetic energy.",
+          "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+        ],
+        "similar_problem": {
+          "id": "9A-Q04",
+          "prompt": "What is the work function?",
+          "choices": [
+            "Total kinetic energy of every electron",
+            "Minimum energy needed to liberate an electron from a surface"
+          ],
+          "answer": "Minimum energy needed to liberate an electron from a surface",
+          "accepted_answers": [
+            "Minimum energy needed to liberate an electron from a surface"
+          ],
+          "hint_steps": [
+            "Identify the physical quantities, interactions, or model named in the question.",
+            "Explain the cause before choosing the conclusion."
+          ],
+          "alternate_explanation": "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+          "alternate_explanation_steps": [
+            "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model.",
+            "Check the assumptions stated in the prompt. Apply the relationship to this situation rather than choosing by a familiar keyword."
+          ]
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "9A-C01",
+      "prompt": "At fixed above-threshold frequency, increasing intensity usually changes what? Explain why, using your own words.",
+      "expected_ideas": [
+        "The emission rate increases",
+        "More incident photons can release more electrons, subject to collection and material limits, while photon energy stays fixed."
+      ],
+      "misconceptions": [
+        "Each electron’s maximum kinetic energy increases"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    },
+    {
+      "id": "9A-C02",
+      "prompt": "What is the work function? Explain why, using your own words.",
+      "expected_ideas": [
+        "Minimum energy needed to liberate an electron from a surface",
+        "The material-dependent work function φ defines threshold frequency f₀ = φ/h in the ideal photoelectric model."
+      ],
+      "misconceptions": [
+        "Total kinetic energy of every electron"
+      ],
+      "follow_up": "Which physical principle supports your conclusion, and how does it apply here?"
+    }
+  ],
+  "development_status": {
+    "content": "expanded draft",
+    "automated_written_reasoning": "pending",
+    "browser_visual_review": "pending",
+    "assessment_note": "Five fresh mastery scenarios replace reused teaching questions; scientific breadth and browser review remain pending."
+  }
+}

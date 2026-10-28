@@ -32,4 +32,3 @@ No production deployment, live database write, student-data change, schema chang
 Before review, use a disposable student account in the preview to finish one Batch Practice session, interrupt or block the first progress request, press **Retry Progress Save**, and confirm that exactly one attempt appears after reload and on a second device. Repeat with an expired token and on a physical phone. Preserve existing browser storage and student data.
 
 Generic Practice and specialized A.10F–A.12B still lack this direct result-screen retry control. Their existing queue and dashboard recovery remain unchanged. This work does not restore any previously missing Test Prep result.
-

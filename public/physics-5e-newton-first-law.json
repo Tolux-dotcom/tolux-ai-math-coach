@@ -1,0 +1,1003 @@
+{
+  "lesson_id": "physics-5e-newton-first-law",
+  "course_id": "physics",
+  "teks": [
+    "5E"
+  ],
+  "title": "Newton's First Law",
+  "learning_goal": "Explain equilibrium and inertia using Newton's First Law.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Newton's First Law",
+      "content": "An object remains at rest or continues moving at constant velocity unless acted on by a net external force. This tendency to resist a change in motion is called inertia."
+    },
+    {
+      "id": "inertia",
+      "title": "2. Inertia and mass",
+      "content": "Mass is a measure of inertia. An object with greater mass is harder to speed up, slow down, or redirect than an object with less mass."
+    },
+    {
+      "id": "equilibrium",
+      "title": "3. Equilibrium",
+      "content": "When the net force on an object is zero, the object is in equilibrium. It may be at rest or moving at constant velocity."
+    },
+    {
+      "id": "worked-example",
+      "title": "4. Worked example",
+      "content": "A book rests on a table. Gravity pulls downward while the table's normal force pushes upward with equal magnitude. The net force is zero, so the book remains at rest."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A hockey puck slides across nearly frictionless ice at constant velocity. What does Newton's First Law tell you about the net force on the puck?",
+      "hint": "Constant velocity means the motion is not changing.",
+      "alternate_explanation": "If the puck is neither speeding up, slowing down, nor turning, its acceleration is zero. Zero acceleration means the forces are balanced.",
+      "answer": "The net force is zero."
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, identify examples of inertia, distinguish balanced from unbalanced forces, explain equilibrium, and predict motion when the net force is zero."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Newton’s first law describes unchanged velocity",
+      "content": "In an inertial reference frame, an object remains at rest or continues in a straight line at constant velocity when its net external force is zero. The law concerns velocity, so turning counts as a change even if speed stays constant."
+    },
+    {
+      "title": "Balanced forces are not absent forces",
+      "content": "A book on a table has downward weight and an upward normal force. Their equal magnitudes and opposite directions give zero net force. Draw all forces on the chosen object before deciding whether they balance.",
+      "visual": {
+        "type": "balanced_forces",
+        "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+      }
+    },
+    {
+      "title": "Inertia is a property measured by mass",
+      "content": "Inertia describes resistance to a change in velocity. Greater mass means greater inertia. Inertia is not a force, and motion does not need to be used up. A force is needed to change velocity."
+    },
+    {
+      "title": "Everyday friction can hide the pattern",
+      "content": "A sliding box slows because the floor exerts friction. That does not mean constant motion requires a continuous forward force. It means the box does not satisfy the zero-net-force condition. On ideal frictionless ice, an object can continue moving without a forward push."
+    },
+    {
+      "title": "A passenger during braking",
+      "content": "Relative to the road, the passenger tends to retain the previous forward velocity as the car slows. Relative to the slowing car, the passenger moves forward until a restraint or another interaction changes that motion. A seat belt provides the force that slows the passenger."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "5E-W01",
+      "prompt": "A book rests on a horizontal table. Which statement describes the forces on the book?",
+      "choices": [
+        "No forces act",
+        "The upward normal force balances downward weight",
+        "Weight exceeds the normal force"
+      ],
+      "answer": "The upward normal force balances downward weight",
+      "accepted_answers": [
+        "The upward normal force balances downward weight"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Does being at rest mean no forces exist, or that their sum is zero?"
+      ],
+      "alternate_explanation": "Gravity pulls the book downward and the table exerts an upward normal force. They balance on this book, giving zero net force. These two forces are not a Newton’s-third-law pair because both act on the same object.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Does being at rest mean no forces exist, or that their sum is zero?"
+      ],
+      "visual": {
+        "type": "balanced_forces",
+        "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+      },
+      "solution_steps": [
+        {
+          "equation": "Identify the object and frame",
+          "explanation": "A book rests on a horizontal table. Which statement describes the forces on the book?"
+        },
+        {
+          "equation": "Check whether velocity changes",
+          "explanation": "Gravity pulls the book downward and the table exerts an upward normal force. They balance on this book, giving zero net force. These two forces are not a Newton’s-third-law pair because both act on the same object."
+        },
+        {
+          "equation": "The upward normal force balances downward weight",
+          "explanation": "Apply the zero-net-force condition; do not confuse speed, velocity, inertia, and force."
+        }
+      ]
+    },
+    {
+      "id": "5E-W02",
+      "prompt": "A puck moves in a straight line at constant velocity on ideal frictionless ice. What is its net force?",
+      "choices": [
+        "Zero",
+        "Forward",
+        "Backward"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Is the puck speeding up, slowing down, or changing direction?"
+      ],
+      "alternate_explanation": "Its velocity is unchanged, so acceleration is zero. Forces may exist, but their vector sum is zero. A continuing forward force is not required to maintain constant velocity.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Is the puck speeding up, slowing down, or changing direction?"
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify the object and frame",
+          "explanation": "A puck moves in a straight line at constant velocity on ideal frictionless ice. What is its net force?"
+        },
+        {
+          "equation": "Check whether velocity changes",
+          "explanation": "Its velocity is unchanged, so acceleration is zero. Forces may exist, but their vector sum is zero. A continuing forward force is not required to maintain constant velocity."
+        },
+        {
+          "equation": "Zero",
+          "explanation": "Apply the zero-net-force condition; do not confuse speed, velocity, inertia, and force."
+        }
+      ]
+    },
+    {
+      "id": "5E-W03",
+      "prompt": "A car brakes suddenly. Why does an unrestrained passenger tend to continue forward relative to the car?",
+      "choices": [
+        "Braking creates a new forward force",
+        "The passenger tends to retain the previous velocity while the car slows",
+        "Gravity pulls the passenger forward"
+      ],
+      "answer": "The passenger tends to retain the previous velocity while the car slows",
+      "accepted_answers": [
+        "The passenger tends to retain the previous velocity while the car slows"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "What interaction would change the passenger’s forward velocity?"
+      ],
+      "alternate_explanation": "In a road-based frame, the passenger tends to continue with the previous forward velocity while the car slows. A seat belt supplies a backward force that slows the passenger. No new forward force is needed to explain this relative motion.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "What interaction would change the passenger’s forward velocity?"
+      ],
+      "solution_steps": [
+        {
+          "equation": "Identify the object and frame",
+          "explanation": "A car brakes suddenly. Why does an unrestrained passenger tend to continue forward relative to the car?"
+        },
+        {
+          "equation": "Check whether velocity changes",
+          "explanation": "In a road-based frame, the passenger tends to continue with the previous forward velocity while the car slows. A seat belt supplies a backward force that slows the passenger. No new forward force is needed to explain this relative motion."
+        },
+        {
+          "equation": "The passenger tends to retain the previous velocity while the car slows",
+          "explanation": "Apply the zero-net-force condition; do not confuse speed, velocity, inertia, and force."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "5E-G01",
+      "prompt": "A puck moves in a straight line at constant velocity on ideal frictionless ice. What is its net force?",
+      "choices": [
+        "Zero",
+        "Forward",
+        "Backward"
+      ],
+      "answer": "Zero",
+      "accepted_answers": [
+        "Zero"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Is the puck speeding up, slowing down, or changing direction?"
+      ],
+      "alternate_explanation": "Its velocity is unchanged, so acceleration is zero. Forces may exist, but their vector sum is zero. A continuing forward force is not required to maintain constant velocity.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Is the puck speeding up, slowing down, or changing direction?"
+      ],
+      "similar_problem": {
+        "id": "5E-S01",
+        "prompt": "An object is in equilibrium. What can you conclude about its motion?",
+        "choices": [
+          "It must be stationary",
+          "It must move faster",
+          "Its velocity is constant, possibly zero"
+        ],
+        "answer": "Its velocity is constant, possibly zero",
+        "accepted_answers": [
+          "Its velocity is constant, possibly zero"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Can a nonzero velocity remain unchanged?"
+        ],
+        "alternate_explanation": "Equilibrium means the vector sum of external forces is zero. Newton’s first law allows rest and straight-line motion at constant nonzero velocity. Equilibrium does not require the object to be stationary.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Can a nonzero velocity remain unchanged?"
+        ]
+      }
+    },
+    {
+      "id": "5E-G02",
+      "prompt": "A book rests on a horizontal table. Which statement describes the forces on the book?",
+      "choices": [
+        "No forces act",
+        "The upward normal force balances downward weight",
+        "Weight exceeds the normal force"
+      ],
+      "answer": "The upward normal force balances downward weight",
+      "accepted_answers": [
+        "The upward normal force balances downward weight"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Does being at rest mean no forces exist, or that their sum is zero?"
+      ],
+      "alternate_explanation": "Gravity pulls the book downward and the table exerts an upward normal force. They balance on this book, giving zero net force. These two forces are not a Newton’s-third-law pair because both act on the same object.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Does being at rest mean no forces exist, or that their sum is zero?"
+      ],
+      "visual": {
+        "type": "balanced_forces",
+        "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+      },
+      "similar_problem": {
+        "id": "5E-S02",
+        "prompt": "A car travels at constant speed around a curve. Is its net force zero?",
+        "choices": [
+          "Yes, because its speed is constant",
+          "No, because its velocity changes direction"
+        ],
+        "answer": "No, because its velocity changes direction",
+        "accepted_answers": [
+          "No, because its velocity changes direction"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Does constant speed guarantee constant velocity?"
+        ],
+        "alternate_explanation": "Velocity includes direction. Turning changes velocity even with constant speed, so acceleration and a nonzero inward net force are required. This is not equilibrium.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Does constant speed guarantee constant velocity?"
+        ]
+      }
+    },
+    {
+      "id": "5E-G03",
+      "prompt": "A car brakes suddenly. Why does an unrestrained passenger tend to continue forward relative to the car?",
+      "choices": [
+        "Braking creates a new forward force",
+        "The passenger tends to retain the previous velocity while the car slows",
+        "Gravity pulls the passenger forward"
+      ],
+      "answer": "The passenger tends to retain the previous velocity while the car slows",
+      "accepted_answers": [
+        "The passenger tends to retain the previous velocity while the car slows"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "What interaction would change the passenger’s forward velocity?"
+      ],
+      "alternate_explanation": "In a road-based frame, the passenger tends to continue with the previous forward velocity while the car slows. A seat belt supplies a backward force that slows the passenger. No new forward force is needed to explain this relative motion.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "What interaction would change the passenger’s forward velocity?"
+      ],
+      "similar_problem": {
+        "id": "5E-S03",
+        "prompt": "A box slides across a rough floor and slows down. Why does this not contradict Newton’s first law?",
+        "choices": [
+          "The law does not apply to boxes",
+          "Friction produces a net force opposing its motion",
+          "Motion naturally disappears without a force"
+        ],
+        "answer": "Friction produces a net force opposing its motion",
+        "accepted_answers": [
+          "Friction produces a net force opposing its motion"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Is the zero-net-force condition satisfied?"
+        ],
+        "alternate_explanation": "The law predicts constant velocity only when net external force is zero. Kinetic friction supplies a backward force, causing the box to slow down when other forces do not cancel it.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Is the zero-net-force condition satisfied?"
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "5E-P01",
+      "prompt": "Which object has greater inertia: a 2 kg cart or an 8 kg cart?",
+      "choices": [
+        "The 2 kg cart",
+        "The 8 kg cart",
+        "They always have equal inertia"
+      ],
+      "answer": "The 8 kg cart",
+      "accepted_answers": [
+        "The 8 kg cart"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Which object has more mass?"
+      ],
+      "alternate_explanation": "Mass measures inertia, the resistance to a change in velocity. The 8 kg cart has more mass and therefore greater inertia. Inertia is a property, not a force acting on the cart.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Which object has more mass?"
+      ],
+      "similar_problem": {
+        "id": "5E-S04",
+        "prompt": "A seat belt restrains a passenger during braking. What is its physical role?",
+        "choices": [
+          "It removes inertia",
+          "It exerts a force that changes the passenger’s velocity",
+          "It cancels the passenger’s mass"
+        ],
+        "answer": "It exerts a force that changes the passenger’s velocity",
+        "accepted_answers": [
+          "It exerts a force that changes the passenger’s velocity"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "What must happen to the passenger’s velocity during braking?"
+        ],
+        "alternate_explanation": "The passenger retains mass and inertia. The belt exerts a force that slows the passenger with the vehicle. A change in velocity requires a net external force.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "What must happen to the passenger’s velocity during braking?"
+        ]
+      }
+    },
+    {
+      "id": "5E-P02",
+      "prompt": "An object is in equilibrium. What can you conclude about its motion?",
+      "choices": [
+        "It must be stationary",
+        "It must move faster",
+        "Its velocity is constant, possibly zero"
+      ],
+      "answer": "Its velocity is constant, possibly zero",
+      "accepted_answers": [
+        "Its velocity is constant, possibly zero"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Can a nonzero velocity remain unchanged?"
+      ],
+      "alternate_explanation": "Equilibrium means the vector sum of external forces is zero. Newton’s first law allows rest and straight-line motion at constant nonzero velocity. Equilibrium does not require the object to be stationary.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Can a nonzero velocity remain unchanged?"
+      ],
+      "similar_problem": {
+        "id": "5E-S05",
+        "prompt": "Two equal forces act in opposite directions on the same object. What do they contribute to its net force?",
+        "choices": [
+          "Zero",
+          "Twice either force",
+          "A force in the motion direction"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "What happens when equal positive and negative components are added?"
+        ],
+        "alternate_explanation": "Vector addition accounts for direction. Equal opposite forces cancel in the net sum, although both interactions remain present. An arrow diagram should show both forces.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "What happens when equal positive and negative components are added?"
+        ]
+      }
+    },
+    {
+      "id": "5E-P03",
+      "prompt": "A car travels at constant speed around a curve. Is its net force zero?",
+      "choices": [
+        "Yes, because its speed is constant",
+        "No, because its velocity changes direction"
+      ],
+      "answer": "No, because its velocity changes direction",
+      "accepted_answers": [
+        "No, because its velocity changes direction"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Does constant speed guarantee constant velocity?"
+      ],
+      "alternate_explanation": "Velocity includes direction. Turning changes velocity even with constant speed, so acceleration and a nonzero inward net force are required. This is not equilibrium.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Does constant speed guarantee constant velocity?"
+      ],
+      "similar_problem": {
+        "id": "5E-S06",
+        "prompt": "A spacecraft coasts far from significant external forces. What motion is expected in an inertial frame?",
+        "choices": [
+          "Constant velocity",
+          "It must gradually stop",
+          "It must continually accelerate"
+        ],
+        "answer": "Constant velocity",
+        "accepted_answers": [
+          "Constant velocity"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "What external interaction would slow it down?"
+        ],
+        "alternate_explanation": "With negligible net external force, the spacecraft maintains its velocity. Engines are needed to change that velocity, not to preserve it in this ideal case.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "What external interaction would slow it down?"
+        ]
+      }
+    },
+    {
+      "id": "5E-P04",
+      "prompt": "A box slides across a rough floor and slows down. Why does this not contradict Newton’s first law?",
+      "choices": [
+        "The law does not apply to boxes",
+        "Friction produces a net force opposing its motion",
+        "Motion naturally disappears without a force"
+      ],
+      "answer": "Friction produces a net force opposing its motion",
+      "accepted_answers": [
+        "Friction produces a net force opposing its motion"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "Is the zero-net-force condition satisfied?"
+      ],
+      "alternate_explanation": "The law predicts constant velocity only when net external force is zero. Kinetic friction supplies a backward force, causing the box to slow down when other forces do not cancel it.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "Is the zero-net-force condition satisfied?"
+      ],
+      "similar_problem": {
+        "id": "5E-S07",
+        "prompt": "A puck moves in a straight line at constant velocity on ideal frictionless ice. What is its net force?",
+        "choices": [
+          "Zero",
+          "Forward",
+          "Backward"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Is the puck speeding up, slowing down, or changing direction?"
+        ],
+        "alternate_explanation": "Its velocity is unchanged, so acceleration is zero. Forces may exist, but their vector sum is zero. A continuing forward force is not required to maintain constant velocity.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Is the puck speeding up, slowing down, or changing direction?"
+        ]
+      }
+    },
+    {
+      "id": "5E-P05",
+      "prompt": "A seat belt restrains a passenger during braking. What is its physical role?",
+      "choices": [
+        "It removes inertia",
+        "It exerts a force that changes the passenger’s velocity",
+        "It cancels the passenger’s mass"
+      ],
+      "answer": "It exerts a force that changes the passenger’s velocity",
+      "accepted_answers": [
+        "It exerts a force that changes the passenger’s velocity"
+      ],
+      "hint_steps": [
+        "Identify the object and decide whether its velocity changes.",
+        "What must happen to the passenger’s velocity during braking?"
+      ],
+      "alternate_explanation": "The passenger retains mass and inertia. The belt exerts a force that slows the passenger with the vehicle. A change in velocity requires a net external force.",
+      "alternate_explanation_steps": [
+        "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+        "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+        "What must happen to the passenger’s velocity during braking?"
+      ],
+      "similar_problem": {
+        "id": "5E-S08",
+        "prompt": "A book rests on a horizontal table. Which statement describes the forces on the book?",
+        "choices": [
+          "No forces act",
+          "The upward normal force balances downward weight",
+          "Weight exceeds the normal force"
+        ],
+        "answer": "The upward normal force balances downward weight",
+        "accepted_answers": [
+          "The upward normal force balances downward weight"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Does being at rest mean no forces exist, or that their sum is zero?"
+        ],
+        "alternate_explanation": "Gravity pulls the book downward and the table exerts an upward normal force. They balance on this book, giving zero net force. These two forces are not a Newton’s-third-law pair because both act on the same object.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Does being at rest mean no forces exist, or that their sum is zero?"
+        ],
+        "visual": {
+          "type": "balanced_forces",
+          "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+        }
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "5E-M01",
+      "prompt": "A curling stone glides straight at steady speed after release on an ideal frictionless surface. Must a forward force keep acting?",
+      "choices": [
+        "No, zero net force permits constant velocity",
+        "Yes, motion always requires a forward net force"
+      ],
+      "answer": "No, zero net force permits constant velocity",
+      "accepted_answers": [
+        "No, zero net force permits constant velocity"
+      ],
+      "alternate_explanation": "Newton’s first law concerns changes of velocity, not maintaining existing velocity."
+    },
+    {
+      "id": "5E-M02",
+      "prompt": "A train turns at unchanged speed. Can its forces be balanced?",
+      "choices": [
+        "Yes, unchanged speed means equilibrium",
+        "No, its changing direction requires acceleration"
+      ],
+      "answer": "No, its changing direction requires acceleration",
+      "accepted_answers": [
+        "No, its changing direction requires acceleration"
+      ],
+      "alternate_explanation": "Velocity includes direction; a turn requires nonzero net force."
+    },
+    {
+      "id": "5E-M03",
+      "prompt": "An elevator moves upward at constant velocity. Compare total upward and downward force.",
+      "choices": [
+        "They are equal in magnitude",
+        "Upward force must be greater"
+      ],
+      "answer": "They are equal in magnitude",
+      "accepted_answers": [
+        "They are equal in magnitude"
+      ],
+      "alternate_explanation": "Acceleration is zero for constant velocity. Force balance does not imply rest."
+    },
+    {
+      "id": "5E-M04",
+      "prompt": "Two stationary carts have different masses. Which has greater inertia?",
+      "choices": [
+        "Neither has inertia until moving",
+        "The more massive cart"
+      ],
+      "answer": "The more massive cart",
+      "accepted_answers": [
+        "The more massive cart"
+      ],
+      "alternate_explanation": "Mass measures inertia whether or not the object is moving."
+    },
+    {
+      "id": "5E-M05",
+      "prompt": "A driver accelerates forward and an unsecured bag initially slips backward relative to the car. What explains this?",
+      "choices": [
+        "The bag tends to retain its earlier road-frame velocity",
+        "A new backward inertia force acts in the road frame"
+      ],
+      "answer": "The bag tends to retain its earlier road-frame velocity",
+      "accepted_answers": [
+        "The bag tends to retain its earlier road-frame velocity"
+      ],
+      "alternate_explanation": "Relative backward motion can result from the car speeding up; identify actual interactions in an inertial frame."
+    }
+  ],
+  "practice": {
+    "intro": "Predict motion from the net force and explain why. Choice answers check recognition; written reflections practice explanations separately.",
+    "problems": [
+      {
+        "id": "5E-P01",
+        "prompt": "Which object has greater inertia: a 2 kg cart or an 8 kg cart?",
+        "choices": [
+          "The 2 kg cart",
+          "The 8 kg cart",
+          "They always have equal inertia"
+        ],
+        "answer": "The 8 kg cart",
+        "accepted_answers": [
+          "The 8 kg cart"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Which object has more mass?"
+        ],
+        "alternate_explanation": "Mass measures inertia, the resistance to a change in velocity. The 8 kg cart has more mass and therefore greater inertia. Inertia is a property, not a force acting on the cart.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Which object has more mass?"
+        ],
+        "similar_problem": {
+          "id": "5E-S04",
+          "prompt": "A seat belt restrains a passenger during braking. What is its physical role?",
+          "choices": [
+            "It removes inertia",
+            "It exerts a force that changes the passenger’s velocity",
+            "It cancels the passenger’s mass"
+          ],
+          "answer": "It exerts a force that changes the passenger’s velocity",
+          "accepted_answers": [
+            "It exerts a force that changes the passenger’s velocity"
+          ],
+          "hint_steps": [
+            "Identify the object and decide whether its velocity changes.",
+            "What must happen to the passenger’s velocity during braking?"
+          ],
+          "alternate_explanation": "The passenger retains mass and inertia. The belt exerts a force that slows the passenger with the vehicle. A change in velocity requires a net external force.",
+          "alternate_explanation_steps": [
+            "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+            "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+            "What must happen to the passenger’s velocity during braking?"
+          ]
+        }
+      },
+      {
+        "id": "5E-P02",
+        "prompt": "An object is in equilibrium. What can you conclude about its motion?",
+        "choices": [
+          "It must be stationary",
+          "It must move faster",
+          "Its velocity is constant, possibly zero"
+        ],
+        "answer": "Its velocity is constant, possibly zero",
+        "accepted_answers": [
+          "Its velocity is constant, possibly zero"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Can a nonzero velocity remain unchanged?"
+        ],
+        "alternate_explanation": "Equilibrium means the vector sum of external forces is zero. Newton’s first law allows rest and straight-line motion at constant nonzero velocity. Equilibrium does not require the object to be stationary.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Can a nonzero velocity remain unchanged?"
+        ],
+        "similar_problem": {
+          "id": "5E-S05",
+          "prompt": "Two equal forces act in opposite directions on the same object. What do they contribute to its net force?",
+          "choices": [
+            "Zero",
+            "Twice either force",
+            "A force in the motion direction"
+          ],
+          "answer": "Zero",
+          "accepted_answers": [
+            "Zero"
+          ],
+          "hint_steps": [
+            "Identify the object and decide whether its velocity changes.",
+            "What happens when equal positive and negative components are added?"
+          ],
+          "alternate_explanation": "Vector addition accounts for direction. Equal opposite forces cancel in the net sum, although both interactions remain present. An arrow diagram should show both forces.",
+          "alternate_explanation_steps": [
+            "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+            "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+            "What happens when equal positive and negative components are added?"
+          ]
+        }
+      },
+      {
+        "id": "5E-P03",
+        "prompt": "A car travels at constant speed around a curve. Is its net force zero?",
+        "choices": [
+          "Yes, because its speed is constant",
+          "No, because its velocity changes direction"
+        ],
+        "answer": "No, because its velocity changes direction",
+        "accepted_answers": [
+          "No, because its velocity changes direction"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Does constant speed guarantee constant velocity?"
+        ],
+        "alternate_explanation": "Velocity includes direction. Turning changes velocity even with constant speed, so acceleration and a nonzero inward net force are required. This is not equilibrium.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Does constant speed guarantee constant velocity?"
+        ],
+        "similar_problem": {
+          "id": "5E-S06",
+          "prompt": "A spacecraft coasts far from significant external forces. What motion is expected in an inertial frame?",
+          "choices": [
+            "Constant velocity",
+            "It must gradually stop",
+            "It must continually accelerate"
+          ],
+          "answer": "Constant velocity",
+          "accepted_answers": [
+            "Constant velocity"
+          ],
+          "hint_steps": [
+            "Identify the object and decide whether its velocity changes.",
+            "What external interaction would slow it down?"
+          ],
+          "alternate_explanation": "With negligible net external force, the spacecraft maintains its velocity. Engines are needed to change that velocity, not to preserve it in this ideal case.",
+          "alternate_explanation_steps": [
+            "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+            "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+            "What external interaction would slow it down?"
+          ]
+        }
+      },
+      {
+        "id": "5E-P04",
+        "prompt": "A box slides across a rough floor and slows down. Why does this not contradict Newton’s first law?",
+        "choices": [
+          "The law does not apply to boxes",
+          "Friction produces a net force opposing its motion",
+          "Motion naturally disappears without a force"
+        ],
+        "answer": "Friction produces a net force opposing its motion",
+        "accepted_answers": [
+          "Friction produces a net force opposing its motion"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Is the zero-net-force condition satisfied?"
+        ],
+        "alternate_explanation": "The law predicts constant velocity only when net external force is zero. Kinetic friction supplies a backward force, causing the box to slow down when other forces do not cancel it.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Is the zero-net-force condition satisfied?"
+        ],
+        "similar_problem": {
+          "id": "5E-S07",
+          "prompt": "A puck moves in a straight line at constant velocity on ideal frictionless ice. What is its net force?",
+          "choices": [
+            "Zero",
+            "Forward",
+            "Backward"
+          ],
+          "answer": "Zero",
+          "accepted_answers": [
+            "Zero"
+          ],
+          "hint_steps": [
+            "Identify the object and decide whether its velocity changes.",
+            "Is the puck speeding up, slowing down, or changing direction?"
+          ],
+          "alternate_explanation": "Its velocity is unchanged, so acceleration is zero. Forces may exist, but their vector sum is zero. A continuing forward force is not required to maintain constant velocity.",
+          "alternate_explanation_steps": [
+            "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+            "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+            "Is the puck speeding up, slowing down, or changing direction?"
+          ]
+        }
+      },
+      {
+        "id": "5E-P05",
+        "prompt": "A seat belt restrains a passenger during braking. What is its physical role?",
+        "choices": [
+          "It removes inertia",
+          "It exerts a force that changes the passenger’s velocity",
+          "It cancels the passenger’s mass"
+        ],
+        "answer": "It exerts a force that changes the passenger’s velocity",
+        "accepted_answers": [
+          "It exerts a force that changes the passenger’s velocity"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "What must happen to the passenger’s velocity during braking?"
+        ],
+        "alternate_explanation": "The passenger retains mass and inertia. The belt exerts a force that slows the passenger with the vehicle. A change in velocity requires a net external force.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "What must happen to the passenger’s velocity during braking?"
+        ],
+        "similar_problem": {
+          "id": "5E-S08",
+          "prompt": "A book rests on a horizontal table. Which statement describes the forces on the book?",
+          "choices": [
+            "No forces act",
+            "The upward normal force balances downward weight",
+            "Weight exceeds the normal force"
+          ],
+          "answer": "The upward normal force balances downward weight",
+          "accepted_answers": [
+            "The upward normal force balances downward weight"
+          ],
+          "hint_steps": [
+            "Identify the object and decide whether its velocity changes.",
+            "Does being at rest mean no forces exist, or that their sum is zero?"
+          ],
+          "alternate_explanation": "Gravity pulls the book downward and the table exerts an upward normal force. They balance on this book, giving zero net force. These two forces are not a Newton’s-third-law pair because both act on the same object.",
+          "alternate_explanation_steps": [
+            "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+            "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+            "Does being at rest mean no forces exist, or that their sum is zero?"
+          ],
+          "visual": {
+            "type": "balanced_forces",
+            "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+          }
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Distinguish zero force from zero net force, and constant speed from constant velocity. Inertia is not a force.",
+    "recheck": [
+      {
+        "id": "5E-R01",
+        "prompt": "A puck moves in a straight line at constant velocity on ideal frictionless ice. What is its net force?",
+        "choices": [
+          "Zero",
+          "Forward",
+          "Backward"
+        ],
+        "answer": "Zero",
+        "accepted_answers": [
+          "Zero"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Is the puck speeding up, slowing down, or changing direction?"
+        ],
+        "alternate_explanation": "Its velocity is unchanged, so acceleration is zero. Forces may exist, but their vector sum is zero. A continuing forward force is not required to maintain constant velocity.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Is the puck speeding up, slowing down, or changing direction?"
+        ]
+      },
+      {
+        "id": "5E-R02",
+        "prompt": "A book rests on a horizontal table. Which statement describes the forces on the book?",
+        "choices": [
+          "No forces act",
+          "The upward normal force balances downward weight",
+          "Weight exceeds the normal force"
+        ],
+        "answer": "The upward normal force balances downward weight",
+        "accepted_answers": [
+          "The upward normal force balances downward weight"
+        ],
+        "hint_steps": [
+          "Identify the object and decide whether its velocity changes.",
+          "Does being at rest mean no forces exist, or that their sum is zero?"
+        ],
+        "alternate_explanation": "Gravity pulls the book downward and the table exerts an upward normal force. They balance on this book, giving zero net force. These two forces are not a Newton’s-third-law pair because both act on the same object.",
+        "alternate_explanation_steps": [
+          "Choose an inertial reference frame, such as a stationary classroom or road for these examples.",
+          "Zero net external force means zero acceleration. Velocity can be zero or a nonzero constant.",
+          "Does being at rest mean no forces exist, or that their sum is zero?"
+        ],
+        "visual": {
+          "type": "balanced_forces",
+          "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+        }
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "5E-C01",
+      "prompt": "Explain why a puck can keep moving without a continuing forward push on ideal frictionless ice.",
+      "expected_ideas": [
+        "The puck already has velocity.",
+        "Zero net force means velocity remains unchanged, not that velocity must be zero."
+      ],
+      "misconceptions": [
+        "Motion always needs a continuous force in its direction."
+      ],
+      "follow_up": "What would be needed to change the puck’s velocity?"
+    },
+    {
+      "id": "5E-C02",
+      "prompt": "Explain why a passenger tends to move forward relative to a suddenly braking car, and how a seat belt changes that motion.",
+      "expected_ideas": [
+        "The passenger tends to retain the earlier forward velocity while the car slows.",
+        "The seat belt supplies a force that slows the passenger; inertia is not a forward force."
+      ],
+      "misconceptions": [
+        "Braking produces a new forward force on the passenger."
+      ],
+      "follow_up": "Which interaction changes the passenger’s velocity?"
+    },
+    {
+      "id": "5E-C03",
+      "prompt": "A book is at rest on a table. Explain why “no force acts on the book” is incorrect.",
+      "expected_ideas": [
+        "Weight acts downward and a normal force acts upward.",
+        "They balance on the book, so net force is zero even though individual forces exist."
+      ],
+      "misconceptions": [
+        "An object at rest cannot have forces acting on it."
+      ],
+      "follow_up": "What two objects interact with the book?",
+      "visual": {
+        "type": "balanced_forces",
+        "label": "A book at rest: equal upward normal force and downward weight act on the same object."
+      }
+    }
+  ]
+}

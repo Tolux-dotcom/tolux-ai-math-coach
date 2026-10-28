@@ -1,0 +1,1094 @@
+{
+  "lesson_id": "physics-5d-circular-projectile",
+  "course_id": "physics",
+  "teks": [
+    "5D"
+  ],
+  "title": "Circular and Projectile Motion",
+  "learning_goal": "Describe and analyze acceleration in uniform circular motion and horizontal projectile motion.",
+  "stages": [
+    {
+      "id": "concept",
+      "title": "1. Two kinds of accelerated motion",
+      "content": "An object can accelerate even when its speed is constant if its direction changes. In uniform circular motion, velocity continuously changes direction toward the center. In projectile motion, horizontal and vertical motions occur at the same time."
+    },
+    {
+      "id": "circular",
+      "title": "2. Uniform circular motion",
+      "content": "For an object moving in a circle at constant speed, centripetal acceleration points toward the center of the circle. Its magnitude is a = v²/r."
+    },
+    {
+      "id": "worked-example",
+      "title": "3. Worked example: circular motion",
+      "content": "A 2 kg object moves at 6 m/s in a circle of radius 3 m. The centripetal acceleration is a = v²/r = 6²/3 = 12 m/s²."
+    },
+    {
+      "id": "projectile",
+      "title": "4. Horizontal projectile motion",
+      "content": "For a horizontally launched object, horizontal velocity remains constant if air resistance is ignored, while gravity causes vertical acceleration downward at about 9.8 m/s²."
+    },
+    {
+      "id": "guided-practice",
+      "title": "5. Guided practice",
+      "prompt": "A ball moves at 8 m/s around a circular path of radius 4 m. What is its centripetal acceleration?",
+      "hint": "Use a = v²/r. Square the speed before dividing by the radius.",
+      "alternate_explanation": "Think of the object as constantly turning. The faster it moves or the tighter the circle, the greater the inward acceleration.",
+      "answer": "16 m/s²"
+    },
+    {
+      "id": "mastery",
+      "title": "6. Mastery check",
+      "content": "To demonstrate mastery, identify the direction of centripetal acceleration, calculate a = v²/r, separate horizontal and vertical projectile motion, and explain how gravity affects the vertical component."
+    }
+  ],
+  "coach_rules": {
+    "teach_before_answering": true,
+    "smallest_useful_hint_first": true,
+    "offer_explain_another_way": true,
+    "offer_similar_problem": true,
+    "use_proper_math_notation": true
+  },
+  "lesson_flow": [
+    {
+      "type": "concept",
+      "label": "Start from the beginning"
+    },
+    {
+      "type": "worked_examples",
+      "label": "Watch Tolux solve"
+    },
+    {
+      "type": "guided_practice",
+      "label": "Solve with Tolux"
+    },
+    {
+      "type": "independent_practice",
+      "label": "Practice by yourself"
+    },
+    {
+      "type": "mastery_check",
+      "label": "Check mastery"
+    },
+    {
+      "type": "remediation_or_complete",
+      "label": "Next best step"
+    }
+  ],
+  "concept_cards": [
+    {
+      "title": "Constant speed can still mean acceleration",
+      "content": "Velocity includes direction. Around a circle, the velocity arrow continually turns even if speed stays fixed. For uniform circular motion, velocity is tangent to the path and acceleration points toward the center.",
+      "visual": {
+        "type": "circular_motion"
+      }
+    },
+    {
+      "title": "Why the circular acceleration is inward",
+      "content": "Over a short interval, the difference between successive velocity vectors points inward. The net force produces this inward acceleration. Depending on the situation, tension, friction, gravity, or a normal force can supply the net inward force. There is no separate extra centripetal force.",
+      "visual": {
+        "type": "circular_motion"
+      }
+    },
+    {
+      "title": "The size of centripetal acceleration",
+      "content": "Use a_c = v²/r. Doubling speed at fixed radius makes acceleration four times as large. Doubling radius at fixed speed halves the acceleration. If the inward interaction disappears, the object initially moves along the tangent, not radially outward."
+    },
+    {
+      "title": "Projectile motion combines independent components",
+      "content": "Ignoring air resistance near Earth, horizontal acceleration is zero and vertical acceleration is downward, approximately 9.8 m/s². A horizontally launched projectile starts with zero vertical velocity, not zero vertical acceleration. Its horizontal velocity stays constant while downward speed increases.",
+      "visual": {
+        "type": "projectile_motion"
+      }
+    },
+    {
+      "title": "Same fall time under the same conditions",
+      "content": "An object dropped from rest and one launched horizontally from the same height at the same instant reach level ground together if air resistance is negligible. Both begin with zero vertical velocity and undergo the same gravitational acceleration. Horizontal speed affects range, not fall time, under these conditions."
+    }
+  ],
+  "worked_examples": [
+    {
+      "id": "5D-W01",
+      "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "12 m/s²",
+      "accepted_answers": [
+        "12",
+        "12 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 6, then divide by 3."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (6 m/s)² ÷ (3 m).",
+        "This gives 12 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Use a_c = (6 m/s)² ÷ (3 m).",
+          "explanation": "Choose the relationship for the relevant motion component."
+        },
+        {
+          "equation": "This gives 12 m/s², directed toward the center.",
+          "explanation": "Substitute the given quantities and retain units."
+        },
+        {
+          "equation": "Centripetal describes the direction of net acceleration. It is not an additional kind of force.",
+          "explanation": "Interpret the result and check its physical meaning."
+        }
+      ]
+    },
+    {
+      "id": "5D-W02",
+      "prompt": "An object moves at constant speed 10 m/s in a circle of radius 5 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "20 m/s²",
+      "accepted_answers": [
+        "20",
+        "20 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 10, then divide by 5."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (10 m/s)² ÷ (5 m).",
+        "This gives 20 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Use a_c = (10 m/s)² ÷ (5 m).",
+          "explanation": "Choose the relationship for the relevant motion component."
+        },
+        {
+          "equation": "This gives 20 m/s², directed toward the center.",
+          "explanation": "Substitute the given quantities and retain units."
+        },
+        {
+          "equation": "Centripetal describes the direction of net acceleration. It is not an additional kind of force.",
+          "explanation": "Interpret the result and check its physical meaning."
+        }
+      ]
+    },
+    {
+      "id": "5D-W03",
+      "prompt": "A ball is launched horizontally at 8 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+      "answer": "16 m",
+      "accepted_answers": [
+        "16",
+        "16 m"
+      ],
+      "visual": {
+        "type": "projectile_motion",
+        "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+      },
+      "hint_steps": [
+        "Separate horizontal motion from vertical motion.",
+        "With no air resistance, horizontal acceleration is zero.",
+        "Use Δx = v_x t."
+      ],
+      "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+      "alternate_explanation_steps": [
+        "Horizontal velocity stays at 8 m/s.",
+        "Δx = (8 m/s)(2 s) = 16 m.",
+        "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+      ],
+      "solution_steps": [
+        {
+          "equation": "Horizontal velocity stays at 8 m/s.",
+          "explanation": "Choose the relationship for the relevant motion component."
+        },
+        {
+          "equation": "Δx = (8 m/s)(2 s) = 16 m.",
+          "explanation": "Substitute the given quantities and retain units."
+        },
+        {
+          "equation": "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion.",
+          "explanation": "Interpret the result and check its physical meaning."
+        }
+      ]
+    }
+  ],
+  "guided_practice": [
+    {
+      "id": "5D-G01",
+      "prompt": "An object moves at constant speed 8 m/s in a circle of radius 4 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "16 m/s²",
+      "accepted_answers": [
+        "16",
+        "16 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 8, then divide by 4."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (8 m/s)² ÷ (4 m).",
+        "This gives 16 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "similar_problem": {
+        "id": "5D-S01",
+        "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "12 m/s²",
+        "accepted_answers": [
+          "12",
+          "12 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 6, then divide by 3."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (6 m/s)² ÷ (3 m).",
+          "This gives 12 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ]
+      }
+    },
+    {
+      "id": "5D-G02",
+      "prompt": "A ball is launched horizontally at 6 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+      "answer": "18 m",
+      "accepted_answers": [
+        "18",
+        "18 m"
+      ],
+      "visual": {
+        "type": "projectile_motion",
+        "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+      },
+      "hint_steps": [
+        "Separate horizontal motion from vertical motion.",
+        "With no air resistance, horizontal acceleration is zero.",
+        "Use Δx = v_x t."
+      ],
+      "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+      "alternate_explanation_steps": [
+        "Horizontal velocity stays at 6 m/s.",
+        "Δx = (6 m/s)(3 s) = 18 m.",
+        "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+      ],
+      "similar_problem": {
+        "id": "5D-S02",
+        "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "12 m",
+        "accepted_answers": [
+          "12",
+          "12 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 4 m/s.",
+          "Δx = (4 m/s)(3 s) = 12 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ]
+      }
+    },
+    {
+      "id": "5D-G03",
+      "prompt": "An object moves at constant speed 12 m/s in a circle of radius 6 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "24 m/s²",
+      "accepted_answers": [
+        "24",
+        "24 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 12, then divide by 6."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (12 m/s)² ÷ (6 m).",
+        "This gives 24 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "similar_problem": {
+        "id": "5D-S03",
+        "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "12 m/s²",
+        "accepted_answers": [
+          "12",
+          "12 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 6, then divide by 3."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (6 m/s)² ÷ (3 m).",
+          "This gives 12 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ]
+      }
+    }
+  ],
+  "independent_practice": [
+    {
+      "id": "5D-P01",
+      "prompt": "An object moves at constant speed 4 m/s in a circle of radius 2 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "8 m/s²",
+      "accepted_answers": [
+        "8",
+        "8 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 4, then divide by 2."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (4 m/s)² ÷ (2 m).",
+        "This gives 8 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "similar_problem": {
+        "id": "5D-S04",
+        "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "12 m",
+        "accepted_answers": [
+          "12",
+          "12 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 4 m/s.",
+          "Δx = (4 m/s)(3 s) = 12 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ]
+      }
+    },
+    {
+      "id": "5D-P02",
+      "prompt": "A ball is launched horizontally at 5 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+      "answer": "10 m",
+      "accepted_answers": [
+        "10",
+        "10 m"
+      ],
+      "visual": {
+        "type": "projectile_motion",
+        "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+      },
+      "hint_steps": [
+        "Separate horizontal motion from vertical motion.",
+        "With no air resistance, horizontal acceleration is zero.",
+        "Use Δx = v_x t."
+      ],
+      "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+      "alternate_explanation_steps": [
+        "Horizontal velocity stays at 5 m/s.",
+        "Δx = (5 m/s)(2 s) = 10 m.",
+        "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+      ],
+      "similar_problem": {
+        "id": "5D-S05",
+        "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "12 m/s²",
+        "accepted_answers": [
+          "12",
+          "12 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 6, then divide by 3."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (6 m/s)² ÷ (3 m).",
+          "This gives 12 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ]
+      }
+    },
+    {
+      "id": "5D-P03",
+      "prompt": "An object moves at constant speed 9 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "27 m/s²",
+      "accepted_answers": [
+        "27",
+        "27 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 9, then divide by 3."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (9 m/s)² ÷ (3 m).",
+        "This gives 27 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "similar_problem": {
+        "id": "5D-S06",
+        "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "12 m",
+        "accepted_answers": [
+          "12",
+          "12 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 4 m/s.",
+          "Δx = (4 m/s)(3 s) = 12 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ]
+      }
+    },
+    {
+      "id": "5D-P04",
+      "prompt": "A ball is launched horizontally at 12 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+      "answer": "24 m",
+      "accepted_answers": [
+        "24",
+        "24 m"
+      ],
+      "visual": {
+        "type": "projectile_motion",
+        "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+      },
+      "hint_steps": [
+        "Separate horizontal motion from vertical motion.",
+        "With no air resistance, horizontal acceleration is zero.",
+        "Use Δx = v_x t."
+      ],
+      "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+      "alternate_explanation_steps": [
+        "Horizontal velocity stays at 12 m/s.",
+        "Δx = (12 m/s)(2 s) = 24 m.",
+        "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+      ],
+      "similar_problem": {
+        "id": "5D-S07",
+        "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "12 m/s²",
+        "accepted_answers": [
+          "12",
+          "12 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 6, then divide by 3."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (6 m/s)² ÷ (3 m).",
+          "This gives 12 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ]
+      }
+    },
+    {
+      "id": "5D-P05",
+      "prompt": "An object moves at constant speed 6 m/s in a circle of radius 9 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "4 m/s²",
+      "accepted_answers": [
+        "4",
+        "4 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 6, then divide by 9."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (6 m/s)² ÷ (9 m).",
+        "This gives 4 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ],
+      "similar_problem": {
+        "id": "5D-S08",
+        "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "12 m",
+        "accepted_answers": [
+          "12",
+          "12 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 4 m/s.",
+          "Δx = (4 m/s)(3 s) = 12 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ]
+      }
+    }
+  ],
+  "mastery_check": [
+    {
+      "id": "5D-M01",
+      "prompt": "An object moves at constant speed 10 m/s in a circle of radius 2 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "50 m/s²",
+      "accepted_answers": [
+        "50",
+        "50 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 10, then divide by 2."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (10 m/s)² ÷ (2 m).",
+        "This gives 50 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ]
+    },
+    {
+      "id": "5D-M02",
+      "prompt": "A ball is launched horizontally at 7 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+      "answer": "21 m",
+      "accepted_answers": [
+        "21",
+        "21 m"
+      ],
+      "visual": {
+        "type": "projectile_motion",
+        "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+      },
+      "hint_steps": [
+        "Separate horizontal motion from vertical motion.",
+        "With no air resistance, horizontal acceleration is zero.",
+        "Use Δx = v_x t."
+      ],
+      "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+      "alternate_explanation_steps": [
+        "Horizontal velocity stays at 7 m/s.",
+        "Δx = (7 m/s)(3 s) = 21 m.",
+        "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+      ]
+    },
+    {
+      "id": "5D-M03",
+      "prompt": "An object moves at constant speed 12 m/s in a circle of radius 4 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "36 m/s²",
+      "accepted_answers": [
+        "36",
+        "36 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 12, then divide by 4."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (12 m/s)² ÷ (4 m).",
+        "This gives 36 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ]
+    },
+    {
+      "id": "5D-M04",
+      "prompt": "A ball is launched horizontally at 9 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+      "answer": "18 m",
+      "accepted_answers": [
+        "18",
+        "18 m"
+      ],
+      "visual": {
+        "type": "projectile_motion",
+        "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+      },
+      "hint_steps": [
+        "Separate horizontal motion from vertical motion.",
+        "With no air resistance, horizontal acceleration is zero.",
+        "Use Δx = v_x t."
+      ],
+      "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+      "alternate_explanation_steps": [
+        "Horizontal velocity stays at 9 m/s.",
+        "Δx = (9 m/s)(2 s) = 18 m.",
+        "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+      ]
+    },
+    {
+      "id": "5D-M05",
+      "prompt": "An object moves at constant speed 8 m/s in a circle of radius 8 m. Find the magnitude of its centripetal acceleration.",
+      "answer": "8 m/s²",
+      "accepted_answers": [
+        "8",
+        "8 m/s²"
+      ],
+      "visual": {
+        "type": "circular_motion",
+        "label": "Velocity is tangent to the circle; acceleration points inward."
+      },
+      "hint_steps": [
+        "Speed can stay constant while velocity changes direction.",
+        "Use a_c = v²/r.",
+        "Square 8, then divide by 8."
+      ],
+      "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+      "alternate_explanation_steps": [
+        "Use a_c = (8 m/s)² ÷ (8 m).",
+        "This gives 8 m/s², directed toward the center.",
+        "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+      ]
+    }
+  ],
+  "practice": {
+    "intro": "Identify the motion model, choose the appropriate relationship, and include units.",
+    "problems": [
+      {
+        "id": "5D-P01",
+        "prompt": "An object moves at constant speed 4 m/s in a circle of radius 2 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "8 m/s²",
+        "accepted_answers": [
+          "8",
+          "8 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 4, then divide by 2."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (4 m/s)² ÷ (2 m).",
+          "This gives 8 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ],
+        "similar_problem": {
+          "id": "5D-S04",
+          "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+          "answer": "12 m",
+          "accepted_answers": [
+            "12",
+            "12 m"
+          ],
+          "visual": {
+            "type": "projectile_motion",
+            "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+          },
+          "hint_steps": [
+            "Separate horizontal motion from vertical motion.",
+            "With no air resistance, horizontal acceleration is zero.",
+            "Use Δx = v_x t."
+          ],
+          "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+          "alternate_explanation_steps": [
+            "Horizontal velocity stays at 4 m/s.",
+            "Δx = (4 m/s)(3 s) = 12 m.",
+            "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+          ]
+        }
+      },
+      {
+        "id": "5D-P02",
+        "prompt": "A ball is launched horizontally at 5 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "10 m",
+        "accepted_answers": [
+          "10",
+          "10 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 5 m/s.",
+          "Δx = (5 m/s)(2 s) = 10 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ],
+        "similar_problem": {
+          "id": "5D-S05",
+          "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+          "answer": "12 m/s²",
+          "accepted_answers": [
+            "12",
+            "12 m/s²"
+          ],
+          "visual": {
+            "type": "circular_motion",
+            "label": "Velocity is tangent to the circle; acceleration points inward."
+          },
+          "hint_steps": [
+            "Speed can stay constant while velocity changes direction.",
+            "Use a_c = v²/r.",
+            "Square 6, then divide by 3."
+          ],
+          "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+          "alternate_explanation_steps": [
+            "Use a_c = (6 m/s)² ÷ (3 m).",
+            "This gives 12 m/s², directed toward the center.",
+            "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+          ]
+        }
+      },
+      {
+        "id": "5D-P03",
+        "prompt": "An object moves at constant speed 9 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "27 m/s²",
+        "accepted_answers": [
+          "27",
+          "27 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 9, then divide by 3."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (9 m/s)² ÷ (3 m).",
+          "This gives 27 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ],
+        "similar_problem": {
+          "id": "5D-S06",
+          "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+          "answer": "12 m",
+          "accepted_answers": [
+            "12",
+            "12 m"
+          ],
+          "visual": {
+            "type": "projectile_motion",
+            "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+          },
+          "hint_steps": [
+            "Separate horizontal motion from vertical motion.",
+            "With no air resistance, horizontal acceleration is zero.",
+            "Use Δx = v_x t."
+          ],
+          "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+          "alternate_explanation_steps": [
+            "Horizontal velocity stays at 4 m/s.",
+            "Δx = (4 m/s)(3 s) = 12 m.",
+            "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+          ]
+        }
+      },
+      {
+        "id": "5D-P04",
+        "prompt": "A ball is launched horizontally at 12 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "24 m",
+        "accepted_answers": [
+          "24",
+          "24 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 12 m/s.",
+          "Δx = (12 m/s)(2 s) = 24 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ],
+        "similar_problem": {
+          "id": "5D-S07",
+          "prompt": "An object moves at constant speed 6 m/s in a circle of radius 3 m. Find the magnitude of its centripetal acceleration.",
+          "answer": "12 m/s²",
+          "accepted_answers": [
+            "12",
+            "12 m/s²"
+          ],
+          "visual": {
+            "type": "circular_motion",
+            "label": "Velocity is tangent to the circle; acceleration points inward."
+          },
+          "hint_steps": [
+            "Speed can stay constant while velocity changes direction.",
+            "Use a_c = v²/r.",
+            "Square 6, then divide by 3."
+          ],
+          "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+          "alternate_explanation_steps": [
+            "Use a_c = (6 m/s)² ÷ (3 m).",
+            "This gives 12 m/s², directed toward the center.",
+            "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+          ]
+        }
+      },
+      {
+        "id": "5D-P05",
+        "prompt": "An object moves at constant speed 6 m/s in a circle of radius 9 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "4 m/s²",
+        "accepted_answers": [
+          "4",
+          "4 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 6, then divide by 9."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (6 m/s)² ÷ (9 m).",
+          "This gives 4 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ],
+        "similar_problem": {
+          "id": "5D-S08",
+          "prompt": "A ball is launched horizontally at 4 m/s and stays airborne for 3 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+          "answer": "12 m",
+          "accepted_answers": [
+            "12",
+            "12 m"
+          ],
+          "visual": {
+            "type": "projectile_motion",
+            "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+          },
+          "hint_steps": [
+            "Separate horizontal motion from vertical motion.",
+            "With no air resistance, horizontal acceleration is zero.",
+            "Use Δx = v_x t."
+          ],
+          "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+          "alternate_explanation_steps": [
+            "Horizontal velocity stays at 4 m/s.",
+            "Δx = (4 m/s)(3 s) = 12 m.",
+            "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+          ]
+        }
+      }
+    ]
+  },
+  "mastery_policy": {
+    "threshold_percent": 80
+  },
+  "remediation": {
+    "message": "Review tangent velocity versus inward acceleration. For a horizontal projectile, keep horizontal velocity separate from downward acceleration.",
+    "recheck": [
+      {
+        "id": "5D-R01",
+        "prompt": "An object moves at constant speed 4 m/s in a circle of radius 4 m. Find the magnitude of its centripetal acceleration.",
+        "answer": "4 m/s²",
+        "accepted_answers": [
+          "4",
+          "4 m/s²"
+        ],
+        "visual": {
+          "type": "circular_motion",
+          "label": "Velocity is tangent to the circle; acceleration points inward."
+        },
+        "hint_steps": [
+          "Speed can stay constant while velocity changes direction.",
+          "Use a_c = v²/r.",
+          "Square 4, then divide by 4."
+        ],
+        "alternate_explanation": "The object continually turns. Acceleration changes the direction of velocity even when its magnitude stays constant. A tighter circle or a higher speed requires a larger inward acceleration.",
+        "alternate_explanation_steps": [
+          "Use a_c = (4 m/s)² ÷ (4 m).",
+          "This gives 4 m/s², directed toward the center.",
+          "Centripetal describes the direction of net acceleration. It is not an additional kind of force."
+        ]
+      },
+      {
+        "id": "5D-R02",
+        "prompt": "A ball is launched horizontally at 3 m/s and stays airborne for 2 s before landing below its starting height. Ignore air resistance. Find its horizontal displacement.",
+        "answer": "6 m",
+        "accepted_answers": [
+          "6",
+          "6 m"
+        ],
+        "visual": {
+          "type": "projectile_motion",
+          "label": "Horizontal spacing stays equal over equal time intervals; downward spacing grows."
+        },
+        "hint_steps": [
+          "Separate horizontal motion from vertical motion.",
+          "With no air resistance, horizontal acceleration is zero.",
+          "Use Δx = v_x t."
+        ],
+        "alternate_explanation": "Gravity changes vertical velocity but does not directly change horizontal velocity in this ideal model. During each second the ball covers the same horizontal distance while falling farther downward.",
+        "alternate_explanation_steps": [
+          "Horizontal velocity stays at 3 m/s.",
+          "Δx = (3 m/s)(2 s) = 6 m.",
+          "This calculation gives horizontal displacement, not the curved path length. The given flight time comes from the vertical motion."
+        ]
+      }
+    ]
+  },
+  "conceptual_questions": [
+    {
+      "id": "5D-C01",
+      "prompt": "A car turns at constant speed. Explain why it accelerates even though its speed does not change.",
+      "expected_ideas": [
+        "Velocity includes direction, and the direction changes while turning.",
+        "For uniform circular motion, acceleration points toward the center."
+      ],
+      "misconceptions": [
+        "Acceleration requires a change in speed."
+      ],
+      "follow_up": "Does the velocity arrow keep the same direction around the circle?",
+      "visual": {
+        "type": "circular_motion"
+      }
+    },
+    {
+      "id": "5D-C02",
+      "prompt": "A ball moves in a horizontal circle on a string. Viewed from above, what direction does it initially travel if the string breaks? Explain.",
+      "expected_ideas": [
+        "The ball initially travels along the tangent in its instantaneous velocity direction.",
+        "The string no longer supplies the inward force needed to keep turning."
+      ],
+      "misconceptions": [
+        "The ball initially shoots radially away from the center."
+      ],
+      "follow_up": "Which direction was the velocity pointing immediately before the break?",
+      "visual": {
+        "type": "circular_motion"
+      }
+    },
+    {
+      "id": "5D-C03",
+      "prompt": "One ball is dropped and another is launched horizontally from the same height at the same instant. With negligible air resistance, compare their fall times and explain.",
+      "expected_ideas": [
+        "Both start with zero vertical velocity and have the same downward acceleration.",
+        "They reach the same level ground together; horizontal motion does not change vertical fall time in this model."
+      ],
+      "misconceptions": [
+        "The horizontally launched ball stays in the air longer solely because it moves horizontally."
+      ],
+      "follow_up": "What differs between their vertical initial conditions?",
+      "visual": {
+        "type": "projectile_motion"
+      }
+    },
+    {
+      "id": "5D-C04",
+      "prompt": "For a projectile launched horizontally, does increasing downward speed mean its horizontal speed must decrease? Explain, ignoring air resistance.",
+      "expected_ideas": [
+        "Gravity provides vertical acceleration and no horizontal acceleration.",
+        "Horizontal speed stays constant while vertical speed increases; total speed increases."
+      ],
+      "misconceptions": [
+        "Horizontal motion is used up to create vertical motion."
+      ],
+      "follow_up": "What horizontal force acts after launch in this ideal model?"
+    }
+  ]
+}
