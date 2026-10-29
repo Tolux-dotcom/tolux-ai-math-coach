@@ -127,6 +127,7 @@ async function waitFor(predicate, message) {
 async function createHarness(name, {
   maxUsage = Number.POSITIVE_INFINITY,
   rejectFirstToken = false,
+  signedIn = true,
   start = "diagnostic"
 } = {}) {
   const document = new FakeDocument();
@@ -159,7 +160,9 @@ async function createHarness(name, {
             async getSession() {
               return {
                 data: {
-                  session: { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
+                  session: signedIn
+                    ? { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
+                    : null
                 }
               };
             },
@@ -232,7 +235,11 @@ async function createHarness(name, {
         ok: true,
         status: 200,
         async json() {
-          return { allowed: true, isSubscriber: false };
+          return {
+            allowed: true,
+            isSubscriber: false,
+            isFreeDiagnostic: !signedIn
+          };
         }
       };
     }
@@ -308,6 +315,8 @@ async function moveToMastery(harness) {
   assert.match(content.innerHTML, /Simplify 5x \+ 2x - 3/);
   await submitAndAdvance("7x - 3");
 
+  assert.equal(stage.textContent, "Readiness Result");
+  await get("continueAfterDiagnosticBtn").emit("click");
   assert.equal(stage.textContent, "2. Learn the Concept");
   assert.match(content.innerHTML, /Keep the equation balanced/);
   await get("continueLessonBtn").emit("click");
@@ -336,6 +345,74 @@ test("Tutor Mode begins with teaching instead of the readiness diagnostic", asyn
   assert.match(harness.content.innerHTML, /Keep the equation balanced/);
   assert.doesNotMatch(harness.get("lessonPath").innerHTML, /Quick readiness check/);
   assert.doesNotMatch(harness.stage.textContent, /Readiness/);
+});
+
+test("signed-in diagnostic shows its result, saves it, and then continues to instruction", async () => {
+  const harness = await createHarness("signed-in-diagnostic-result");
+
+  harness.answer.value = "3x + 11";
+  await harness.submit.emit("click");
+  assert.equal(harness.answer.disabled, false);
+  harness.answer.value = "3x + 12";
+  await harness.submit.emit("click");
+  await harness.next.emit("click");
+
+  await harness.submitAndAdvance("7x - 3");
+
+  assert.equal(harness.stage.textContent, "Readiness Result");
+  assert.match(harness.content.innerHTML, /Review recommended/);
+  assert.match(harness.content.innerHTML, /50%/);
+  assert.match(harness.content.innerHTML, /Review these prerequisite skills/);
+  await waitFor(
+    () => harness.progressRequests.length === 1,
+    "The signed-in diagnostic result was not persisted."
+  );
+  assert.equal(
+    harness.progressRequests[0].module_id,
+    "diagnostic-alg1-a5a-linear-equations"
+  );
+  assert.equal(harness.progressRequests[0].mastery_score, 50);
+  assert.equal(harness.progressRequests[0].item_records.length, 2);
+  assert.equal(
+    harness.progressRequests[0].item_records[0].first_attempt_correct,
+    false
+  );
+  await waitFor(
+    () => harness.get("diagnosticSaveStatus").textContent.includes("saved to your Tolux account"),
+    "The signed-in diagnostic did not report a confirmed account save."
+  );
+
+  await harness.get("continueAfterDiagnosticBtn").emit("click");
+  assert.equal(harness.stage.textContent, "2. Learn the Concept");
+});
+
+test("signed-out diagnostic stays device-only and is never queued into a later account", async () => {
+  const harness = await createHarness("signed-out-diagnostic-result", {
+    signedIn: false
+  });
+
+  await harness.submitAndAdvance("3x + 12");
+  await harness.submitAndAdvance("7x - 3");
+
+  assert.equal(harness.stage.textContent, "Readiness Result");
+  assert.match(harness.content.innerHTML, /Ready to begin/);
+  await waitFor(
+    () => harness.get("diagnosticSaveStatus").textContent.includes("device only"),
+    "The signed-out diagnostic did not explain its device-only storage."
+  );
+  assert.equal(harness.progressRequests.length, 0);
+  assert.equal(
+    harness.storage.has(
+      "toluxLessonProgress:diagnostic-alg1-a5a-linear-equations"
+    ),
+    true
+  );
+  assert.equal(
+    [...harness.storage.keys()].some(key =>
+      key.startsWith("toluxPendingLessonProgress:")
+    ),
+    false
+  );
 });
 
 test("student can complete the entire data-driven A5A lesson", async () => {
@@ -377,11 +454,15 @@ test("student can complete the entire data-driven A5A lesson", async () => {
   assert.equal(saved.mastery_score, 100);
 
   await waitFor(
-    () => progressRequests.length === 1,
+    () => progressRequests.some(report =>
+      report.module_id === "alg1-a5a-linear-equations"
+    ),
     "The lesson completion was not sent to persistent progress storage."
   );
-  assert.equal(progressRequests[0].module_id, "alg1-a5a-linear-equations");
-  assert.equal(progressRequests[0].item_records.length, 10);
+  const lessonProgress = progressRequests.find(report =>
+    report.module_id === "alg1-a5a-linear-equations"
+  );
+  assert.equal(lessonProgress.item_records.length, 10);
   await waitFor(
     () => harness.get("completionSaveStatus").textContent.includes("Progress saved"),
     "The completion save status did not reach its success state."

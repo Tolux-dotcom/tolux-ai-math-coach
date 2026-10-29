@@ -342,6 +342,35 @@ test('local Tutor and Practice fallback history requires its confirmed owner, wi
   assert.deepEqual([...f.data], original);
 });
 
+test('device-only readiness result never appears under a later account', () => {
+  const f = fixture();
+  const completed_at = new Date().toISOString();
+  const diagnosticModule = `diagnostic-${module.module_id}`;
+  for (const [key, ownerId] of [
+    ['device', null],
+    ['student-a', owner.user.id],
+    ['student-b', other.user.id]
+  ]) f.data.set(`toluxLessonProgress:diagnostic-${key}`, JSON.stringify({
+    module_id: diagnosticModule,
+    owner_user_id: ownerId,
+    completed_at,
+    mastery_score: 50
+  }));
+
+  assert.deepEqual(
+    Array.from(f.local(null), activity => activity.owner_user_id),
+    [null]
+  );
+  assert.deepEqual(
+    Array.from(f.local(owner.user.id), activity => activity.owner_user_id),
+    [owner.user.id]
+  );
+  assert.deepEqual(
+    Array.from(f.local(other.user.id), activity => activity.owner_user_id),
+    [other.user.id]
+  );
+});
+
 test('failed account-history loading shows only the same signed-in owner\'s Tutor fallback', async () => {
   const f = fixture({ respond: () => response(503, {}) });
   for (const student of [owner, other]) f.data.set(`toluxLessonProgress:${student.user.id}`, JSON.stringify({

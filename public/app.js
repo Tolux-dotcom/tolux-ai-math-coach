@@ -1299,15 +1299,22 @@ document.querySelectorAll("[data-math]").forEach((button) => {
 // Keep lesson completion and mastery visible across devices and sessions.
 
 function moduleTitle(moduleId) {
-  const normalizedModuleId = String(moduleId || "").startsWith("practice-")
-    ? String(moduleId).slice("practice-".length)
-    : String(moduleId || "");
+  const rawModuleId = String(moduleId || "");
+  const isPractice = rawModuleId.startsWith("practice-");
+  const isDiagnostic = rawModuleId.startsWith("diagnostic-");
+  const normalizedModuleId = isPractice
+    ? rawModuleId.slice("practice-".length)
+    : isDiagnostic
+      ? rawModuleId.slice("diagnostic-".length)
+      : rawModuleId;
   const catalogModule = algebra1Modules.find(
     module => module.module_id === normalizedModuleId
   );
   if (catalogModule) {
-    return String(moduleId).startsWith("practice-")
+    return isPractice
       ? `${catalogModule.title} Practice`
+      : isDiagnostic
+        ? `${catalogModule.title} Readiness Diagnostic`
       : catalogModule.title;
   }
   if (a5aModule?.module_id === normalizedModuleId) return a5aModule.title;
@@ -1411,6 +1418,13 @@ function readLocalLessonActivities(ownerId) {
       if (!activity || typeof activity !== "object" || Array.isArray(activity)) continue;
       if (activity?.module_id && activity?.completed_at) {
         const moduleId = String(activity.module_id);
+        if (moduleId.startsWith("diagnostic-")) {
+          if (ownerId ? activity.owner_user_id !== ownerId : Boolean(activity.owner_user_id)) {
+            continue;
+          }
+          activities.push(activity);
+          continue;
+        }
         if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-") || activity.owner_user_id) &&
             (!ownerId || activity.owner_user_id !== ownerId)) continue;
         activities.push(activity);
@@ -1635,6 +1649,9 @@ function renderDashboardProgress(activities, source = "account") {
 
   const latest = safeActivities[0];
   const latestTitle = moduleTitle(latest.module_id);
+  const latestDetail = String(latest.module_id || "").startsWith("diagnostic-")
+    ? `Readiness result • ${latest.mastery_score}%`
+    : `${latest.mastery_label} • ${latest.mastery_score}%`;
 
   if (continueTopic) {
     continueTopic.replaceChildren();
@@ -1642,7 +1659,7 @@ function renderDashboardProgress(activities, source = "account") {
     title.textContent = latestTitle;
     const detail = document.createElement("span");
     detail.textContent =
-      `${latest.mastery_label} • ${latest.mastery_score}% • ` +
+      `${latestDetail} • ` +
       formatSkillTime(latest.time_on_skill_seconds);
     continueTopic.append(title, detail);
   }
@@ -1656,8 +1673,11 @@ function renderDashboardProgress(activities, source = "account") {
       const title = document.createElement("strong");
       title.textContent = moduleTitle(activity.module_id);
       const detail = document.createElement("span");
+      const progressLabel = String(activity.module_id || "").startsWith("diagnostic-")
+        ? `Readiness result • ${activity.mastery_score}%`
+        : `${activity.mastery_label} • ${activity.mastery_score}%`;
       detail.textContent =
-        `${activity.mastery_label} • ${activity.mastery_score}% • ` +
+        `${progressLabel} • ` +
         `${formatCompletionDate(activity.completed_at)}` +
         (activity.qa_mode ? " • Internal QA" : "");
       item.append(title, detail);

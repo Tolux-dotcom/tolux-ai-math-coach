@@ -12,6 +12,11 @@ import {
   findCourseModule,
   validateCourseCatalog
 } from "./course-core.mjs";
+import {
+  buildDiagnosticProgressReport,
+  persistDiagnosticProgress,
+  summarizeDiagnosticReadiness
+} from "./diagnostic-progress.mjs";
 import { persistPracticeCompletion } from "./practice-progress.mjs";
 
 function displayText(value) {
@@ -63,8 +68,10 @@ let isSubscriber = false;
 let isAdministrator = false;
 let includeDiagnostic = false;
 let completionReport = null;
+let diagnosticReport = null;
 let lessonOwnerId = null;
 let completionSavePromise = null;
+let diagnosticSavePromise = null;
 let trialHeartbeatTimer = null;
 
 const countedLessonInteractions = new Set();
@@ -524,6 +531,109 @@ function renderConceptStage() {
     .addEventListener("click", advanceStage);
 }
 
+function buildDiagnosticCompletionReport() {
+  if (diagnosticReport) return diagnosticReport;
+
+  diagnosticReport = buildDiagnosticProgressReport({
+    moduleId: lessonModule.module_id,
+    items: selectStageItems(lessonModule, "diagnostic"),
+    itemRecords: [...itemRecords.values()],
+    ownerId: lessonOwnerId,
+    completionId: generateCompletionId(),
+    timeOnSkillSeconds: (Date.now() - lessonStartedAt) / 1000
+  });
+  return diagnosticReport;
+}
+
+async function saveDiagnosticCompletion() {
+  const report = buildDiagnosticCompletionReport();
+  return persistDiagnosticProgress({
+    report,
+    persistOwned: () => persistPracticeCompletion({
+      report,
+      getSession: getLessonSession,
+      refreshSession: refreshLessonSession
+    })
+  });
+}
+
+function renderDiagnosticOutcome() {
+  currentStageType = "diagnostic_outcome";
+  stageItems = [];
+  const items = selectStageItems(lessonModule, "diagnostic");
+  const summary = summarizeDiagnosticReadiness(items, [...itemRecords.values()]);
+  const reviewMarkup = summary.missedItems.length
+    ? summary.missedItems.map(item => `
+        <article class="remediation-card">
+          <span>${escapeHtml(item.id)}</span>
+          <h3>${escapeHtml(
+            lessonModule.misconception_routes?.[item.diagnostic_tag]?.teacher_signal ||
+            "Prerequisite review"
+          )}</h3>
+          <p>${displayText(item.tutor_behavior)}</p>
+        </article>
+      `).join("")
+    : `<p>You showed the prerequisite skills needed to begin this lesson.</p>`;
+
+  lessonStage.textContent = "Readiness Result";
+  lessonContent.innerHTML = `
+    <div class="lesson-complete diagnostic-result">
+      <h2>${escapeHtml(summary.readinessLabel)}</h2>
+      <p class="mastery-score">${summary.scorePercent}%</p>
+      <p>You answered ${summary.correctCount} of ${summary.total} readiness questions correctly on the first attempt.</p>
+      ${summary.missedItems.length ? `
+        <h3>Review these prerequisite skills</h3>
+        <div class="remediation-grid">${reviewMarkup}</div>
+      ` : reviewMarkup}
+      <p id="diagnosticSaveStatus" class="completion-save-status" role="status">
+        Saving your readiness result…
+      </p>
+      <button id="retryDiagnosticSaveBtn" class="lesson-link-button" type="button" hidden>
+        Retry result save
+      </button>
+      <button id="continueAfterDiagnosticBtn" class="lesson-primary-button" type="button">
+        Continue to Lesson →
+      </button>
+      <a class="lesson-link-button" href="/">Return to Dashboard</a>
+    </div>
+  `;
+  showInterface();
+  setFeedback();
+  updateProgress();
+
+  const saveStatus = document.querySelector("#diagnosticSaveStatus");
+  const retryButton = document.querySelector("#retryDiagnosticSaveBtn");
+  const retrySave = () => {
+    retryButton.disabled = true;
+    saveStatus.textContent = "Saving your readiness result…";
+    diagnosticSavePromise = saveDiagnosticCompletion()
+      .then(result => {
+        saveStatus.textContent = result.synced
+          ? "Readiness result saved to your Tolux account."
+          : result.deviceOnly
+            ? "Readiness result saved on this device only. Sign in before a future diagnostic to sync it across devices."
+            : result.pendingSaved
+              ? "Saved on this device for the account that started this diagnostic. Open the dashboard while signed in to retry."
+              : "This result is visible now but could not be stored. Keep this page open and try again.";
+        retryButton.hidden = Boolean(result.synced || result.deviceOnly);
+      })
+      .catch(error => {
+        console.warn("Diagnostic result save failed:", error);
+        saveStatus.textContent = "Unable to confirm a result save. Keep this page open and try again.";
+        retryButton.hidden = false;
+      })
+      .finally(() => {
+        retryButton.disabled = false;
+      });
+    return diagnosticSavePromise;
+  };
+
+  retryButton.addEventListener("click", retrySave);
+  document.querySelector("#continueAfterDiagnosticBtn")
+    .addEventListener("click", advanceStage);
+  retrySave();
+}
+
 function renderWorkedExample() {
   const workedItems = lessonModule.items.filter(
     item => item.type === "worked_example"
@@ -853,6 +963,11 @@ function advanceStage() {
 }
 
 function advanceAfterQuestionStage() {
+  if (currentStageType === "diagnostic") {
+    renderDiagnosticOutcome();
+    return;
+  }
+
   if (currentStageType === "mastery_check") {
     finalizeMastery();
     return;
