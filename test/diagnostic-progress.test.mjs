@@ -103,3 +103,38 @@ test("signed-in diagnostic delegates to owner-safe account persistence", async (
   assert.equal(delegated, 1);
   assert.equal(result.synced, true);
 });
+
+for (const [label, storage] of [
+  ["missing", undefined],
+  ["null", null],
+  ["without a write API", {}],
+  ["quota exhausted", { setItem() { throw new Error("Quota exceeded"); } }]
+]) {
+  test(`signed-out diagnostic never claims a save when storage is ${label}`, async () => {
+    const result = await persistDiagnosticProgress({
+      report: { owner_user_id: null, module_id: "diagnostic-test" },
+      storage,
+      persistOwned() { assert.fail("Unowned results must never upload"); }
+    });
+    assert.equal(result.synced, false);
+    assert.equal(result.pendingSaved, false);
+    assert.equal(result.deviceOnly, false);
+  });
+}
+
+test("blocked access to the browser storage property returns an unsaved result", async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    get() { throw new Error("SecurityError: blocked storage"); }
+  });
+  try {
+    const result = await persistDiagnosticProgress({ report: { owner_user_id: null } });
+    assert.equal(result.deviceOnly, false);
+    assert.equal(result.pendingSaved, false);
+    assert.match(result.reason, /blocked storage/);
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, "localStorage", descriptor);
+    else delete globalThis.localStorage;
+  }
+});

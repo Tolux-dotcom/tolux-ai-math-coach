@@ -67,12 +67,18 @@ export function buildDiagnosticProgressReport({
 export async function persistDiagnosticProgress({
   report,
   persistOwned,
-  storage = globalThis.localStorage
+  storage
 }) {
   if (report?.owner_user_id) return persistOwned();
 
   try {
-    storage?.setItem(
+    // Resolve storage inside the guard: privacy settings may throw on access,
+    // and an absent storage API must never be reported as a successful save.
+    const deviceStorage = storage === undefined ? globalThis.localStorage : storage;
+    if (typeof deviceStorage?.setItem !== "function") {
+      throw new Error("Device storage is unavailable.");
+    }
+    deviceStorage.setItem(
       `${LESSON_PROGRESS_PREFIX}${report?.module_id || ""}`,
       JSON.stringify(report)
     );

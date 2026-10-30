@@ -128,6 +128,8 @@ async function createHarness(name, {
   maxUsage = Number.POSITIVE_INFINITY,
   rejectFirstToken = false,
   signedIn = true,
+  storageFails = false,
+  progressStatus = 200,
   start = "diagnostic"
 } = {}) {
   const document = new FakeDocument();
@@ -136,12 +138,16 @@ async function createHarness(name, {
   let refreshCalls = 0;
   let rejectedToken = false;
   const progressRequests = [];
+  let activeSession = signedIn
+    ? { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
+    : null;
 
   const localStorage = {
     getItem(key) {
       return storage.get(key) || null;
     },
     setItem(key, value) {
+      if (storageFails) throw new Error("Device storage blocked");
       storage.set(key, String(value));
     },
     removeItem(key) {
@@ -160,9 +166,7 @@ async function createHarness(name, {
             async getSession() {
               return {
                 data: {
-                  session: signedIn
-                    ? { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
-                    : null
+                  session: activeSession
                 }
               };
             },
@@ -247,6 +251,11 @@ async function createHarness(name, {
     if (url === "/api/lesson-progress") {
       const report = JSON.parse(options.body);
       progressRequests.push(report);
+      if (progressStatus !== 200) return {
+        ok: false,
+        status: progressStatus,
+        async json() { return { error: "Simulated save failure" }; }
+      };
       return {
         ok: true,
         status: 200,
@@ -301,6 +310,9 @@ async function createHarness(name, {
     progressRequests,
     stage,
     storage,
+    setStorageFails(value) { storageFails = value; },
+    setProgressStatus(value) { progressStatus = value; },
+    setSession(value) { activeSession = value; },
     submit,
     submitAndAdvance,
     usageCalls: () => usageCalls,
@@ -413,6 +425,68 @@ test("signed-out diagnostic stays device-only and is never queued into a later a
     ),
     false
   );
+});
+
+async function finishDiagnostic(harness) {
+  await harness.submitAndAdvance("3x + 12");
+  await harness.submitAndAdvance("7x - 3");
+  await waitFor(
+    () => !harness.get("retryDiagnosticSaveBtn").disabled,
+    "Diagnostic save did not settle."
+  );
+}
+
+test("device storage failure stays unsaved until the same diagnostic is retried successfully", async () => {
+  const h = await createHarness("diagnostic-device-retry", {
+    signedIn: false, storageFails: true
+  });
+  await finishDiagnostic(h);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /could not be stored/);
+  assert.equal(h.get("retryDiagnosticSaveBtn").hidden, false);
+  assert.equal(h.storage.size, 0);
+  h.setStorageFails(false);
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.match(h.get("diagnosticSaveStatus").textContent, /device only/);
+  assert.equal(h.get("retryDiagnosticSaveBtn").hidden, true);
+  assert.equal(h.progressRequests.length, 0);
+});
+
+test("failed account save retries the exact diagnostic completion without duplication", async () => {
+  const h = await createHarness("diagnostic-account-retry", { progressStatus: 503 });
+  await finishDiagnostic(h);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /for the account that started/);
+  const original = h.progressRequests[0];
+  assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), true);
+  h.setProgressStatus(200);
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.deepEqual(h.progressRequests, [original, original]);
+  assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), false);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /saved to your Tolux account/);
+});
+
+test("diagnostic never claims a device save when both account and device storage fail", async () => {
+  const h = await createHarness("diagnostic-total-save-failure", {
+    storageFails: true, progressStatus: 503
+  });
+  await finishDiagnostic(h);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /could not be stored/);
+  assert.equal(h.get("retryDiagnosticSaveBtn").hidden, false);
+  assert.equal(h.storage.size, 0);
+});
+
+test("diagnostic retry cannot upload to a switched account and resumes for its original owner", async () => {
+  const h = await createHarness("diagnostic-owner-retry", { progressStatus: 503 });
+  await finishDiagnostic(h);
+  const original = h.progressRequests[0];
+  h.setProgressStatus(200);
+  h.setSession({ access_token: "student-b", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb002" } });
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.equal(h.progressRequests.length, 1);
+  assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), true);
+  h.setSession({ access_token: "student-a", user: { id: original.owner_user_id } });
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.deepEqual(h.progressRequests, [original, original]);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /saved to your Tolux account/);
 });
 
 test("student can complete the entire data-driven A5A lesson", async () => {
