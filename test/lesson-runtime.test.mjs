@@ -127,6 +127,9 @@ async function waitFor(predicate, message) {
 async function createHarness(name, {
   maxUsage = Number.POSITIVE_INFINITY,
   rejectFirstToken = false,
+  signedIn = true,
+  storageFails = false,
+  progressStatus = 200,
   start = "diagnostic"
 } = {}) {
   const document = new FakeDocument();
@@ -135,12 +138,16 @@ async function createHarness(name, {
   let refreshCalls = 0;
   let rejectedToken = false;
   const progressRequests = [];
+  let activeSession = signedIn
+    ? { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
+    : null;
 
   const localStorage = {
     getItem(key) {
       return storage.get(key) || null;
     },
     setItem(key, value) {
+      if (storageFails) throw new Error("Device storage blocked");
       storage.set(key, String(value));
     },
     removeItem(key) {
@@ -159,7 +166,7 @@ async function createHarness(name, {
             async getSession() {
               return {
                 data: {
-                  session: { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
+                  session: activeSession
                 }
               };
             },
@@ -232,7 +239,11 @@ async function createHarness(name, {
         ok: true,
         status: 200,
         async json() {
-          return { allowed: true, isSubscriber: false };
+          return {
+            allowed: true,
+            isSubscriber: false,
+            isFreeDiagnostic: !signedIn
+          };
         }
       };
     }
@@ -240,6 +251,11 @@ async function createHarness(name, {
     if (url === "/api/lesson-progress") {
       const report = JSON.parse(options.body);
       progressRequests.push(report);
+      if (progressStatus !== 200) return {
+        ok: false,
+        status: progressStatus,
+        async json() { return { error: "Simulated save failure" }; }
+      };
       return {
         ok: true,
         status: 200,
@@ -294,6 +310,9 @@ async function createHarness(name, {
     progressRequests,
     stage,
     storage,
+    setStorageFails(value) { storageFails = value; },
+    setProgressStatus(value) { progressStatus = value; },
+    setSession(value) { activeSession = value; },
     submit,
     submitAndAdvance,
     usageCalls: () => usageCalls,
@@ -308,6 +327,8 @@ async function moveToMastery(harness) {
   assert.match(content.innerHTML, /Simplify 5x \+ 2x - 3/);
   await submitAndAdvance("7x - 3");
 
+  assert.equal(stage.textContent, "Readiness Result");
+  await get("continueAfterDiagnosticBtn").emit("click");
   assert.equal(stage.textContent, "2. Learn the Concept");
   assert.match(content.innerHTML, /Keep the equation balanced/);
   await get("continueLessonBtn").emit("click");
@@ -336,6 +357,136 @@ test("Tutor Mode begins with teaching instead of the readiness diagnostic", asyn
   assert.match(harness.content.innerHTML, /Keep the equation balanced/);
   assert.doesNotMatch(harness.get("lessonPath").innerHTML, /Quick readiness check/);
   assert.doesNotMatch(harness.stage.textContent, /Readiness/);
+});
+
+test("signed-in diagnostic shows its result, saves it, and then continues to instruction", async () => {
+  const harness = await createHarness("signed-in-diagnostic-result");
+
+  harness.answer.value = "3x + 11";
+  await harness.submit.emit("click");
+  assert.equal(harness.answer.disabled, false);
+  harness.answer.value = "3x + 12";
+  await harness.submit.emit("click");
+  await harness.next.emit("click");
+
+  await harness.submitAndAdvance("7x - 3");
+
+  assert.equal(harness.stage.textContent, "Readiness Result");
+  assert.match(harness.content.innerHTML, /Review recommended/);
+  assert.match(harness.content.innerHTML, /50%/);
+  assert.match(harness.content.innerHTML, /Review these prerequisite skills/);
+  await waitFor(
+    () => harness.progressRequests.length === 1,
+    "The signed-in diagnostic result was not persisted."
+  );
+  assert.equal(
+    harness.progressRequests[0].module_id,
+    "diagnostic-alg1-a5a-linear-equations"
+  );
+  assert.equal(harness.progressRequests[0].mastery_score, 50);
+  assert.equal(harness.progressRequests[0].item_records.length, 2);
+  assert.equal(
+    harness.progressRequests[0].item_records[0].first_attempt_correct,
+    false
+  );
+  await waitFor(
+    () => harness.get("diagnosticSaveStatus").textContent.includes("saved to your Tolux account"),
+    "The signed-in diagnostic did not report a confirmed account save."
+  );
+
+  await harness.get("continueAfterDiagnosticBtn").emit("click");
+  assert.equal(harness.stage.textContent, "2. Learn the Concept");
+});
+
+test("signed-out diagnostic stays device-only and is never queued into a later account", async () => {
+  const harness = await createHarness("signed-out-diagnostic-result", {
+    signedIn: false
+  });
+
+  await harness.submitAndAdvance("3x + 12");
+  await harness.submitAndAdvance("7x - 3");
+
+  assert.equal(harness.stage.textContent, "Readiness Result");
+  assert.match(harness.content.innerHTML, /Ready to begin/);
+  await waitFor(
+    () => harness.get("diagnosticSaveStatus").textContent.includes("device only"),
+    "The signed-out diagnostic did not explain its device-only storage."
+  );
+  assert.equal(harness.progressRequests.length, 0);
+  assert.equal(
+    harness.storage.has(
+      "toluxLessonProgress:diagnostic-alg1-a5a-linear-equations"
+    ),
+    true
+  );
+  assert.equal(
+    [...harness.storage.keys()].some(key =>
+      key.startsWith("toluxPendingLessonProgress:")
+    ),
+    false
+  );
+});
+
+async function finishDiagnostic(harness) {
+  await harness.submitAndAdvance("3x + 12");
+  await harness.submitAndAdvance("7x - 3");
+  await waitFor(
+    () => !harness.get("retryDiagnosticSaveBtn").disabled,
+    "Diagnostic save did not settle."
+  );
+}
+
+test("device storage failure stays unsaved until the same diagnostic is retried successfully", async () => {
+  const h = await createHarness("diagnostic-device-retry", {
+    signedIn: false, storageFails: true
+  });
+  await finishDiagnostic(h);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /could not be stored/);
+  assert.equal(h.get("retryDiagnosticSaveBtn").hidden, false);
+  assert.equal(h.storage.size, 0);
+  h.setStorageFails(false);
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.match(h.get("diagnosticSaveStatus").textContent, /device only/);
+  assert.equal(h.get("retryDiagnosticSaveBtn").hidden, true);
+  assert.equal(h.progressRequests.length, 0);
+});
+
+test("failed account save retries the exact diagnostic completion without duplication", async () => {
+  const h = await createHarness("diagnostic-account-retry", { progressStatus: 503 });
+  await finishDiagnostic(h);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /for the account that started/);
+  const original = h.progressRequests[0];
+  assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), true);
+  h.setProgressStatus(200);
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.deepEqual(h.progressRequests, [original, original]);
+  assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), false);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /saved to your Tolux account/);
+});
+
+test("diagnostic never claims a device save when both account and device storage fail", async () => {
+  const h = await createHarness("diagnostic-total-save-failure", {
+    storageFails: true, progressStatus: 503
+  });
+  await finishDiagnostic(h);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /could not be stored/);
+  assert.equal(h.get("retryDiagnosticSaveBtn").hidden, false);
+  assert.equal(h.storage.size, 0);
+});
+
+test("diagnostic retry cannot upload to a switched account and resumes for its original owner", async () => {
+  const h = await createHarness("diagnostic-owner-retry", { progressStatus: 503 });
+  await finishDiagnostic(h);
+  const original = h.progressRequests[0];
+  h.setProgressStatus(200);
+  h.setSession({ access_token: "student-b", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb002" } });
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.equal(h.progressRequests.length, 1);
+  assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), true);
+  h.setSession({ access_token: "student-a", user: { id: original.owner_user_id } });
+  await h.get("retryDiagnosticSaveBtn").emit("click");
+  assert.deepEqual(h.progressRequests, [original, original]);
+  assert.match(h.get("diagnosticSaveStatus").textContent, /saved to your Tolux account/);
 });
 
 test("student can complete the entire data-driven A5A lesson", async () => {
@@ -377,11 +528,15 @@ test("student can complete the entire data-driven A5A lesson", async () => {
   assert.equal(saved.mastery_score, 100);
 
   await waitFor(
-    () => progressRequests.length === 1,
+    () => progressRequests.some(report =>
+      report.module_id === "alg1-a5a-linear-equations"
+    ),
     "The lesson completion was not sent to persistent progress storage."
   );
-  assert.equal(progressRequests[0].module_id, "alg1-a5a-linear-equations");
-  assert.equal(progressRequests[0].item_records.length, 10);
+  const lessonProgress = progressRequests.find(report =>
+    report.module_id === "alg1-a5a-linear-equations"
+  );
+  assert.equal(lessonProgress.item_records.length, 10);
   await waitFor(
     () => harness.get("completionSaveStatus").textContent.includes("Progress saved"),
     "The completion save status did not reach its success state."
