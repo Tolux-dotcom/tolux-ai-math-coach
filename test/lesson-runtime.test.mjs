@@ -159,7 +159,7 @@ async function createHarness(name, {
             async getSession() {
               return {
                 data: {
-                  session: { access_token: "test-session" }
+                  session: { access_token: "test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
                 }
               };
             },
@@ -167,7 +167,7 @@ async function createHarness(name, {
               refreshCalls += 1;
               return {
                 data: {
-                  session: { access_token: "refreshed-test-session" }
+                  session: { access_token: "refreshed-test-session", user: { id: "cefac2b0-5c7c-46ca-bc63-58900aacb001" } }
                 },
                 error: null
               };

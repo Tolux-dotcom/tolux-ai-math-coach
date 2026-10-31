@@ -1,4 +1,5 @@
 import { answersEquivalent, escapeHtml, formatMathNotation } from './lesson-core.mjs';
+import { createPracticeCompletionId, persistPracticeCompletion } from './practice-progress.mjs';
 
 const params = new URLSearchParams(location.search);
 const skill = params.get('skill');
@@ -32,8 +33,6 @@ const els = {
 const SUPABASE_URL = window.TOLUX_PUBLIC_CONFIG.url;
 const SUPABASE_KEY = window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const sb = window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-const LESSON_PROGRESS_PREFIX = 'toluxLessonProgress:';
-const PENDING_PROGRESS_PREFIX = 'toluxPendingLessonProgress:';
 
 let moduleData = null;
 let items = [];
@@ -41,6 +40,7 @@ let index = 0;
 let locked = false;
 let isSubscriber = false;
 let completionReport = null;
+let practiceOwnerId = null;
 let trialTimer = null;
 const counted = new Set();
 const records = new Map();
@@ -121,12 +121,18 @@ function hintSteps(item) {
 
 async function auth() {
   if (!sb) return null;
-  let { data: { session } } = await sb.auth.getSession();
-  if (!session) {
-    const { data } = await sb.auth.refreshSession();
-    session = data?.session || null;
-  }
-  return session;
+  const { data, error } = await sb.auth.getSession();
+  const session = error ? null : data?.session;
+  const owner = session?.user?.id;
+  if (!session?.access_token || !owner) return null;
+  if (!practiceOwnerId) practiceOwnerId = owner;
+  return owner === practiceOwnerId ? session : null;
+}
+async function refreshAuth() {
+  if (!sb || !practiceOwnerId) return null;
+  const { data, error } = await sb.auth.refreshSession();
+  const session = error ? null : data?.session;
+  return session?.access_token && session?.user?.id === practiceOwnerId ? session : null;
 }
 async function fetchWithSession(url, options = {}) {
   let session = await auth();
@@ -137,11 +143,11 @@ async function fetchWithSession(url, options = {}) {
   });
   let response = await request(session);
   if (response.status === 401) {
-    const { data, error } = await sb.auth.refreshSession();
-    const refreshed = error ? null : data?.session;
-    if (refreshed) { session = refreshed; response = await request(session); }
+    if (!(await auth())) return { response: null, session: null };
+    const refreshed = await refreshAuth();
+    if (refreshed && await auth()) { session = refreshed; response = await request(session); }
   }
-  return { response, session };
+  return await auth() ? { response, session } : { response: null, session: null };
 }
 function showUpgrade(message) {
   locked = true;
@@ -151,18 +157,19 @@ function showUpgrade(message) {
 }
 async function ensureAccess(item) {
   if (!item || locked) return false;
-  if (counted.has(item.id)) return true;
   const session = await auth();
   if (!session) {
-    setFeedback('<div class="lesson-state lesson-state-warning"><strong>Sign in required</strong><p>Return to the dashboard and sign in before using Practice Mode.</p></div>');
+    setFeedback('<div class="lesson-state lesson-state-warning"><strong>Sign in required</strong><p>Sign in to the account that started this practice session.</p></div>');
     return false;
   }
+  if (counted.has(item.id)) return true;
   try {
     const { response } = await fetchWithSession('/api/lesson-usage', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ itemId: item.id })
     });
     if (!response) return false;
     const data = await response.json();
+    if (!(await auth())) return false;
     if (response.ok && data.allowed) {
       counted.add(item.id);
       isSubscriber = Boolean(data.isSubscriber);
@@ -187,6 +194,7 @@ async function heartbeat() {
     });
     if (!response) return;
     const data = await response.json();
+    if (!(await auth())) return;
     if (data.limitReached) showUpgrade(data.error || "You've completed your 10-minute free learning trial.");
   } catch (error) { console.warn('Audit2 heartbeat failed', error); }
 }
@@ -249,7 +257,6 @@ async function explain() {
   setFeedback(`<div class="lesson-state lesson-state-success"><strong>Another way to think about it</strong><p>Use a different representation, then verify by reversing the process.</p></div>${solutionMarkup(item, 'Step-by-step alternative explanation', true)}`);
 }
 
-function completionId() { return window.crypto?.randomUUID?.() || `audit2-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
 function summary() {
   const values = [...records.values()].filter(r => r.first_attempt_correct !== null);
   const correct = values.filter(r => r.first_attempt_correct).length;
@@ -259,20 +266,12 @@ function summary() {
 }
 async function save(result) {
   if (!completionReport) completionReport = {
-    completion_id: completionId(), module_id: `practice-${config.moduleId}`, completed_at: new Date().toISOString(),
+    completion_id: createPracticeCompletionId(), owner_user_id: practiceOwnerId,
+    module_id: `practice-${config.moduleId}`, completed_at: new Date().toISOString(),
     mastery_label: result.label, mastery_score: result.pct, is_subscriber: isSubscriber,
     time_on_skill_seconds: Math.round((Date.now() - startedAt) / 1000), item_records: [...records.values()]
   };
-  const moduleKey = `${LESSON_PROGRESS_PREFIX}${completionReport.module_id}`;
-  const pendingKey = `${PENDING_PROGRESS_PREFIX}${completionReport.completion_id}`;
-  try { localStorage.setItem(moduleKey, JSON.stringify(completionReport)); localStorage.setItem(pendingKey, JSON.stringify(completionReport)); } catch {}
-  const { response, session } = await fetchWithSession('/api/lesson-progress', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(completionReport)
-  });
-  if (!session || !response) throw new Error('Sign in is required to sync practice progress.');
-  const data = await response.json();
-  if (!response.ok || !data.activity) throw new Error(data.error || 'Unable to save practice progress.');
-  try { localStorage.setItem(moduleKey, JSON.stringify(data.activity)); localStorage.removeItem(pendingKey); } catch {}
+  return persistPracticeCompletion({ report: completionReport, getSession: auth, refreshSession: refreshAuth });
 }
 async function finish() {
   const result = summary();
@@ -283,10 +282,17 @@ async function finish() {
   els.progressLabel.textContent = 'Practice session complete';
   els.summary.innerHTML = `<div class="completion-mark">✓</div><h2>${escapeHtml(result.label)}</h2><p class="mastery-score">${result.pct}%</p><p>${result.correct} of ${result.total} correct on the first attempt.</p><p id="audit2SaveStatus" class="completion-save-status">Saving your practice progress…</p><div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
   const status = $('#audit2SaveStatus');
-  try { await save(result); if (status) status.textContent = 'Saved to your Tolux progress dashboard.'; }
-  catch (error) { console.error('Audit2 progress sync failed', error); if (status) status.textContent = 'Saved on this device. Tolux will retry account sync from the dashboard.'; }
+  status?.setAttribute('role', 'status');
+  const saved = await save(result);
+  if (status) status.textContent = saved.synced ? 'Saved to your Tolux progress dashboard.' : saved.pendingSaved
+    ? 'Saved on this device for the account that started this session. Open the dashboard while signed in to retry.'
+    : 'Progress could not be saved to your account or this device. Keep this page open and try again.';
+  if (!saved.synced) {
+    els.summary.innerHTML += '<button id="practiceRetrySave" class="lesson-link-button" type="button">Retry progress save</button>';
+    $('#practiceRetrySave')?.addEventListener('click', async () => { $('#practiceRetrySave').disabled = true; await finish(); });
+  }
 }
-function next() { if (index >= items.length - 1) finish(); else { index += 1; render(); } }
+async function next() { if (index >= items.length - 1) await finish(); else { index += 1; render(); } }
 
 async function start() {
   if (!config) { els.title.textContent = 'Practice unavailable'; return; }

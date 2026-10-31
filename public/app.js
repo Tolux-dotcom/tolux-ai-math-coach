@@ -1348,15 +1348,34 @@ function migrateLegacyLocalLessonProgress() {
       const key = localStorage.key(index);
       if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
 
-      const activity = JSON.parse(localStorage.getItem(key));
-      if (!activity?.module_id || activity.completion_id) continue;
+      let activity;
+      try { activity = JSON.parse(localStorage.getItem(key)); }
+      catch { continue; } // Keep this unreadable record intact and inspect the next one.
+      if (!activity || typeof activity !== "object" || Array.isArray(activity)) continue;
+      if (!activity.module_id || activity.client_completion_id) continue;
+      // Only resume ids explicitly staged by this migration. Ordinary completed
+      // local history must not be queued again after a successful replay.
+      if (activity.completion_id && activity.local_progress_migration_pending !== true) continue;
+      const moduleId = String(activity.module_id);
+      if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-")) &&
+          !activity.owner_user_id) continue;
 
-      activity.completion_id = generateProgressCompletionId();
-      localStorage.setItem(key, JSON.stringify(activity));
-      localStorage.setItem(
-        `${PENDING_PROGRESS_PREFIX}${activity.completion_id}`,
-        JSON.stringify(activity)
-      );
+      try {
+        if (!activity.completion_id) {
+          activity.completion_id = generateProgressCompletionId();
+          // Persist the id and retry marker atomically before preparing the queue.
+          // If this write fails, the untouched legacy entry remains retryable.
+          localStorage.setItem(key, JSON.stringify({ ...activity, local_progress_migration_pending: true }));
+        }
+        delete activity.local_progress_migration_pending;
+        const serialized = JSON.stringify(activity);
+        localStorage.setItem(`${PENDING_PROGRESS_PREFIX}${activity.completion_id}`, serialized);
+        // A failed final write leaves the staged marker and the same id intact.
+        // Repeating the queue write is safe; it never creates a second completion.
+        localStorage.setItem(key, serialized);
+      } catch {
+        console.warn("A legacy lesson progress migration remains pending on this device.");
+      }
     }
   } catch (error) {
     console.warn("Unable to prepare legacy lesson progress for sync:", error);
@@ -1378,7 +1397,7 @@ function formatSkillTime(seconds) {
   return `${minutes} min on skill`;
 }
 
-function readLocalLessonActivities() {
+function readLocalLessonActivities(ownerId) {
   const activities = [];
 
   try {
@@ -1386,8 +1405,14 @@ function readLocalLessonActivities() {
       const key = localStorage.key(index);
       if (!key?.startsWith(LESSON_PROGRESS_PREFIX)) continue;
 
-      const activity = JSON.parse(localStorage.getItem(key));
+      let activity;
+      try { activity = JSON.parse(localStorage.getItem(key)); }
+      catch { continue; } // One damaged record must not hide other owned activity.
+      if (!activity || typeof activity !== "object" || Array.isArray(activity)) continue;
       if (activity?.module_id && activity?.completed_at) {
+        const moduleId = String(activity.module_id);
+        if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-") || activity.owner_user_id) &&
+            (!ownerId || activity.owner_user_id !== ownerId)) continue;
         activities.push(activity);
       }
     }
@@ -1497,7 +1522,7 @@ function renderDeviceOnlyTestPrep(accountActivities = [], accountAvailable = fal
   panel.hidden = false;
 }
 
-function readPendingLessonProgress() {
+function readPendingLessonProgress(ownerId) {
   const pending = [];
 
   try {
@@ -1505,8 +1530,16 @@ function readPendingLessonProgress() {
       const key = localStorage.key(index);
       if (!key?.startsWith(PENDING_PROGRESS_PREFIX)) continue;
 
-      const report = JSON.parse(localStorage.getItem(key));
-      if (report?.completion_id) pending.push({ key, report });
+      let report;
+      try { report = JSON.parse(localStorage.getItem(key)); }
+      catch { continue; } // Preserve the unreadable value; never clear browser data to recover.
+      if (!report || typeof report !== "object" || Array.isArray(report)) continue;
+      if (!report?.completion_id) continue;
+      // Keep unowned legacy Practice/Tutor records intact; never guess their student.
+      const moduleId = String(report.module_id || "");
+      if ((moduleId.startsWith("practice-") || moduleId.startsWith("alg1-") || report.owner_user_id) &&
+          (!ownerId || report.owner_user_id !== ownerId)) continue;
+      pending.push({ key, report });
     }
   } catch (error) {
     console.warn("Unable to read pending lesson progress:", error);
@@ -1518,18 +1551,53 @@ function readPendingLessonProgress() {
 async function syncPendingLessonProgress(session) {
   migrateLegacyLocalLessonProgress();
 
-  for (const { key, report } of readPendingLessonProgress()) {
+  for (const { key, report } of readPendingLessonProgress(session?.user?.id)) {
     try {
-      const response = await fetch("/api/lesson-progress", {
+      const ownedReport = String(report.module_id || "").startsWith("practice-") ||
+        String(report.module_id || "").startsWith("alg1-") || Boolean(report.owner_user_id);
+      const ownedSession = async () => {
+        const { data, error } = await supabaseClient.auth.getSession();
+        const active = error ? null : data?.session;
+        return active?.access_token && active.user?.id === report.owner_user_id ? active : null;
+      };
+      let activeSession = session;
+      if (ownedReport) {
+        activeSession = await ownedSession();
+        if (!activeSession) return;
+      }
+      const postReport = active => fetch("/api/lesson-progress", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${active.access_token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(report)
       });
+      let response = await postReport(activeSession);
 
-      if (response.ok) localStorage.removeItem(key);
+      if (ownedReport) {
+        if (!(await ownedSession())) return;
+        if (response.status === 401) {
+          // Retry this completion once, and never refresh/replay across students.
+          // A second 401 stops the batch instead of refreshing each pending item.
+          try {
+            const { data, error } = await supabaseClient.auth.refreshSession();
+            const refreshed = error ? null : data?.session;
+            if (!refreshed?.access_token || refreshed.user?.id !== report.owner_user_id ||
+                !(await ownedSession())) return;
+            activeSession = refreshed;
+          } catch { return; }
+          response = await postReport(activeSession);
+          if (!(await ownedSession()) || response.status === 401) return;
+        }
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        if (!data.activity) continue;
+        if (ownedReport && !(await ownedSession())) return;
+        localStorage.removeItem(key);
+      }
     } catch (error) {
       console.warn("Pending lesson progress will be retried later:", error);
     }
@@ -1652,12 +1720,20 @@ async function refreshDashboardProgress(session) {
   } catch (error) {
     console.error("Unable to refresh lesson progress:", error);
     if (refreshId !== progressRefreshSequence) return;
-    renderDashboardProgress(readLocalLessonActivities(), "local");
+    let fallbackOwnerId = null;
+    try {
+      const { data, error: sessionError } = await supabaseClient.auth.getSession();
+      if (!sessionError && data?.session?.access_token && data.session.user?.id === ownerId) {
+        fallbackOwnerId = ownerId;
+      }
+    } catch { /* Do not expose another account's local history when auth is unavailable. */ }
+    if (refreshId !== progressRefreshSequence) return;
+    renderDashboardProgress(readLocalLessonActivities(fallbackOwnerId), "local");
     renderDeviceOnlyTestPrep([], false);
     const progressStatus = document.querySelector("#progressStatus");
     if (progressStatus) {
       progressStatus.textContent =
-        "Account progress is temporarily unavailable; showing this device's saved activity.";
+        "Account progress is temporarily unavailable; only confirmed-owner device activity can be shown.";
     }
   }
 }
