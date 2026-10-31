@@ -46,16 +46,23 @@ export async function persistPracticeCompletion({
   getSession,
   refreshSession,
   fetchImpl = globalThis.fetch,
-  storage = globalThis.localStorage
+  storage
 }) {
   const ownerId = String(report?.owner_user_id || "").trim();
   const moduleKey = `${LESSON_PROGRESS_PREFIX}${report?.module_id || ""}`;
   const pendingKey = `${PENDING_PROGRESS_PREFIX}${report?.completion_id || ""}`;
   let pendingSaved = false;
+  let deviceStorage;
 
   try {
-    storage?.setItem(moduleKey, JSON.stringify(report));
-    storage?.setItem(pendingKey, JSON.stringify(report));
+    // Privacy settings may throw when reading localStorage itself. Do not let
+    // that prevent an authenticated save, or claim a queue that was not written.
+    deviceStorage = storage === undefined ? globalThis.localStorage : storage;
+    if (typeof deviceStorage?.setItem !== "function") {
+      throw new Error("Device storage is unavailable.");
+    }
+    deviceStorage.setItem(moduleKey, JSON.stringify(report));
+    deviceStorage.setItem(pendingKey, JSON.stringify(report));
     pendingSaved = true;
   } catch (error) {
     console.warn("Practice progress could not be saved on this device:", error);
@@ -112,11 +119,11 @@ export async function persistPracticeCompletion({
     }
 
     try {
-      storage?.setItem(
+      deviceStorage?.setItem(
         moduleKey,
         JSON.stringify({ ...data.activity, owner_user_id: ownerId })
       );
-      storage?.removeItem(pendingKey);
+      deviceStorage?.removeItem(pendingKey);
     } catch (error) {
       console.warn("Synced practice progress could not be reconciled locally:", error);
     }
