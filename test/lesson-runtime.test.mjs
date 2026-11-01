@@ -474,6 +474,36 @@ test("diagnostic never claims a device save when both account and device storage
   assert.equal(h.storage.size, 0);
 });
 
+for (const progressStatus of [200, 503]) {
+  test(`blocked browser storage: diagnostic account save ${progressStatus === 200 ? 'succeeds' : 'reports unsaved'}`, async () => {
+    const h = await createHarness(`diagnostic-storage-property-${progressStatus}`, {
+      progressStatus
+    });
+    const descriptor = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      get() { throw new Error("SecurityError: browser storage denied"); }
+    });
+    try {
+      await finishDiagnostic(h);
+      assert.equal(h.progressRequests.length, 1);
+      assert.equal(h.storage.size, 0);
+      const status = h.get("diagnosticSaveStatus").textContent;
+      if (progressStatus === 200) {
+        assert.match(status, /saved to your Tolux account/);
+        assert.equal(h.get("retryDiagnosticSaveBtn").hidden, true);
+      } else {
+        assert.match(status, /could not be stored/);
+        assert.equal(h.get("retryDiagnosticSaveBtn").hidden, false);
+      }
+      assert.doesNotMatch(status, /Saved on this device/);
+    } finally {
+      if (descriptor) Object.defineProperty(globalThis, "localStorage", descriptor);
+      else delete globalThis.localStorage;
+    }
+  });
+}
+
 test("diagnostic retry cannot upload to a switched account and resumes for its original owner", async () => {
   const h = await createHarness("diagnostic-owner-retry", { progressStatus: 503 });
   await finishDiagnostic(h);
