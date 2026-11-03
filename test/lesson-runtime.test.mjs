@@ -251,6 +251,7 @@ async function createHarness(name, {
     if (url === "/api/lesson-progress") {
       const report = JSON.parse(options.body);
       progressRequests.push(report);
+      if (progressStatus === "stall") return new Promise(() => {});
       if (progressStatus !== 200) return {
         ok: false,
         status: progressStatus,
@@ -462,6 +463,34 @@ test("failed account save retries the exact diagnostic completion without duplic
   assert.deepEqual(h.progressRequests, [original, original]);
   assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), false);
   assert.match(h.get("diagnosticSaveStatus").textContent, /saved to your Tolux account/);
+});
+
+test("stalled diagnostic save exposes retry and preserves the exact attempt on recovery", async () => {
+  // Accelerate only the production request deadline, not waitFor or other timers.
+  const nativeSetTimeout = globalThis.setTimeout;
+  globalThis.setTimeout = (callback, delay, ...args) =>
+    nativeSetTimeout(callback, delay === 15000 ? 10 : delay, ...args);
+  try {
+    const h = await createHarness("diagnostic-stalled-save-retry", {
+      progressStatus: "stall"
+    });
+    await finishDiagnostic(h);
+    const original = h.progressRequests[0];
+    assert.equal(h.progressRequests.length, 1);
+    assert.match(h.get("diagnosticSaveStatus").textContent, /for the account that started/);
+    assert.equal(h.get("retryDiagnosticSaveBtn").hidden, false);
+    assert.equal(h.get("retryDiagnosticSaveBtn").disabled, false);
+    assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), true);
+
+    h.setProgressStatus(200);
+    await h.get("retryDiagnosticSaveBtn").emit("click");
+    assert.deepEqual(h.progressRequests, [original, original]);
+    assert.match(h.get("diagnosticSaveStatus").textContent, /saved to your Tolux account/);
+    assert.equal(h.get("retryDiagnosticSaveBtn").hidden, true);
+    assert.equal(h.storage.has(`toluxPendingLessonProgress:${original.completion_id}`), false);
+  } finally {
+    globalThis.setTimeout = nativeSetTimeout;
+  }
 });
 
 test("diagnostic never claims a device save when both account and device storage fail", async () => {

@@ -41,11 +41,43 @@ function sessionOwner(session) {
   return String(session?.user?.id || "").trim();
 }
 
+async function sendProgressRequest(fetchImpl, session, report, timeoutMs) {
+  const controller = new AbortController();
+  let timer;
+  try {
+    // Bound both fetch and body parsing. A stalled response must not strand the
+    // result screen; the owned, same-completion queue remains available to retry.
+    return await Promise.race([
+      new Promise((_, reject) => {
+        timer = setTimeout(() => {
+          reject(new Error("Progress save timed out. Retry this result when connected."));
+          controller.abort();
+        }, timeoutMs);
+      }),
+      (async () => {
+        const response = await fetchImpl("/api/lesson-progress", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(report),
+          signal: controller.signal
+        });
+        return { response, data: await responseData(response) };
+      })()
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function persistPracticeCompletion({
   report,
   getSession,
   refreshSession,
   fetchImpl = globalThis.fetch,
+  requestTimeoutMs = 15000,
   storage
 }) {
   const ownerId = String(report?.owner_user_id || "").trim();
@@ -74,14 +106,9 @@ export async function persistPracticeCompletion({
       ? session
       : null;
   };
-  const send = session => fetchImpl("/api/lesson-progress", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${session.access_token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(report)
-  });
+  const timeoutMs = Number.isFinite(requestTimeoutMs) && requestTimeoutMs > 0
+    ? requestTimeoutMs : 15000;
+  const send = session => sendProgressRequest(fetchImpl, session, report, timeoutMs);
 
   try {
     let session = await ownedSession(getSession);
@@ -89,7 +116,7 @@ export async function persistPracticeCompletion({
       return { synced: false, pendingSaved, reason: "original-account-required" };
     }
 
-    let response = await send(session);
+    let { response, data } = await send(session);
     if (!(await ownedSession(getSession))) {
       return { synced: false, pendingSaved, reason: "account-changed" };
     }
@@ -99,13 +126,12 @@ export async function persistPracticeCompletion({
       if (!session) {
         return { synced: false, pendingSaved, reason: "account-changed" };
       }
-      response = await send(session);
+      ({ response, data } = await send(session));
       if (!(await ownedSession(getSession))) {
         return { synced: false, pendingSaved, reason: "account-changed" };
       }
     }
 
-    const data = await responseData(response);
     if (
       !response.ok ||
       !data.activity ||
