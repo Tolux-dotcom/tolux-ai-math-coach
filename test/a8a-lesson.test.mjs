@@ -111,6 +111,57 @@ test("A.8A P02 hints complete factoring and alternate help uses the formula", ()
   );
 });
 
+test("every guided and independent A.8A item has progressive and distinct full solutions", () => {
+  const studentWork = module.items.filter(item =>
+    item.type === "guided_practice" || item.type === "independent_practice"
+  );
+
+  assert.equal(studentWork.length, 7);
+  for (const item of studentWork) {
+    assert.ok(item.hint_steps?.length >= 3, `${item.id} needs three progressive hints`);
+    assert.ok(item.solution_steps?.length >= 3, `${item.id} needs a complete primary solution`);
+    assert.ok(item.alternate_solution_steps?.length >= 2, `${item.id} needs an alternate explanation`);
+    for (const step of [...item.solution_steps, ...item.alternate_solution_steps]) {
+      assert.ok(step.equation?.trim(), `${item.id} has an empty solution equation`);
+      assert.ok(step.explanation?.trim(), `${item.id} has an empty solution explanation`);
+    }
+    assert.equal(
+      answersEquivalent(item.solution_steps.at(-1).equation, item),
+      true,
+      `${item.id} primary solution does not finish at the verified answer`
+    );
+    assert.equal(
+      answersEquivalent(item.alternate_solution_steps.at(-1).equation, item),
+      true,
+      `${item.id} alternate solution does not finish at the verified answer`
+    );
+    assert.notDeepEqual(
+      item.solution_steps,
+      item.alternate_solution_steps,
+      `${item.id} needs a genuinely distinct alternate explanation`
+    );
+  }
+});
+
+test("every guided and independent A.8A solution satisfies its original equation", () => {
+  const cases = {
+    "A8A-G01": { roots: [9, -9], residual: x => x ** 2 - 81 },
+    "A8A-G02": { roots: [3, -4], residual: x => x ** 2 + x - 12 },
+    "A8A-G03": { roots: [1, -3 / 2], residual: x => 2 * x ** 2 + x - 3 },
+    "A8A-P01": { roots: [1, -9], residual: x => (x + 4) ** 2 - 25 },
+    "A8A-P02": { roots: [2, 5], residual: x => x ** 2 - 7 * x + 10 },
+    "A8A-P03": { roots: [2, -6], residual: x => x ** 2 + 4 * x - 12 },
+    "A8A-P04": { roots: [2, -1 / 3], residual: x => 3 * x ** 2 - 5 * x - 2 }
+  };
+
+  for (const [id, { roots, residual }] of Object.entries(cases)) {
+    assert.equal(roots.length, 2, `${id} must retain both roots`);
+    for (const root of roots) {
+      assert.ok(Math.abs(residual(root)) < 1e-12, `${id}: ${root} is not a root`);
+    }
+  }
+});
+
 test("A.8A answer keys are mathematically correct", () => {
   const expected = {"A8A-L03": "x = -1 or x = -5", "A8A-P03": "x = 2 or x = -6", "A8A-P04": "x = 2 or x = -1/3", "A8A-X11": "t = 0 or t = 4"};
   for (const [id, answer] of Object.entries(expected)) assert.equal(module.items.find(item => item.id === id).answer_key, answer, id);
