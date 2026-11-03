@@ -105,6 +105,12 @@
       "accepted_answers": ["(x-8)(x+8)", "(x+8)(x-8)"],
       "diagnostic_tag": "difference_pattern",
       "hint_steps": ["Ask: are both terms perfect squares with subtraction between them?", "Write x²-64=x²-8².", "Use (p-q)(p+q) with p=x and q=8."],
+      "solution_steps": [
+        {"equation": "x²-64=x²-8²", "explanation": "The expression has two perfect-square terms separated by subtraction."},
+        {"equation": "p=x and q=8", "explanation": "Use the square roots of x² and 64 in the difference-of-squares rule."},
+        {"equation": "p²-q²=(p-q)(p+q)", "explanation": "A difference of squares factors into conjugate binomials."},
+        {"equation": "(x-8)(x+8)", "explanation": "Substitute p=x and q=8 to obtain the verified factorization."}
+      ],
       "alternate_solution_steps": [
         {"equation": "x²-64=x²-8²", "explanation": "Rewrite each term as a square."},
         {"equation": "(x-8)(x+8)", "explanation": "The conjugate factors differ only in the sign between the terms."},
@@ -118,6 +124,11 @@
       "accepted_answers": ["(6x-11)(6x+11)", "(6x+11)(6x-11)"],
       "diagnostic_tag": "perfect_square_terms", "critical_misconception": true,
       "hint_steps": ["Find the square root of each term before writing any factors.", "36x²=(6x)² and 121=11².", "Use one factor with subtraction and one with addition."],
+      "solution_steps": [
+        {"equation": "36x²=(6x)²", "explanation": "The square root of the first term is 6x, not 36x."},
+        {"equation": "121=11²", "explanation": "The square root of the second term is 11."},
+        {"equation": "(6x-11)(6x+11)", "explanation": "Use the two square roots in conjugate factors; multiplying them gives 36x²-121."}
+      ],
       "alternate_solution_steps": [
         {"equation": "√(36x²)=6x, √121=11", "explanation": "The square roots become the two terms in each factor."},
         {"equation": "(6x-11)(6x+11)", "explanation": "Use conjugates so the middle products cancel."}
@@ -130,6 +141,12 @@
       "accepted_answers": ["8(x-3)(x+3)", "8(x+3)(x-3)"],
       "diagnostic_tag": "gcf_first", "critical_misconception": true,
       "hint_steps": ["Before using the square pattern, check for a greatest common factor.", "Factor out 8: 8(x²-9).", "Now factor x²-9=x²-3² using conjugates."],
+      "solution_steps": [
+        {"equation": "GCF(8x²,72)=8", "explanation": "Remove the greatest common factor before checking for a special product."},
+        {"equation": "8x²-72=8(x²-9)", "explanation": "Dividing both terms by 8 leaves x²-9."},
+        {"equation": "x²-9=x²-3²=(x-3)(x+3)", "explanation": "The remaining binomial is a difference of two squares."},
+        {"equation": "8(x-3)(x+3)", "explanation": "Keep the GCF outside the completely factored binomial."}
+      ],
       "alternate_solution_steps": [
         {"equation": "8x²-72=8(x²-9)", "explanation": "Remove the GCF first."},
         {"equation": "x²-9=x²-3²", "explanation": "The remaining binomial is a difference of squares."},
@@ -144,6 +161,11 @@
       "accepted_answers": ["(2x-5)(2x+5)", "(2x+5)(2x-5)"],
       "diagnostic_tag": "difference_pattern",
       "hint_steps": ["Rewrite both terms as squares.", "4x²=(2x)² and 25=5².", "Use (p-q)(p+q)."],
+      "solution_steps": [
+        {"equation": "4x²=(2x)² and 25=5²", "explanation": "Identify the square root of each term."},
+        {"equation": "p=2x and q=5", "explanation": "Match (2x)²-5² to p²-q²."},
+        {"equation": "(2x-5)(2x+5)", "explanation": "Apply (p-q)(p+q); the opposite middle products cancel."}
+      ],
       "alternate_solution_steps": [{"equation": "(2x)²-5²", "explanation": "Expose the square structure."}, {"equation": "(2x-5)(2x+5)", "explanation": "Write the conjugate factors."}],
       "tutor_behavior": "Use square roots 2x and 5, not coefficients 4 and 25."
     },
@@ -153,6 +175,11 @@
       "accepted_answers": ["(7x-10)(7x+10)", "(7x+10)(7x-10)"],
       "diagnostic_tag": "perfect_square_terms",
       "hint_steps": ["Both coefficients are perfect squares.", "49x²=(7x)² and 100=10².", "Use conjugate binomials."],
+      "solution_steps": [
+        {"equation": "√(49x²)=7x", "explanation": "The first term contributes 7x to each factor."},
+        {"equation": "√100=10", "explanation": "The second term contributes 10 to each factor."},
+        {"equation": "(7x-10)(7x+10)", "explanation": "Use one subtraction factor and one addition factor."}
+      ],
       "alternate_solution_steps": [{"equation": "(7x)²-10²", "explanation": "Identify p and q."}, {"equation": "(7x-10)(7x+10)", "explanation": "Apply p²-q²=(p-q)(p+q)."}],
       "tutor_behavior": "Take square roots before forming factors."
     },
@@ -162,6 +189,12 @@
       "accepted_answers": ["3(2x-5)(2x+5)", "3(2x+5)(2x-5)"],
       "diagnostic_tag": "gcf_first",
       "hint_steps": ["Find the GCF before using a special product pattern.", "12x²-75=3(4x²-25).", "Then factor 4x²-25=(2x-5)(2x+5)."],
+      "solution_steps": [
+        {"equation": "GCF(12x²,75)=3", "explanation": "Both terms share a factor of 3."},
+        {"equation": "12x²-75=3(4x²-25)", "explanation": "Factor out the GCF first."},
+        {"equation": "4x²-25=(2x)²-5²", "explanation": "The remaining binomial is a difference of squares."},
+        {"equation": "3(2x-5)(2x+5)", "explanation": "Factor the binomial into conjugates and retain the outside factor 3."}
+      ],
       "alternate_solution_steps": [{"equation": "3(4x²-25)", "explanation": "Factor out 3."}, {"equation": "3[(2x)²-5²]", "explanation": "Expose the difference of squares."}, {"equation": "3(2x-5)(2x+5)", "explanation": "Factor completely."}],
       "tutor_behavior": "Factor the GCF first; otherwise the final answer is not completely factored."
     },
@@ -171,6 +204,12 @@
       "accepted_answers": ["(x-2)(x+2)(x²+4)", "(x+2)(x-2)(x²+4)", "(x²+4)(x-2)(x+2)", "(x²+4)(x+2)(x-2)"],
       "diagnostic_tag": "factor_completely",
       "hint_steps": ["Treat x² as one square root: x⁴=(x²)².", "First write (x²-4)(x²+4).", "Factor x²-4 again, but stop at x²+4 over the real numbers."],
+      "solution_steps": [
+        {"equation": "x⁴-16=(x²)²-4²", "explanation": "View x⁴ as the square of x² and 16 as the square of 4."},
+        {"equation": "(x²-4)(x²+4)", "explanation": "Apply the difference-of-squares rule once."},
+        {"equation": "x²-4=(x-2)(x+2)", "explanation": "The first factor is another difference of squares."},
+        {"equation": "(x-2)(x+2)(x²+4)", "explanation": "Over the real numbers, x²+4 is a sum of squares, so the expression is now completely factored."}
+      ],
       "alternate_solution_steps": [{"equation": "(x²-4)(x²+4)", "explanation": "Apply difference of squares once."}, {"equation": "(x-2)(x+2)(x²+4)", "explanation": "Factor the remaining difference x²-4."}],
       "tutor_behavior": "Keep checking factors after the first step; x²-4 factors again."
     },
