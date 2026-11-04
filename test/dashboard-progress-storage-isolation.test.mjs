@@ -33,6 +33,7 @@ function fixture({ respond, failedReads = new Set(), beforeWrite } = {}) {
   const data = new Map(), requests = [], logs = [], writes = [];
   let token = owner.access_token, refreshes = 0, generated = 0;
   const context = vm.createContext({
+    AbortController, setTimeout, clearTimeout,
     Date, Uint8Array, LESSON_PROGRESS_PREFIX: localPrefix, PENDING_PROGRESS_PREFIX: pendingPrefix,
     window: { crypto: { randomUUID: () => `123e4567-e89b-42d3-a456-${426614174999 + generated++}` } },
     document: { querySelector() { return { textContent: '' }; } },

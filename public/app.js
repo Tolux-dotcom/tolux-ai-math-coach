@@ -1548,6 +1548,38 @@ function readPendingLessonProgress(ownerId) {
   return pending.slice(0, 25);
 }
 
+async function postPendingLessonProgress(active, report) {
+  const controller = new AbortController();
+  let timer;
+  try {
+    // Bound the response body too. A lost reply must leave the original
+    // completion queued, even if the server may already have saved it.
+    return await Promise.race([
+      new Promise((_, reject) => {
+        timer = setTimeout(() => {
+          reject(new Error("Pending progress save timed out."));
+          controller.abort();
+        }, 15000);
+      }),
+      (async () => {
+        const response = await fetch("/api/lesson-progress", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${active.access_token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(report),
+          signal: controller.signal
+        });
+        const data = response.ok ? await response.json() : null;
+        return { response, data };
+      })()
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function syncPendingLessonProgress(session) {
   migrateLegacyLocalLessonProgress();
 
@@ -1565,15 +1597,8 @@ async function syncPendingLessonProgress(session) {
         activeSession = await ownedSession();
         if (!activeSession) return;
       }
-      const postReport = active => fetch("/api/lesson-progress", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${active.access_token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(report)
-      });
-      let response = await postReport(activeSession);
+      const postReport = active => postPendingLessonProgress(active, report);
+      let { response, data } = await postReport(activeSession);
 
       if (ownedReport) {
         if (!(await ownedSession())) return;
@@ -1587,19 +1612,21 @@ async function syncPendingLessonProgress(session) {
                 !(await ownedSession())) return;
             activeSession = refreshed;
           } catch { return; }
-          response = await postReport(activeSession);
+          ({ response, data } = await postReport(activeSession));
           if (!(await ownedSession()) || response.status === 401) return;
         }
       }
 
       if (response.ok) {
-        const data = await response.json();
         if (!data.activity) continue;
         if (ownedReport && !(await ownedSession())) return;
         localStorage.removeItem(key);
       }
     } catch (error) {
       console.warn("Pending lesson progress will be retried later:", error);
+      // Stop this batch after a transport/body failure, rather than waiting
+      // another 15 seconds for each of up to 25 queued results. Load history.
+      return;
     }
   }
 }
