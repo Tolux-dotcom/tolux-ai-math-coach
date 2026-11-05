@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { normalizeLessonProgressReport } from '../lesson-progress.mjs';
+import { buildDiagnosticProgressReport } from '../public/diagnostic-progress.mjs';
 
 const app = fs.readFileSync(new URL('../public/app.js', import.meta.url), 'utf8');
 const source = app.slice(app.indexOf('function readPendingLessonProgress('), app.indexOf('function renderDashboardProgress('));
@@ -40,6 +41,8 @@ function fixture(moduleId, { initial = owner, refreshed = refreshedOwner, refres
     }
   } };
   const context = vm.createContext({
+    AbortController, clearTimeout,
+    setTimeout(callback, delay) { return setTimeout(callback, delay === 15000 ? 10 : delay); },
     PENDING_PROGRESS_PREFIX: prefix, supabaseClient: client, console: { warn() {} },
     window: {}, document: { querySelector() { return { textContent: '' }; } },
     migrateLegacyLocalLessonProgress() {},
@@ -68,6 +71,136 @@ function fixture(moduleId, { initial = owner, refreshed = refreshedOwner, refres
   };
   return api;
 }
+
+async function boundedReplay(f) {
+  let timer;
+  try {
+    return await Promise.race([f.replay(), new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('Dashboard replay remained stalled')), 250);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
+for (const stage of ['request', 'body']) {
+  test(`diagnostic dashboard ${stage} timeout preserves first-attempt evidence and original-owner recovery`, async () => {
+    const report = buildDiagnosticProgressReport({
+      moduleId: 'alg1-a5a-linear-equations', ownerId: owner.user.id,
+      completionId: '123e4567-e89b-42d3-a456-426614174321',
+      completedAt: '2026-11-05T12:00:00.000Z', timeOnSkillSeconds: 60,
+      items: [{ id: 'A5A-D01' }, { id: 'A5A-D02' }],
+      itemRecords: [
+        { item_id: 'A5A-D01', attempt_count: 2, first_attempt_correct: false,
+          hint_count: 1, first_error_tag: 'distribution' },
+        { item_id: 'A5A-D02', attempt_count: 1, first_attempt_correct: true,
+          hint_count: 0, first_error_tag: null }
+      ]
+    });
+    let stalled = true, finish;
+    const f = fixture(report.module_id, { count: 0, respond(_api, _url, options) {
+      if (options.method !== 'POST') return response(200, { activities: [report] });
+      if (!stalled) {
+        const normalized = normalizeLessonProgressReport(JSON.parse(options.body));
+        assert.equal(normalized.mastery_score, 50);
+        assert.equal(normalized.client_completion_id, report.completion_id);
+        return response(200, { activity: normalized });
+      }
+      const pending = new Promise(resolve => { finish = resolve; });
+      return stage === 'request' ? pending : { ok: true, status: 200, json: () => pending };
+    } });
+    const entry = [prefix + report.completion_id, JSON.stringify(report)];
+    f.records.set(...entry);
+    f.original.push(entry);
+    await boundedReplay(f);
+    assert.equal(f.requests.length, 1);
+    assert.equal(f.requests[0].options.signal.aborted, true);
+    f.assertUnchanged();
+    finish(stage === 'request' ? response(200, { activity: report }) : { activity: report });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    f.assertUnchanged();
+    f.setActive(other);
+    await boundedReplay(f);
+    assert.equal(f.requests.length, 1);
+    f.assertUnchanged();
+    f.setActive(owner);
+    stalled = false;
+    const rendered = await f.refreshDashboard();
+    assert.equal(f.requests.length, 3);
+    assert.equal(f.requests[1].options.body, entry[1]);
+    assert.equal(f.requests[0].options.body, f.requests[1].options.body);
+    assert.equal(f.records.size, 0);
+    assert.equal(rendered.source, 'account');
+    assert.equal(rendered.activities[0].module_id, 'diagnostic-alg1-a5a-linear-equations');
+    assert.equal(rendered.activities[0].mastery_score, 50);
+    assert.deepEqual(rendered.activities[0].item_records, report.item_records);
+  });
+}
+
+for (const stage of ['request', 'body']) {
+  test(`dashboard stalled ${stage} aborts the batch, preserves all reports and permits exact-attempt recovery`, async () => {
+    let stalled = true, finish;
+    const f = fixture('practice-alg1-a5a-linear-equations', { respond() {
+      if (!stalled) return response();
+      const pending = new Promise(resolve => { finish = resolve; });
+      return stage === 'request' ? pending : { ok: true, status: 200, json: () => pending };
+    } });
+    await boundedReplay(f);
+    assert.equal(f.requests.length, 1);
+    assert.equal(f.requests[0].options.signal.aborted, true);
+    f.assertUnchanged();
+    finish(stage === 'request' ? response() : { activity: { mastery_score: 80 } });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    f.assertUnchanged();
+    stalled = false;
+    await boundedReplay(f);
+    assert.equal(f.requests.length, 3);
+    assert.equal(f.requests[0].options.body, f.requests[1].options.body);
+    assert.equal(f.requests[1].options.body, f.original[0][1]);
+    assert.equal(f.requests[2].options.body, f.original[1][1]);
+    assert.equal(f.records.size, 0);
+  });
+}
+
+test('dashboard continues to account history after a replay timeout without claiming the queue synced', async () => {
+  const f = fixture('alg1-a5a-linear-equations', { count: 1, respond(_api, _url, options) {
+    if (options.method === 'POST') return new Promise(() => {});
+    return response(200, { activities: [] });
+  } });
+  let timer;
+  try {
+    const rendered = await Promise.race([f.refreshDashboard(), new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('History blocked behind replay')), 250);
+    })]);
+    assert.equal(rendered.source, 'account');
+    assert.equal(f.requests.length, 2);
+    f.assertUnchanged();
+  } finally { clearTimeout(timer); }
+});
+
+test('dashboard 401 gets only one bounded same-owner retry before stopping the batch', async () => {
+  const f = fixture('alg1-a5a-linear-equations', { respond(api) {
+    return api.requests.length === 1 ? response(401, {}) : new Promise(() => {});
+  } });
+  await boundedReplay(f);
+  assert.equal(f.requests.length, 2);
+  assert.equal(f.refreshes, 1);
+  assert.equal(f.requests[0].options.body, f.requests[1].options.body);
+  assert.equal(f.requests[1].options.headers.Authorization, 'Bearer fresh-token');
+  assert.equal(f.requests[1].options.signal.aborted, true);
+  f.assertUnchanged();
+  f.setActive(other);
+  await boundedReplay(f);
+  assert.equal(f.requests.length, 2);
+  f.assertUnchanged();
+});
+
+test('successful dashboard replay clears the deadline without a later abort', async () => {
+  const f = fixture('alg1-a5a-linear-equations', { count: 1 });
+  await boundedReplay(f);
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.equal(f.requests.length, 1);
+  assert.equal(f.requests[0].options.signal.aborted, false);
+  assert.equal(f.records.size, 0);
+});
 
 test('dashboard history uses the refreshed replay token and renders confirmed account progress', async () => {
   const f = fixture('alg1-a5a-linear-equations', { count: 1, respond(api, url, options) {

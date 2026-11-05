@@ -53,6 +53,7 @@ function fixture({ initial = owner, refreshed = { ...owner, access_token: 'refre
       ? response() : response(200, { allowed: true, isSubscriber: false });
   };
   const context = vm.createContext({
+    AbortController, setTimeout, clearTimeout,
     ...lessonCore, ...courseCore, URLSearchParams, Date, Uint8Array, Map, Set,
     document: { querySelector: element, visibilityState: 'visible' },
     window: { TOLUX_PUBLIC_CONFIG: {}, supabase: { createClient() { return client; } }, crypto: { randomUUID: () => id } },

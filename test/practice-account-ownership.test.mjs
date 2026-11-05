@@ -34,6 +34,7 @@ function fixture({ initial = owner, refreshed = { ...owner, access_token: 'fresh
     async refreshSession() { refreshes += 1; active = refreshed; return { data: { session: active }, error: null }; }
   } };
   const context = vm.createContext({
+    AbortController, setTimeout, clearTimeout,
     URLSearchParams, Date, Uint8Array, localStorage: storage,
     console: { warn() {}, error() {} },
     window: {
