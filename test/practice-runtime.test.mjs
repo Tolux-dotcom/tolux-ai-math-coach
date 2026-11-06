@@ -133,7 +133,7 @@ test("practice runtime counts each question once and persists a complete review"
           auth: {
             async getSession() {
               return {
-                data: { session: { access_token: "test-session" } }
+                data: { session: { access_token: "test-session", user: { id: "practice-student" } } }
               };
             },
             async refreshSession() {

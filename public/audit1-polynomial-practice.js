@@ -1,4 +1,5 @@
 import { answersEquivalent, escapeHtml } from './lesson-core.mjs';
+import { createPracticeCompletionId, persistPracticeCompletion } from './practice-progress.mjs';
 
 const params = new URLSearchParams(location.search);
 const skill = params.get('skill');
@@ -15,7 +16,7 @@ const els = {
 const SUPABASE_URL=window.TOLUX_PUBLIC_CONFIG.url;
 const SUPABASE_KEY=window.TOLUX_PUBLIC_CONFIG.publishableKey;
 const sb=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
-let items=[],index=0,hintLevel=0,isSubscriber=false,locked=false;
+let items=[],index=0,hintLevel=0,isSubscriber=false,locked=false,practiceOwnerId=null,completionReport=null;
 const records=new Map(),counted=new Set();
 const startedAt=Date.now();
 
@@ -60,14 +61,44 @@ function full(item,heading='Correct answer and full explanation',alternate=false
   return `${intro}<div class="solution-panel"><h3>${escapeHtml(heading)}</h3><p><strong>Final answer:</strong> ${escapeHtml(item.answer_key)}</p><ol class="solution-steps">${steps}</ol></div>`;
 }
 
-async function auth(){if(!sb)return null;let{data:{session}}=await sb.auth.getSession();if(!session){const{data}=await sb.auth.refreshSession();session=data?.session||null;}return session;}
+async function auth(){
+  if(!sb)return null;
+  const{data,error}=await sb.auth.getSession();
+  const session=error?null:data?.session,owner=session?.user?.id;
+  if(!session?.access_token||!owner)return null;
+  if(!practiceOwnerId)practiceOwnerId=owner;
+  return owner===practiceOwnerId?session:null;
+}
+async function refreshAuth(){
+  if(!sb||!practiceOwnerId)return null;
+  const{data,error}=await sb.auth.refreshSession();
+  const session=error?null:data?.session;
+  return session?.access_token&&session?.user?.id===practiceOwnerId?session:null;
+}
+async function fetchWithSession(url,options={}){
+  let session=await auth();
+  if(!session)return{response:null,session:null};
+  const request=active=>fetch(url,{...options,headers:{...(options.headers||{}),Authorization:`Bearer ${active.access_token}`}});
+  let response=await request(session);
+  if(response.status===401){
+    if(!(await auth()))return{response:null,session:null};
+    const refreshed=await refreshAuth();
+    if(refreshed&&await auth()){session=refreshed;response=await request(session);}
+  }
+  return await auth()?{response,session}:{response:null,session:null};
+}
 async function access(item){
+  if(!item||locked)return false;
+  const session=await auth();if(!session){els.feedback.innerHTML='<strong>Sign in required.</strong><p>Sign in to the account that started this practice session.</p>';return false;}
   const key=item.practice_id||item.id;if(counted.has(key))return true;
-  const session=await auth();if(!session){els.feedback.innerHTML='<strong>Sign in required.</strong>';return false;}
-  const response=await fetch('/api/lesson-usage',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({itemId:item.id})});
+  try{
+  const{response}=await fetchWithSession('/api/lesson-usage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({itemId:item.id})});
+  if(!response)return false;
   const data=await response.json();
+  if(!(await auth()))return false;
   if(response.ok&&data.allowed){counted.add(key);isSubscriber=Boolean(data.isSubscriber);return true;}
   if(data.limitReached){locked=true;disable(true);els.feedback.innerHTML=`<strong>Upgrade to continue</strong><p>${escapeHtml(data.error||'Your free learning trial is complete.')}</p>`;}
+  }catch{els.feedback.innerHTML='<strong>Connection problem.</strong><p>Please check your connection and try again.</p>';}
   return false;
 }
 function disable(value){els.answer.disabled=value;els.check.disabled=value;els.stuck.disabled=value;els.explain.disabled=value;}
@@ -78,7 +109,19 @@ function render(){const item=current(),number=index+1,pct=Math.round(index/items
 async function check(){const item=current(),answer=els.answer.value.trim();if(!answer){els.feedback.innerHTML='<strong>Enter an answer before checking.</strong>';return;}if(!(await access(item)))return;const correct=answersEquivalent(answer,item);record(item,correct);score();disable(true);els.next.hidden=false;els.feedback.innerHTML=`<div class="lesson-state ${correct?'lesson-state-success':'lesson-state-warning'}"><strong>${correct?'Correct':'Review your attempt'}</strong><p>${correct?'Check the complete reasoning below.':'Your first attempt is recorded. Compare it with the correct answer and full solution below.'}</p></div>${full(item,correct?'Why this answer is correct':'Correct answer and full solution')}`;}
 async function hint(){const item=current();if(!(await access(item)))return;const key=item.practice_id||item.id;let r=records.get(key)||{item_id:key,attempt_count:0,first_attempt_correct:null,hint_count:0,first_error_tag:null};r.hint_count++;records.set(key,r);hintLevel=Math.min(hintLevel+1,3);const hints=Array.isArray(item.hint_steps)&&item.hint_steps.length?item.hint_steps:fallbackHints(item);const text=hints[Math.min(hintLevel-1,hints.length-1)];els.feedback.innerHTML=`<div class="lesson-state lesson-state-warning"><strong>Hint ${hintLevel}</strong><p>${escapeHtml(text)}</p></div>${hintLevel===3?full(item,'Hint 3: answer and complete reasoning'):''}`;}
 async function explain(){const item=current();if(!(await access(item)))return;els.feedback.innerHTML=full(item,'Complete alternate explanation',true);}
-async function save(){const done=[...records.values()],correct=done.filter(r=>r.first_attempt_correct).length,pct=done.length?Math.round(correct/done.length*100):0;const report={completion_id:crypto.randomUUID?.()||`${Date.now()}`,module_id:`practice-${config.moduleId}`,completed_at:new Date().toISOString(),mastery_label:pct>=80?'Mastered':pct>=60?'Developing':'Intervention Needed',mastery_score:pct,is_subscriber:isSubscriber,time_on_skill_seconds:Math.round((Date.now()-startedAt)/1000),item_records:done};try{localStorage.setItem(`toluxLessonProgress:${report.module_id}`,JSON.stringify(report));}catch{}const session=await auth();if(session)try{await fetch('/api/lesson-progress',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify(report)});}catch{}return{pct,correct,total:done.length};}
-async function next(){if(index<items.length-1){index++;render();return;}const summary=await save();els.view.hidden=true;els.summary.hidden=false;els.progressBar.style.width='100%';els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.pct>=80?'Strong practice':'Keep practicing'}</h2><p class="mastery-score">${summary.pct}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;}
+async function save(){
+  const done=[...records.values()],correct=done.filter(r=>r.first_attempt_correct).length,pct=done.length?Math.round(correct/done.length*100):0;
+  if(!completionReport)completionReport={completion_id:createPracticeCompletionId(),owner_user_id:practiceOwnerId,module_id:`practice-${config.moduleId}`,completed_at:new Date().toISOString(),mastery_label:pct>=80?'Mastered':pct>=60?'Developing':'Intervention Needed',mastery_score:pct,is_subscriber:isSubscriber,time_on_skill_seconds:Math.round((Date.now()-startedAt)/1000),item_records:done};
+  const result=await persistPracticeCompletion({report:completionReport,getSession:auth,refreshSession:refreshAuth});
+  return{pct,correct,total:done.length,...result};
+}
+async function next(){
+  if(index<items.length-1){index++;render();return;}
+  const summary=await save();
+  const status=summary.synced?'Saved to your Tolux progress dashboard.':summary.pendingSaved?'Saved on this device for the account that started this session. Open the dashboard while signed in to retry.':'Progress could not be saved to your account or this device. Keep this page open and try again.';
+  els.view.hidden=true;els.summary.hidden=false;els.progressBar.style.width='100%';
+  els.summary.innerHTML=`<div class="completion-mark">✓</div><h2>${summary.pct>=80?'Strong practice':'Keep practicing'}</h2><p class="mastery-score">${summary.pct}%</p><p>${summary.correct} of ${summary.total} correct on the first attempt.</p><p class="completion-save-status" role="status">${status}</p>${summary.synced?'':'<button id="practiceRetrySave" class="lesson-link-button" type="button">Retry progress save</button>'}<div class="practice-summary-actions"><a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a><a class="lesson-link-button practice-secondary-link" href="/">View Dashboard</a></div>`;
+  $('#practiceRetrySave')?.addEventListener('click',async()=>{$('#practiceRetrySave').disabled=true;await next();});
+}
 async function start(){if(!config){els.title.textContent='Practice unavailable';return;}const requested=Number(params.get('count')||5),count=[5,10,20].includes(requested)?requested:5;const difficulty=(params.get('difficulty')||'mixed').toLowerCase();const response=await fetch(config.path);if(!response.ok){els.title.textContent='Practice unavailable';return;}const module=await response.json();let bank=(module.items||[]).filter(item=>['guided_practice','independent_practice','mastery_check'].includes(item.type));if(difficulty!=='mixed'){const desired=bank.filter(item=>String(item.difficulty||'').toLowerCase()===difficulty);if(desired.length>=2)bank=desired;}items=Array.from({length:count},(_,i)=>({...bank[i%bank.length],practice_id:`${bank[i%bank.length].id}-practice-${i+1}`}));els.title.textContent=config.title;els.meta.textContent=`Algebra 1 • TEKS ${skill}`;els.skill.textContent=`${skill} • ${config.title}`;els.sessionDifficulty.textContent=params.get('difficulty')||'mixed';els.sessionCount.textContent=String(count);render();}
 els.check.addEventListener('click',check);els.answer.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});els.stuck.addEventListener('click',hint);els.explain.addEventListener('click',explain);els.next.addEventListener('click',next);start();

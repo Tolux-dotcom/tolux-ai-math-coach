@@ -42,7 +42,7 @@ test('A.9B–A.9E practice follows Tolux 5 10 20 learning standard',()=>{
   assert.match(practice,/Review Solution & Continue/);
   assert.match(practice,/Hint 3: answer and complete reasoning/);
   assert.match(practice,/first_attempt_correct/);
-  assert.match(practice,/lesson-progress/);
+  assert.match(practice,/persistPracticeCompletion/);
   assert.match(practice,/trial-heartbeat/);
 });
 

@@ -36,7 +36,8 @@ test("A.11B Practice Mode routes to the dedicated structured runtime", () => {
   assert.match(practiceRuntime, /\[5, 10, 20\]/);
   assert.match(practiceRuntime, /lesson-usage/);
   assert.match(practiceRuntime, /trial-heartbeat/);
-  assert.match(practiceRuntime, /lesson-progress/);
+  assert.match(practiceRuntime, /persistPracticeCompletion/);
+  assert.match(practiceRuntime, /createPracticeCompletionId/);
   assert.match(practiceRuntime, /Show Answer & Full Solution/);
   assert.match(practiceRuntime, /Hint \$\{record\.hint_count\}/);
 });

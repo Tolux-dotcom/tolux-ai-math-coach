@@ -47,7 +47,7 @@ test('A.5A and A.5B use audited 5 10 20 practice with immediate review flow',()=
   assert.match(a5Practice,/Review Solution & Continue/);
   assert.match(a5Practice,/Hint 3: answer and complete reasoning/);
   assert.match(a5Practice,/first_attempt_correct/);
-  assert.match(a5Practice,/lesson-progress/);
+  assert.match(a5Practice,/persistPracticeCompletion/);
   assert.match(a5Practice,/trial-heartbeat/);
 });
 

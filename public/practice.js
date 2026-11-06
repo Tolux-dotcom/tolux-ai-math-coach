@@ -44,6 +44,7 @@ let currentIndex = 0;
 let lessonLocked = false;
 let isSubscriber = false;
 let completionReport = null;
+let practiceOwnerId = null;
 let trialHeartbeatTimer = null;
 const countedInteractions = new Set();
 const itemRecords = new Map();
@@ -168,17 +169,13 @@ function teachingExplanationMarkup(item) {
 
 async function getPracticeSession() {
   if (!supabaseClient) return null;
-
-  let {
-    data: { session: authSession }
-  } = await supabaseClient.auth.getSession();
-
-  if (!authSession) {
-    const { data } = await supabaseClient.auth.refreshSession();
-    authSession = data?.session || null;
-  }
-
-  return authSession;
+  const { data, error } = await supabaseClient.auth.getSession();
+  const authSession = error ? null : data?.session;
+  const ownerId = authSession?.user?.id;
+  if (!authSession?.access_token || !ownerId) return null;
+  // Bind this attempt to its first signed-in student, never a later account.
+  if (!practiceOwnerId) practiceOwnerId = ownerId;
+  return ownerId === practiceOwnerId ? authSession : null;
 }
 
 async function fetchWithPracticeSession(url, options = {}) {
@@ -195,14 +192,17 @@ async function fetchWithPracticeSession(url, options = {}) {
 
   let response = await request(authSession);
   if (response.status === 401) {
+    if (!(await getPracticeSession())) return { response, session: null };
     const { data, error } = await supabaseClient.auth.refreshSession();
     const refreshedSession = error ? null : data?.session;
-    if (refreshedSession) {
+    if (refreshedSession?.user?.id === practiceOwnerId &&
+        refreshedSession?.access_token && await getPracticeSession()) {
       authSession = refreshedSession;
       response = await request(authSession);
     }
   }
 
+  if (!(await getPracticeSession())) return { response: null, session: null };
   return { response, session: authSession };
 }
 
@@ -221,7 +221,6 @@ function showUpgrade(message) {
 
 async function ensurePracticeAccess(item) {
   if (!item || lessonLocked) return false;
-  if (countedInteractions.has(item.id)) return true;
 
   try {
     const authSession = await getPracticeSession();
@@ -229,13 +228,14 @@ async function ensurePracticeAccess(item) {
       setFeedback(`
         <div class="lesson-state lesson-state-warning">
           <strong>Sign in required</strong>
-          <p>Return to the dashboard and sign in before using a learning interaction.</p>
+          <p>Return to the dashboard and sign in with the account that started this practice session.</p>
           <a class="lesson-link-button" href="/">Go to Sign In</a>
         </div>
       `);
       return false;
     }
 
+    if (countedInteractions.has(item.id)) return true;
     const { response } = await fetchWithPracticeSession("/api/lesson-usage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -435,6 +435,7 @@ function buildCompletionReport(summary) {
   if (completionReport) return completionReport;
   completionReport = {
     completion_id: generateCompletionId(),
+    owner_user_id: practiceOwnerId,
     module_id: `practice-${session.module_id}`,
     completed_at: new Date().toISOString(),
     mastery_label: summary.label,
@@ -451,37 +452,79 @@ async function savePracticeCompletion(summary) {
   const moduleKey = `${LESSON_PROGRESS_PREFIX}${report.module_id}`;
   const pendingKey = `${PENDING_PROGRESS_PREFIX}${report.completion_id}`;
 
+  let pendingSaved = false;
   try {
     localStorage.setItem(moduleKey, JSON.stringify(report));
     localStorage.setItem(pendingKey, JSON.stringify(report));
+    pendingSaved = true;
   } catch (error) {
     console.warn("Practice progress could not be saved locally:", error);
   }
 
-  const authSession = await getPracticeSession();
-  if (!authSession) throw new Error("Sign in is required to sync practice progress.");
-
-  const response = await fetch("/api/lesson-progress", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${authSession.access_token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(report)
-  });
-  const data = await response.json();
-  if (!response.ok || !data.activity) {
-    throw new Error(data.error || "Unable to save practice progress.");
-  }
-
   try {
-    localStorage.setItem(moduleKey, JSON.stringify(data.activity));
-    localStorage.removeItem(pendingKey);
-  } catch (error) {
-    console.warn("Synced practice progress could not be reconciled:", error);
-  }
+    if (!report.owner_user_id) throw new Error("Sign in to sync this practice session.");
+    const { response, session: authSession } = await fetchWithPracticeSession(
+      "/api/lesson-progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(report)
+      }
+    );
+    if (!authSession || !response || !(await getPracticeSession())) {
+      throw new Error("Sign in with the account that started this practice session to sync progress.");
+    }
+    const data = await response.json();
+    if (!response.ok || !data.activity || !(await getPracticeSession())) {
+      throw new Error(data.error || "Unable to confirm practice progress for the original account.");
+    }
 
-  return data.activity;
+    try {
+      localStorage.setItem(moduleKey, JSON.stringify({ ...data.activity, owner_user_id: report.owner_user_id }));
+      localStorage.removeItem(pendingKey);
+    } catch (error) {
+      console.warn("Synced practice progress could not be reconciled:", error);
+    }
+
+    return data.activity;
+  } catch (error) {
+    const syncError = error instanceof Error
+      ? error
+      : new Error(String(error || "Practice progress sync failed."));
+    syncError.pendingSaved = pendingSaved;
+    throw syncError;
+  }
+}
+
+function practiceSaveStatus(result) {
+  return result?.synced
+    ? "Saved to your Tolux progress dashboard."
+    : result?.pendingSaved
+      ? "Saved on this device for the account that started this session. Retry now or open the dashboard while signed in."
+      : "Progress could not be saved to your account or this device. Keep this page open and try again.";
+}
+
+async function retryPracticeSave(button, status, attemptSave) {
+  button.disabled = true;
+  status.textContent = "Retrying progress save…";
+  try {
+    const result = await attemptSave();
+    status.textContent = practiceSaveStatus(result);
+    if (result?.synced) {
+      button.remove();
+      return;
+    }
+  } catch (error) {
+    status.textContent = practiceSaveStatus({ pendingSaved: Boolean(error?.pendingSaved) });
+  }
+  button.disabled = false;
+}
+
+function bindPracticeRetry(container, status, attemptSave) {
+  if (typeof container?.querySelector !== "function") return null;
+  const button = container.querySelector("[data-practice-retry-save]");
+  if (!button || !status) return null;
+  button.addEventListener("click", () => retryPracticeSave(button, status, attemptSave));
+  return button;
 }
 
 function missedReviewMarkup(summary) {
@@ -524,6 +567,7 @@ async function finishSession() {
     <p class="mastery-score">${summary.scorePercent}%</p>
     <p>${summary.firstAttemptCorrect} of ${summary.total} correct on the first attempt • ${hintsUsed} hints used</p>
     <p id="practiceSaveStatus" class="completion-save-status">Saving your practice progress…</p>
+    <button type="button" class="lesson-link-button practice-secondary-link" data-practice-retry-save hidden>Retry Progress Save</button>
     ${missedReviewMarkup(summary)}
     <div class="practice-summary-actions">
       <a class="lesson-link-button" href="/#practiceModePanel">Practice Another Skill</a>
@@ -532,13 +576,17 @@ async function finishSession() {
   `;
 
   const status = document.querySelector("#practiceSaveStatus");
+  const retryButton = bindPracticeRetry(practiceSummary, status, async () => {
+    await savePracticeCompletion(summary);
+    return { synced: true, pendingSaved: false };
+  });
   try {
     await savePracticeCompletion(summary);
-    status.textContent = "Saved to your Tolux progress dashboard.";
+    status.textContent = practiceSaveStatus({ synced: true });
   } catch (error) {
     console.error("Practice completion sync failed:", error);
-    status.textContent =
-      "Saved on this device. Tolux will retry account sync from the dashboard.";
+    status.textContent = practiceSaveStatus({ pendingSaved: Boolean(error?.pendingSaved) });
+    if (retryButton) retryButton.hidden = false;
   }
 }
 

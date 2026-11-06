@@ -35,7 +35,8 @@ test("A.10F practice uses the dedicated verified runtime while other skills keep
   assert.match(practiceRuntime, /\[5, 10, 20\]/);
   assert.match(practiceRuntime, /lesson-usage/);
   assert.match(practiceRuntime, /trial-heartbeat/);
-  assert.match(practiceRuntime, /lesson-progress/);
+  assert.match(practiceRuntime, /persistPracticeCompletion/);
+  assert.match(practiceRuntime, /createPracticeCompletionId/);
 });
 
 test("typed caret exponents are normalized before lesson and practice grading", () => {

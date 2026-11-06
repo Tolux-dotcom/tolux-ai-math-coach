@@ -50,7 +50,7 @@ test('Modules 6 and 7 audited Practice Mode supports 5 10 20, hints, full soluti
   assert.match(auditedPractice, /Hint 3: answer and complete reasoning/);
   assert.match(auditedPractice, /Correct answer and full explanation/);
   assert.match(auditedPractice, /first_attempt_correct/);
-  assert.match(auditedPractice, /\/api\/lesson-progress/);
+  assert.match(auditedPractice, /persistPracticeCompletion/);
   assert.match(auditedPractice, /A\.10D/);
   assert.match(auditedPractice, /A\.10E/);
 });
@@ -101,6 +101,7 @@ test('Modules 11 through 15 use current help, Practice Mode, and safe observer b
   assert.match(batch5Help, /isMastery/);
   assert.match(batch5Practice, /\[5,10,20\]/);
   assert.match(batch5Practice, /Hint 3/);
-  assert.match(batch5Practice, /\/api\/lesson-progress/);
+  assert.match(batch5Practice, /practice-progress\.mjs/);
+  assert.match(batch5Practice, /persistPracticeCompletion/);
   for (const skill of ['A.12C','A.12D','A.12E','A.2A','A.2B']) assert.match(batch5Practice, new RegExp(skill.replace('.', '\\.')));
 });

@@ -37,7 +37,8 @@ test("A.11A practice uses its dedicated verified runtime", () => {
   assert.match(practiceRuntime, /\[5, 10, 20\]/);
   assert.match(practiceRuntime, /lesson-usage/);
   assert.match(practiceRuntime, /trial-heartbeat/);
-  assert.match(practiceRuntime, /lesson-progress/);
+  assert.match(practiceRuntime, /persistPracticeCompletion/);
+  assert.match(practiceRuntime, /createPracticeCompletionId/);
 });
 
 test("A.11A lesson loads visual perfect-square-factor teaching", () => {
