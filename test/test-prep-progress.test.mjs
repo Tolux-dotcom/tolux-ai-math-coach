@@ -313,6 +313,7 @@ test('dashboard replays an owned failed Quick Check before fetching account hist
   const calls = [];
   const context = {
     window: { toluxTestPrepProgress: state.api },
+    AbortController, setTimeout, clearTimeout,
     supabaseClient: state.client,
     progressRefreshSequence: 0,
     syncPendingLessonProgress: async () => calls.push('lessons'),
@@ -348,6 +349,7 @@ function dashboardFixture({ session, replay = async () => {}, statuses = [200] }
   const rendered = [];
   const context = {
     window: { toluxTestPrepProgress: { flushPending: () => replay(state) } },
+    AbortController, setTimeout, clearTimeout,
     supabaseClient: state.client,
     progressRefreshSequence: 0,
     syncPendingLessonProgress: async () => {},

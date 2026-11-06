@@ -30,6 +30,7 @@ function fixture(moduleId, { initial = owner, refreshed = refreshedOwner, refres
     records.set(prefix + report.completion_id, JSON.stringify(report));
   }
   const original = [...records];
+  const statusElement = { textContent: '' };
   const client = { auth: {
     async getSession() { return { data: { session: active }, error: null }; },
     async refreshSession() {
@@ -43,7 +44,7 @@ function fixture(moduleId, { initial = owner, refreshed = refreshedOwner, refres
     AbortController, clearTimeout,
     setTimeout(callback, delay) { return setTimeout(callback, delay === 15000 ? 10 : delay); },
     PENDING_PROGRESS_PREFIX: prefix, supabaseClient: client, console: { warn() {} },
-    window: {}, document: { querySelector() { return { textContent: '' }; } },
+    window: {}, document: { querySelector() { return statusElement; } },
     migrateLegacyLocalLessonProgress() {},
     localStorage: {
       get length() { return records.size; }, key(i) { return [...records.keys()][i] || null; },
@@ -56,7 +57,8 @@ function fixture(moduleId, { initial = owner, refreshed = refreshedOwner, refres
   });
   vm.runInContext(source, context);
   const api = {
-    requests, records, original, setActive(value) { active = value; }, get refreshes() { return refreshes; },
+    requests, records, original, statusElement, setActive(value) { active = value; }, get refreshes() { return refreshes; },
+    rendered() { return vm.runInContext('globalThis.rendered', context); },
     replay() { context.dashboardSession = owner; return vm.runInContext('syncPendingLessonProgress(dashboardSession)', context); },
     async refreshDashboard() {
       vm.runInContext('globalThis.progressRefreshSequence = 0; globalThis.LESSON_PROGRESS_PREFIX = "toluxLessonProgress:"; globalThis.rendered = null; console.error = () => {};', context);
@@ -79,6 +81,83 @@ async function boundedReplay(f) {
     })]);
   } finally { clearTimeout(timer); }
 }
+
+async function boundedHistory(f) {
+  let timer;
+  try {
+    return await Promise.race([f.refreshDashboard(), new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('Account history remained stalled')), 250);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
+for (const stage of ['request', 'body']) {
+  test(`history stalled ${stage} aborts, shows truthful owned fallback and recovers without changing data`, async () => {
+    let stalled = true, finish;
+    const activity = { module_id: 'alg1-a5a-linear-equations', owner_user_id: owner.user.id,
+      completed_at: '2026-11-06T12:00:00.000Z', mastery_score: 80, mastery_label: 'Mastered' };
+    const f = fixture(activity.module_id, { count: 0, respond() {
+      if (!stalled) return response(200, { activities: [activity] });
+      const pending = new Promise(resolve => { finish = resolve; });
+      return stage === 'request' ? pending : { ok: true, status: 200, json: () => pending };
+    } });
+    const entry = ['toluxLessonProgress:' + activity.module_id, JSON.stringify(activity)];
+    f.records.set(...entry); f.original.push(entry);
+    const rendered = await boundedHistory(f);
+    assert.equal(rendered.source, 'local');
+    assert.equal(rendered.activities[0].mastery_score, 80);
+    assert.match(f.statusElement.textContent, /temporarily unavailable.*confirmed-owner/);
+    assert.equal(f.requests.length, 1);
+    assert.equal(f.requests[0].options.signal.aborted, true);
+    f.assertUnchanged();
+    finish(stage === 'request' ? response(200, { activities: [activity] }) : { activities: [activity] });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(f.rendered(), rendered);
+    f.assertUnchanged();
+    stalled = false;
+    assert.equal((await boundedHistory(f)).source, 'account');
+    assert.equal(f.requests.length, 2);
+    f.assertUnchanged();
+  });
+}
+
+test('history timeout after account switch cannot show the earlier owner local history', async () => {
+  const f = fixture('alg1-a5a-linear-equations', { count: 0, respond(api) {
+    api.setActive(other); return new Promise(() => {});
+  } });
+  f.records.set('toluxLessonProgress:alg1-a5a-linear-equations', JSON.stringify({
+    module_id: 'alg1-a5a-linear-equations', owner_user_id: owner.user.id,
+    completed_at: '2026-11-06T12:00:00.000Z', mastery_score: 80
+  }));
+  const rendered = await boundedHistory(f);
+  assert.equal(rendered.source, 'local');
+  assert.equal(rendered.activities.length, 0);
+  assert.equal(f.records.size, 1);
+});
+
+test('history 401 refresh has one bounded retry and ignores stalled unauthorized bodies', async () => {
+  const f = fixture('alg1-a5a-linear-equations', { count: 0, respond(api) {
+    if (api.requests.length === 1) return {
+      ok: false, status: 401, json: () => new Promise(() => {})
+    };
+    return new Promise(() => {});
+  } });
+  assert.equal((await boundedHistory(f)).source, 'local');
+  assert.equal(f.requests.length, 2);
+  assert.equal(f.refreshes, 1);
+  assert.equal(f.requests[1].options.headers.Authorization, 'Bearer fresh-token');
+  assert.equal(f.requests[1].options.signal.aborted, true);
+  f.assertUnchanged();
+});
+
+test('successful history read clears its deadline without a later abort', async () => {
+  const f = fixture('alg1-a5a-linear-equations', { count: 0,
+    respond: () => response(200, { activities: [] }) });
+  assert.equal((await boundedHistory(f)).source, 'account');
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.equal(f.requests.length, 1);
+  assert.equal(f.requests[0].options.signal.aborted, false);
+});
 
 for (const stage of ['request', 'body']) {
   test(`dashboard stalled ${stage} aborts the batch, preserves all reports and permits exact-attempt recovery`, async () => {
