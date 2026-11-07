@@ -1744,17 +1744,38 @@ async function refreshDashboardProgress(session) {
     let activeSession = await currentSession();
     await syncPendingLessonProgress(activeSession);
     activeSession = await currentSession();
-    const loadHistory = token => fetch("/api/lesson-progress", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    let response = await loadHistory(activeSession.access_token);
+    const loadHistory = async token => {
+      const controller = new AbortController();
+      let timer;
+      try {
+        return await Promise.race([
+          new Promise((_, reject) => {
+            timer = setTimeout(() => {
+              reject(new Error("Account progress request timed out."));
+              controller.abort();
+            }, 15000);
+          }),
+          (async () => {
+            const response = await fetch("/api/lesson-progress", {
+              headers: { Authorization: `Bearer ${token}` },
+              signal: controller.signal
+            });
+            // A 401 must reach the existing refresh path even if its body stalls.
+            const data = response.status === 401 ? {} : await response.json();
+            return { response, data };
+          })()
+        ]);
+      } finally {
+        clearTimeout(timer);
+      }
+    };
+    let { response, data } = await loadHistory(activeSession.access_token);
     if (response.status === 401) {
       const { error } = await supabaseClient.auth.refreshSession();
       if (error) throw error;
       activeSession = await currentSession();
-      response = await loadHistory(activeSession.access_token);
+      ({ response, data } = await loadHistory(activeSession.access_token));
     }
-    const data = await response.json();
 
     if (!response.ok || !Array.isArray(data.activities)) {
       throw new Error(data.error || "Unable to load lesson progress.");
