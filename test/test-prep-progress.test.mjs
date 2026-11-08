@@ -62,7 +62,10 @@ function fixture({
       }
     }
   };
-  const context = { window, document: { currentScript: { dataset: {} } }, Date, JSON, Map, Number, String, Boolean, Array, Error };
+  const context = { window, document: { currentScript: { dataset: {} } }, Date, JSON, Map, Number, String, Boolean, Array, Error,
+    AbortController, clearTimeout,
+    setTimeout(callback, delay) { return setTimeout(callback, delay === 15000 ? 10 : delay); }
+  };
   vm.createContext(context);
   vm.runInContext(source, context);
   return {
@@ -88,6 +91,108 @@ const baseInput = {
     { item_id: 'ht2', first_attempt_correct: false, first_error_tag: 'A.5A' }
   ]
 };
+
+async function bounded(promise) {
+  let timer;
+  try {
+    return await Promise.race([promise, new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('Test Prep progress remained stalled')), 250);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
+for (const modeId of ['quick', 'half', 'full']) {
+  test(`${modeId} stalled save aborts, preserves the queue, and permits the exact attempt to recover`, async () => {
+    const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    let finish, signal;
+    const bodies = [];
+    const saved = await bounded(state.api.save({ ...baseInput, modeId }, {
+      fetchImpl: (_url, options) => {
+        bodies.push(options.body); signal = options.signal;
+        return new Promise(resolve => { finish = resolve; });
+      }
+    }));
+    assert.equal(saved.status, 'queued');
+    assert.equal(saved.pendingSaved, true);
+    assert.equal(signal.aborted, true);
+    const queued = JSON.stringify(state.api.readPending('student-1', state.storage));
+    finish({ ok: true, status: 200 });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(JSON.stringify(state.api.readPending('student-1', state.storage)), queued);
+    const retry = await state.api.save({ ...baseInput, modeId,
+      completionId: saved.report.completion_id, completedAt: saved.report.completed_at
+    }, { fetchImpl: async (_url, options) => {
+      bodies.push(options.body); return { ok: true, status: 200 };
+    } });
+    assert.equal(retry.status, 'synced');
+    assert.equal(bodies[0], bodies[1]);
+    assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+  });
+}
+
+test('stalled Test Prep save with failed storage returns unsaved, not queued', async () => {
+  const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } }, storageFailure: true });
+  const result = await bounded(state.api.save(baseInput, { fetchImpl: () => new Promise(() => {}) }));
+  assert.equal(result.status, 'unsaved');
+  assert.equal(result.pendingSaved, false);
+  assert.equal(result.localSaved, false);
+});
+
+test('Test Prep 401 gets one bounded same-owner retry, preserving the exact report', async () => {
+  const state = fixture({ session: { access_token: 'expired-token', user: { id: 'student-1' } } });
+  const requests = [];
+  let refreshes = 0;
+  const refresh = state.client.auth.refreshSession;
+  state.client.auth.refreshSession = async () => { refreshes++; return refresh(); };
+  const result = await bounded(state.api.save(baseInput, { fetchImpl: (_url, options) => {
+    requests.push(options);
+    return requests.length === 1 ? Promise.resolve({ ok: false, status: 401 }) : new Promise(() => {});
+  } }));
+  assert.equal(result.status, 'queued');
+  assert.equal(refreshes, 1);
+  assert.equal(requests.length, 2);
+  assert.equal(requests[0].body, requests[1].body);
+  assert.equal(requests[1].headers.Authorization, 'Bearer refreshed-token');
+  assert.equal(requests[1].signal.aborted, true);
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+});
+
+test('Test Prep stalled replay stops the batch, retains every report and recovers only for its owner', async () => {
+  const owner = { access_token: 'owner-token', user: { id: 'student-1' } };
+  const state = fixture({ session: owner, responses: [503, 503] });
+  await state.api.save(baseInput);
+  await state.api.save({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' });
+  const original = JSON.stringify(state.api.readPending('student-1', state.storage));
+  let calls = 0, signal;
+  const result = await bounded(state.api.flushPending({ fetchImpl: (_url, options) => {
+    calls++; signal = options.signal; return new Promise(() => {});
+  } }));
+  assert.equal(result.status, 'partial');
+  assert.equal(result.synced, 0);
+  assert.equal(calls, 1);
+  assert.equal(signal.aborted, true);
+  assert.equal(JSON.stringify(state.api.readPending('student-1', state.storage)), original);
+  state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+  assert.equal((await state.api.flushPending()).status, 'empty');
+  assert.equal(JSON.stringify(state.api.readPending('student-1', state.storage)), original);
+  state.setSession(owner);
+  const bodies = [];
+  assert.equal((await state.api.flushPending({ fetchImpl: async (_url, options) => {
+    bodies.push(JSON.parse(options.body)); return { ok: true, status: 200 };
+  } })).synced, 2);
+  assert.equal(JSON.stringify(bodies), original);
+  assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+});
+
+test('successful Test Prep save clears its timer without a later abort', async () => {
+  const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  let signal;
+  assert.equal((await state.api.save(baseInput, { fetchImpl: async (_url, options) => {
+    signal = options.signal; return { ok: true, status: 200 };
+  } })).status, 'synced');
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.equal(signal.aborted, false);
+});
 
 test('builds a bounded lesson-progress report for a Test Prep session', () => {
   const { api } = fixture();

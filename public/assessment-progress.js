@@ -138,6 +138,32 @@
     }
   }
 
+  async function sendReport(report, session, fetchImpl) {
+    const controller = new AbortController();
+    let timer;
+    try {
+      return await Promise.race([
+        new Promise((_, reject) => {
+          timer = setTimeout(() => {
+            reject(new Error('Test Prep progress save timed out. Retry when connected.'));
+            controller.abort();
+          }, 15000);
+        }),
+        fetchImpl('/api/lesson-progress', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(report),
+          signal: controller.signal
+        })
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   async function postReport(
     report,
     session,
@@ -146,14 +172,7 @@
     expectedOwnerId = String(session?.user?.id || '').trim()
   ) {
     let activeSession = session;
-    let response = await fetchImpl('/api/lesson-progress', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${activeSession.access_token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(report)
-    });
+    let response = await sendReport(report, activeSession, fetchImpl);
 
     if (response.status === 401 && client?.auth?.refreshSession) {
       const { data, error } = await client.auth.refreshSession();
@@ -164,14 +183,7 @@
         expectedOwnerId &&
         refreshedOwnerId === expectedOwnerId
       ) {
-        response = await fetchImpl('/api/lesson-progress', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${activeSession.access_token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(report)
-        });
+        response = await sendReport(report, activeSession, fetchImpl);
       }
     }
 
