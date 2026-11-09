@@ -325,6 +325,41 @@ test('same-page retry reuses the original Test Prep completion instead of creati
   assert.equal(state.api.readPending('student-1', state.storage).length, 0);
 });
 
+for (const storageFailure of [false, true]) {
+  test(`same-page retry stays with its original account when storage is ${storageFailure ? 'blocked' : 'available'}`, async () => {
+    const owner = { access_token: 'student-1-token', user: { id: 'student-1' } };
+    const state = fixture({ session: owner, responses: [503, 200], storageFailure });
+    const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+    const context = vm.createContext({
+      window: { toluxTestPrepProgress: state.api },
+      lastSaveInput: { ...baseInput }, saveInFlight: false,
+      saveStatus: { textContent: '' }, retrySaveButton: { hidden: true, disabled: false }, console
+    });
+    vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+      runner.indexOf('function persistResult(')), context);
+    await context.saveLastResult();
+    assert.equal(context.retrySaveButton.hidden, false);
+    const stored = [...state.storageData];
+    for (const session of [{ access_token: 'student-2-token', user: { id: 'student-2' } }, null]) {
+      state.setSession(session);
+      await context.saveLastResult({ retrying: true });
+      assert.equal(state.requests.length, 1);
+      assert.deepEqual([...state.storageData], stored);
+      assert.match(context.saveStatus.textContent, /original account/i);
+      assert.equal(context.retrySaveButton.hidden, false);
+      assert.equal(context.retrySaveButton.disabled, false);
+    }
+    state.setSession(owner);
+    await context.saveLastResult({ retrying: true });
+    assert.equal(state.requests.length, 2);
+    assert.equal(state.requests[1].options.headers.Authorization, 'Bearer student-1-token');
+    assert.equal(state.requests[1].options.body, state.requests[0].options.body);
+    assert.equal(context.retrySaveButton.hidden, true);
+    assert.match(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+    assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+  });
+}
+
 test('a reloaded page replays an interrupted Quick Check only for its original owner', async () => {
   const state = fixture({
     session: { access_token: 'student-1-token', user: { id: 'student-1' } }

@@ -195,6 +195,14 @@
     const client = dependencies.client ?? getClient();
     const fetchImpl = dependencies.fetchImpl ?? window.fetch.bind(window);
     const report = buildReport(input);
+    // The runner retains the first save's owner even if storage is blocked.
+    // Do not rewrite a device record or queue this result under a new account.
+    const originalOwnerId = String(input.originalOwnerId || '').trim();
+    const retrySession = originalOwnerId ? await sessionForSave(client) : null;
+    if (originalOwnerId && (!retrySession?.access_token ||
+        String(retrySession.user?.id || '').trim() !== originalOwnerId)) {
+      return { status: 'original-account-required', report, originalOwnerId };
+    }
 
     let localSaved = false;
     try {
@@ -202,7 +210,7 @@
       localSaved = Boolean(storage);
     } catch {}
 
-    const session = await sessionForSave(client);
+    const session = retrySession || await sessionForSave(client);
     const ownerId = String(session?.user?.id || '').trim();
     if (!session?.access_token || !ownerId) {
       return {
@@ -230,6 +238,7 @@
       return {
         status: 'synced',
         report,
+        originalOwnerId: ownerId,
         localSaved,
         pendingSaved: false,
         accountAvailable: true
@@ -238,6 +247,7 @@
       return {
         status: pendingSaved ? 'queued' : localSaved ? 'local-only' : 'unsaved',
         report,
+        originalOwnerId: ownerId,
         error,
         localSaved,
         pendingSaved,

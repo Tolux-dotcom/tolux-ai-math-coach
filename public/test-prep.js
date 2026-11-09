@@ -125,6 +125,9 @@ function renderQuestion() {
 }
 
 function testPrepSaveMessage(outcome) {
+  if (outcome?.status === 'original-account-required') {
+    return 'Sign back into the original account to retry this Test Prep result.';
+  }
   if (outcome?.status === 'synced') {
     return 'Saved to your Tolux progress dashboard.';
   }
@@ -159,7 +162,8 @@ async function saveLastResult({ retrying = false } = {}) {
     lastSaveInput = {
       ...input,
       completionId: outcome.report.completion_id,
-      completedAt: outcome.report.completed_at
+      completedAt: outcome.report.completed_at,
+      originalOwnerId: outcome.originalOwnerId
     };
     saveStatus.textContent = testPrepSaveMessage(outcome);
     if (retrySaveButton) {
