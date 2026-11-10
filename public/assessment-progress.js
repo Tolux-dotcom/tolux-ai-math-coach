@@ -164,26 +164,24 @@
     }
   }
 
-  async function postReport(
-    report,
-    session,
-    client,
-    fetchImpl = window.fetch.bind(window),
-    expectedOwnerId = String(session?.user?.id || '').trim()
-  ) {
-    let activeSession = session;
-    let response = await sendReport(report, activeSession, fetchImpl);
+  async function postReport(report, client, fetchImpl, expectedOwnerId) {
+    const matchesOwner = session => session?.access_token && expectedOwnerId &&
+      String(session.user?.id || '').trim() === expectedOwnerId;
+    const requireActiveOwner = async () => {
+      const active = await sessionForSave(client);
+      if (!matchesOwner(active)) throw new Error('Test Prep save requires the original account.');
+      return active;
+    };
 
+    // A replay batch can outlive the session it started with. Check the live
+    // owner for each item and before a response can be acknowledged or retried.
+    let response = await sendReport(report, await requireActiveOwner(), fetchImpl);
+    await requireActiveOwner();
     if (response.status === 401 && client?.auth?.refreshSession) {
       const { data, error } = await client.auth.refreshSession();
-      activeSession = error ? null : data?.session;
-      const refreshedOwnerId = String(activeSession?.user?.id || '').trim();
-      if (
-        activeSession?.access_token &&
-        expectedOwnerId &&
-        refreshedOwnerId === expectedOwnerId
-      ) {
-        response = await sendReport(report, activeSession, fetchImpl);
+      if (!error && matchesOwner(data?.session)) {
+        response = await sendReport(report, await requireActiveOwner(), fetchImpl);
+        await requireActiveOwner();
       }
     }
 
@@ -226,13 +224,7 @@
     // A page close/reload may prevent the request's failure handler from running.
     const pendingSaved = queuePending(ownerId, report, storage);
     try {
-      const response = await postReport(
-        report,
-        session,
-        client,
-        fetchImpl,
-        ownerId
-      );
+      const response = await postReport(report, client, fetchImpl, ownerId);
       if (!response.ok) throw new Error(`Progress save failed with ${response.status}.`);
       removePending(ownerId, report.completion_id, storage);
       return {
@@ -272,13 +264,7 @@
     let synced = 0;
     for (const report of pending) {
       try {
-        const response = await postReport(
-          report,
-          session,
-          client,
-          fetchImpl,
-          ownerId
-        );
+        const response = await postReport(report, client, fetchImpl, ownerId);
         if (!response.ok) break;
         removePending(ownerId, report.completion_id, storage);
         synced += 1;

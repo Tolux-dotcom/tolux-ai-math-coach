@@ -483,6 +483,74 @@ test('isolates failed-save replay by the signed-in Supabase user', async () => {
   assert.equal(fixtureState.api.readPending('student-1', fixtureState.storage).length, 0);
 });
 
+test('account switch during a replay response leaves the queue intact and stops the batch', async () => {
+  const owner = { access_token: 'owner-token', user: { id: 'student-1' } };
+  const state = fixture({ session: owner, responses: [503, 503] });
+  await state.api.save(baseInput);
+  await state.api.save({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' });
+  const original = [...state.storageData];
+  const requests = [];
+  const result = await state.api.flushPending({ fetchImpl: async (_url, options) => {
+    requests.push(options);
+    state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+    return { ok: true, status: 200 };
+  } });
+  assert.equal(requests.length, 1);
+  assert.equal(result.status, 'partial');
+  assert.equal(result.synced, 0);
+  assert.deepEqual([...state.storageData], original);
+  state.setSession(owner);
+  assert.equal((await state.api.flushPending()).synced, 2);
+  assert.equal(state.requests[2].options.body, requests[0].body);
+});
+
+test('a 401 received after sign-out does not refresh or retry the old account', async () => {
+  const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  let requests = 0, refreshes = 0;
+  const refresh = state.client.auth.refreshSession;
+  state.client.auth.refreshSession = async () => { refreshes++; return refresh(); };
+  const result = await state.api.save(baseInput, { fetchImpl: async () => {
+    requests++;
+    state.setSession(null);
+    return { ok: false, status: 401 };
+  } });
+  assert.equal(requests, 1);
+  assert.equal(refreshes, 0);
+  assert.equal(result.status, 'queued');
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+});
+
+test('a refresh response for the original owner cannot override a different active account', async () => {
+  const state = fixture({
+    session: { access_token: 'owner-token', user: { id: 'student-1' } },
+    responses: [401, 200]
+  });
+  state.client.auth.refreshSession = async () => {
+    state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+    return { data: { session: { access_token: 'refreshed-token', user: { id: 'student-1' } } }, error: null };
+  };
+  const result = await state.api.save(baseInput);
+  assert.equal(state.requests.length, 1);
+  assert.equal(result.status, 'queued');
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+  assert.equal(state.api.readPending('student-2', state.storage).length, 0);
+});
+
+test('later replay items use the current token after a same-owner refresh', async () => {
+  const state = fixture({
+    session: { access_token: 'expired-token', user: { id: 'student-1' } },
+    responses: [503, 503, 401, 200, 200]
+  });
+  await state.api.save(baseInput);
+  await state.api.save({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' });
+  assert.equal((await state.api.flushPending()).synced, 2);
+  const batch = state.requests.slice(2).map(({ options }) => options);
+  assert.deepEqual(batch.map(options => options.headers.Authorization),
+    ['Bearer expired-token', 'Bearer refreshed-token', 'Bearer refreshed-token']);
+  assert.equal(batch[0].body, batch[1].body);
+  assert.notEqual(batch[1].body, batch[2].body);
+});
+
 test('dashboard replays an owned failed Quick Check before fetching account history', async () => {
   const state = fixture({
     session: { access_token: 'valid-token', user: { id: 'student-1' } },
