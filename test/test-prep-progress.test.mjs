@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { normalizeLessonProgressReport } from '../lesson-progress.mjs';
 
 const source = fs.readFileSync(
   new URL('../public/assessment-progress.js', import.meta.url),
@@ -17,7 +18,8 @@ function fixture({
   },
   responses = [],
   storageData = new Map(),
-  storageFailure = false
+  storageFailure = false,
+  deferReplay = false
 } = {}) {
   const requests = [];
   let responseIndex = 0;
@@ -62,7 +64,7 @@ function fixture({
       }
     }
   };
-  const context = { window, document: { currentScript: { dataset: {} } }, Date, JSON, Map, Number, String, Boolean, Array, Error,
+  const context = { window, document: { currentScript: { dataset: { deferReplay: String(deferReplay) } } }, Date, JSON, Map, Number, String, Boolean, Array, Error,
     AbortController, clearTimeout,
     setTimeout(callback, delay) { return setTimeout(callback, delay === 15000 ? 10 : delay); }
   };
@@ -549,6 +551,49 @@ test('later replay items use the current token after a same-owner refresh', asyn
     ['Bearer expired-token', 'Bearer refreshed-token', 'Bearer refreshed-token']);
   assert.equal(batch[0].body, batch[1].body);
   assert.notEqual(batch[1].body, batch[2].body);
+});
+
+for (const damaged of [null, {}, { completion_id: 'damaged-report', mastery_score: 200 }]) {
+  test(`a server-rejected pending report ${JSON.stringify(damaged)} cannot block the next valid result`, async () => {
+    const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } }, deferReplay: true });
+    const valid = state.api.buildReport(baseInput);
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    state.storageData.set(key, JSON.stringify([damaged, valid]));
+    const requests = [];
+    const result = await state.api.flushPending({ fetchImpl: async (_url, options) => {
+      const report = JSON.parse(options.body); requests.push(options);
+      try {
+        normalizeLessonProgressReport(report);
+        return { ok: true, status: 200 };
+      } catch {
+        return { ok: false, status: 400 };
+      }
+    } });
+    assert.equal(result.status, 'partial');
+    assert.equal(result.synced, 1);
+    assert.equal(requests.length, 2);
+    assert.equal(requests[1].body, JSON.stringify(valid));
+    assert.equal(state.storageData.get(key), JSON.stringify([damaged]));
+  });
+}
+
+test('Test Prep replay still stops on authentication, network and server failures', async () => {
+  for (const status of [401, 403, 429, 503, 'offline']) {
+    const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } }, deferReplay: true });
+    const reports = [state.api.buildReport(baseInput),
+      state.api.buildReport({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' })];
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    const original = JSON.stringify(reports); state.storageData.set(key, original);
+    let calls = 0;
+    const result = await state.api.flushPending({ fetchImpl: async () => {
+      calls++;
+      if (status === 'offline') throw new Error('Offline');
+      return { ok: false, status };
+    } });
+    assert.equal(result.synced, 0);
+    assert.equal(calls, status === 401 ? 2 : 1);
+    assert.equal(state.storageData.get(key), original);
+  }
 });
 
 test('dashboard replays an owned failed Quick Check before fetching account history', async () => {

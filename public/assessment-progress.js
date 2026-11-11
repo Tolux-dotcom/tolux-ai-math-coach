@@ -265,6 +265,9 @@
     for (const report of pending) {
       try {
         const response = await postReport(report, client, fetchImpl, ownerId);
+        // A server-rejected report must not starve later valid completions.
+        // Retain it for recovery; only confirmed successes are removed below.
+        if (response.status === 400) continue;
         if (!response.ok) break;
         removePending(ownerId, report.completion_id, storage);
         synced += 1;
