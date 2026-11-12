@@ -103,6 +103,66 @@ async function bounded(promise) {
   } finally { clearTimeout(timer); }
 }
 
+for (const stalledCall of [1, 2, 3]) {
+  test(`session lookup ${stalledCall} times out without late acknowledgement and recovers the same report`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const original = state.client.auth.getSession;
+    let calls = 0, finish;
+    state.client.auth.getSession = () => ++calls === stalledCall
+      ? new Promise(resolve => { finish = resolve; }) : original();
+    const saved = await bounded(state.api.save(baseInput));
+    assert.equal(saved.status, stalledCall === 1 ? 'local-only' : 'queued');
+    assert.equal(state.requests.length, stalledCall === 3 ? 1 : 0);
+    const snapshot = JSON.stringify([...state.storageData]);
+    finish({ data: { session: { access_token: 'late-token', user: { id: 'student-2' } } } });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(JSON.stringify([...state.storageData]), snapshot);
+    assert.equal(state.requests.length, stalledCall === 3 ? 1 : 0);
+    state.client.auth.getSession = original;
+    const retry = await bounded(state.api.save({ ...baseInput,
+      completionId: saved.report.completion_id, completedAt: saved.report.completed_at,
+      originalOwnerId: saved.originalOwnerId }));
+    assert.equal(retry.status, 'synced');
+    assert.equal(state.requests.at(-1).options.body, JSON.stringify(saved.report));
+    assert.equal(state.api.readPending('student-1').length, 0);
+  });
+}
+
+test('stalled refresh retains the exact report and ignores a late refresh result', async () => {
+  const state = fixture({ deferReplay: true, responses: [401],
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  let finish, refreshes = 0;
+  state.client.auth.refreshSession = () => {
+    refreshes++;
+    return new Promise(resolve => { finish = resolve; });
+  };
+  const saved = await bounded(state.api.save(baseInput));
+  assert.equal(saved.status, 'queued');
+  assert.equal(refreshes, 1);
+  assert.equal(state.requests.length, 1);
+  const snapshot = JSON.stringify([...state.storageData]);
+  finish({ data: { session: { access_token: 'late-token', user: { id: 'student-1' } } } });
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.equal(state.requests.length, 1);
+  assert.equal(JSON.stringify([...state.storageData]), snapshot);
+  const replay = await bounded(state.api.flushPending());
+  assert.equal(replay.status, 'synced');
+  assert.equal(state.requests[1].options.body, state.requests[0].options.body);
+});
+
+test('stalled replay session lookup preserves every queued byte', async () => {
+  const state = fixture({ deferReplay: true });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  state.storageData.set(key, JSON.stringify([state.api.buildReport(baseInput)]));
+  const snapshot = JSON.stringify([...state.storageData]);
+  state.client.auth.getSession = () => new Promise(() => {});
+  const replay = await bounded(state.api.flushPending());
+  assert.equal(replay.synced, 0);
+  assert.equal(state.requests.length, 0);
+  assert.equal(JSON.stringify([...state.storageData]), snapshot);
+});
+
 for (const modeId of ['quick', 'half', 'full']) {
   test(`${modeId} stalled save aborts, preserves the queue, and permits the exact attempt to recover`, async () => {
     const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });

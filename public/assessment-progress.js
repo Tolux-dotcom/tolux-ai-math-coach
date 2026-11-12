@@ -127,10 +127,24 @@
     };
   }
 
+  async function boundedAuth(operation) {
+    let timer;
+    try {
+      return await Promise.race([
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error('Test Prep session check timed out. Retry when connected.')), 15000);
+        }),
+        Promise.resolve().then(operation)
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   async function sessionForSave(client) {
     if (!client) return null;
     try {
-      const { data, error } = await client.auth.getSession();
+      const { data, error } = await boundedAuth(() => client.auth.getSession());
       if (error) return null;
       return data?.session || null;
     } catch {
@@ -178,7 +192,7 @@
     let response = await sendReport(report, await requireActiveOwner(), fetchImpl);
     await requireActiveOwner();
     if (response.status === 401 && client?.auth?.refreshSession) {
-      const { data, error } = await client.auth.refreshSession();
+      const { data, error } = await boundedAuth(() => client.auth.refreshSession());
       if (!error && matchesOwner(data?.session)) {
         response = await sendReport(report, await requireActiveOwner(), fetchImpl);
         await requireActiveOwner();
