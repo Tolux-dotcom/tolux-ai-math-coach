@@ -103,6 +103,54 @@ async function bounded(promise) {
   } finally { clearTimeout(timer); }
 }
 
+for (const count of [20, 23]) {
+  test(`a full ${count}-report queue retains every older result when a new save fails`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    const reports = Array.from({ length: count }, (_, index) => state.api.buildReport({
+      ...baseInput, completionId: `123e4567-e89b-42d3-a456-${String(index).padStart(12, '0')}`
+    }));
+    const original = JSON.stringify(reports);
+    state.storageData.set(key, original);
+    state.storageData.set('toluxTestPrepPendingProgress:v2:student-2', original);
+    const saved = await state.api.save(baseInput, { fetchImpl: async () => ({ ok: false, status: 503 }) });
+    assert.equal(saved.status, 'local-only');
+    assert.equal(saved.pendingSaved, false);
+    assert.equal(saved.localSaved, true);
+    assert.equal(state.storageData.get(key), original);
+    assert.equal(state.storageData.get('toluxTestPrepPendingProgress:v2:student-2'), original);
+    assert.equal(state.storageData.get(`toluxTestPrepProgress:${saved.report.completion_id}`), JSON.stringify(saved.report));
+    // Once the owner replays older work, the exact new result can be retried.
+    const replay = await state.api.flushPending();
+    assert.equal(replay.synced, count);
+    const retry = await state.api.save({ ...baseInput,
+      completionId: saved.report.completion_id, completedAt: saved.report.completed_at,
+      originalOwnerId: saved.originalOwnerId });
+    assert.equal(retry.status, 'synced');
+    assert.equal(state.requests.at(-1).options.body, JSON.stringify(saved.report));
+    assert.equal(state.storageData.get('toluxTestPrepPendingProgress:v2:student-2'), original);
+  });
+}
+
+test('retrying an existing report in an oversized queue does not trim unrelated reports', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  const reports = Array.from({ length: 23 }, (_, index) => state.api.buildReport({
+    ...baseInput, completionId: `123e4567-e89b-42d3-a456-${String(index).padStart(12, '0')}`
+  }));
+  state.storageData.set(key, JSON.stringify(reports));
+  const saved = await state.api.save({ ...baseInput, completionId: reports[0].completion_id }, {
+    fetchImpl: async () => ({ ok: false, status: 503 })
+  });
+  assert.equal(saved.status, 'queued');
+  const after = state.api.readPending('student-1');
+  assert.equal(after.length, 23);
+  assert.equal(JSON.stringify(after.slice(0, -1)), JSON.stringify(reports.slice(1)));
+  assert.equal(JSON.stringify(after.at(-1)), JSON.stringify(saved.report));
+});
+
 for (const stalledCall of [1, 2, 3]) {
   test(`session lookup ${stalledCall} times out without late acknowledgement and recovers the same report`, async () => {
     const state = fixture({ deferReplay: true,

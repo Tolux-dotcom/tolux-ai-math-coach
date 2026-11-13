@@ -53,11 +53,17 @@
   }
 
   function queuePending(ownerId, report, storage = safeStorage()) {
-    const pending = readPending(ownerId, storage).filter(
+    const existing = readPending(ownerId, storage);
+    // Never evict unsynchronized work to make room for a newer completion.
+    // The local result and same-attempt Retry remain available when full.
+    if (existing.length >= 20 && !existing.some(item => item?.completion_id === report.completion_id)) {
+      return false;
+    }
+    const pending = existing.filter(
       item => item?.completion_id !== report.completion_id
     );
     pending.push(report);
-    return writePending(ownerId, pending.slice(-20), storage);
+    return writePending(ownerId, pending, storage);
   }
 
   function removePending(ownerId, completionId, storage = safeStorage()) {
