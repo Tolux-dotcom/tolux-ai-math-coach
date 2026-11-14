@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { normalizeLessonProgressReport } from '../lesson-progress.mjs';
 
 const source = fs.readFileSync(
   new URL('../public/assessment-progress.js', import.meta.url),
@@ -16,7 +17,9 @@ function fixture({
     user: { id: 'student-1' }
   },
   responses = [],
-  storageData = new Map()
+  storageData = new Map(),
+  storageFailure = false,
+  deferReplay = false
 } = {}) {
   const requests = [];
   let responseIndex = 0;
@@ -26,6 +29,7 @@ function fixture({
       return storageData.get(key) || null;
     },
     setItem(key, value) {
+      if (storageFailure) throw new Error('Storage unavailable');
       storageData.set(key, String(value));
     }
   };
@@ -60,7 +64,10 @@ function fixture({
       }
     }
   };
-  const context = { window, document: { currentScript: { dataset: {} } }, Date, JSON, Map, Number, String, Boolean, Array, Error };
+  const context = { window, document: { currentScript: { dataset: { deferReplay: String(deferReplay) } } }, Date, JSON, Map, Number, String, Boolean, Array, Error,
+    AbortController, clearTimeout,
+    setTimeout(callback, delay) { return setTimeout(callback, delay === 15000 ? 10 : delay); }
+  };
   vm.createContext(context);
   vm.runInContext(source, context);
   return {
@@ -86,6 +93,264 @@ const baseInput = {
     { item_id: 'ht2', first_attempt_correct: false, first_error_tag: 'A.5A' }
   ]
 };
+
+async function bounded(promise) {
+  let timer;
+  try {
+    return await Promise.race([promise, new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('Test Prep progress remained stalled')), 250);
+    })]);
+  } finally { clearTimeout(timer); }
+}
+
+for (const raw of ['{broken', '{}', 'null', '"not an array"', '']) {
+  test(`unreadable queue ${JSON.stringify(raw)} is not overwritten by a failed new save`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    state.storageData.set(key, raw);
+    // Preserve empty strings too: the normal fixture supplies a null fallback.
+    state.storage.getItem = name => state.storageData.has(name) ? state.storageData.get(name) : null;
+    const saved = await state.api.save(baseInput, { fetchImpl: async () => ({ ok: false, status: 503 }) });
+    assert.equal(saved.status, 'local-only');
+    assert.equal(saved.pendingSaved, false);
+    assert.equal(state.storageData.get(key), raw);
+    assert.equal(state.storageData.get(`toluxTestPrepProgress:${saved.report.completion_id}`), JSON.stringify(saved.report));
+    // A successful direct retry must not clear the unreadable queue either.
+    const retry = await state.api.save({ ...baseInput, completionId: saved.report.completion_id,
+      completedAt: saved.report.completed_at, originalOwnerId: saved.originalOwnerId });
+    assert.equal(retry.status, 'synced');
+    assert.equal(state.storageData.get(key), raw);
+    assert.equal(state.requests.at(-1).options.body, JSON.stringify(saved.report));
+  });
+}
+
+test('queue read failure never licenses a replacement write', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  const raw = JSON.stringify([state.api.buildReport(baseInput)]);
+  state.storageData.set(key, raw);
+  state.storage.getItem = () => { throw new Error('Temporary read failure'); };
+  const saved = await state.api.save(baseInput, { fetchImpl: async () => ({ ok: false, status: 503 }) });
+  assert.equal(saved.pendingSaved, false);
+  assert.equal(saved.status, 'local-only');
+  assert.equal(state.storageData.get(key), raw);
+});
+
+test('acknowledgement preserves queue data that becomes unreadable during the request', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  const raw = '{interrupted-write';
+  const saved = await state.api.save(baseInput, { fetchImpl: async () => {
+    state.storageData.set(key, raw);
+    return { ok: true, status: 200 };
+  } });
+  assert.equal(saved.status, 'synced');
+  assert.equal(state.storageData.get(key), raw);
+});
+
+for (const count of [20, 23]) {
+  test(`a full ${count}-report queue retains every older result when a new save fails`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    const reports = Array.from({ length: count }, (_, index) => state.api.buildReport({
+      ...baseInput, completionId: `123e4567-e89b-42d3-a456-${String(index).padStart(12, '0')}`
+    }));
+    const original = JSON.stringify(reports);
+    state.storageData.set(key, original);
+    state.storageData.set('toluxTestPrepPendingProgress:v2:student-2', original);
+    const saved = await state.api.save(baseInput, { fetchImpl: async () => ({ ok: false, status: 503 }) });
+    assert.equal(saved.status, 'local-only');
+    assert.equal(saved.pendingSaved, false);
+    assert.equal(saved.localSaved, true);
+    assert.equal(state.storageData.get(key), original);
+    assert.equal(state.storageData.get('toluxTestPrepPendingProgress:v2:student-2'), original);
+    assert.equal(state.storageData.get(`toluxTestPrepProgress:${saved.report.completion_id}`), JSON.stringify(saved.report));
+    // Once the owner replays older work, the exact new result can be retried.
+    const replay = await state.api.flushPending();
+    assert.equal(replay.synced, count);
+    const retry = await state.api.save({ ...baseInput,
+      completionId: saved.report.completion_id, completedAt: saved.report.completed_at,
+      originalOwnerId: saved.originalOwnerId });
+    assert.equal(retry.status, 'synced');
+    assert.equal(state.requests.at(-1).options.body, JSON.stringify(saved.report));
+    assert.equal(state.storageData.get('toluxTestPrepPendingProgress:v2:student-2'), original);
+  });
+}
+
+test('retrying an existing report in an oversized queue does not trim unrelated reports', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  const reports = Array.from({ length: 23 }, (_, index) => state.api.buildReport({
+    ...baseInput, completionId: `123e4567-e89b-42d3-a456-${String(index).padStart(12, '0')}`
+  }));
+  state.storageData.set(key, JSON.stringify(reports));
+  const saved = await state.api.save({ ...baseInput, completionId: reports[0].completion_id }, {
+    fetchImpl: async () => ({ ok: false, status: 503 })
+  });
+  assert.equal(saved.status, 'queued');
+  const after = state.api.readPending('student-1');
+  assert.equal(after.length, 23);
+  assert.equal(JSON.stringify(after.slice(0, -1)), JSON.stringify(reports.slice(1)));
+  assert.equal(JSON.stringify(after.at(-1)), JSON.stringify(saved.report));
+});
+
+for (const stalledCall of [1, 2, 3]) {
+  test(`session lookup ${stalledCall} times out without late acknowledgement and recovers the same report`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const original = state.client.auth.getSession;
+    let calls = 0, finish;
+    state.client.auth.getSession = () => ++calls === stalledCall
+      ? new Promise(resolve => { finish = resolve; }) : original();
+    const saved = await bounded(state.api.save(baseInput));
+    assert.equal(saved.status, stalledCall === 1 ? 'local-only' : 'queued');
+    assert.equal(state.requests.length, stalledCall === 3 ? 1 : 0);
+    const snapshot = JSON.stringify([...state.storageData]);
+    finish({ data: { session: { access_token: 'late-token', user: { id: 'student-2' } } } });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(JSON.stringify([...state.storageData]), snapshot);
+    assert.equal(state.requests.length, stalledCall === 3 ? 1 : 0);
+    state.client.auth.getSession = original;
+    const retry = await bounded(state.api.save({ ...baseInput,
+      completionId: saved.report.completion_id, completedAt: saved.report.completed_at,
+      originalOwnerId: saved.originalOwnerId }));
+    assert.equal(retry.status, 'synced');
+    assert.equal(state.requests.at(-1).options.body, JSON.stringify(saved.report));
+    assert.equal(state.api.readPending('student-1').length, 0);
+  });
+}
+
+test('stalled refresh retains the exact report and ignores a late refresh result', async () => {
+  const state = fixture({ deferReplay: true, responses: [401],
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  let finish, refreshes = 0;
+  state.client.auth.refreshSession = () => {
+    refreshes++;
+    return new Promise(resolve => { finish = resolve; });
+  };
+  const saved = await bounded(state.api.save(baseInput));
+  assert.equal(saved.status, 'queued');
+  assert.equal(refreshes, 1);
+  assert.equal(state.requests.length, 1);
+  const snapshot = JSON.stringify([...state.storageData]);
+  finish({ data: { session: { access_token: 'late-token', user: { id: 'student-1' } } } });
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.equal(state.requests.length, 1);
+  assert.equal(JSON.stringify([...state.storageData]), snapshot);
+  const replay = await bounded(state.api.flushPending());
+  assert.equal(replay.status, 'synced');
+  assert.equal(state.requests[1].options.body, state.requests[0].options.body);
+});
+
+test('stalled replay session lookup preserves every queued byte', async () => {
+  const state = fixture({ deferReplay: true });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  state.storageData.set(key, JSON.stringify([state.api.buildReport(baseInput)]));
+  const snapshot = JSON.stringify([...state.storageData]);
+  state.client.auth.getSession = () => new Promise(() => {});
+  const replay = await bounded(state.api.flushPending());
+  assert.equal(replay.synced, 0);
+  assert.equal(state.requests.length, 0);
+  assert.equal(JSON.stringify([...state.storageData]), snapshot);
+});
+
+for (const modeId of ['quick', 'half', 'full']) {
+  test(`${modeId} stalled save aborts, preserves the queue, and permits the exact attempt to recover`, async () => {
+    const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    let finish, signal;
+    const bodies = [];
+    const saved = await bounded(state.api.save({ ...baseInput, modeId }, {
+      fetchImpl: (_url, options) => {
+        bodies.push(options.body); signal = options.signal;
+        return new Promise(resolve => { finish = resolve; });
+      }
+    }));
+    assert.equal(saved.status, 'queued');
+    assert.equal(saved.pendingSaved, true);
+    assert.equal(signal.aborted, true);
+    const queued = JSON.stringify(state.api.readPending('student-1', state.storage));
+    finish({ ok: true, status: 200 });
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(JSON.stringify(state.api.readPending('student-1', state.storage)), queued);
+    const retry = await state.api.save({ ...baseInput, modeId,
+      completionId: saved.report.completion_id, completedAt: saved.report.completed_at
+    }, { fetchImpl: async (_url, options) => {
+      bodies.push(options.body); return { ok: true, status: 200 };
+    } });
+    assert.equal(retry.status, 'synced');
+    assert.equal(bodies[0], bodies[1]);
+    assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+  });
+}
+
+test('stalled Test Prep save with failed storage returns unsaved, not queued', async () => {
+  const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } }, storageFailure: true });
+  const result = await bounded(state.api.save(baseInput, { fetchImpl: () => new Promise(() => {}) }));
+  assert.equal(result.status, 'unsaved');
+  assert.equal(result.pendingSaved, false);
+  assert.equal(result.localSaved, false);
+});
+
+test('Test Prep 401 gets one bounded same-owner retry, preserving the exact report', async () => {
+  const state = fixture({ session: { access_token: 'expired-token', user: { id: 'student-1' } } });
+  const requests = [];
+  let refreshes = 0;
+  const refresh = state.client.auth.refreshSession;
+  state.client.auth.refreshSession = async () => { refreshes++; return refresh(); };
+  const result = await bounded(state.api.save(baseInput, { fetchImpl: (_url, options) => {
+    requests.push(options);
+    return requests.length === 1 ? Promise.resolve({ ok: false, status: 401 }) : new Promise(() => {});
+  } }));
+  assert.equal(result.status, 'queued');
+  assert.equal(refreshes, 1);
+  assert.equal(requests.length, 2);
+  assert.equal(requests[0].body, requests[1].body);
+  assert.equal(requests[1].headers.Authorization, 'Bearer refreshed-token');
+  assert.equal(requests[1].signal.aborted, true);
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+});
+
+test('Test Prep stalled replay stops the batch, retains every report and recovers only for its owner', async () => {
+  const owner = { access_token: 'owner-token', user: { id: 'student-1' } };
+  const state = fixture({ session: owner, responses: [503, 503] });
+  await state.api.save(baseInput);
+  await state.api.save({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' });
+  const original = JSON.stringify(state.api.readPending('student-1', state.storage));
+  let calls = 0, signal;
+  const result = await bounded(state.api.flushPending({ fetchImpl: (_url, options) => {
+    calls++; signal = options.signal; return new Promise(() => {});
+  } }));
+  assert.equal(result.status, 'partial');
+  assert.equal(result.synced, 0);
+  assert.equal(calls, 1);
+  assert.equal(signal.aborted, true);
+  assert.equal(JSON.stringify(state.api.readPending('student-1', state.storage)), original);
+  state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+  assert.equal((await state.api.flushPending()).status, 'empty');
+  assert.equal(JSON.stringify(state.api.readPending('student-1', state.storage)), original);
+  state.setSession(owner);
+  const bodies = [];
+  assert.equal((await state.api.flushPending({ fetchImpl: async (_url, options) => {
+    bodies.push(JSON.parse(options.body)); return { ok: true, status: 200 };
+  } })).synced, 2);
+  assert.equal(JSON.stringify(bodies), original);
+  assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+});
+
+test('successful Test Prep save clears its timer without a later abort', async () => {
+  const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  let signal;
+  assert.equal((await state.api.save(baseInput, { fetchImpl: async (_url, options) => {
+    signal = options.signal; return { ok: true, status: 200 };
+  } })).status, 'synced');
+  await new Promise(resolve => setTimeout(resolve, 20));
+  assert.equal(signal.aborted, false);
+});
 
 test('builds a bounded lesson-progress report for a Test Prep session', () => {
   const { api } = fixture();
@@ -178,6 +443,80 @@ test('queues an owned result before the request settles and clears it only after
   assert.equal(state.api.readPending('student-1', state.storage).length, 0);
   assert.ok(state.storageData.has(`toluxTestPrepProgress:${queued[0].completion_id}`));
 });
+
+test('does not claim an offline Test Prep result was queued when device storage failed', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-token', user: { id: 'student-1' } },
+    storageFailure: true
+  });
+
+  const outcome = await state.api.save(baseInput, {
+    fetchImpl: async () => { throw new Error('Offline'); }
+  });
+
+  assert.equal(outcome.status, 'unsaved');
+  assert.equal(outcome.localSaved, false);
+  assert.equal(outcome.pendingSaved, false);
+  assert.equal(state.storageData.size, 0);
+});
+
+test('same-page retry reuses the original Test Prep completion instead of creating a duplicate', async () => {
+  const state = fixture({
+    session: { access_token: 'student-1-token', user: { id: 'student-1' } },
+    responses: [503, 200]
+  });
+
+  const first = await state.api.save(baseInput);
+  assert.equal(first.status, 'queued');
+  const retry = await state.api.save({
+    ...baseInput,
+    completionId: first.report.completion_id,
+    completedAt: first.report.completed_at
+  });
+
+  assert.equal(retry.status, 'synced');
+  assert.equal(state.requests.length, 2);
+  assert.deepEqual(
+    JSON.parse(state.requests[1].options.body),
+    JSON.parse(state.requests[0].options.body)
+  );
+  assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+});
+
+for (const storageFailure of [false, true]) {
+  test(`same-page retry stays with its original account when storage is ${storageFailure ? 'blocked' : 'available'}`, async () => {
+    const owner = { access_token: 'student-1-token', user: { id: 'student-1' } };
+    const state = fixture({ session: owner, responses: [503, 200], storageFailure });
+    const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+    const context = vm.createContext({
+      window: { toluxTestPrepProgress: state.api },
+      lastSaveInput: { ...baseInput }, saveInFlight: false,
+      saveStatus: { textContent: '' }, retrySaveButton: { hidden: true, disabled: false }, console
+    });
+    vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+      runner.indexOf('function persistResult(')), context);
+    await context.saveLastResult();
+    assert.equal(context.retrySaveButton.hidden, false);
+    const stored = [...state.storageData];
+    for (const session of [{ access_token: 'student-2-token', user: { id: 'student-2' } }, null]) {
+      state.setSession(session);
+      await context.saveLastResult({ retrying: true });
+      assert.equal(state.requests.length, 1);
+      assert.deepEqual([...state.storageData], stored);
+      assert.match(context.saveStatus.textContent, /original account/i);
+      assert.equal(context.retrySaveButton.hidden, false);
+      assert.equal(context.retrySaveButton.disabled, false);
+    }
+    state.setSession(owner);
+    await context.saveLastResult({ retrying: true });
+    assert.equal(state.requests.length, 2);
+    assert.equal(state.requests[1].options.headers.Authorization, 'Bearer student-1-token');
+    assert.equal(state.requests[1].options.body, state.requests[0].options.body);
+    assert.equal(context.retrySaveButton.hidden, true);
+    assert.match(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+    assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+  });
+}
 
 test('a reloaded page replays an interrupted Quick Check only for its original owner', async () => {
   const state = fixture({
@@ -300,6 +639,117 @@ test('isolates failed-save replay by the signed-in Supabase user', async () => {
     { status: 'synced', synced: 1 }
   );
   assert.equal(fixtureState.api.readPending('student-1', fixtureState.storage).length, 0);
+});
+
+test('account switch during a replay response leaves the queue intact and stops the batch', async () => {
+  const owner = { access_token: 'owner-token', user: { id: 'student-1' } };
+  const state = fixture({ session: owner, responses: [503, 503] });
+  await state.api.save(baseInput);
+  await state.api.save({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' });
+  const original = [...state.storageData];
+  const requests = [];
+  const result = await state.api.flushPending({ fetchImpl: async (_url, options) => {
+    requests.push(options);
+    state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+    return { ok: true, status: 200 };
+  } });
+  assert.equal(requests.length, 1);
+  assert.equal(result.status, 'partial');
+  assert.equal(result.synced, 0);
+  assert.deepEqual([...state.storageData], original);
+  state.setSession(owner);
+  assert.equal((await state.api.flushPending()).synced, 2);
+  assert.equal(state.requests[2].options.body, requests[0].body);
+});
+
+test('a 401 received after sign-out does not refresh or retry the old account', async () => {
+  const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  let requests = 0, refreshes = 0;
+  const refresh = state.client.auth.refreshSession;
+  state.client.auth.refreshSession = async () => { refreshes++; return refresh(); };
+  const result = await state.api.save(baseInput, { fetchImpl: async () => {
+    requests++;
+    state.setSession(null);
+    return { ok: false, status: 401 };
+  } });
+  assert.equal(requests, 1);
+  assert.equal(refreshes, 0);
+  assert.equal(result.status, 'queued');
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+});
+
+test('a refresh response for the original owner cannot override a different active account', async () => {
+  const state = fixture({
+    session: { access_token: 'owner-token', user: { id: 'student-1' } },
+    responses: [401, 200]
+  });
+  state.client.auth.refreshSession = async () => {
+    state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+    return { data: { session: { access_token: 'refreshed-token', user: { id: 'student-1' } } }, error: null };
+  };
+  const result = await state.api.save(baseInput);
+  assert.equal(state.requests.length, 1);
+  assert.equal(result.status, 'queued');
+  assert.equal(state.api.readPending('student-1', state.storage).length, 1);
+  assert.equal(state.api.readPending('student-2', state.storage).length, 0);
+});
+
+test('later replay items use the current token after a same-owner refresh', async () => {
+  const state = fixture({
+    session: { access_token: 'expired-token', user: { id: 'student-1' } },
+    responses: [503, 503, 401, 200, 200]
+  });
+  await state.api.save(baseInput);
+  await state.api.save({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' });
+  assert.equal((await state.api.flushPending()).synced, 2);
+  const batch = state.requests.slice(2).map(({ options }) => options);
+  assert.deepEqual(batch.map(options => options.headers.Authorization),
+    ['Bearer expired-token', 'Bearer refreshed-token', 'Bearer refreshed-token']);
+  assert.equal(batch[0].body, batch[1].body);
+  assert.notEqual(batch[1].body, batch[2].body);
+});
+
+for (const damaged of [null, {}, { completion_id: 'damaged-report', mastery_score: 200 }]) {
+  test(`a server-rejected pending report ${JSON.stringify(damaged)} cannot block the next valid result`, async () => {
+    const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } }, deferReplay: true });
+    const valid = state.api.buildReport(baseInput);
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    state.storageData.set(key, JSON.stringify([damaged, valid]));
+    const requests = [];
+    const result = await state.api.flushPending({ fetchImpl: async (_url, options) => {
+      const report = JSON.parse(options.body); requests.push(options);
+      try {
+        normalizeLessonProgressReport(report);
+        return { ok: true, status: 200 };
+      } catch {
+        return { ok: false, status: 400 };
+      }
+    } });
+    assert.equal(result.status, 'partial');
+    assert.equal(result.synced, 1);
+    assert.equal(requests.length, 2);
+    assert.equal(requests[1].body, JSON.stringify(valid));
+    assert.equal(state.storageData.get(key), JSON.stringify([damaged]));
+  });
+}
+
+test('Test Prep replay still stops on authentication, network and server failures', async () => {
+  for (const status of [401, 403, 429, 503, 'offline']) {
+    const state = fixture({ session: { access_token: 'owner-token', user: { id: 'student-1' } }, deferReplay: true });
+    const reports = [state.api.buildReport(baseInput),
+      state.api.buildReport({ ...baseInput, completionId: '123e4567-e89b-42d3-a456-426614174001' })];
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    const original = JSON.stringify(reports); state.storageData.set(key, original);
+    let calls = 0;
+    const result = await state.api.flushPending({ fetchImpl: async () => {
+      calls++;
+      if (status === 'offline') throw new Error('Offline');
+      return { ok: false, status };
+    } });
+    assert.equal(result.synced, 0);
+    assert.equal(calls, status === 401 ? 2 : 1);
+    assert.equal(state.storageData.get(key), original);
+  }
 });
 
 test('dashboard replays an owned failed Quick Check before fetching account history', async () => {

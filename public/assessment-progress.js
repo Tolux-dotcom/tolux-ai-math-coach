@@ -28,39 +28,57 @@
     return normalized ? `${PENDING_KEY_PREFIX}${encodeURIComponent(normalized)}` : null;
   }
 
-  function readPending(ownerId, storage = safeStorage()) {
-    if (!storage) return [];
+  function readPendingForWrite(ownerId, storage = safeStorage()) {
+    if (!storage) return null;
     const key = pendingKey(ownerId);
-    if (!key) return [];
+    if (!key) return null;
     try {
-      const parsed = JSON.parse(storage.getItem(key) || '[]');
-      return Array.isArray(parsed) ? parsed : [];
+      const raw = storage.getItem(key);
+      const parsed = raw === null ? [] : JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : null;
     } catch {
-      return [];
+      return null;
     }
   }
 
+  function readPending(ownerId, storage = safeStorage()) {
+    return readPendingForWrite(ownerId, storage) ?? [];
+  }
+
   function writePending(ownerId, reports, storage = safeStorage()) {
-    if (!storage) return;
+    if (!storage) return false;
     const key = pendingKey(ownerId);
-    if (!key) return;
+    if (!key) return false;
     try {
       storage.setItem(key, JSON.stringify(reports));
-    } catch {}
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   function queuePending(ownerId, report, storage = safeStorage()) {
-    const pending = readPending(ownerId, storage).filter(
+    const existing = readPendingForWrite(ownerId, storage);
+    // An unreadable record is not an empty queue. Leave its bytes recoverable.
+    if (!existing) return false;
+    // Never evict unsynchronized work to make room for a newer completion.
+    // The local result and same-attempt Retry remain available when full.
+    if (existing.length >= 20 && !existing.some(item => item?.completion_id === report.completion_id)) {
+      return false;
+    }
+    const pending = existing.filter(
       item => item?.completion_id !== report.completion_id
     );
     pending.push(report);
-    writePending(ownerId, pending.slice(-20), storage);
+    return writePending(ownerId, pending, storage);
   }
 
   function removePending(ownerId, completionId, storage = safeStorage()) {
+    const existing = readPendingForWrite(ownerId, storage);
+    if (!existing) return;
     writePending(
       ownerId,
-      readPending(ownerId, storage).filter(item => item?.completion_id !== completionId),
+      existing.filter(item => item?.completion_id !== completionId),
       storage
     );
   }
@@ -124,10 +142,24 @@
     };
   }
 
+  async function boundedAuth(operation) {
+    let timer;
+    try {
+      return await Promise.race([
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error('Test Prep session check timed out. Retry when connected.')), 15000);
+        }),
+        Promise.resolve().then(operation)
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   async function sessionForSave(client) {
     if (!client) return null;
     try {
-      const { data, error } = await client.auth.getSession();
+      const { data, error } = await boundedAuth(() => client.auth.getSession());
       if (error) return null;
       return data?.session || null;
     } catch {
@@ -135,40 +167,50 @@
     }
   }
 
-  async function postReport(
-    report,
-    session,
-    client,
-    fetchImpl = window.fetch.bind(window),
-    expectedOwnerId = String(session?.user?.id || '').trim()
-  ) {
-    let activeSession = session;
-    let response = await fetchImpl('/api/lesson-progress', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${activeSession.access_token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(report)
-    });
-
-    if (response.status === 401 && client?.auth?.refreshSession) {
-      const { data, error } = await client.auth.refreshSession();
-      activeSession = error ? null : data?.session;
-      const refreshedOwnerId = String(activeSession?.user?.id || '').trim();
-      if (
-        activeSession?.access_token &&
-        expectedOwnerId &&
-        refreshedOwnerId === expectedOwnerId
-      ) {
-        response = await fetchImpl('/api/lesson-progress', {
+  async function sendReport(report, session, fetchImpl) {
+    const controller = new AbortController();
+    let timer;
+    try {
+      return await Promise.race([
+        new Promise((_, reject) => {
+          timer = setTimeout(() => {
+            reject(new Error('Test Prep progress save timed out. Retry when connected.'));
+            controller.abort();
+          }, 15000);
+        }),
+        fetchImpl('/api/lesson-progress', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${activeSession.access_token}`,
+            Authorization: `Bearer ${session.access_token}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(report)
-        });
+          body: JSON.stringify(report),
+          signal: controller.signal
+        })
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function postReport(report, client, fetchImpl, expectedOwnerId) {
+    const matchesOwner = session => session?.access_token && expectedOwnerId &&
+      String(session.user?.id || '').trim() === expectedOwnerId;
+    const requireActiveOwner = async () => {
+      const active = await sessionForSave(client);
+      if (!matchesOwner(active)) throw new Error('Test Prep save requires the original account.');
+      return active;
+    };
+
+    // A replay batch can outlive the session it started with. Check the live
+    // owner for each item and before a response can be acknowledged or retried.
+    let response = await sendReport(report, await requireActiveOwner(), fetchImpl);
+    await requireActiveOwner();
+    if (response.status === 401 && client?.auth?.refreshSession) {
+      const { data, error } = await boundedAuth(() => client.auth.refreshSession());
+      if (!error && matchesOwner(data?.session)) {
+        response = await sendReport(report, await requireActiveOwner(), fetchImpl);
+        await requireActiveOwner();
       }
     }
 
@@ -180,33 +222,58 @@
     const client = dependencies.client ?? getClient();
     const fetchImpl = dependencies.fetchImpl ?? window.fetch.bind(window);
     const report = buildReport(input);
+    // The runner retains the first save's owner even if storage is blocked.
+    // Do not rewrite a device record or queue this result under a new account.
+    const originalOwnerId = String(input.originalOwnerId || '').trim();
+    const retrySession = originalOwnerId ? await sessionForSave(client) : null;
+    if (originalOwnerId && (!retrySession?.access_token ||
+        String(retrySession.user?.id || '').trim() !== originalOwnerId)) {
+      return { status: 'original-account-required', report, originalOwnerId };
+    }
 
+    let localSaved = false;
     try {
       storage?.setItem(`${LOCAL_PREFIX}${report.completion_id}`, JSON.stringify(report));
+      localSaved = Boolean(storage);
     } catch {}
 
-    const session = await sessionForSave(client);
+    const session = retrySession || await sessionForSave(client);
     const ownerId = String(session?.user?.id || '').trim();
     if (!session?.access_token || !ownerId) {
-      return { status: 'local-only', report };
+      return {
+        status: localSaved ? 'local-only' : 'unsaved',
+        report,
+        localSaved,
+        pendingSaved: false,
+        accountAvailable: false
+      };
     }
 
     // Persist ownership and the retry record before starting the request.
     // A page close/reload may prevent the request's failure handler from running.
-    queuePending(ownerId, report, storage);
+    const pendingSaved = queuePending(ownerId, report, storage);
     try {
-      const response = await postReport(
-        report,
-        session,
-        client,
-        fetchImpl,
-        ownerId
-      );
+      const response = await postReport(report, client, fetchImpl, ownerId);
       if (!response.ok) throw new Error(`Progress save failed with ${response.status}.`);
       removePending(ownerId, report.completion_id, storage);
-      return { status: 'synced', report };
+      return {
+        status: 'synced',
+        report,
+        originalOwnerId: ownerId,
+        localSaved,
+        pendingSaved: false,
+        accountAvailable: true
+      };
     } catch (error) {
-      return { status: 'queued', report, error };
+      return {
+        status: pendingSaved ? 'queued' : localSaved ? 'local-only' : 'unsaved',
+        report,
+        originalOwnerId: ownerId,
+        error,
+        localSaved,
+        pendingSaved,
+        accountAvailable: true
+      };
     }
   }
 
@@ -226,13 +293,10 @@
     let synced = 0;
     for (const report of pending) {
       try {
-        const response = await postReport(
-          report,
-          session,
-          client,
-          fetchImpl,
-          ownerId
-        );
+        const response = await postReport(report, client, fetchImpl, ownerId);
+        // A server-rejected report must not starve later valid completions.
+        // Retain it for recovery; only confirmed successes are removed below.
+        if (response.status === 400) continue;
         if (!response.ok) break;
         removePending(ownerId, report.completion_id, storage);
         synced += 1;
