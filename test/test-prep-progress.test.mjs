@@ -103,6 +103,54 @@ async function bounded(promise) {
   } finally { clearTimeout(timer); }
 }
 
+for (const raw of ['{broken', '{}', 'null', '"not an array"', '']) {
+  test(`unreadable queue ${JSON.stringify(raw)} is not overwritten by a failed new save`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    state.storageData.set(key, raw);
+    // Preserve empty strings too: the normal fixture supplies a null fallback.
+    state.storage.getItem = name => state.storageData.has(name) ? state.storageData.get(name) : null;
+    const saved = await state.api.save(baseInput, { fetchImpl: async () => ({ ok: false, status: 503 }) });
+    assert.equal(saved.status, 'local-only');
+    assert.equal(saved.pendingSaved, false);
+    assert.equal(state.storageData.get(key), raw);
+    assert.equal(state.storageData.get(`toluxTestPrepProgress:${saved.report.completion_id}`), JSON.stringify(saved.report));
+    // A successful direct retry must not clear the unreadable queue either.
+    const retry = await state.api.save({ ...baseInput, completionId: saved.report.completion_id,
+      completedAt: saved.report.completed_at, originalOwnerId: saved.originalOwnerId });
+    assert.equal(retry.status, 'synced');
+    assert.equal(state.storageData.get(key), raw);
+    assert.equal(state.requests.at(-1).options.body, JSON.stringify(saved.report));
+  });
+}
+
+test('queue read failure never licenses a replacement write', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  const raw = JSON.stringify([state.api.buildReport(baseInput)]);
+  state.storageData.set(key, raw);
+  state.storage.getItem = () => { throw new Error('Temporary read failure'); };
+  const saved = await state.api.save(baseInput, { fetchImpl: async () => ({ ok: false, status: 503 }) });
+  assert.equal(saved.pendingSaved, false);
+  assert.equal(saved.status, 'local-only');
+  assert.equal(state.storageData.get(key), raw);
+});
+
+test('acknowledgement preserves queue data that becomes unreadable during the request', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  const raw = '{interrupted-write';
+  const saved = await state.api.save(baseInput, { fetchImpl: async () => {
+    state.storageData.set(key, raw);
+    return { ok: true, status: 200 };
+  } });
+  assert.equal(saved.status, 'synced');
+  assert.equal(state.storageData.get(key), raw);
+});
+
 for (const count of [20, 23]) {
   test(`a full ${count}-report queue retains every older result when a new save fails`, async () => {
     const state = fixture({ deferReplay: true,

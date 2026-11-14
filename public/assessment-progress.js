@@ -28,16 +28,21 @@
     return normalized ? `${PENDING_KEY_PREFIX}${encodeURIComponent(normalized)}` : null;
   }
 
-  function readPending(ownerId, storage = safeStorage()) {
-    if (!storage) return [];
+  function readPendingForWrite(ownerId, storage = safeStorage()) {
+    if (!storage) return null;
     const key = pendingKey(ownerId);
-    if (!key) return [];
+    if (!key) return null;
     try {
-      const parsed = JSON.parse(storage.getItem(key) || '[]');
-      return Array.isArray(parsed) ? parsed : [];
+      const raw = storage.getItem(key);
+      const parsed = raw === null ? [] : JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : null;
     } catch {
-      return [];
+      return null;
     }
+  }
+
+  function readPending(ownerId, storage = safeStorage()) {
+    return readPendingForWrite(ownerId, storage) ?? [];
   }
 
   function writePending(ownerId, reports, storage = safeStorage()) {
@@ -53,7 +58,9 @@
   }
 
   function queuePending(ownerId, report, storage = safeStorage()) {
-    const existing = readPending(ownerId, storage);
+    const existing = readPendingForWrite(ownerId, storage);
+    // An unreadable record is not an empty queue. Leave its bytes recoverable.
+    if (!existing) return false;
     // Never evict unsynchronized work to make room for a newer completion.
     // The local result and same-attempt Retry remain available when full.
     if (existing.length >= 20 && !existing.some(item => item?.completion_id === report.completion_id)) {
@@ -67,9 +74,11 @@
   }
 
   function removePending(ownerId, completionId, storage = safeStorage()) {
+    const existing = readPendingForWrite(ownerId, storage);
+    if (!existing) return;
     writePending(
       ownerId,
-      readPending(ownerId, storage).filter(item => item?.completion_id !== completionId),
+      existing.filter(item => item?.completion_id !== completionId),
       storage
     );
   }
