@@ -73,12 +73,14 @@
     return writePending(ownerId, pending, storage);
   }
 
-  function removePending(ownerId, completionId, storage = safeStorage()) {
+  function removePending(ownerId, report, storage = safeStorage()) {
     const existing = readPendingForWrite(ownerId, storage);
     if (!existing) return;
     writePending(
       ownerId,
-      existing.filter(item => item?.completion_id !== completionId),
+      // A matching ID alone cannot acknowledge a report changed during POST.
+      existing.filter(item => item?.completion_id !== report.completion_id ||
+        JSON.stringify(item) !== JSON.stringify(report)),
       storage
     );
   }
@@ -255,7 +257,7 @@
     try {
       const response = await postReport(report, client, fetchImpl, ownerId);
       if (!response.ok) throw new Error(`Progress save failed with ${response.status}.`);
-      removePending(ownerId, report.completion_id, storage);
+      removePending(ownerId, report, storage);
       return {
         status: 'synced',
         report,
@@ -298,13 +300,14 @@
         // Retain it for recovery; only confirmed successes are removed below.
         if (response.status === 400) continue;
         if (!response.ok) break;
-        removePending(ownerId, report.completion_id, storage);
+        removePending(ownerId, report, storage);
         synced += 1;
       } catch {
         break;
       }
     }
-    return { status: synced === pending.length ? 'synced' : 'partial', synced };
+    const remaining = readPendingForWrite(ownerId, storage);
+    return { status: synced === pending.length && remaining?.length === 0 ? 'synced' : 'partial', synced };
   }
 
   window.toluxTestPrepProgress = {

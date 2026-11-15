@@ -103,6 +103,48 @@ async function bounded(promise) {
   } finally { clearTimeout(timer); }
 }
 
+for (const change of ['same-id', 'new-id', 'unreadable', 'write-failure']) {
+  test(`replay acknowledgement preserves ${change} queue state changed during POST`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    const report = state.api.buildReport(baseInput);
+    state.storageData.set(key, JSON.stringify([report]));
+    let expected;
+    const result = await state.api.flushPending({ fetchImpl: async (_url, options) => {
+      assert.equal(options.body, JSON.stringify(report));
+      const changed = { ...report, mastery_score: 88 };
+      if (change === 'new-id') changed.completion_id = '123e4567-e89b-42d3-a456-426614174999';
+      expected = change === 'unreadable' ? '{interrupted'
+        : JSON.stringify(change === 'write-failure' ? [report] : change === 'new-id' ? [report, changed] : [changed]);
+      state.storageData.set(key, expected);
+      if (change === 'write-failure') state.storage.setItem = () => { throw new Error('Quota'); };
+      return { ok: true, status: 200 };
+    } });
+    assert.equal(result.synced, 1); // Server accepted the original report only.
+    assert.equal(result.status, 'partial');
+    if (change === 'new-id') {
+      const remaining = JSON.parse(state.storageData.get(key));
+      assert.equal(remaining.length, 1);
+      assert.equal(remaining[0].completion_id, '123e4567-e89b-42d3-a456-426614174999');
+    } else assert.equal(state.storageData.get(key), expected);
+  });
+}
+
+test('direct save acknowledgement cannot remove a changed same-ID report', async () => {
+  const state = fixture({ deferReplay: true,
+    session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+  const key = 'toluxTestPrepPendingProgress:v2:student-1';
+  let expected;
+  const saved = await state.api.save(baseInput, { fetchImpl: async (_url, options) => {
+    expected = JSON.stringify([{ ...JSON.parse(options.body), mastery_score: 88 }]);
+    state.storageData.set(key, expected);
+    return { ok: true, status: 200 };
+  } });
+  assert.equal(saved.status, 'synced'); // Direct result was accepted, not the replacement.
+  assert.equal(state.storageData.get(key), expected);
+});
+
 for (const raw of ['{broken', '{}', 'null', '"not an array"', '']) {
   test(`unreadable queue ${JSON.stringify(raw)} is not overwritten by a failed new save`, async () => {
     const state = fixture({ deferReplay: true,
