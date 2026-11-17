@@ -525,6 +525,66 @@ test('same-page retry reuses the original Test Prep completion instead of creati
   assert.equal(state.api.readPending('student-1', state.storage).length, 0);
 });
 
+for (const failure of ['full-queue', 'unreadable-queue', 'session-check', 'refresh']) {
+  test(`runner and saver recover ${failure} with visible Retry and unchanged attempt`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } },
+      responses: failure === 'refresh' ? [401, 200] : [503, 200] });
+    const key = 'toluxTestPrepPendingProgress:v2:student-1';
+    let originalQueue;
+    if (failure === 'full-queue') {
+      originalQueue = JSON.stringify(Array.from({ length: 20 }, (_, index) => state.api.buildReport({
+        ...baseInput, completionId: `123e4567-e89b-42d3-a456-${String(index).padStart(12, '0')}`
+      })));
+    } else if (failure === 'unreadable-queue') originalQueue = '{unreadable';
+    if (originalQueue) state.storageData.set(key, originalQueue);
+    const originalSession = state.client.auth.getSession;
+    const originalRefresh = state.client.auth.refreshSession;
+    let reads = 0;
+    if (failure === 'session-check') {
+      state.client.auth.getSession = () => ++reads === 2 ? new Promise(() => {}) : originalSession();
+    }
+    if (failure === 'refresh') state.client.auth.refreshSession = () => new Promise(() => {});
+    const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+    const context = vm.createContext({
+      window: { toluxTestPrepProgress: state.api }, lastSaveInput: { ...baseInput },
+      saveInFlight: false, saveStatus: { textContent: '' },
+      retrySaveButton: { hidden: true, disabled: false }, console
+    });
+    vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+      runner.indexOf('function persistResult(')), context);
+    await bounded(context.saveLastResult());
+    assert.equal(context.saveInFlight, false);
+    assert.equal(context.retrySaveButton.hidden, false);
+    assert.equal(context.retrySaveButton.disabled, false);
+    assert.doesNotMatch(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+    assert.match(context.saveStatus.textContent, /retry/i);
+    if (originalQueue) {
+      assert.match(context.saveStatus.textContent, /only on this device.*could not be queued/i);
+      assert.equal(state.storageData.get(key), originalQueue);
+    }
+    const input = JSON.stringify(context.lastSaveInput);
+    const report = state.storageData.get(`toluxTestPrepProgress:${context.lastSaveInput.completionId}`);
+    state.client.auth.getSession = originalSession;
+    state.client.auth.refreshSession = originalRefresh;
+    // Restore connectivity without rewriting any queued data.
+    const bodies = [];
+    const save = state.api.save;
+    state.api.save = value => save(value, { fetchImpl: async (_url, options) => {
+      bodies.push(options.body); return { ok: true, status: 200 };
+    } });
+    await bounded(context.saveLastResult({ retrying: true }));
+    assert.equal(bodies.length, 1);
+    assert.equal(bodies[0], report);
+    assert.equal(JSON.stringify(context.lastSaveInput), input);
+    assert.equal(context.retrySaveButton.hidden, true);
+    assert.equal(context.retrySaveButton.disabled, false);
+    assert.match(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+    if (originalQueue) assert.equal(state.storageData.get(key), originalQueue);
+    else assert.equal(state.api.readPending('student-1').length, 0);
+  });
+}
+
 for (const storageFailure of [false, true]) {
   test(`same-page retry stays with its original account when storage is ${storageFailure ? 'blocked' : 'available'}`, async () => {
     const owner = { access_token: 'student-1-token', user: { id: 'student-1' } };
