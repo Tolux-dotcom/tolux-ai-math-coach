@@ -125,6 +125,11 @@ function renderQuestion() {
 }
 
 function testPrepSaveMessage(outcome) {
+  if (outcome?.status === 'session-unavailable') {
+    return outcome.localSaved
+      ? 'We could not check your account. This result is saved only on this device. Keep this page open and retry when connected.'
+      : 'We could not check your account. This result is not saved on this device. Keep this page open and retry when connected.';
+  }
   if (outcome?.status === 'original-account-required') {
     return 'Sign back into the original account to retry this Test Prep result.';
   }

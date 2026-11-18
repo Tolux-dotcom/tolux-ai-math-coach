@@ -250,7 +250,7 @@ for (const stalledCall of [1, 2, 3]) {
     state.client.auth.getSession = () => ++calls === stalledCall
       ? new Promise(resolve => { finish = resolve; }) : original();
     const saved = await bounded(state.api.save(baseInput));
-    assert.equal(saved.status, stalledCall === 1 ? 'local-only' : 'queued');
+    assert.equal(saved.status, stalledCall === 1 ? 'session-unavailable' : 'queued');
     assert.equal(state.requests.length, stalledCall === 3 ? 1 : 0);
     const snapshot = JSON.stringify([...state.storageData]);
     finish({ data: { session: { access_token: 'late-token', user: { id: 'student-2' } } } });
@@ -523,6 +523,65 @@ test('same-page retry reuses the original Test Prep completion instead of creati
     JSON.parse(state.requests[0].options.body)
   );
   assert.equal(state.api.readPending('student-1', state.storage).length, 0);
+});
+
+for (const failure of ['timeout', 'error', 'rejection']) {
+  for (const storageFailure of [false, true]) {
+    test(`initial ${failure} with storage ${storageFailure ? 'blocked' : 'available'} keeps UI Retry available`, async () => {
+      const state = fixture({ deferReplay: true, storageFailure,
+        session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+      const original = state.client.auth.getSession;
+      let finish;
+      state.client.auth.getSession = failure === 'timeout'
+        ? () => new Promise(resolve => { finish = resolve; })
+        : failure === 'error' ? async () => ({ data: { session: null }, error: new Error('Unavailable') })
+          : async () => { throw new Error('Unavailable'); };
+      const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+      const context = vm.createContext({
+        window: { toluxTestPrepProgress: state.api }, lastSaveInput: { ...baseInput }, saveInFlight: false,
+        saveStatus: { textContent: '' }, retrySaveButton: { hidden: true, disabled: false }, console
+      });
+      vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+        runner.indexOf('function persistResult(')), context);
+      await bounded(context.saveLastResult());
+      assert.equal(context.retrySaveButton.hidden, false);
+      assert.equal(context.retrySaveButton.disabled, false);
+      assert.equal(context.saveInFlight, false);
+      assert.match(context.saveStatus.textContent, /could not check your account/i);
+      assert.match(context.saveStatus.textContent, storageFailure ? /not saved on this device/i : /saved only on this device/i);
+      assert.equal(state.requests.length, 0);
+      assert.equal(state.api.readPending('student-1').length, 0);
+      const snapshot = JSON.stringify([...state.storageData]);
+      finish?.({ data: { session: { access_token: 'late-token', user: { id: 'student-2' } } } });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      assert.equal(state.requests.length, 0);
+      assert.equal(JSON.stringify([...state.storageData]), snapshot);
+      const input = { ...context.lastSaveInput };
+      state.client.auth.getSession = original;
+      await bounded(context.saveLastResult({ retrying: true }));
+      assert.equal(state.requests.length, 1);
+      assert.equal(state.requests[0].options.body, JSON.stringify(state.api.buildReport(input)));
+      assert.equal(state.requests[0].options.headers.Authorization, 'Bearer owner-token');
+      assert.equal(context.retrySaveButton.hidden, true);
+      assert.match(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+    });
+  }
+}
+
+test('confirmed signed-out UI still keeps results device-only without offering account Retry', async () => {
+  const state = fixture({ deferReplay: true });
+  const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+  const context = vm.createContext({
+    window: { toluxTestPrepProgress: state.api }, lastSaveInput: { ...baseInput }, saveInFlight: false,
+    saveStatus: { textContent: '' }, retrySaveButton: { hidden: true, disabled: false }, console
+  });
+  vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+    runner.indexOf('function persistResult(')), context);
+  await context.saveLastResult();
+  assert.equal(context.retrySaveButton.hidden, true);
+  assert.match(context.saveStatus.textContent, /Sign in before starting a future session/);
+  assert.equal(state.requests.length, 0);
+  assert.equal(state.api.readPending('student-1').length, 0);
 });
 
 for (const failure of ['full-queue', 'unreadable-queue', 'session-check', 'refresh']) {

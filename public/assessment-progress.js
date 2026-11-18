@@ -158,13 +158,14 @@
     }
   }
 
-  async function sessionForSave(client) {
-    if (!client) return null;
+  async function sessionForSave(client, throwOnError = false) {
     try {
+      if (!client) throw new Error('Test Prep account check is unavailable.');
       const { data, error } = await boundedAuth(() => client.auth.getSession());
-      if (error) return null;
+      if (error) throw error;
       return data?.session || null;
-    } catch {
+    } catch (error) {
+      if (throwOnError) throw error;
       return null;
     }
   }
@@ -239,7 +240,15 @@
       localSaved = Boolean(storage);
     } catch {}
 
-    const session = retrySession || await sessionForSave(client);
+    let session;
+    try {
+      session = retrySession || await sessionForSave(client, true);
+    } catch (error) {
+      // Failure to read a session does not prove that the learner is signed out.
+      // Keep same-page Retry available without attributing this result yet.
+      return { status: 'session-unavailable', report, localSaved,
+        pendingSaved: false, accountAvailable: false, error };
+    }
     const ownerId = String(session?.user?.id || '').trim();
     if (!session?.access_token || !ownerId) {
       return {
