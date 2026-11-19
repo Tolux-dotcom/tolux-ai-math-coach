@@ -228,7 +228,15 @@
     // The runner retains the first save's owner even if storage is blocked.
     // Do not rewrite a device record or queue this result under a new account.
     const originalOwnerId = String(input.originalOwnerId || '').trim();
-    const retrySession = originalOwnerId ? await sessionForSave(client) : null;
+    let retrySession = null;
+    if (originalOwnerId) {
+      try {
+        retrySession = await sessionForSave(client, true);
+      } catch (error) {
+        // Do not infer sign-out or touch stored work when the check failed.
+        return { status: 'session-unavailable', report, originalOwnerId, error };
+      }
+    }
     if (originalOwnerId && (!retrySession?.access_token ||
         String(retrySession.user?.id || '').trim() !== originalOwnerId)) {
       return { status: 'original-account-required', report, originalOwnerId };

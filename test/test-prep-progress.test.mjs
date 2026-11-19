@@ -644,6 +644,55 @@ for (const failure of ['full-queue', 'unreadable-queue', 'session-check', 'refre
   });
 }
 
+for (const failure of ['timeout', 'error', 'rejection']) {
+  for (const storageFailure of [false, true]) {
+    test(`owned ${failure} retry with ${storageFailure ? 'blocked' : 'working'} storage retains ownership and reports an unavailable check`, async () => {
+      const owner = { access_token: 'owner-token', user: { id: 'student-1' } };
+      const state = fixture({ deferReplay: true, session: owner, responses: [503, 200], storageFailure });
+      const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+      const context = vm.createContext({ window: { toluxTestPrepProgress: state.api },
+        lastSaveInput: { ...baseInput }, saveInFlight: false, saveStatus: { textContent: '' },
+        retrySaveButton: { hidden: true, disabled: false }, console });
+      vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+        runner.indexOf('function persistResult(')), context);
+      await context.saveLastResult();
+      assert.equal(context.lastSaveInput.originalOwnerId, 'student-1');
+      const snapshot = JSON.stringify([...state.storageData]);
+      const input = JSON.stringify(context.lastSaveInput);
+      const original = state.client.auth.getSession;
+      let finish;
+      state.client.auth.getSession = failure === 'timeout' ? () => new Promise(resolve => { finish = resolve; })
+        : failure === 'error' ? async () => ({ data: { session: null }, error: new Error('Unavailable') })
+          : async () => { throw new Error('Unavailable'); };
+      await bounded(context.saveLastResult({ retrying: true }));
+      assert.match(context.saveStatus.textContent, /could not check your account/i);
+      assert.match(context.saveStatus.textContent, /existing result has not been changed/i);
+      assert.doesNotMatch(context.saveStatus.textContent, /not saved on this device/i);
+      assert.equal(context.retrySaveButton.hidden, false);
+      assert.equal(context.retrySaveButton.disabled, false);
+      assert.equal(state.requests.length, 1);
+      assert.equal(JSON.stringify(context.lastSaveInput), input);
+      assert.equal(JSON.stringify([...state.storageData]), snapshot);
+      finish?.({ data: { session: { access_token: 'late-token', user: { id: 'student-2' } } } });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      assert.equal(state.requests.length, 1);
+      assert.equal(JSON.stringify([...state.storageData]), snapshot);
+      state.client.auth.getSession = original;
+      state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+      await context.saveLastResult({ retrying: true });
+      assert.match(context.saveStatus.textContent, /original account/i);
+      assert.equal(state.requests.length, 1);
+      assert.equal(JSON.stringify([...state.storageData]), snapshot);
+      state.setSession(owner);
+      await context.saveLastResult({ retrying: true });
+      assert.equal(state.requests.length, 2);
+      assert.equal(state.requests[1].options.body, state.requests[0].options.body);
+      assert.equal(state.requests[1].options.headers.Authorization, 'Bearer owner-token');
+      assert.equal(context.retrySaveButton.hidden, true);
+    });
+  }
+}
+
 for (const storageFailure of [false, true]) {
   test(`same-page retry stays with its original account when storage is ${storageFailure ? 'blocked' : 'available'}`, async () => {
     const owner = { access_token: 'student-1-token', user: { id: 'student-1' } };

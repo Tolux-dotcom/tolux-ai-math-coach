@@ -126,6 +126,9 @@ function renderQuestion() {
 
 function testPrepSaveMessage(outcome) {
   if (outcome?.status === 'session-unavailable') {
+    if (outcome.localSaved === undefined) {
+      return 'We could not check your account. Your existing result has not been changed. Keep this page open and retry when connected.';
+    }
     return outcome.localSaved
       ? 'We could not check your account. This result is saved only on this device. Keep this page open and retry when connected.'
       : 'We could not check your account. This result is not saved on this device. Keep this page open and retry when connected.';
