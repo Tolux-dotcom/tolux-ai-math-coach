@@ -159,6 +159,7 @@ async function saveLastResult({ retrying = false } = {}) {
     saveInFlight
   ) return;
   const input = lastSaveInput;
+  let superseded = false;
   saveInFlight = true;
   if (retrySaveButton) retrySaveButton.disabled = true;
   saveStatus.textContent = retrying
@@ -166,7 +167,7 @@ async function saveLastResult({ retrying = false } = {}) {
     : 'Saving this Test Prep result…';
   try {
     const outcome = await window.toluxTestPrepProgress.save(input);
-    if (input !== lastSaveInput) return;
+    if (input !== lastSaveInput) { superseded = true; return; }
     lastSaveInput = {
       ...input,
       completionId: outcome.report.completion_id,
@@ -179,13 +180,16 @@ async function saveLastResult({ retrying = false } = {}) {
         (outcome.status === 'local-only' && !outcome.accountAvailable);
     }
   } catch (error) {
-    if (input !== lastSaveInput) return;
+    if (input !== lastSaveInput) { superseded = true; return; }
     console.error('Test Prep progress save failed:', error);
     saveStatus.textContent = testPrepSaveMessage({ status: 'unsaved' });
     if (retrySaveButton) retrySaveButton.hidden = false;
   } finally {
     saveInFlight = false;
     if (retrySaveButton) retrySaveButton.disabled = false;
+    // persistResult may have supplied a newer completion while this one waited.
+    // Let its own save outcome drive the UI, after the previous request settles.
+    if (superseded && lastSaveInput) await saveLastResult();
   }
 }
 

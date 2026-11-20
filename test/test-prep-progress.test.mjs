@@ -693,6 +693,54 @@ for (const failure of ['timeout', 'error', 'rejection']) {
   }
 }
 
+for (const previousOutcome of ['success', 'failure', 'exception']) {
+  test(`newer completion saves after an in-flight ${previousOutcome} without stale UI acknowledgement`, async () => {
+    const state = fixture({ deferReplay: true,
+      session: { access_token: 'owner-token', user: { id: 'student-1' } } });
+    const save = state.api.save;
+    const bodies = [];
+    let finish, fail, started;
+    const waiting = new Promise(resolve => { started = resolve; });
+    state.api.save = input => save(input, { fetchImpl: (_url, options) => {
+      bodies.push(options.body);
+      if (bodies.length === 1) {
+        started();
+        return new Promise((resolve, reject) => { finish = resolve; fail = reject; });
+      }
+      return Promise.resolve({ ok: true, status: 200 });
+    } });
+    const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+    const context = vm.createContext({ window: { toluxTestPrepProgress: state.api },
+      lastSaveInput: { ...baseInput }, saveInFlight: false, saveStatus: { textContent: '' },
+      retrySaveButton: { hidden: true, disabled: false }, console });
+    vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+      runner.indexOf('function persistResult(')), context);
+    const previousSave = context.saveLastResult();
+    await waiting;
+    context.lastSaveInput = { ...baseInput, modeId: 'quick', percent: 90,
+      completionId: '123e4567-e89b-42d3-a456-426614174001' };
+    await context.saveLastResult(); // Simulates persistResult while another POST is in flight.
+    assert.equal(bodies.length, 1);
+    if (previousOutcome === 'exception') fail(new Error('Offline'));
+    else finish({ ok: previousOutcome === 'success', status: previousOutcome === 'success' ? 200 : 503 });
+    await bounded(previousSave);
+    assert.equal(bodies.length, 2);
+    const first = JSON.parse(bodies[0]), second = JSON.parse(bodies[1]);
+    assert.notEqual(first.completion_id, second.completion_id);
+    assert.equal(second.completion_id, '123e4567-e89b-42d3-a456-426614174001');
+    assert.equal(second.mastery_score, 90);
+    assert.equal(second.module_id, 'test-prep-quick-check');
+    assert.equal(context.lastSaveInput.completionId, second.completion_id);
+    assert.equal(context.lastSaveInput.originalOwnerId, 'student-1');
+    assert.match(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+    assert.equal(context.retrySaveButton.hidden, true);
+    assert.equal(context.saveInFlight, false);
+    const queued = state.api.readPending('student-1');
+    assert.equal(queued.length, previousOutcome === 'success' ? 0 : 1);
+    if (queued.length) assert.equal(JSON.stringify(queued[0]), bodies[0]);
+  });
+}
+
 for (const storageFailure of [false, true]) {
   test(`same-page retry stays with its original account when storage is ${storageFailure ? 'blocked' : 'available'}`, async () => {
     const owner = { access_token: 'student-1-token', user: { id: 'student-1' } };
