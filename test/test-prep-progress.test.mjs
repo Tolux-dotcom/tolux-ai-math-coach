@@ -741,6 +741,69 @@ for (const previousOutcome of ['success', 'failure', 'exception']) {
   });
 }
 
+for (const previousStatus of [200, 503]) {
+  for (const storageFailure of [false, true]) {
+    test(`handed-off result failure retains owner-safe Retry after ${previousStatus} with storage ${storageFailure ? 'blocked' : 'working'}`, async () => {
+      const owner = { access_token: 'owner-token', user: { id: 'student-1' } };
+      const state = fixture({ deferReplay: true, session: owner, storageFailure });
+      const save = state.api.save;
+      const requests = [];
+      let finish, started;
+      const waiting = new Promise(resolve => { started = resolve; });
+      state.api.save = input => save(input, { fetchImpl: (_url, options) => {
+        requests.push(options);
+        if (requests.length === 1) {
+          started();
+          return new Promise(resolve => { finish = resolve; });
+        }
+        const status = requests.length === 2 ? 503 : 200;
+        return Promise.resolve({ ok: status === 200, status });
+      } });
+      const runner = fs.readFileSync(new URL('../public/test-prep.js', import.meta.url), 'utf8');
+      const context = vm.createContext({ window: { toluxTestPrepProgress: state.api },
+        lastSaveInput: { ...baseInput }, saveInFlight: false, saveStatus: { textContent: '' },
+        retrySaveButton: { hidden: true, disabled: false }, console });
+      vm.runInContext(runner.slice(runner.indexOf('function testPrepSaveMessage('),
+        runner.indexOf('function persistResult(')), context);
+      const previousSave = context.saveLastResult();
+      await waiting;
+      context.lastSaveInput = { ...baseInput, modeId: 'quick', percent: 90,
+        completionId: '123e4567-e89b-42d3-a456-426614174001' };
+      await context.saveLastResult();
+      finish({ ok: previousStatus === 200, status: previousStatus });
+      await bounded(previousSave);
+      assert.equal(requests.length, 2);
+      assert.equal(context.retrySaveButton.hidden, false);
+      assert.equal(context.retrySaveButton.disabled, false);
+      assert.equal(context.saveInFlight, false);
+      assert.equal(context.lastSaveInput.originalOwnerId, 'student-1');
+      assert.equal(context.lastSaveInput.completionId, '123e4567-e89b-42d3-a456-426614174001');
+      assert.doesNotMatch(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+      assert.match(context.saveStatus.textContent, storageFailure ? /could not be saved/i : /Saved on this device for this account/i);
+      const snapshot = JSON.stringify([...state.storageData]);
+      const queued = state.api.readPending('student-1');
+      assert.equal(queued.length, storageFailure ? 0 : previousStatus === 200 ? 1 : 2);
+      if (!storageFailure) assert.equal(JSON.stringify(queued.at(-1)), requests[1].body);
+      state.setSession({ access_token: 'other-token', user: { id: 'student-2' } });
+      await context.saveLastResult({ retrying: true });
+      assert.equal(requests.length, 2);
+      assert.equal(JSON.stringify([...state.storageData]), snapshot);
+      assert.match(context.saveStatus.textContent, /original account/i);
+      assert.equal(context.retrySaveButton.hidden, false);
+      state.setSession(owner);
+      await context.saveLastResult({ retrying: true });
+      assert.equal(requests.length, 3);
+      assert.equal(requests[2].body, requests[1].body);
+      assert.equal(requests[2].headers.Authorization, 'Bearer owner-token');
+      assert.equal(context.retrySaveButton.hidden, true);
+      assert.match(context.saveStatus.textContent, /Saved to your Tolux progress dashboard/);
+      const remaining = state.api.readPending('student-1');
+      assert.equal(remaining.length, !storageFailure && previousStatus === 503 ? 1 : 0);
+      if (remaining.length) assert.equal(JSON.stringify(remaining[0]), requests[0].body);
+    });
+  }
+}
+
 for (const storageFailure of [false, true]) {
   test(`same-page retry stays with its original account when storage is ${storageFailure ? 'blocked' : 'available'}`, async () => {
     const owner = { access_token: 'student-1-token', user: { id: 'student-1' } };
