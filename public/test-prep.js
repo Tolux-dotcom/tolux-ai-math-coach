@@ -49,13 +49,20 @@ function getSupabaseClient() {
 }
 
 async function isSignedIn() {
+  let timer;
   try {
     const client = getSupabaseClient();
-    if (!client) return false;
-    const { data } = await client.auth.getSession();
+    if (!client) throw new Error('Half Test account check is unavailable.');
+    const { data, error } = await Promise.race([
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Half Test account check timed out.')), 15000);
+      }),
+      Promise.resolve().then(() => client.auth.getSession())
+    ]);
+    if (error) throw error;
     return Boolean(data?.session?.user);
-  } catch {
-    return false;
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -283,7 +290,14 @@ async function handleModeStart(modeId) {
   setModeButtonPending(modeId, true);
   try {
     if (modeId === 'half') {
-      if (await isSignedIn()) {
+      let signedIn;
+      try {
+        signedIn = await isSignedIn();
+      } catch {
+        modeMessage.innerHTML = '<strong>Half Test access could not be verified.</strong> Please try again when connected. Your account was not changed.';
+        return;
+      }
+      if (signedIn) {
         startMode(modeId);
       } else {
         modeMessage.innerHTML = '<strong>Free account required for the Half Test.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
