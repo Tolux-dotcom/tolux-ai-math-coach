@@ -38,7 +38,7 @@ function buildAccessClient({ session = null, refreshedSession = null, responses 
     if (response instanceof Error) throw response;
     return response;
   };
-  const context = { window: { fetch: fetchImpl }, Object };
+  const context = { window: { fetch: fetchImpl }, Object, AbortController, setTimeout, clearTimeout };
   vm.createContext(context);
   vm.runInContext(accessClientSource, context);
 
