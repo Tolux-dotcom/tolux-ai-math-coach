@@ -161,7 +161,6 @@ function testPrepSaveMessage(outcome) {
 async function saveLastResult({ retrying = false } = {}) {
   if (
     !saveStatus ||
-    !window.toluxTestPrepProgress ||
     !lastSaveInput ||
     saveInFlight
   ) return;
@@ -173,6 +172,10 @@ async function saveLastResult({ retrying = false } = {}) {
     ? 'Retrying this Test Prep result…'
     : 'Saving this Test Prep result…';
   try {
+    // A missing/blocked helper is a save failure too, not a reason to hide status.
+    if (typeof window.toluxTestPrepProgress?.save !== 'function') {
+      throw new Error('Test Prep saving is unavailable.');
+    }
     const outcome = await window.toluxTestPrepProgress.save(input);
     if (input !== lastSaveInput) { superseded = true; return; }
     lastSaveInput = {
