@@ -35,6 +35,7 @@ let session = null;
 let accessCheckPending = false;
 let lastSaveInput = null;
 let saveInFlight = false;
+let resultNeedsProtection = false;
 
 function promptMarkup(question) {
   return question.prompt_html || question.prompt || '';
@@ -178,6 +179,7 @@ async function saveLastResult({ retrying = false } = {}) {
     }
     const outcome = await window.toluxTestPrepProgress.save(input);
     if (input !== lastSaveInput) { superseded = true; return; }
+    resultNeedsProtection = outcome.status !== 'synced';
     lastSaveInput = {
       ...input,
       completionId: outcome.report.completion_id,
@@ -205,6 +207,7 @@ async function saveLastResult({ retrying = false } = {}) {
 
 function persistResult(percent, itemRecords) {
   if (!session) return;
+  resultNeedsProtection = true;
   lastSaveInput = {
     modeId: session.modeId,
     percent,
@@ -258,7 +261,11 @@ function scoreTest() {
 }
 
 function startMode(modeId) {
+  if (resultNeedsProtection && !window.confirm(
+    'This result is not confirmed saved to your account. Starting another test removes its same-page Retry option. Cancel to keep this result open, or OK to continue. Existing saved results will not be deleted.'
+  )) return;
   session = createSession(modeId, assembleQuestions(modeId, banks));
+  resultNeedsProtection = false;
   lastSaveInput = null;
   if (saveStatus) saveStatus.textContent = '';
   if (retrySaveButton) retrySaveButton.hidden = true;
@@ -377,6 +384,12 @@ nextButton?.addEventListener('click', () => {
 submitButton?.addEventListener('click', scoreTest);
 retakeButton?.addEventListener('click', () => session && startMode(session.modeId));
 retrySaveButton?.addEventListener('click', () => void saveLastResult({ retrying: true }));
+
+window.addEventListener('beforeunload', event => {
+  if (!resultNeedsProtection) return;
+  event.preventDefault();
+  event.returnValue = true;
+});
 
 try {
   const [blueprintResponse, quickResponse, halfResponse, extensionResponse] = await Promise.all([
