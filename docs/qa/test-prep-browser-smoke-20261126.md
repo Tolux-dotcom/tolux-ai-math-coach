@@ -5,7 +5,8 @@
 Tests-only work on `test/test-prep-browser-recovery-nov26`, continuing draft #134
 from `6e741778711b22c56714585e80b043bd5d6c0703` (identical local tree).
 Inspected main `8b186b36dcc74d0261bf4c72355d29e2d7ab0988`, issues #5/#66,
-20 open PRs, current tests and prior draft evidence. No application code changes.
+20 open PRs, current tests and prior draft evidence. Initial harness/workflow commit
+was tests-only; executing it found the scoped CSS visibility defect below.
 
 ## Added
 
@@ -27,7 +28,7 @@ Inspected main `8b186b36dcc74d0261bf4c72355d29e2d7ab0988`, issues #5/#66,
 ## Evidence and limits
 
 - `npm run check`, harness `node --check`, whitespace check passed.
-- Existing Node suite **622/622 passed**; fresh main **534/534 passed**.
+- Initial Node suite **622/622 passed**; fresh main **534/534 passed**.
 - Explicit mathematical notation/answer-key/Quick Check checks **7/7 passed**.
 - Local browser launch failed: installed `/usr/bin/chromium` is a launcher with a
   missing target executable. Playwright's standard browser installation then
@@ -43,6 +44,17 @@ Inspected main `8b186b36dcc74d0261bf4c72355d29e2d7ab0988`, issues #5/#66,
   free/subscriber/expired-token, cross-device or Stripe lifecycle QA is implied.
 
 ## Reproduce
+
+The first browser CI run launched Chromium 151.0.7922.34 and failed on the first
+desktop queued-retry case after successful sync: Retry remained visually visible
+despite its hidden attribute. Shared `.lesson-link-button` display:inline-flex
+overrode the browser's default hidden styling. A scoped
+`[data-test-prep-retry-save][hidden] { display: none; }` rule now fixes that
+without changing other buttons, saving, authorization or scoring. Added a Node CSS
+regression; final suite is 623 tests. Browser rerun evidence is recorded on PR #134.
+
+Initial failing browser run:
+https://github.com/Tolux-dotcom/tolux-ai-math-coach/actions/runs/45839839458
 
 With Node 22+, install the isolated test dependency without changing package.json:
 

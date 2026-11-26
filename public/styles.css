@@ -440,6 +440,10 @@ main{padding:32px;max-width:1450px;width:100%;margin:auto}header{display:flex;ju
   opacity: 0.62;
 }
 
+[data-test-prep-retry-save][hidden] {
+  display: none;
+}
+
 .completion-save-status {
   min-height: 24px;
   margin: 18px 0 0;

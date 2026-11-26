@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'public/test-prep*'
+      - 'public/styles.css'
       - 'public/assessment-progress.js'
       - 'public/subscriber-access-client.js'
       - 'public/staar-algebra1-*.json'
