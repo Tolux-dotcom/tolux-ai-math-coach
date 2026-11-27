@@ -33,7 +33,9 @@ async function runScenario(viewport, scenario) {
   const posts = [];
   const unexpectedExternal = [];
   const signedIn = scenario !== 'guest';
-  const session = signedIn ? { access_token: 'synthetic-token', user: { id: 'synthetic-student' } } : null;
+  const originalSession = { access_token: 'synthetic-token', user: { id: 'synthetic-student' } };
+  let session = signedIn ? originalSession : null;
+  const queuedScenario = scenario === 'queued-retry' || scenario === 'account-replay';
   let allowSave = false;
   await context.route('**/*', async route => {
     const request = route.request();
@@ -77,7 +79,7 @@ async function runScenario(viewport, scenario) {
       : scenario === 'guest' ? 'Saved only on this device.' : 'Saved on this device for this account.';
     await status.filter({ hasText: expected }).waitFor();
     const before = await page.evaluate(() => ({ ...localStorage }));
-    assert.equal(posts.length, scenario === 'queued-retry' ? 1 : 0);
+    assert.equal(posts.length, queuedScenario ? 1 : 0);
 
     // Exercise the actual native dialog and real Retake listener, not function stubs.
     const cancelled = page.waitForEvent('dialog');
@@ -91,7 +93,40 @@ async function runScenario(viewport, scenario) {
     assert.equal(await page.locator('#scoreSummary').textContent(), summary);
     assert.deepEqual(await page.evaluate(() => ({ ...localStorage })), before);
 
-    if (scenario === 'queued-retry') {
+    if (scenario === 'account-replay') {
+      const queueKey = 'toluxTestPrepPendingProgress:v2:synthetic-student';
+      const pendingBytes = before[queueKey];
+      assert.deepEqual(JSON.parse(pendingBytes), [posts[0]]);
+      session = null;
+      let exitWarnings = 0;
+      page.once('dialog', async exit => {
+        assert.equal(exit.type(), 'beforeunload');
+        exitWarnings++;
+        await exit.accept();
+      });
+      await page.reload();
+      assert.equal(exitWarnings, 1, 'Unconfirmed result must request a real exit warning');
+      assert.equal((await page.evaluate(() => window.toluxTestPrepProgress.flushPending())).status, 'signed-out');
+      assert.equal(posts.length, 1, 'Signed-out reload must not upload');
+      assert.deepEqual(await page.evaluate(() => ({ ...localStorage })), before);
+
+      session = { access_token: 'other-synthetic-token', user: { id: 'other-student' } };
+      await page.reload();
+      assert.equal((await page.evaluate(() => window.toluxTestPrepProgress.flushPending())).status, 'empty');
+      assert.equal(posts.length, 1, 'Another account must not upload the original queue');
+      assert.deepEqual(await page.evaluate(() => ({ ...localStorage })), before);
+
+      session = originalSession;
+      allowSave = true;
+      await page.reload();
+      await page.waitForFunction(key => localStorage.getItem(key) === '[]', queueKey);
+      assert.equal(posts.length, 2, 'Original account should automatically replay once');
+      assert.deepEqual(posts[1], posts[0], 'Reload must preserve the exact original report');
+      const after = await page.evaluate(() => ({ ...localStorage }));
+      assert.deepEqual(after, { ...before, [queueKey]: '[]' }, 'Only the acknowledged queue may change');
+      console.log(JSON.stringify({ accountReplay: true, signedOutPosts: 0, otherAccountPosts: 0,
+        originalAccountReplay: 1, exitWarnings, viewport }));
+    } else if (scenario === 'queued-retry') {
       assert.equal(await retry.isVisible(), true);
       assert.equal(posts[0].module_id, 'test-prep-quick-check');
       assert.equal(posts[0].item_records.length, 10);
@@ -130,9 +165,9 @@ try {
     args: ['--no-sandbox', '--disable-background-networking'] });
   console.log(`Isolated Chromium ${browser.version()}; loopback static files and synthetic responses only.`);
   for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
-    for (const scenario of ['queued-retry', 'missing-helper', 'guest']) await runScenario(viewport, scenario);
+    for (const scenario of ['queued-retry', 'missing-helper', 'guest', 'account-replay']) await runScenario(viewport, scenario);
   }
-  console.log('Browser smoke: 6/6 scenarios passed. Narrow viewport is not physical-phone QA.');
+  console.log('Browser smoke: 8/8 scenarios passed. Narrow viewport is not physical-phone QA.');
 } finally {
   await browser?.close();
   await new Promise(resolve => server.close(resolve));
