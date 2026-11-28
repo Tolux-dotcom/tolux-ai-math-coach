@@ -1,0 +1,36 @@
+name: Test Prep Browser QA
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'public/test-prep*'
+      - 'public/styles.css'
+      - 'public/assessment-progress.js'
+      - 'public/subscriber-access-client.js'
+      - 'public/staar-algebra1-*.json'
+      - 'scripts/qa/test-prep-browser-smoke.mjs'
+      - '.github/workflows/test-prep-browser-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install pinned test-only browser driver
+        run: npm install --no-save --package-lock=false playwright@1.62.1
+      - name: Install matching Chromium
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Syntax check browser harness
+        run: node --check scripts/qa/test-prep-browser-smoke.mjs
+      - name: Run isolated Test Prep browser smoke
+        run: node scripts/qa/test-prep-browser-smoke.mjs

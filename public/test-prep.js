@@ -24,6 +24,7 @@ const nextButton = document.querySelector('#nextTestQuestion');
 const submitButton = document.querySelector('#submitTest');
 const scoreSummary = document.querySelector('#scoreSummary');
 const saveStatus = document.querySelector('#testPrepSaveStatus');
+const retrySaveButton = document.querySelector('[data-test-prep-retry-save]');
 const categoryResults = document.querySelector('#categoryResults');
 const missedReview = document.querySelector('#missedReview');
 const retakeButton = document.querySelector('#retakeQuickCheck');
@@ -32,6 +33,9 @@ let blueprint;
 let banks;
 let session = null;
 let accessCheckPending = false;
+let lastSaveInput = null;
+let saveInFlight = false;
+let resultNeedsProtection = false;
 
 function promptMarkup(question) {
   return question.prompt_html || question.prompt || '';
@@ -46,13 +50,20 @@ function getSupabaseClient() {
 }
 
 async function isSignedIn() {
+  let timer;
   try {
     const client = getSupabaseClient();
-    if (!client) return false;
-    const { data } = await client.auth.getSession();
+    if (!client) throw new Error('Half Test account check is unavailable.');
+    const { data, error } = await Promise.race([
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Half Test account check timed out.')), 15000);
+      }),
+      Promise.resolve().then(() => client.auth.getSession())
+    ]);
+    if (error) throw error;
     return Boolean(data?.session?.user);
-  } catch {
-    return false;
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -121,20 +132,90 @@ function renderQuestion() {
   submitButton.hidden = session.currentIndex !== session.questions.length - 1;
 }
 
-async function persistResult(percent, itemRecords) {
-  if (!saveStatus || !window.toluxTestPrepProgress || !session) return;
-  saveStatus.textContent = 'Saving this Test Prep result…';
-  const outcome = await window.toluxTestPrepProgress.save({
+function testPrepSaveMessage(outcome) {
+  if (outcome?.status === 'session-unavailable') {
+    if (outcome.localSaved === undefined) {
+      return 'We could not check your account. Your existing result has not been changed. Keep this page open and retry when connected.';
+    }
+    return outcome.localSaved
+      ? 'We could not check your account. This result is saved only on this device. Keep this page open and retry when connected.'
+      : 'We could not check your account. This result is not saved on this device. Keep this page open and retry when connected.';
+  }
+  if (outcome?.status === 'original-account-required') {
+    return 'Sign back into the original account to retry this Test Prep result.';
+  }
+  if (outcome?.status === 'synced') {
+    return 'Saved to your Tolux progress dashboard.';
+  }
+  if (outcome?.status === 'queued') {
+    return 'Saved on this device for this account. Retry now or open the dashboard while signed in.';
+  }
+  if (outcome?.status === 'local-only' && outcome.accountAvailable) {
+    return 'Saved only on this device, but automatic account retry could not be queued. Keep this page open and retry.';
+  }
+  if (outcome?.status === 'local-only') {
+    return 'Saved only on this device. Sign in before starting a future session to sync that result across devices.';
+  }
+  return 'Progress could not be saved to your account or this device. Keep this page open and try again.';
+}
+
+async function saveLastResult({ retrying = false } = {}) {
+  if (
+    !saveStatus ||
+    !lastSaveInput ||
+    saveInFlight
+  ) return;
+  const input = lastSaveInput;
+  let superseded = false;
+  saveInFlight = true;
+  if (retrySaveButton) retrySaveButton.disabled = true;
+  saveStatus.textContent = retrying
+    ? 'Retrying this Test Prep result…'
+    : 'Saving this Test Prep result…';
+  try {
+    // A missing/blocked helper is a save failure too, not a reason to hide status.
+    if (typeof window.toluxTestPrepProgress?.save !== 'function') {
+      throw new Error('Test Prep saving is unavailable.');
+    }
+    const outcome = await window.toluxTestPrepProgress.save(input);
+    if (input !== lastSaveInput) { superseded = true; return; }
+    resultNeedsProtection = outcome.status !== 'synced';
+    lastSaveInput = {
+      ...input,
+      completionId: outcome.report.completion_id,
+      completedAt: outcome.report.completed_at,
+      originalOwnerId: outcome.originalOwnerId
+    };
+    saveStatus.textContent = testPrepSaveMessage(outcome);
+    if (retrySaveButton) {
+      retrySaveButton.hidden = outcome.status === 'synced' ||
+        (outcome.status === 'local-only' && !outcome.accountAvailable);
+    }
+  } catch (error) {
+    if (input !== lastSaveInput) { superseded = true; return; }
+    console.error('Test Prep progress save failed:', error);
+    saveStatus.textContent = testPrepSaveMessage({ status: 'unsaved' });
+    if (retrySaveButton) retrySaveButton.hidden = false;
+  } finally {
+    saveInFlight = false;
+    if (retrySaveButton) retrySaveButton.disabled = false;
+    // persistResult may have supplied a newer completion while this one waited.
+    // Let its own save outcome drive the UI, after the previous request settles.
+    if (superseded && lastSaveInput) await saveLastResult();
+  }
+}
+
+function persistResult(percent, itemRecords) {
+  if (!session) return;
+  resultNeedsProtection = true;
+  lastSaveInput = {
     modeId: session.modeId,
     percent,
     itemRecords,
     startedAt: session.startedAt
-  });
-  saveStatus.textContent = outcome.status === 'synced'
-    ? 'Saved to your Tolux progress dashboard.'
-    : outcome.status === 'queued'
-      ? 'Saved on this device. Tolux will retry account sync when you return.'
-      : 'Saved only on this device. Sign in before starting a future session to sync that result across devices.';
+  };
+  if (retrySaveButton) retrySaveButton.hidden = true;
+  void saveLastResult();
 }
 
 function scoreTest() {
@@ -180,8 +261,14 @@ function scoreTest() {
 }
 
 function startMode(modeId) {
+  if (resultNeedsProtection && !window.confirm(
+    'This result is not confirmed saved to your account. Starting another test removes its same-page Retry option. Cancel to keep this result open, or OK to continue. Existing saved results will not be deleted.'
+  )) return;
   session = createSession(modeId, assembleQuestions(modeId, banks));
+  resultNeedsProtection = false;
+  lastSaveInput = null;
   if (saveStatus) saveStatus.textContent = '';
+  if (retrySaveButton) retrySaveButton.hidden = true;
   modeMessage.textContent = '';
   results.hidden = true;
   runner.hidden = false;
@@ -213,7 +300,14 @@ async function handleModeStart(modeId) {
   setModeButtonPending(modeId, true);
   try {
     if (modeId === 'half') {
-      if (await isSignedIn()) {
+      let signedIn;
+      try {
+        signedIn = await isSignedIn();
+      } catch {
+        modeMessage.innerHTML = '<strong>Half Test access could not be verified.</strong> Please try again when connected. Your account was not changed.';
+        return;
+      }
+      if (signedIn) {
         startMode(modeId);
       } else {
         modeMessage.innerHTML = '<strong>Free account required for the Half Test.</strong> <a href="/#authPanel">Sign in or create a free account</a>, then return to Test Prep.';
@@ -289,6 +383,13 @@ nextButton?.addEventListener('click', () => {
 });
 submitButton?.addEventListener('click', scoreTest);
 retakeButton?.addEventListener('click', () => session && startMode(session.modeId));
+retrySaveButton?.addEventListener('click', () => void saveLastResult({ retrying: true }));
+
+window.addEventListener('beforeunload', event => {
+  if (!resultNeedsProtection) return;
+  event.preventDefault();
+  event.returnValue = true;
+});
 
 try {
   const [blueprintResponse, quickResponse, halfResponse, extensionResponse] = await Promise.all([
