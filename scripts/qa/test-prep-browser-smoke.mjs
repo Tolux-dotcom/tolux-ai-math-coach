@@ -31,18 +31,27 @@ async function runScenario(viewport, scenario) {
   const pageErrors = [];
   page.on('pageerror', error => pageErrors.push(error.message));
   const posts = [];
+  const tokens = [];
   const unexpectedExternal = [];
   const signedIn = scenario !== 'guest';
   const originalSession = { access_token: 'synthetic-token', user: { id: 'synthetic-student' } };
   let session = signedIn ? originalSession : null;
-  const queuedScenario = scenario === 'queued-retry' || scenario === 'account-replay';
+  const refreshScenario = ['expired-retry', 'refresh-other-account'].includes(scenario);
+  const queuedScenario = scenario === 'queued-retry' || scenario === 'account-replay' || refreshScenario;
+  const refreshedSession = { access_token: scenario === 'refresh-other-account' ? 'other-synthetic-token' : 'fresh-synthetic-token',
+    user: { id: scenario === 'refresh-other-account' ? 'other-student' : 'synthetic-student' } };
   let allowSave = false;
   await context.route('**/*', async route => {
     const request = route.request();
     const url = new URL(request.url());
     if (url.hostname === 'cdn.jsdelivr.net' && url.pathname === '/npm/@supabase/supabase-js@2') {
       return route.fulfill({ contentType: 'text/javascript', body:
-        `window.supabase = { createClient: () => ({ auth: { getSession: async () => ({ data: { session: ${JSON.stringify(session)} }, error: null }) } }) };` });
+        `window.__qaSession = ${JSON.stringify(session)}; window.__qaRefreshCount = 0;
+        window.supabase = { createClient: () => ({ auth: {
+          getSession: async () => ({ data: { session: window.__qaSession }, error: null }),
+          refreshSession: async () => { window.__qaRefreshCount++; window.__qaSession = ${JSON.stringify(refreshedSession)};
+            return { data: { session: window.__qaSession }, error: null }; }
+        } }) };` });
     }
     if (url.origin !== origin) {
       unexpectedExternal.push(url.origin);
@@ -53,9 +62,11 @@ async function runScenario(viewport, scenario) {
     if (url.pathname === '/assessment-progress.js' && scenario === 'missing-helper') return route.abort();
     if (url.pathname === '/api/lesson-progress') {
       assert.equal(request.method(), 'POST');
-      assert.equal(request.headers().authorization, 'Bearer synthetic-token');
+      const token = request.headers().authorization;
+      assert.ok(['Bearer synthetic-token', 'Bearer fresh-synthetic-token'].includes(token), 'Never upload under the other account');
+      tokens.push(token);
       posts.push(request.postDataJSON());
-      return route.fulfill({ status: allowSave ? 200 : 503, json: {} });
+      return route.fulfill({ status: !allowSave ? 503 : refreshScenario && token === 'Bearer synthetic-token' ? 401 : 200, json: {} });
     }
     return route.continue();
   });
@@ -126,7 +137,25 @@ async function runScenario(viewport, scenario) {
       assert.deepEqual(after, { ...before, [queueKey]: '[]' }, 'Only the acknowledged queue may change');
       console.log(JSON.stringify({ accountReplay: true, signedOutPosts: 0, otherAccountPosts: 0,
         originalAccountReplay: 1, exitWarnings, viewport }));
-    } else if (scenario === 'queued-retry') {
+    } else if (scenario === 'refresh-other-account') {
+      allowSave = true;
+      await retry.click();
+      await status.filter({ hasText: 'Saved on this device for this account.' }).waitFor();
+      await page.waitForFunction(() => !document.querySelector('[data-test-prep-retry-save]').disabled);
+      assert.equal(await page.evaluate(() => window.__qaRefreshCount), 1);
+      assert.equal(posts.length, 2, 'A different refreshed owner must not cause another POST');
+      assert.deepEqual(posts[1], posts[0]);
+      assert.deepEqual(tokens, ['Bearer synthetic-token', 'Bearer synthetic-token']);
+      assert.deepEqual(await page.evaluate(() => ({ ...localStorage })), before);
+      assert.equal(await retry.isVisible(), true);
+      await retry.click();
+      await status.filter({ hasText: 'Sign back into the original account' }).waitFor();
+      assert.equal(posts.length, 2, 'Further Retry under another account must remain blocked');
+      assert.equal(await page.evaluate(() => window.__qaRefreshCount), 1);
+      assert.deepEqual(await page.evaluate(() => ({ ...localStorage })), before);
+      assert.equal(await page.locator('#scoreSummary').textContent(), summary);
+      console.log(JSON.stringify({ refreshOwnership: 'blocked-other-account', refreshCount: 1, viewport }));
+    } else if (scenario === 'queued-retry' || scenario === 'expired-retry') {
       assert.equal(await retry.isVisible(), true);
       assert.equal(posts[0].module_id, 'test-prep-quick-check');
       assert.equal(posts[0].item_records.length, 10);
@@ -136,8 +165,13 @@ async function runScenario(viewport, scenario) {
       await retry.click();
       await status.filter({ hasText: 'Saved to your Tolux progress dashboard.' }).waitFor();
       assert.equal(await retry.isVisible(), false);
-      assert.equal(posts.length, 2);
-      assert.deepEqual(posts[1], posts[0], 'Retry must send the exact same completion');
+      assert.equal(posts.length, scenario === 'expired-retry' ? 3 : 2);
+      for (const report of posts) assert.deepEqual(report, posts[0], 'Retry must send the exact same completion');
+      if (scenario === 'expired-retry') {
+        assert.equal(await page.evaluate(() => window.__qaRefreshCount), 1);
+        assert.deepEqual(tokens, ['Bearer synthetic-token', 'Bearer synthetic-token', 'Bearer fresh-synthetic-token']);
+        console.log(JSON.stringify({ refreshOwnership: 'same-account-recovered', refreshCount: 1, viewport }));
+      }
       const queue = await page.evaluate(() => JSON.parse(localStorage.getItem('toluxTestPrepPendingProgress:v2:synthetic-student')));
       assert.deepEqual(queue, []);
       let prompted = false;
@@ -165,9 +199,9 @@ try {
     args: ['--no-sandbox', '--disable-background-networking'] });
   console.log(`Isolated Chromium ${browser.version()}; loopback static files and synthetic responses only.`);
   for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
-    for (const scenario of ['queued-retry', 'missing-helper', 'guest', 'account-replay']) await runScenario(viewport, scenario);
+    for (const scenario of ['queued-retry', 'missing-helper', 'guest', 'account-replay', 'expired-retry', 'refresh-other-account']) await runScenario(viewport, scenario);
   }
-  console.log('Browser smoke: 8/8 scenarios passed. Narrow viewport is not physical-phone QA.');
+  console.log('Browser smoke: 12/12 scenarios passed. Narrow viewport is not physical-phone QA.');
 } finally {
   await browser?.close();
   await new Promise(resolve => server.close(resolve));
